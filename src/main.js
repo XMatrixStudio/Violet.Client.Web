@@ -3,13 +3,19 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
+import store from './store'
+import ax from '@/lib/axios'
 
-Vue.config.productionTip = false
+Vue.use(Vuex)
+Vue.config.productionTip = true
+Vue.prototype.$https = ax
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
