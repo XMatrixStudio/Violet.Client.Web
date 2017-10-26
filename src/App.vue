@@ -1,7 +1,13 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <Row>
+      <Col span="16">
+        <img src="./assets/logo.png">
+      </Col>
+      <Col span="6">
+        <router-view/>
+      </Col>
+    </Row>
   </div>
 </template>
 
@@ -13,7 +19,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -21,3 +27,9 @@ export default {
   margin-top: 60px;
 }
 </style>
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
