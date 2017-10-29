@@ -10,7 +10,7 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 Vue.use(Vuex)
 Vue.use(iView)
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 Vue.prototype.$https = ax
 
 /* eslint-disable no-new */
@@ -19,5 +19,7 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })
