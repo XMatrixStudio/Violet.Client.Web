@@ -6,6 +6,9 @@ import Register from '@/components/Index/Register'
 import Reset from '@/components/Index/Reset'
 import Verify from '@/components/Index/Verify'
 import User from '@/pages/User'
+import Profile from '@/components/User/Profile'
+import Website from '@/components/User/Website'
+import Achievement from '@/components/User/Achievement'
 
 Vue.use(Router)
 
@@ -29,8 +32,18 @@ export default new Router({
       component: Verify
     }]
   }, {
-    path: '/:username',
+    path: '/:username/',
     name: 'User',
-    component: User
+    component: User,
+    children: [{
+      path: '',
+      component: Profile
+    }, {
+      path: 'website',
+      component: Website
+    }, {
+      path: 'achievement',
+      component: Achievement
+    }]
   }]
 })
