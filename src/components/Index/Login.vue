@@ -56,6 +56,7 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$Message.success('登陆成功!')
+          this.$router.push({ path: '/verify' })
         } else {
           this.$Message.error('表单验证失败!')
         }

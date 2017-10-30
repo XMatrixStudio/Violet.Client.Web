@@ -4,6 +4,7 @@ import Index from '@/pages/Index'
 import Login from '@/components/Index/Login'
 import Register from '@/components/Index/Register'
 import Reset from '@/components/Index/Reset'
+import Verify from '@/components/Index/Verify'
 import User from '@/pages/User'
 
 Vue.use(Router)
@@ -23,6 +24,9 @@ export default new Router({
     }, {
       path: 'reset',
       component: Reset
+    }, {
+      path: 'verify',
+      component: Verify
     }]
   }, {
     path: '/:username',

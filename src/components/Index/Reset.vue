@@ -9,15 +9,13 @@
         </FormItem>
         <FormItem label="邮箱验证码" prop="emailCode">
           <Input type="text" v-model="formCustom.emailCode" class="violet-register-card-form-vCode"></Input>
+          <Button type="primary" class="violet-register-card-form-get-code">获取验证码</Button>
         </FormItem>
         <FormItem label="密码" prop="passwd">
           <Input type="password" v-model="formCustom.passwd"></Input>
         </FormItem>
         <FormItem label="确认密码" prop="passwdCheck">
           <Input type="password" v-model="formCustom.passwdCheck"></Input>
-        </FormItem>
-        <FormItem label="验证码" prop="vCode">
-          <Input type="text" v-model="formCustom.vCode" class="violet-register-card-form-vCode"></Input>
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit('formCustom')" class="violet-register-card-form-button">重置密码</Button>
@@ -144,6 +142,10 @@ export default {
       }
       .violet-register-card-form-button {
         width: 80%;
+      }
+      .violet-register-card-form-get-code {
+        width: 90px;
+        margin-left: 10px;
       }
     }
   }
