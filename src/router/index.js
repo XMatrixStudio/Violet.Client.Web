@@ -1,28 +1,32 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Index from '@/pages/Index'
+import Login from '@/components/Index/Login'
+import Register from '@/components/Index/Register'
+import Reset from '@/components/Index/Reset'
 import User from '@/pages/User'
-import Login from '@/components/User/Login'
-import Register from '@/components/User/Register'
-import Reset from '@/components/User/Reset'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [{
     path: '/',
-    name: 'User',
-    component: User,
+    name: 'Index',
+    component: Index,
     children: [{
       path: 'register',
-      name: 'Register',
       component: Register
     }, {
       path: '',
-      name: 'Login',
       component: Login
     }, {
       path: 'reset',
       component: Reset
     }]
+  }, {
+    path: '/:username',
+    name: 'User',
+    component: User
   }]
 })
