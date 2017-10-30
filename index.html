@@ -2,13 +2,29 @@
 <html>
 
 <head>
-  <meta charset=utf-8>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=500, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Violet</title>
-  <link href=https://xmatrix-1252808268.cosgz.myqcloud.com/css/font-awesome.min.css rel=stylesheet>
+  <link rel="stylesheet" href="https://xmatrix-1252808268.cosgz.myqcloud.com/css/load.css">
+  <link rel="stylesheet" href="https://xmatrix-1252808268.cosgz.myqcloud.com/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://xmatrix-1252808268.cosgz.myqcloud.com/iview/styles/iview.css">
 </head>
 
 <body>
-  <div id=app></div>
+  <div id="load" class="loading">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+  </div>
+  <div id="app"></div>
 </body>
+<script>
+  document.getElementById('load').className = 'done';
+</script>
 
 </html>

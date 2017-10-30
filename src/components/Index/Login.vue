@@ -18,12 +18,16 @@
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('formItem')">登陆</Button>
+          <Button type="primary" @click="handleSubmit('formItem')" long>登陆</Button>
+        </FormItem>
+        <FormItem label="记住登陆状态">
+          <i-switch v-model="formItem.switch">
+            <Icon type="android-done" slot="open"></Icon>
+            <Icon type="android-close" slot="close"></Icon>
+          </i-switch>
+          <router-link class="violet-login-reset" to="/reset">忘记密码？</router-link>
         </FormItem>
       </Form>
-      <p>
-        <router-link to="/reset">忘记密码？</router-link>
-      </p>
     </Card>
     <p class="violet-login-signin">
       还没有账号？
@@ -37,6 +41,7 @@ export default {
   data() {
     return {
       formItem: {
+        switch: false,
         user: '',
         password: ''
       },
@@ -56,9 +61,12 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$Message.success('登陆成功!')
-          this.$router.push({ path: '/verify' })
+          this.$router.push({ path: '/auth' })
         } else {
-          this.$Message.error('表单验证失败!')
+          this.$Notice.open({
+            title: '这是通知标题',
+            desc: '这里是通知描述这里,是通知描述这里是通知描述这里,是通知描述这里,是通知描述这里是通知描述这里是通知描述'
+          })
         }
       })
     }
@@ -70,6 +78,7 @@ export default {
 .violet-login-card {
   width: 400px;
   padding: 30px;
+  padding-bottom: 0;
   .violet-login-card-title {
     text-align: center;
     font-size: 30px;
@@ -79,9 +88,9 @@ export default {
     text-align: right;
     font-size: 13px;
   }
-  button {
-    width: 100%;
-  }
+}
+.violet-login-reset {
+  float: right;
 }
 .violet-login-signin {
   text-align: center;

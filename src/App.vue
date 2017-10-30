@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="wrapper">
     <Row>
-      <Col span="8" offset="4" class="violet-login-title">
+      <Col :xs="{ span: 18, offset: 2  }" :sm="{ span: 18, offset: 4  }" :md="{ span: 7, offset: 4 }" :lg="{ span: 7, offset: 4 }" class="violet-login-title">
       <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
       </Col>
     </Row>
@@ -37,6 +37,7 @@ export default {
 }
 
 .violet-login-title {
+  user-select: none;
   color: #eee;
   font-size: 34px;
   margin-top: 30px;

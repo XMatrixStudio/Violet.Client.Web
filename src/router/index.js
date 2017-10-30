@@ -5,6 +5,7 @@ import Login from '@/components/Index/Login'
 import Register from '@/components/Index/Register'
 import Reset from '@/components/Index/Reset'
 import Verify from '@/components/Index/Verify'
+import Auth from '@/components/Index/Auth'
 import User from '@/pages/User'
 import Profile from '@/components/User/Profile'
 import Website from '@/components/User/Website'
@@ -30,6 +31,9 @@ export default new Router({
     }, {
       path: 'verify',
       component: Verify
+    }, {
+      path: 'auth',
+      component: Auth
     }]
   }, {
     path: '/:username/',
