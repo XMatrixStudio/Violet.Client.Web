@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     const validatevCode = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('验证码不能为空'))
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit(name) {
+    handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$Message.success('提交成功!')

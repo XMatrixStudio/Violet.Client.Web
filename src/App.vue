@@ -43,7 +43,7 @@ export default {
   margin-top: 30px;
   margin-bottom: 30px;
   border-bottom: 1px solid #73c3b6;
-  >p {
+  > p {
     margin-bottom: 20px;
   }
 }

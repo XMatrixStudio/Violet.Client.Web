@@ -2,16 +2,10 @@
   <div>
     <Row>
       <Col span="4" offset="4">
-      <Menu :theme="theme">
-        <router-link :to="'/'+$route.params.username">
-          <MenuItem name="profile">个人信息</MenuItem>
-        </router-link>
-        <router-link :to="'/'+$route.params.username+'/website'">
-          <MenuItem name="website">授权网站</MenuItem>
-        </router-link>
-        <router-link :to="'/'+$route.params.username+'/achievement'">
-          <MenuItem name="achievement">成就列表</MenuItem>
-        </router-link>
+      <Menu :theme="theme" @on-select="goTo">
+        <MenuItem name="">个人信息</MenuItem>
+        <MenuItem name="website">授权网站</MenuItem>
+        <MenuItem name="achievement">成就列表</MenuItem>
       </Menu>
       </Col>
       <Col span="12" offset="2">
@@ -23,9 +17,14 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       theme: 'light'
+    }
+  },
+  methods: {
+    goTo: function (name) {
+      this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
     }
   }
 }

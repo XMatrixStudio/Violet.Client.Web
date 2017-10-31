@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       formItem: {
         switch: false,
@@ -57,7 +57,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit(name) {
+    handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$Message.success('登陆成功!')

@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       name: 'ZhenlyChen',
       site: 'XMOJ'
