@@ -1,7 +1,7 @@
 <template>
-  <Card class="comp-user-web" dis-hover>
-    <vTitle><i class="fa fa-globe fa-fw" aria-hidden="true"></i> 授权网站</vTitle>
-    This is {{$route.params.username}}'s Website component.
+  <Card class="comp-user-follows" dis-hover>
+    <vTitle><i class="fa fa-users fa-fw" aria-hidden="true"></i> 关注好友</vTitle>
+    This is {{$route.params.username}}'s Follows component.
   </Card>
 </template>
 
@@ -11,12 +11,12 @@ export default {
   components: {vTitle}
 }
 </script>
-
 <style lang="scss">
-.comp-user-web {
+.comp-user-follows {
   border-left: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 20px;
 }
 </style>
+

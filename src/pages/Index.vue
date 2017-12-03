@@ -1,6 +1,6 @@
 <template>
   <Row :gutter="16" class="violet-login-box">
-    <Col :xs="{ span: 20, offset: 2  }" :sm="{ span: 20, offset: 4  }" :md="{ span: 6, offset: 4 }" :lg="{ span: 6, offset: 4 }" class="violet-login-detail">
+    <Col :xs="{ span: 22, offset: 2  }" :sm="{ span: 22, offset: 2  }" :md="{ span: 8, offset: 2 }" :lg="{ span: 8, offset: 2 }" class="violet-login-detail">
     <div class="violet-login-text">
       <p>你即将登陆到以下站点</p>
       <p class="violet-login-text-title">Violet User System</p>

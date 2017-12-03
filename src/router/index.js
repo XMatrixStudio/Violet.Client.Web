@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Index from '@/pages/Index'
 import Login from '@/components/Index/Login'
 import Register from '@/components/Index/Register'
 import Reset from '@/components/Index/Reset'
 import Verify from '@/components/Index/Verify'
 import Auth from '@/components/Index/Auth'
+
 import User from '@/pages/User'
 import Profile from '@/components/User/Profile'
 import Website from '@/components/User/Website'
 import Achievement from '@/components/User/Achievement'
+import Dev from '@/components/User/Dev'
+import Follows from '@/components/User/Follows'
 
 Vue.use(Router)
 
@@ -48,6 +52,12 @@ export default new Router({
     }, {
       path: 'achievement',
       component: Achievement
+    }, {
+      path: 'dev',
+      component: Dev
+    }, {
+      path: 'follows',
+      component: Follows
     }]
   }]
 })

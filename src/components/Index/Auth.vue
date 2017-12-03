@@ -1,7 +1,9 @@
 <template>
   <div class="violet-auth">
     <Card class="violet-auth-card">
-      <p class="violet-auth-card-avatar"><img src="../../assets/me.jpg" alt="Avatar" /></p>
+      <p class="violet-auth-card-avatar">
+        <img src="../../assets/me.jpg" alt="Avatar" />
+      </p>
       <p>Hi, {{name}}</p>
       <p>是否授权登陆到{{site}}</p>
       <Button type="success" size="large">授权</Button>
