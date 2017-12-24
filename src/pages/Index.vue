@@ -24,20 +24,20 @@
 <style lang="scss">
 .violet-login-box {
   font-size: 18px;
-}
-
-.violet-login-detail {
-  color: #fff;
-  text-align: left;
-  .violet-login-text {
-    margin-bottom: 40px;
-    .violet-login-text-title {
-      margin: 20px;
-      font-weight: bold;
-      font-size: 22px;
-    }
-    ul {
-      margin-left: 40px;
+  .violet-login-detail {
+    color: #fff;
+    text-align: left;
+    .violet-login-text {
+      margin-left: 10vw;
+      margin-bottom: 40px;
+      .violet-login-text-title {
+        margin: 20px;
+        font-weight: bold;
+        font-size: 22px;
+      }
+      ul {
+        margin-left: 40px;
+      }
     }
   }
 }

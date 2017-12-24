@@ -15,6 +15,7 @@
         </FormItem>
         <FormItem label="验证码" prop="vCode">
           <Input type="text" v-model="formCustom.vCode" class="violet-register-card-form-vCode"></Input>
+          <img @click="getVCode" :src="formCustom.vCodeImg" alt="验证码">
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit('formCustom')" class="violet-register-card-form-button">注册</Button>
@@ -73,7 +74,8 @@ export default {
         passwd: '',
         passwdCheck: '',
         email: '',
-        vCode: ''
+        vCode: '',
+        vCodeImg: ''
       },
       ruleCustom: {
         passwd: [
@@ -100,7 +102,17 @@ export default {
           this.$Message.error('表单验证失败!')
         }
       })
+    },
+    async getVCode () {
+      try {
+        this.formCustom.vCodeImg = (await this.$https.get('/self/util/vCode')).data
+      } catch (error) {
+        this.$Message.error('获取验证码失败')
+      }
     }
+  },
+  mounted () {
+    this.getVCode()
   }
 }
 </script>
@@ -132,6 +144,9 @@ export default {
     }
     .violet-register-card-form {
       margin: 10px;
+      img {
+        vertical-align: middle;
+      }
       .violet-register-card-form-vCode {
         width: 150px;
       }

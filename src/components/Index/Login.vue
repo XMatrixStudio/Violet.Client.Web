@@ -2,26 +2,26 @@
   <div>
     <Card class="violet-login-card">
       <p class="violet-login-card-title">Login</p>
-      <Form ref="formItem" :model="formItem" :rules="ruleItem">
+      <Form ref="loginForm" :model="loginForm" :rules="ruleItem">
         <FormItem prop="user">
-          <Input type="text" v-model="formItem.user" placeholder="用户名 / 邮箱">
+          <Input type="text" v-model="loginForm.user" placeholder="用户名 / 邮箱">
           <span slot="prepend">
             <i class="fa fa-user" aria-hidden="true"></i>
           </span>
           </Input>
         </FormItem>
         <FormItem prop="password">
-          <Input type="password" v-model="formItem.password" placeholder="密码">
+          <Input type="password" v-model="loginForm.password" placeholder="密码">
           <span slot="prepend">
             <i class="fa fa-key" aria-hidden="true"></i>
           </span>
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('formItem')" long>登陆</Button>
+          <Button type="primary" @click="handleSubmit('loginForm')" long>登陆</Button>
         </FormItem>
         <FormItem label="记住登陆状态">
-          <i-switch v-model="formItem.switch">
+          <i-switch v-model="loginForm.remember">
             <Icon type="android-done" slot="open"></Icon>
             <Icon type="android-close" slot="close"></Icon>
           </i-switch>
@@ -40,8 +40,8 @@
 export default {
   data () {
     return {
-      formItem: {
-        switch: false,
+      loginForm: {
+        remember: false,
         user: '',
         password: ''
       },
@@ -50,23 +50,36 @@ export default {
           { required: true, message: '请填写用户名', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请填写密码', trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
+          { required: true, message: '请填写密码', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
     handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
-          this.$Message.success('登陆成功!')
-          this.$router.push({ path: '/auth' })
-        } else {
-          this.$Notice.open({
-            title: '这是通知标题',
-            desc: '这里是通知描述这里,是通知描述这里是通知描述这里,是通知描述这里,是通知描述这里是通知描述这里是通知描述'
-          })
+          try {
+            let result = await this.$https.post('/self/users/login', this.$qs.stringify({
+              userName: this.loginForm.user,
+              userPass: this.loginForm.password,
+              remember: this.loginForm.remember
+            }))
+            console.log('result', result)
+          } catch (error) {
+            if (error.response && error.response.status === 400) {
+              this.$Notice.error({
+                title: '登陆失败',
+                desc: '用户名或密码错误，请重新输入'
+              })
+              this.loginForm.password = ''
+            } else {
+              this.$Notice.error({
+                title: '登陆失败',
+                desc: '服务器发生错误，请稍后重试'
+              })
+            }
+          }
         }
       })
     }

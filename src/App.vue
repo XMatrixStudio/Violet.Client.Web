@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="wrapper">
     <Row>
-      <Col :xs="{ span: 18, offset: 2  }" :sm="{ span: 18, offset: 2  }" :md="{ span: 7, offset: 2 }" :lg="{ span: 7, offset: 2 }" class="violet-login-title">
+      <Col :xs="{ span: 18, offset: 2  }" :sm="{ span: 18, offset: 2  }" :md="{ span: 7, offset: 3 }" :lg="{ span: 7, offset: 4 }" class="violet-login-title">
       <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
       </Col>
     </Row>
