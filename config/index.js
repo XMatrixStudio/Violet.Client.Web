@@ -29,11 +29,12 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: process.env.PORT || 8080,
+    apiServer: 'http://127.0.0.1:30002',
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-    axiosBase: 'http://localhost:30002/v2/',
+    axiosBase: 'http://localhost:8080/api/v2/',
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

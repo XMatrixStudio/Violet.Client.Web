@@ -28,15 +28,18 @@ export default new Router({
       component: Register
     }, {
       path: '',
+      name: 'login',
       component: Login
     }, {
       path: 'reset',
       component: Reset
     }, {
       path: 'verify',
+      name: 'verify',
       component: Verify
     }, {
       path: 'auth',
+      name: 'auth',
       component: Auth
     }]
   }, {

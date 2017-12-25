@@ -3,12 +3,10 @@
     <Col :xs="{ span: 22, offset: 2  }" :sm="{ span: 22, offset: 2  }" :md="{ span: 8, offset: 2 }" :lg="{ span: 8, offset: 2 }" class="violet-login-detail">
     <div class="violet-login-text">
       <p>你即将登陆到以下站点</p>
-      <p class="violet-login-text-title">Violet User System</p>
+      <p class="violet-login-text-title">{{clientName}}</p>
       <ul>
         <li>
-          <Icon type="android-done" slot="open"></Icon> 百万用户的信赖首选</li>
-        <li>
-          <Icon type="android-done" slot="open"></Icon> 全球领先的用户平台</li>
+          <Icon type="android-done" slot="open"></Icon> {{clientDetail}}</li>
       </ul>
     </div>
     </Col>
@@ -19,7 +17,61 @@
 </template>
 
 <script>
+export default {
+  data () {
+    return {
+      clientName: 'Violet User System',
+      clientDetail: 'Violet 中央授权系统',
+      clientUrl: ''
+    }
+  },
+  methods: {
+    async getClientInfo () {
+      try {
+        let client = await this.$https.get('/self/util/ClientInfo/' + this.$route.query.clientId)
+        console.log(client.data)
+        this.clientName = client.data.name
+        this.clientDetail = client.data.detail
+        this.clientUrl = client.data.url
+      } catch (error) {
+        console.log(error.response.data)
+        if (error.response && error.response.status === 400) {
+          let content = ''
+          switch (error.response.data) {
+            case 'error_clientId':
+              content = '无效的连接，将登陆到Violet用户系统'
+              break
+            default:
+              content = '未知错误， 错误参数' + error.response.data
+          }
+          this.$Notice.error({
+            title: '发生错误',
+            desc: content
+          })
+        } else {
+          this.$Notice.error({
+            title: '发生错误',
+            desc: '无法连接到服务器'
+          })
+        }
+      }
+    }
+  },
+  async mounted () {
+    if (this.$route.query && this.$route.query.clientId) {
+      let query = this.$route.query
+      if (query.responseType === 'code' && query.state) {
+        await this.getClientInfo()
+      } else {
+        this.$Notice.error({
+          title: '参数错误'
+        })
+      }
+    }
+  }
+}
 </script>
+
 
 <style lang="scss">
 .violet-login-box {

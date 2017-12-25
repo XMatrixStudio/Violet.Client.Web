@@ -56,30 +56,45 @@ export default {
     }
   },
   methods: {
+    async auth () {
+      try {
+        // 判断授权状态
+        this.$router.push({ name: 'auth' })
+      } catch (error) {
+
+      }
+    },
+    async login () {
+      try {
+        let res = await this.$https.post('/self/users/login', this.$qs.stringify({
+          userName: this.loginForm.user,
+          userPass: this.loginForm.password,
+          remember: this.loginForm.remember
+        }))
+        if (res.data.valid) {
+          await this.auth()
+        } else {
+          this.$router.push({ name: 'verify' })
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.$Notice.error({
+            title: '登陆失败',
+            desc: '用户名或密码错误，请重新输入'
+          })
+          this.loginForm.password = ''
+        } else {
+          this.$Notice.error({
+            title: '登陆失败',
+            desc: '服务器发生错误，请稍后重试'
+          })
+        }
+      }
+    },
     handleSubmit (name) {
-      this.$refs[name].validate(async (valid) => {
+      this.$refs[name].validate((valid) => {
         if (valid) {
-          try {
-            let result = await this.$https.post('/self/users/login', this.$qs.stringify({
-              userName: this.loginForm.user,
-              userPass: this.loginForm.password,
-              remember: this.loginForm.remember
-            }))
-            console.log('result', result)
-          } catch (error) {
-            if (error.response && error.response.status === 400) {
-              this.$Notice.error({
-                title: '登陆失败',
-                desc: '用户名或密码错误，请重新输入'
-              })
-              this.loginForm.password = ''
-            } else {
-              this.$Notice.error({
-                title: '登陆失败',
-                desc: '服务器发生错误，请稍后重试'
-              })
-            }
-          }
+          this.login()
         }
       })
     }
