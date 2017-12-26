@@ -17,22 +17,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
-    return {
-      clientName: 'Violet User System',
-      clientDetail: 'Violet 中央授权系统',
-      clientUrl: ''
-    }
+    return {}
   },
+  computed: mapState({
+    clientName: state => state.client.name,
+    clientDetail: state => state.client.detail,
+    clientUrl: state => state.client.url
+  }),
   methods: {
     async getClientInfo () {
       try {
         let client = await this.$https.get('/self/util/ClientInfo/' + this.$route.query.clientId)
-        console.log(client.data)
-        this.clientName = client.data.name
-        this.clientDetail = client.data.detail
-        this.clientUrl = client.data.url
+        this.$store.commit('setClientInfo', client.data)
       } catch (error) {
         console.log(error.response.data)
         if (error.response && error.response.status === 400) {

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     const validatevCode = (rule, value, callback) => {
@@ -31,7 +32,6 @@ export default {
       }
     }
     return {
-      email: 'zhenlychen@foxmail.com',
       formCustom: {
         emailCode: ''
       },
@@ -42,6 +42,9 @@ export default {
       }
     }
   },
+  computed: mapState({
+    email: state => state.user.email
+  }),
   methods: {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
@@ -50,6 +53,14 @@ export default {
         } else {
           this.$Message.error('表单验证失败!')
         }
+      })
+    }
+  },
+  mounted () {
+    if (!this.$store.state.user.logged) {
+      this.$router.push({ name: 'login' })
+      this.$Notice.warning({
+        title: '请先登陆'
       })
     }
   }

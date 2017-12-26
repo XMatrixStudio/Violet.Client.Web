@@ -4,8 +4,8 @@
       <p class="violet-auth-card-avatar">
         <img src="../../assets/me.jpg" alt="Avatar" />
       </p>
-      <p>Hi, {{name}}</p>
-      <p>是否授权登陆到{{site}}</p>
+      <p>Hi, {{userMame}}</p>
+      <p>是否授权登陆到{{clientName}}</p>
       <Button type="success" size="large">授权</Button>
       <Button type="warning" size="large">取消</Button>
     </Card>
@@ -16,13 +16,16 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data () {
     return {
-      name: 'ZhenlyChen',
-      site: 'XMOJ'
     }
   },
+  computed: mapState({
+    userMame: state => state.user.name,
+    clientName: state => state.client.name
+  }),
   methods: {
   }
 }

@@ -1,6 +1,11 @@
 const state = {
   logged: false,
-  name: 'zhenlychen'
+  userName: '',
+  email: '',
+  nikeName: '',
+  avatar: '',
+  valid: '',
+  emailTime: false
 }
 
 const getters = {}
@@ -8,8 +13,15 @@ const getters = {}
 const actions = {}
 
 const mutations = {
-  setLogged(state, status) {
-    state.logged = status
+  login (state, data) {
+    state.email = data.email
+    state.nikeName = data.nikeName
+    state.avatar = data.avatar
+    state.valid = data.valid
+    state.logged = true
+  },
+  setEmailTime (state, data) {
+    state.emailTime = data
   }
 }
 

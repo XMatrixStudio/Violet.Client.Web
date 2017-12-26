@@ -47,7 +47,7 @@ export default {
       },
       ruleItem: {
         user: [
-          { required: true, message: '请填写用户名', trigger: 'blur' }
+          { required: true, message: '请填写用户名或邮箱', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请填写密码', trigger: 'blur' }
@@ -71,6 +71,7 @@ export default {
           userPass: this.loginForm.password,
           remember: this.loginForm.remember
         }))
+        this.$store.commit('login', res.data)
         if (res.data.valid) {
           await this.auth()
         } else {

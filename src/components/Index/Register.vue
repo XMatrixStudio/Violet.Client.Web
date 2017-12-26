@@ -139,6 +139,8 @@ export default {
             this.$router.push({ name: 'login' })
           } catch (error) {
             if (error.response && error.response.status === 400) {
+              this.registerForm.vCode = ''
+              await this.getVCode()
               let content = ''
               switch (error.response.data) {
                 case 'invalid_email':
@@ -169,7 +171,6 @@ export default {
               })
             }
           }
-          await this.getVCode()
         }
       })
     },
