@@ -15,7 +15,7 @@ const actions = {}
 const mutations = {
   login (state, data) {
     state.email = data.email
-    state.nikeName = data.nikeName
+    state.nikeName = data.name
     state.avatar = data.avatar
     state.valid = data.valid
     state.logged = true

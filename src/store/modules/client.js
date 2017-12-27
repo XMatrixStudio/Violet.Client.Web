@@ -1,18 +1,26 @@
 const state = {
   name: 'Violet User System',
   detail: 'Violet 中央授权系统',
-  url: ''
+  id: false,
+  state: '',
+  redirectUri: ''
 }
 
 const getters = {}
 
-const actions = {}
+const actions = {
+
+}
 
 const mutations = {
-  setClientInfo (state, status) {
-    state.name = status.name
-    state.detail = status.detail
-    state.url = status.url
+  setClientInfo (state, data) {
+    state.name = data.name
+    state.detail = data.detail
+  },
+  setUrlInfo (state, data) {
+    state.id = data.clientId
+    state.state = data.state
+    state.redirectUri = data.redirectUri
   }
 }
 

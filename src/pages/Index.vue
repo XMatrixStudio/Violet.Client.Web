@@ -2,12 +2,15 @@
   <Row :gutter="16" class="violet-login-box">
     <Col :xs="{ span: 22, offset: 2  }" :sm="{ span: 22, offset: 2  }" :md="{ span: 8, offset: 2 }" :lg="{ span: 8, offset: 2 }" class="violet-login-detail">
     <div class="violet-login-text">
-      <p>你即将登陆到以下站点</p>
+      <p>你即将登陆到</p>
       <p class="violet-login-text-title">{{clientName}}</p>
       <ul>
         <li>
           <Icon type="android-done" slot="open"></Icon> {{clientDetail}}</li>
       </ul>
+      <div class="control">
+        <a :class="{'hide-text': clientId == false}" @click="setUrlInfo">不，我想登陆到Violet</a>
+      </div>
     </div>
     </Col>
     <Col :xs="{ span: 6, offset: 2 }" :sm="{ span: 6, offset: 4 }" :md="{ span: 6, offset: 0 }" :lg="{ span: 6, offset: 0 }">
@@ -25,15 +28,14 @@ export default {
   computed: mapState({
     clientName: state => state.client.name,
     clientDetail: state => state.client.detail,
-    clientUrl: state => state.client.url
+    clientId: state => state.client.id
   }),
   methods: {
     async getClientInfo () {
       try {
-        let client = await this.$https.get('/self/util/ClientInfo/' + this.$route.query.clientId)
+        let client = await this.$https.get('/self/util/ClientInfo/' + this.clientId)
         this.$store.commit('setClientInfo', client.data)
       } catch (error) {
-        console.log(error.response.data)
         if (error.response && error.response.status === 400) {
           let content = ''
           switch (error.response.data) {
@@ -54,18 +56,18 @@ export default {
           })
         }
       }
+    },
+    setUrlInfo () {
+      this.$store.commit('setClientInfo', {
+        name: 'Violet User System',
+        detail: 'Violet 中央授权系统'
+      })
+      this.$store.commit('setUrlInfo', {clientId: false})
     }
   },
   async mounted () {
-    if (this.$route.query && this.$route.query.clientId) {
-      let query = this.$route.query
-      if (query.responseType === 'code' && query.state) {
-        await this.getClientInfo()
-      } else {
-        this.$Notice.error({
-          title: '参数错误'
-        })
-      }
+    if (this.clientId) {
+      await this.getClientInfo()
     }
   }
 }
@@ -75,12 +77,25 @@ export default {
 <style lang="scss">
 .violet-login-box {
   font-size: 18px;
+  margin-top: 3%;
   .violet-login-detail {
     color: #fff;
     text-align: left;
     .violet-login-text {
       margin-left: 10vw;
       margin-bottom: 40px;
+      .control {
+        margin-top: 60px;
+        .hide-text {
+          display: none;
+        }
+        a {
+          color: #ddd;
+          &:hover {
+            color: #eee;
+          }
+        }
+      }
       .violet-login-text-title {
         margin: 20px;
         font-weight: bold;

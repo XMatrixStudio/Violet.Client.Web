@@ -7,10 +7,6 @@
         <FormItem label="邮箱" prop="email">
           <Input type="text" v-model="resetForm.email" number></Input>
         </FormItem>
-        <FormItem label="验证码" prop="vCode">
-          <Input type="text" v-model="resetForm.vCode" class="violet-reset-card-form-vCode"></Input>
-          <img @click="getVCode" :src="resetForm.vCodeImg" alt="验证码">
-        </FormItem>
         <FormItem label="邮箱验证码" prop="emailCode">
           <Input type="text" v-model="resetForm.emailCode" class="violet-reset-card-form-vCode"></Input>
           <Button type="primary" class="violet-reset-card-form-get-code" @click="getEmailCode" :disabled='myTimer !== false'>{{emailBtnText}}</Button>
@@ -87,8 +83,6 @@ export default {
         passwd: '',
         passwdCheck: '',
         email: '',
-        vCode: '',
-        vCodeImg: '',
         emailCode: ''
       },
       emailBtnText: '获取验证码',
@@ -138,9 +132,6 @@ export default {
             case 'invalid_email':
               content = '邮箱不存在'
               break
-            case 'error_code':
-              content = '图片验证码错误'
-              break
             case 'invalid_password':
               content = '无效密码'
               break
@@ -170,27 +161,17 @@ export default {
         this.emailBtnText = '获取验证码'
         this.myTimer = false
       } else {
-        this.emailBtnText = '重新获取(' + Math.ceil((60 * 1000 - (new Date()).getTime() + (new Date(this.emailTime)).getTime()) / 1000) + 's)'
+        this.emailBtnText = '重新获取(' + Math.ceil((90 * 1000 - (new Date()).getTime() + (new Date(this.emailTime)).getTime()) / 1000) + 's)'
         this.myTimer = setTimeout(this.setTimeBtn, 1000)
-      }
-    },
-    async getVCode () {
-      this.resetForm.vCode = ''
-      try {
-        this.resetForm.vCodeImg = (await this.$https.get('/self/util/vCode')).data
-      } catch (error) {
-        this.$Message.error('获取验证码失败, 请稍后重试')
       }
     },
     async getEmailCode () {
       try {
         if (!this.resetForm.email) throw (new Error('邮箱不能为空'))
         if (!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(this.resetForm.email)) throw (new Error('请输入有效的邮箱'))
-        if (!this.resetForm.vCode) throw (new Error('验证码不能为空'))
 
         await this.$https.post('/self/util/EmailCode', this.$qs.stringify({
-          email: this.resetForm.email,
-          vCode: this.resetForm.vCode
+          email: this.resetForm.email
         }))
         this.$store.commit('setEmailTime', new Date())
         this.$Notice.success({
@@ -198,19 +179,13 @@ export default {
           desc: this.resetForm.email
         })
         clearTimeout(this.myTimer)
-        this.getVCode()
         this.setTimeBtn()
       } catch (error) {
         if (error.response && error.response.status === 400) {
-          this.getVCode()
-          this.resetForm.vCode = ''
           let content = ''
           switch (error.response.data) {
             case 'invalid_email':
               content = '邮箱不存在'
-              break
-            case 'error_code':
-              content = '图片验证码错误'
               break
             case 'limit_time':
               content = '你的请求太频繁了，请过一会儿再请求'
@@ -232,7 +207,6 @@ export default {
     }
   },
   mounted () {
-    this.getVCode()
     this.setTimeBtn()
   }
 }

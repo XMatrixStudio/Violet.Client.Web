@@ -15,6 +15,8 @@ import Achievement from '@/components/User/Achievement'
 import Dev from '@/components/User/Dev'
 import Follows from '@/components/User/Follows'
 
+import Authorize from '@/pages/Authorize'
+
 Vue.use(Router)
 
 export default new Router({
@@ -62,5 +64,9 @@ export default new Router({
       path: 'follows',
       component: Follows
     }]
+  }, {
+    path: '/Verify/Authorize',
+    name: 'Authorize',
+    component: Authorize
   }]
 })

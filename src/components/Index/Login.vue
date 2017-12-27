@@ -56,14 +56,6 @@ export default {
     }
   },
   methods: {
-    async auth () {
-      try {
-        // 判断授权状态
-        this.$router.push({ name: 'auth' })
-      } catch (error) {
-
-      }
-    },
     async login () {
       try {
         let res = await this.$https.post('/self/users/login', this.$qs.stringify({
@@ -73,7 +65,7 @@ export default {
         }))
         this.$store.commit('login', res.data)
         if (res.data.valid) {
-          await this.auth()
+          this.$router.push({ name: 'auth' })
         } else {
           this.$router.push({ name: 'verify' })
         }

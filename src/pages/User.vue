@@ -50,7 +50,8 @@ export default {
     }
   },
   mounted() {
-    this.actionMenu = this.$route.path.toString().split('/')[2] // 最好可以改用正则匹配
+    this.actionMenu = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
+    this.colLeft = window.innerWidth < 1100 ? 2 : 4
     window.onresize = (e) => {
       this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
     }
