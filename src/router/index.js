@@ -11,9 +11,7 @@ import Auth from '@/components/Index/Auth'
 import User from '@/pages/User'
 import Profile from '@/components/User/Profile'
 import Website from '@/components/User/Website'
-import Achievement from '@/components/User/Achievement'
 import Dev from '@/components/User/Dev'
-import Follows from '@/components/User/Follows'
 
 import Authorize from '@/pages/Authorize'
 
@@ -55,14 +53,8 @@ export default new Router({
       path: 'website',
       component: Website
     }, {
-      path: 'achievement',
-      component: Achievement
-    }, {
       path: 'dev',
       component: Dev
-    }, {
-      path: 'follows',
-      component: Follows
     }]
   }, {
     path: '/Verify/Authorize',

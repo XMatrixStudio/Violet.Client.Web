@@ -124,7 +124,7 @@ export default {
         this.$Notice.success({
           title: '修改密码成功，请重新登陆'
         })
-        this.$router.push({name: 'login'})
+        this.$router.push({ name: 'login' })
       } catch (error) {
         if (error.response && error.response.status === 400) {
           let content = ''
@@ -207,7 +207,11 @@ export default {
     }
   },
   mounted () {
-    this.setTimeBtn()
+    if (!this.$store.state.user.logged) {
+      this.$router.push({ name: 'login' })
+    } else {
+      this.setTimeBtn()
+    }
   }
 }
 </script>

@@ -5,7 +5,8 @@ const state = {
   nikeName: '',
   avatar: '',
   valid: '',
-  emailTime: false
+  emailTime: false,
+  autoLogin: false
 }
 
 const getters = {}
@@ -22,6 +23,9 @@ const mutations = {
   },
   setEmailTime (state, data) {
     state.emailTime = data
+  },
+  setAuto (state, data) {
+    state.autoLogin = data
   }
 }
 

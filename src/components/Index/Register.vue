@@ -184,7 +184,11 @@ export default {
     }
   },
   mounted () {
-    this.getVCode()
+    if (!this.$store.state.user.logged) {
+      this.$router.push({ name: 'login' })
+    } else {
+      this.getVCode()
+    }
   }
 }
 </script>

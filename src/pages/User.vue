@@ -12,15 +12,33 @@
           <i v-if="sex === 0" class="fa fa-transgender i-other" aria-hidden="true"></i>
         </div>
         <MenuItem name="">
-        <i class="fa fa-user-o fa-fw" aria-hidden="true"></i> <span class="menu-text">个人信息</span> </MenuItem>
+        <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">个人信息</span>
+        </MenuItem>
         <MenuItem name="website">
-        <i class="fa fa-globe fa-fw" aria-hidden="true"></i> <span class="menu-text">授权网站</span></MenuItem>
-        <MenuItem name="follows">
-        <i class="fa fa-users fa-fw" aria-hidden="true"></i> <span class="menu-text">关注好友</span></MenuItem>
-        <MenuItem name="achievement">
-        <i class="fa fa-star fa-fw" aria-hidden="true"></i> <span class="menu-text">成就列表</span></MenuItem>
+        <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">授权网站</span>
+        </MenuItem>
         <MenuItem name="dev">
-        <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> <span class="menu-text">开发者设置</span></MenuItem>
+        <i class="fa fa-cogs fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">开发者设置</span>
+        </MenuItem>
+        <MenuItem name="logout">
+        <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">退出登陆</span>
+        </MenuItem>
+        <Modal v-model="modalLogout" width="360">
+          <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>退出确认</span>
+          </p>
+          <div style="text-align:center">
+            <p>是否退出登陆？</p>
+          </div>
+          <div slot="footer">
+            <Button type="error" size="large" long @click="logout">退出</Button>
+          </div>
+        </Modal>
       </Menu>
       </Col>
       <Col :span="colRight" offest="2" class="detail-col">
@@ -34,6 +52,7 @@
 export default {
   data () {
     return {
+      modalLogout: false,
       actionMenu: '',
       theme: 'light',
       avatar: '/static/me.jpg',
@@ -46,14 +65,46 @@ export default {
   },
   methods: {
     goTo: function (name) {
-      this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
+      if (name === 'logout') {
+        this.modalLogout = true
+      } else {
+        this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
+      }
+    },
+    async logout () {
+      try {
+        await this.$https.delete('/self/users/login')
+        this.$router.push({ name: 'login' })
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.$Notice.error({
+            title: '操作失败',
+            desc: '未知错误，请联系管理员，错误参数' + error.response.data
+          })
+        } else {
+          this.$Notice.error({
+            title: '发生了奇奇怪怪的错误',
+            desc: '无法连接到服务器，请稍后重试'
+          })
+        }
+      }
     }
   },
-  mounted() {
-    this.actionMenu = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
-    this.colLeft = window.innerWidth < 1100 ? 2 : 4
-    window.onresize = (e) => {
-      this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
+  async mounted () {
+    if (!this.$store.state.user.logged) {
+      this.$router.push({ name: 'login' })
+    } else {
+      try {
+        await this.$https.get('/self/users/login')
+        this.actionMenu = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
+        this.colLeft = window.innerWidth < 1100 ? 2 : 4
+        window.onresize = (e) => {
+          this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
+        }
+      } catch (error) {
+        this.$Notice.warning({title: '登陆已过时， 请重新登陆'})
+        this.$router.push({name: 'login'})
+      }
     }
   }
 }
@@ -61,7 +112,7 @@ export default {
 
 <style lang="scss">
 .pages-user {
-  transition: all .4s;
+  transition: all 0.4s;
   min-width: 600px;
   .hide-text-col {
     width: 70px;
@@ -91,7 +142,7 @@ export default {
         &:hover {
           transform: rotateZ(360deg);
         }
-        transition: all .5s;
+        transition: all 0.5s;
         margin-top: 30px;
         margin-bottom: 10px;
         border-radius: 50%;
@@ -103,14 +154,14 @@ export default {
       text-align: center;
       font-size: 20px;
       margin: 10px;
-      .i-pink{
-        color: #E87A90;
+      .i-pink {
+        color: #e87a90;
       }
       .i-blue {
-        color: #2EA9DF;
+        color: #2ea9df;
       }
       .i-other {
-        color: #1B813E;
+        color: #1b813e;
       }
     }
   }

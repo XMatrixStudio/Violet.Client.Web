@@ -10,7 +10,7 @@
       <Button type="warning" size="large">取消</Button>
     </Card>
     <p class="violet-auth-login">
-      <router-link to="/">切换账号</router-link>
+      <a @click="logout">切换账号</a>
     </p>
   </div>
 </template>
@@ -31,6 +31,24 @@ export default {
     avatar: state => state.user.avatar
   }),
   methods: {
+    async logout () {
+      try {
+        await this.$https.delete('/self/users/login')
+        this.$router.push({ name: 'login' })
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.$Notice.error({
+            title: '操作失败',
+            desc: '未知错误，请联系管理员，错误参数' + error.response.data
+          })
+        } else {
+          this.$Notice.error({
+            title: '发生了奇奇怪怪的错误',
+            desc: '无法连接到服务器，请稍后重试'
+          })
+        }
+      }
+    },
     async getAuthState () {
       try {
         let res = await this.$https.get('/self/auth/' + this.clientId)
@@ -45,29 +63,38 @@ export default {
       }
     },
     async authClient () {
-      try {
-        let res = await this.$https.post('/self/auth/' + this.clientId)
-        window.location.href = `${res.data.url}/?code=${res.data.code}&state=${this.clientState}&redirectUri=${this.redirectUri}`
-      } catch (error) {
-        if (error.response && error.response.status === 400) {
-          this.$Notice.error({
-            title: '授权失败',
-            desc: '未知错误，请联系管理员，错误参数' + error.response.data
-          })
-        } else {
-          this.$Notice.error({
-            title: '授权失败',
-            desc: '无法连接到服务器，请稍后重试'
-          })
+      if (this.clientId) {
+        try {
+          let res = await this.$https.post('/self/auth/' + this.clientId)
+          window.location.href = `${res.data.url}/?code=${res.data.code}&state=${this.clientState}&redirectUri=${this.redirectUri}`
+        } catch (error) {
+          if (error.response && error.response.status === 400) {
+            this.$Notice.error({
+              title: '授权失败',
+              desc: '未知错误，请联系管理员，错误参数' + error.response.data
+            })
+          } else {
+            this.$Notice.error({
+              title: '授权失败',
+              desc: '无法连接到服务器，请稍后重试'
+            })
+          }
         }
+      } else {
+        this.$router.push({ path: '/' + this.userName + '/' }) // 跳转到用户中心
       }
     }
   },
   mounted () {
-    if (this.clientId) {
-      this.getAuthState() // 获取授权状态
+    if (this.$store.state.user.logged) {
+      // 自动授权 - 开启之后逻辑比较怪，先关闭着
+      if (this.clientId) {
+        // this.getAuthState() // 获取授权状态
+      } else {
+        this.$router.push({ path: '/' + this.userName + '/' }) // 跳转到用户中心
+      }
     } else {
-      this.$router.push({ path: '/' + this.userName + '/' }) // 跳转到用户中心
+      this.$router.push({ name: 'login' })
     }
   }
 }

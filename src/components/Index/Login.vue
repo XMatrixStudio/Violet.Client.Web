@@ -21,7 +21,7 @@
           <Button type="primary" @click="handleSubmit('loginForm')" long>登陆</Button>
         </FormItem>
         <FormItem label="记住登陆状态">
-          <i-switch v-model="loginForm.remember">
+          <i-switch v-model="remember">
             <Icon type="android-done" slot="open"></Icon>
             <Icon type="android-close" slot="close"></Icon>
           </i-switch>
@@ -41,7 +41,6 @@ export default {
   data () {
     return {
       loginForm: {
-        remember: false,
         user: '',
         password: ''
       },
@@ -55,13 +54,23 @@ export default {
       }
     }
   },
+  computed: {
+    remember: {
+      get () {
+        return this.$store.state.user.autoLogin
+      },
+      set (value) {
+        this.$store.commit('setAuto', value)
+      }
+    }
+  },
   methods: {
     async login () {
       try {
         let res = await this.$https.post('/self/users/login', this.$qs.stringify({
           userName: this.loginForm.user,
           userPass: this.loginForm.password,
-          remember: this.loginForm.remember
+          remember: this.remember
         }))
         this.$store.commit('login', res.data)
         if (res.data.valid) {
@@ -90,6 +99,20 @@ export default {
           this.login()
         }
       })
+    }
+  },
+  async mounted () {
+    if (this.$store.state.user.logged) {
+      try {
+        await this.$https.get('/self/users/login')
+        if (this.$store.state.user.valid) {
+          this.$router.push({ name: 'auth' })
+        } else {
+          this.$router.push({ name: 'verify' })
+        }
+      } catch (error) {
+        // 没有自动登陆
+      }
     }
   }
 }
