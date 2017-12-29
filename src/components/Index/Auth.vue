@@ -34,6 +34,7 @@ export default {
     async logout () {
       try {
         await this.$https.delete('/self/users/login')
+        this.$store.commit('logout')
         this.$router.push({ name: 'login' })
       } catch (error) {
         if (error.response && error.response.status === 400) {

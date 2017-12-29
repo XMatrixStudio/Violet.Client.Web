@@ -15,7 +15,7 @@
       </Form>
     </Card>
     <p class="violet-verify-login">
-      <router-link to="/">切换账号</router-link>
+      <a @click="logout">切换账号</a>
     </p>
   </div>
 </template>
@@ -49,6 +49,25 @@ export default {
     emailTime: state => state.user.emailTime
   }),
   methods: {
+    async logout () {
+      try {
+        await this.$https.delete('/self/users/login')
+        this.$store.commit('logout')
+        this.$router.push({ name: 'login' })
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.$Notice.error({
+            title: '操作失败',
+            desc: '未知错误，请联系管理员，错误参数' + error.response.data
+          })
+        } else {
+          this.$Notice.error({
+            title: '发生了奇奇怪怪的错误',
+            desc: '无法连接到服务器，请稍后重试'
+          })
+        }
+      }
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -107,7 +126,7 @@ export default {
         this.$Notice.success({
           title: '邮箱验证成功'
         })
-        this.$router.push({name: 'auth'})
+        this.$router.push({ name: 'auth' })
       } catch (error) {
         if (error.response && error.response.status === 400) {
           let content = ''

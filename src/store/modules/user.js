@@ -21,6 +21,13 @@ const mutations = {
     state.valid = data.valid
     state.logged = true
   },
+  logout (state) {
+    state.email = ''
+    state.nikeName = ''
+    state.avatar = ''
+    state.valid = ''
+    state.logged = false
+  },
   setEmailTime (state, data) {
     state.emailTime = data
   },
