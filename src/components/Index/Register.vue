@@ -56,7 +56,7 @@ export default {
         if (value.length > 128) {
           callback(new Error('密码不能大于128位'))
         }
-        let regExp = /^[0-9]$/
+        let regExp = /^[0-9]*$/
         if (regExp.test(value)) {
           callback(new Error('密码不允许纯数字'))
         }
@@ -127,10 +127,11 @@ export default {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
           try {
+            console.log(this.$crypto)
             await this.$https.post('/self/users/register', this.$qs.stringify({
               email: this.registerForm.email,
               name: this.registerForm.name,
-              userPass: this.registerForm.passwd,
+              userPass: this.$crypto.hash(this.registerForm.passwd),
               vCode: this.registerForm.vCode
             }))
             this.$Notice.success({
@@ -165,6 +166,7 @@ export default {
                 desc: content
               })
             } else {
+              console.log(error)
               this.$Notice.error({
                 title: '注册失败',
                 desc: '服务器发生错误，请稍后重试'
@@ -184,7 +186,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.state.user.logged) {
+    if (this.$store.state.user.logged) {
       this.$router.push({ name: 'login' })
     } else {
       this.getVCode()

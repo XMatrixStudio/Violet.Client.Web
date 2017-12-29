@@ -207,7 +207,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.state.user.logged) {
+    if (this.$store.state.user.logged) {
       this.$router.push({ name: 'login' })
     } else {
       this.setTimeBtn()

@@ -69,7 +69,7 @@ export default {
       try {
         let res = await this.$https.post('/self/users/login', this.$qs.stringify({
           userName: this.loginForm.user,
-          userPass: this.loginForm.password,
+          userPass: this.$crypto.hash(this.loginForm.password),
           remember: this.remember
         }))
         this.$store.commit('login', res.data)
