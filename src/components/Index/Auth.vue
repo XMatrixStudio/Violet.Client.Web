@@ -90,8 +90,10 @@ export default {
       // 自动授权 - 开启之后逻辑比较怪，先关闭着
       if (this.clientId) {
         // this.getAuthState() // 获取授权状态
+      } else if (this.$store.state.client.redirectUri) {
+        this.$router.push({ path: `/${this.$store.state.client.redirectUri}/` })
       } else {
-        this.$router.push({ path: '/' + this.userName + '/' }) // 跳转到用户中心
+        this.$router.push({ path: `/${this.userName}/` }) // 跳转到用户中心
       }
     } else {
       this.$router.push({ name: 'login' })

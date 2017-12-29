@@ -119,7 +119,7 @@ export default {
         await this.$https.post('/self/users/password', this.$qs.stringify({
           email: this.resetForm.email,
           vCode: this.resetForm.emailCode,
-          password: this.resetForm.passwd
+          password: this.$crypto.hash(this.resetForm.passwd)
         }))
         this.$Notice.success({
           title: '修改密码成功，请重新登陆'

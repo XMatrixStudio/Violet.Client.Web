@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       modalLogout: false,
       actionMenu: '',
@@ -71,7 +71,7 @@ export default {
         this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
       }
     },
-    async logout () {
+    async logout() {
       try {
         await this.$https.delete('/self/users/login')
         this.$router.push({ name: 'login' })
@@ -90,7 +90,7 @@ export default {
       }
     }
   },
-  async mounted () {
+  async mounted() {
     if (!this.$store.state.user.logged) {
       this.$router.push({ name: 'login' })
     } else {
@@ -102,8 +102,9 @@ export default {
           this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
         }
       } catch (error) {
-        this.$Notice.warning({title: '登陆已过时， 请重新登陆'})
-        this.$router.push({name: 'login'})
+        this.$Notice.warning({ title: '登陆已过时， 请重新登陆' })
+        this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })
+        this.$router.push({ name: 'login' })
       }
     }
   }
