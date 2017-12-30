@@ -2,7 +2,7 @@
   <div class="pages-user">
     <Row type="flex" justify="center" class="code-row-bg">
       <Col :class="{'hide-text-col' : colLeft < 4, 'show-col' : colLeft >= 4}" :span="colLeft">
-      <Menu class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
+      <Menu class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto" :open-names="['user-data']">
         <div class="user-avatar">
           <img class="hide-elm" :src="avatar" alt="Avatar" />
         </div>
@@ -11,10 +11,15 @@
           <i v-if="sex === 1" class="fa fa-mars i-blue" aria-hidden="true"></i>
           <i v-if="sex === 0" class="fa fa-transgender i-other" aria-hidden="true"></i>
         </div>
-        <MenuItem name="">
-        <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">个人信息</span>
-        </MenuItem>
+        <Submenu name="user-data">
+          <template slot="title">
+            <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
+            <span class="menu-text">个人信息</span>
+          </template>
+          <MenuItem name=""><span class="menu-text">个人详情</span></MenuItem>
+          <MenuItem name="setting"><span class="menu-text">用户设置</span></MenuItem>
+          <MenuItem name="account"><span class="menu-text">账户管理</span></MenuItem>
+        </Submenu>
         <MenuItem name="website">
         <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
         <span class="menu-text">授权网站</span>
@@ -50,7 +55,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       modalLogout: false,
       actionMenu: '',
@@ -71,7 +76,7 @@ export default {
         this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
       }
     },
-    async logout() {
+    async logout () {
       try {
         await this.$https.delete('/self/users/login')
         this.$store.commit('logout')
@@ -91,12 +96,14 @@ export default {
       }
     }
   },
-  async mounted() {
+  async mounted () {
     if (!this.$store.state.user.logged) {
       this.$router.push({ name: 'login' })
     } else {
       try {
-        await this.$https.get('/self/users/login')
+        if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
+          await this.$https.get('/self/users/login')
+        }
         this.actionMenu = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
         this.colLeft = window.innerWidth < 1100 ? 2 : 4
         window.onresize = (e) => {

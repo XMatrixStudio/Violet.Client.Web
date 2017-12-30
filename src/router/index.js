@@ -12,6 +12,7 @@ import User from '@/pages/User'
 import Profile from '@/components/User/Profile'
 import Website from '@/components/User/Website'
 import Dev from '@/components/User/Dev'
+import Avatar from '@/components/User/Avatar'
 
 import Authorize from '@/pages/Authorize'
 
@@ -55,6 +56,9 @@ export default new Router({
     }, {
       path: 'dev',
       component: Dev
+    }, {
+      path: 'avatar',
+      component: Avatar
     }]
   }, {
     path: '/Verify/Authorize',

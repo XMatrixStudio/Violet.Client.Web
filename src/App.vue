@@ -36,6 +36,10 @@ export default {
   min-width: 500px;
 }
 
+.fa{
+  color: #80848f;
+}
+
 .violet-login-title {
   user-select: none;
   color: #eee;

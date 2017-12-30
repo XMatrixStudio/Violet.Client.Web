@@ -1,5 +1,6 @@
 const state = {
   logged: false,
+  loginTime: '',
   userName: '',
   email: '',
   nikeName: '',
@@ -20,6 +21,7 @@ const mutations = {
     state.avatar = data.avatar
     state.valid = data.valid
     state.logged = true
+    state.loginTime = new Date()
   },
   logout (state) {
     state.email = ''
