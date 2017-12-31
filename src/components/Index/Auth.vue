@@ -23,12 +23,12 @@ export default {
     }
   },
   computed: mapState({
-    userName: state => state.user.nikeName,
+    userName: state => state.user.name,
     clientName: state => state.client.name,
     clientId: state => state.client.id,
     clientState: state => state.client.state,
     redirectUri: state => state.client.redirectUri,
-    avatar: state => state.user.avatar
+    avatar: state => state.user.info.avatar
   }),
   methods: {
     async logout () {

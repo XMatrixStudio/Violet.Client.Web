@@ -5,59 +5,53 @@
     <div class="content">
       <p>
         <span>
-          <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i> 用户名： </span>{{userName}}</p>
+          <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i> 用户名： </span>{{name}}</p>
       <p>
         <span>
           <i class="fa fa-at fa-fw" aria-hidden="true"></i> 邮箱： </span>{{email}}</p>
-      <p>
+      <p v-if="info.url">
         <span>
-          <i class="fa fa-home fa-fw" aria-hidden="true"></i> 个人主页：</span>{{detail.web}}</p>
-      <p>
+          <i class="fa fa-home fa-fw" aria-hidden="true"></i> 个人主页：</span>{{info.url}}</p>
+      <p v-if="info.phone">
         <span>
-          <i class="fa fa-mobile fa-fw" aria-hidden="true"></i> 手机号码：</span>{{detail.phone}}</p>
-      <p>
+          <i class="fa fa-mobile fa-fw" aria-hidden="true"></i> 手机号码：</span>{{info.phone}}</p>
+      <p v-if="info.bio">
         <span>
-          <i class="fa fa-hashtag fa-fw" aria-hidden="true"></i> 个人说明：</span>{{detail.info}}</p>
-      <p>
+          <i class="fa fa-hashtag fa-fw" aria-hidden="true"></i> 个人说明：</span>{{info.bio}}</p>
+      <p v-if="info.birthDate">
         <span>
-          <i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i> 生日： </span>{{detail.birthDate}}</p>
-      <p>
+          <i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i> 生日： </span>{{info.birthDate}}</p>
+      <p v-if="info.location">
         <span>
-          <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> 居住地： </span>{{detail.location}}</p>
+          <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> 居住地： </span>{{info.location}}</p>
       <p>
         <span>
           <i class="fa fa-key fa-fw" aria-hidden="true"></i> 账号类型：</span>{{userClassName}}</p>
     </div>
     <div class="control">
-       <Button type="warning">修改个人资料</Button>
+      <Button type="warning" @click="setUserInfo">修改个人资料</Button>
     </div>
   </Card>
 </template>
 
 <script>
 import vTitle from './vTitle'
+import { mapState } from 'vuex'
 export default {
   components: { vTitle },
   data () {
     return {
-      userName: this.$route.params.username,
-      nikeName: 'ZhenlyChen',
-      email: 'zhenlychen@foxmail.com',
-      detail: {
-        web: 'blog.zhenly.cn',
-        phone: 13300002200,
-        info: 'Hello, world',
-        sex: 1,
-        birthDate: '2017-10-12',
-        location: 'GuangZhou',
-        avatar: 'https://example.com/fjiewrsdawd.png',
-        userClass: 0
-      }
+      userName: this.$route.params.username
+    }
+  },
+  methods: {
+    setUserInfo () {
+      this.$router.push({ name: 'InfoSet' })
     }
   },
   computed: {
     userClassName () {
-      const userClass = this.detail.userClass
+      const userClass = this.userClass
       if (userClass === 0) {
         return 'Violet用户'
       } else if (userClass > 0 && userClass < 11) {
@@ -69,7 +63,13 @@ export default {
       } else {
         return '未知用户'
       }
-    }
+    },
+    ...mapState({
+      info: state => state.user.info,
+      name: state => state.user.name,
+      email: state => state.user.email,
+      userClass: state => state.user.class
+    })
   }
 }
 </script>
