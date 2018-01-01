@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="wrapper">
-    <Row>
-      <Col :xs="{ span: 18, offset: 2  }" :sm="{ span: 18, offset: 2  }" :md="{ span: 7, offset: 3 }" :lg="{ span: 7, offset: 4 }" class="violet-login-title">
+    <Row type="flex" justify="center">
+      <Col :span="20" class="violet-login-title">
       <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
       </Col>
     </Row>
@@ -41,6 +41,7 @@ export default {
 }
 
 .violet-login-title {
+  max-width: 1100px;
   user-select: none;
   color: #eee;
   font-size: 34px;

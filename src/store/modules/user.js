@@ -2,7 +2,7 @@ const state = {
   email: '',
   name: '',
   valid: '',
-  class: '',
+  userClass: '',
   emailTime: false,
   autoLogin: false,
   logged: false,
@@ -40,8 +40,10 @@ const mutations = {
     state.name = data.name
     state.email = data.email
     state.info = data.info
-    state.class = data.class
+    state.userClass = data.userClass
     state.email = data.email
+    // 刷新头像
+    state.info.avatar = state.info.avatar + '?t=' + new Date().getTime()
   }
 }
 

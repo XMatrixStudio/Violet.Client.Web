@@ -2,30 +2,30 @@
   <div class="pages-user">
     <Row type="flex" justify="center" class="code-row-bg">
       <Col :class="{'hide-text-col' : colLeft < 4, 'show-col' : colLeft >= 4}" :span="colLeft">
-      <Menu class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto" :open-names="['user-data']">
-        <div class="user-avatar">
-          <img @click="setUserInfo" class="hide-elm" :src="avatar" alt="Avatar" />
+      <Menu ref="leftMenu" class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
+        <div class="user-avatar" title="更新你的照片">
+          <img @click="toggleShow" class="hide-elm" :src="avatar" alt="Avatar" />
+          <my-upload field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></my-upload>
         </div>
         <div class="user-name hide-elm">{{userName}}
           <i v-if="gender === 2" class="fa fa-venus i-pink" aria-hidden="true"></i>
           <i v-if="gender === 1" class="fa fa-mars i-blue" aria-hidden="true"></i>
           <i v-if="gender === 0" class="fa fa-transgender i-other" aria-hidden="true"></i>
         </div>
-        <Submenu name="user-data">
-          <template slot="title">
-            <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
-            <span class="menu-text">个人信息</span>
-          </template>
-          <MenuItem class="sub-menu" name=""><i class="fa fa-info fa-fw" aria-hidden="true"></i><span class="menu-text"> 个人详情</span></MenuItem>
-          <MenuItem class="sub-menu" name="setting"><i class="fa fa-info fa-fw" aria-hidden="true"></i><span class="menu-text">用户设置</span></MenuItem>
-          <MenuItem class="sub-menu" name="account"><i class="fa fa-info fa-fw" aria-hidden="true"></i><span class="menu-text">账户管理</span></MenuItem>
-        </Submenu>
+        <MenuItem name="">
+        <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">我的主页</span>
+        </MenuItem>
+        <MenuItem name="infoSet">
+        <i class="fa fa-sliders fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">用户设置</span>
+        </MenuItem>
         <MenuItem name="website">
         <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
         <span class="menu-text">授权网站</span>
         </MenuItem>
         <MenuItem name="dev">
-        <i class="fa fa-cogs fa-fw" aria-hidden="true"></i>
+        <i class="fa fa-terminal fa-fw" aria-hidden="true"></i>
         <span class="menu-text">开发者设置</span>
         </MenuItem>
         <MenuItem name="logout">
@@ -54,20 +54,26 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
+import myUpload from 'vue-image-crop-upload'
 export default {
+  components: {
+    'my-upload': myUpload
+  },
   data () {
     return {
+      show: false,
+      imgDataUrl: '',
       modalLogout: false,
       actionMenu: '',
       theme: 'light',
       name: this.$route.params.username,
-      colLeft: 2,
+      colLeft: 4,
       colRight: 19
     }
   },
   computed: mapState({
-    avatar: state => state.user.avatar,
+    avatar: state => state.user.info.avatar,
     gender: state => state.user.info.gender,
     userName: state => state.user.name
   }),
@@ -77,6 +83,20 @@ export default {
         this.modalLogout = true
       } else {
         this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
+      }
+    },
+    toggleShow () {
+      this.show = !this.show
+    },
+    cropSuccess (imgDataUrl, field) {
+      this.imgDataUrl = imgDataUrl
+      this.uploadAvatar()
+    },
+    async uploadAvatar () {
+      try {
+        await this.$https.put('/self/users/avatar', { avatar: this.imgDataUrl })
+      } catch (error) {
+        console.log(error.response)
       }
     },
     async logout () {
@@ -97,17 +117,6 @@ export default {
           })
         }
       }
-    },
-    async getUserInfo () {
-      try {
-        let res = await this.$https.get('/self/users/baseInfo')
-        this.$store.commit('setUserInfo', res.data)
-      } catch (error) {
-
-      }
-    },
-    setUserInfo() {
-      this.$router.push({name: 'InfoSet'})
     }
   },
   async mounted () {
@@ -118,8 +127,8 @@ export default {
         if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
           await this.$https.get('/self/users/login')
         }
-        this.getUserInfo()
-        this.actionMenu = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
+        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo')).data)
+        this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
         this.colLeft = window.innerWidth < 1100 ? 2 : 4
         window.onresize = (e) => {
           this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
@@ -166,7 +175,7 @@ export default {
     }
     .user-avatar {
       text-align: center;
-      img {
+      >img {
         &:hover {
           transform: rotateZ(360deg);
         }

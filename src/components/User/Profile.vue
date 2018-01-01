@@ -1,35 +1,37 @@
 <template>
   <Card class="comp-user-profile" dis-hover>
     <vTitle>
-      <i class="fa fa-user-o fa-fw" aria-hidden="true"></i> 个人信息</vTitle>
+      <p>
+        <i class="fa fa-circle-o fa-fw" aria-hidden="true"></i> {{name}}
+        <Tag color="green">{{userClassName}}</Tag>
+      </p>
+      <p class="bio">{{info.bio}}</p>
+    </vTitle>
     <div class="content">
       <p>
         <span>
-          <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i> 用户名： </span>{{name}}</p>
-      <p>
-        <span>
-          <i class="fa fa-at fa-fw" aria-hidden="true"></i> 邮箱： </span>{{email}}</p>
+          <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
+        </span>{{email}}</p>
       <p v-if="info.url">
         <span>
-          <i class="fa fa-home fa-fw" aria-hidden="true"></i> 个人主页：</span>{{info.url}}</p>
+          <i class="fa fa-home fa-fw" aria-hidden="true"></i>
+        </span>
+        <a target="_blank" :href="info.url">{{info.url}}</a>
+      </p>
       <p v-if="info.phone">
         <span>
-          <i class="fa fa-mobile fa-fw" aria-hidden="true"></i> 手机号码：</span>{{info.phone}}</p>
-      <p v-if="info.bio">
-        <span>
-          <i class="fa fa-hashtag fa-fw" aria-hidden="true"></i> 个人说明：</span>{{info.bio}}</p>
+          <i class="fa fa-mobile fa-fw" aria-hidden="true"></i>
+        </span>{{info.phone}}</p>
+
       <p v-if="info.birthDate">
         <span>
-          <i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i> 生日： </span>{{info.birthDate}}</p>
+          <i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i>
+        </span>{{birthDate}}</p>
       <p v-if="info.location">
         <span>
-          <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> 居住地： </span>{{info.location}}</p>
-      <p>
-        <span>
-          <i class="fa fa-key fa-fw" aria-hidden="true"></i> 账号类型：</span>{{userClassName}}</p>
-    </div>
-    <div class="control">
-      <Button type="warning" @click="setUserInfo">修改个人资料</Button>
+          <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>
+        </span>{{info.location}}</p>
+
     </div>
   </Card>
 </template>
@@ -45,9 +47,6 @@ export default {
     }
   },
   methods: {
-    setUserInfo () {
-      this.$router.push({ name: 'InfoSet' })
-    }
   },
   computed: {
     userClassName () {
@@ -64,11 +63,34 @@ export default {
         return '未知用户'
       }
     },
+    birthDate () {
+      if (this.info.birthDate) {
+        let Format = function (date, fmt) {
+          var o = {
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds(),
+            'q+': Math.floor((date.getMonth() + 3) / 3),
+            'S': date.getMilliseconds()
+          }
+          if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+          for (var k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+          }
+          return fmt
+        }
+        return Format(new Date(this.info.birthDate), 'yyyy-MM-dd')
+      } else {
+        return ''
+      }
+    },
     ...mapState({
       info: state => state.user.info,
       name: state => state.user.name,
       email: state => state.user.email,
-      userClass: state => state.user.class
+      userClass: state => state.user.userClass
     })
   }
 }
@@ -81,6 +103,15 @@ export default {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 20px;
+  .fa-circle-o {
+    color: rgb(27, 204, 51);
+  }
+  .bio {
+    font-size: 16px;
+    color: #80848f;
+    margin-left: 40px;
+    margin-top: 10px;
+  }
   .content {
     padding: 10px;
     font-size: 17px;
@@ -90,7 +121,7 @@ export default {
     span {
       display: inline-block;
       color: #555;
-      width: 130px;
+      width: 40px;
     }
   }
   .control {

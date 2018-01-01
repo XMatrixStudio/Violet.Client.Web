@@ -21,11 +21,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
-    path: '/',
-    name: 'Index',
+    path: '',
     component: Index,
     children: [{
       path: 'register',
+      name: 'register',
       component: Register
     }, {
       path: '',
@@ -44,11 +44,15 @@ export default new Router({
       component: Auth
     }]
   }, {
-    path: '/:username/',
-    name: 'User',
+    path: '/Verify/Authorize',
+    name: 'Authorize',
+    component: Authorize
+  }, {
+    path: '/:username',
     component: User,
     children: [{
       path: '',
+      name: 'userInfo',
       component: Profile
     }, {
       path: 'website',
@@ -61,9 +65,5 @@ export default new Router({
       name: 'InfoSet',
       component: InfoSet
     }]
-  }, {
-    path: '/Verify/Authorize',
-    name: 'Authorize',
-    component: Authorize
   }]
 })

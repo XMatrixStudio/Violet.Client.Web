@@ -92,7 +92,7 @@ export default {
       if (this.clientId) {
         // this.getAuthState() // 获取授权状态
       } else if (this.$store.state.client.redirectUri) {
-        this.$router.push({ path: `/${this.$store.state.client.redirectUri}/` })
+        this.$router.push({ path: this.$store.state.client.redirectUri })
       } else {
         this.$router.push({ path: `/${this.userName}/` }) // 跳转到用户中心
       }
