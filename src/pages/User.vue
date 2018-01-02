@@ -1,7 +1,7 @@
 <template>
   <div class="pages-user">
     <Row type="flex" justify="center" class="code-row-bg">
-      <Col :class="{'hide-text-col' : colLeft < 4, 'show-col' : colLeft >= 4}" :span="colLeft">
+      <Col class="show-col" :span="colLeft">
       <Menu ref="leftMenu" class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
         <div class="user-avatar" title="更新你的照片">
           <img @click="toggleShow" class="hide-elm" :src="avatar" alt="Avatar" />
@@ -46,7 +46,7 @@
         </Modal>
       </Menu>
       </Col>
-      <Col :span="colRight" offest="2" class="detail-col">
+      <Col :span="colRight" class="detail-col">
       <router-view></router-view>
       </Col>
     </Row>
@@ -69,7 +69,7 @@ export default {
       theme: 'light',
       name: this.$route.params.username,
       colLeft: 4,
-      colRight: 19
+      colRight: 17
     }
   },
   computed: mapState({
@@ -117,28 +117,27 @@ export default {
           })
         }
       }
-    }
-  },
-  async mounted () {
-    if (!this.$store.state.user.logged) {
-      this.$router.push({ name: 'login' })
-    } else {
+    },
+    async getInfo () {
       try {
         if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
           await this.$https.get('/self/users/login')
         }
         this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo')).data)
         this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
-        this.colLeft = window.innerWidth < 1100 ? 2 : 4
-        window.onresize = (e) => {
-          this.colLeft = e.target.innerWidth < 1100 ? 2 : 4
-        }
       } catch (error) {
         this.$Notice.warning({ title: '登陆已过时， 请重新登陆' })
         this.$store.commit('logout')
         this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })
         this.$router.push({ name: 'login' })
       }
+    }
+  },
+  async mounted () {
+    if (!this.$store.state.user.logged) {
+      this.$router.push({ name: 'login' })
+    } else {
+      this.getInfo()
     }
   }
 }
@@ -147,7 +146,7 @@ export default {
 <style lang="scss">
 .pages-user {
   transition: all 0.4s;
-  min-width: 600px;
+  min-width: 800px;
   .hide-text-col {
     width: 70px;
     .menu-text {
@@ -164,18 +163,22 @@ export default {
     width: 210px;
   }
   .detail-col {
+    margin-left: 20px;
     min-width: 500px;
     max-width: 900px;
   }
   .side-bar {
+    .ivu-menu-item-active {
+      color: #1da13e!important;
+      border-right: none!important;
+      border-left: 2px solid #1da13e;
+    }
+
     padding-bottom: 20px;
     border-right: none;
-    .sub-menu {
-      padding-left: 24px;
-    }
     .user-avatar {
       text-align: center;
-      >img {
+      > img {
         &:hover {
           transform: rotateZ(360deg);
         }

@@ -82,30 +82,81 @@ export default {
         }
       },
       ruleValidate: {
-        gender: [
-          { required: true, message: 'Please select gender', trigger: 'change' }
-        ]
       }
     }
   },
   mounted () {
-    this.infoForm.location = this.location
-    this.infoForm.gender = this.gender
-    this.infoForm.birthDate = this.date
-    this.infoForm.phone = this.phone
-    this.infoForm.bio = this.bio
-    this.infoForm.url = this.url
-    this.infoForm.show.birthDate = this.showBirthDate
-    this.infoForm.show.phone = this.showPhone
-    this.infoForm.show.location = this.showLocation
+    this.getInfo()
   },
   methods: {
+    Format: function (date, fmt) {
+      var o = {
+        'M+': date.getMonth() + 1,
+        'd+': date.getDate(),
+        'h+': date.getHours(),
+        'm+': date.getMinutes(),
+        's+': date.getSeconds(),
+        'q+': Math.floor((date.getMonth() + 3) / 3),
+        'S': date.getMilliseconds()
+      }
+      if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+      for (var k in o) {
+        if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+      }
+      return fmt
+    },
+    async getInfo () {
+      this.infoForm.location = this.location
+      this.infoForm.gender = this.gender
+      this.infoForm.birthDate = this.date
+      this.infoForm.phone = this.phone
+      this.infoForm.bio = this.bio
+      this.infoForm.url = this.url
+      this.infoForm.show.birthDate = this.showBirthDate
+      this.infoForm.show.phone = this.showPhone
+      this.infoForm.show.location = this.showLocation
+    },
+    async setInfo () {
+      try {
+        await this.$https.patch('/self/users/baseInfo/', this.$qs.stringify({
+          gender: this.infoForm.gender,
+          location: this.infoForm.location,
+          birthDate: this.Format(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
+          phone: this.infoForm.phone,
+          bio: this.infoForm.bio,
+          url: this.infoForm.url,
+          showBirthDate: this.infoForm.show.birthDate,
+          showPhone: this.infoForm.show.phone,
+          showLocation: this.infoForm.show.location
+        }))
+        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo/?t=' + new Date().getTime())).data)
+        this.getInfo()
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          let content = ''
+          switch (error.response.data) {
+            case 'error_clientId':
+              content = '无效的连接，将登陆到Violet用户系统'
+              break
+            default:
+              content = '未知错误， 错误参数' + error.response.data
+          }
+          this.$Notice.error({
+            title: '发生错误',
+            desc: content
+          })
+        } else {
+          this.$Notice.error({
+            title: '发生错误',
+            desc: '无法连接到服务器'
+          })
+        }
+      }
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!')
-        } else {
-          this.$Message.error('Fail!')
+          this.setInfo()
         }
       })
     }
@@ -123,6 +174,5 @@ export default {
     width: 70%;
     margin-right: 20px;
   }
-
 }
 </style>
