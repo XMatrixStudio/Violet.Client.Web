@@ -131,6 +131,9 @@ export default {
         }))
         this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo/?t=' + new Date().getTime())).data)
         this.getInfo()
+        this.$Notice.success({
+          title: '修改成功'
+        })
       } catch (error) {
         if (error.response && error.response.status === 400) {
           let content = ''

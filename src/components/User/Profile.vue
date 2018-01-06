@@ -9,26 +9,26 @@
     </vTitle>
     <div class="content">
       <p>
-        <span>
+        <span :title="language.email">
           <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
         </span>{{email}}</p>
       <p v-if="info.url">
-        <span>
+        <span :title="language.url">
           <i class="fa fa-home fa-fw" aria-hidden="true"></i>
         </span>
         <a target="_blank" :href="info.url">{{info.url}}</a>
       </p>
       <p v-if="info.phone">
-        <span>
+        <span :title="language.phone">
           <i class="fa fa-mobile fa-fw" aria-hidden="true"></i>
         </span>{{info.phone}}</p>
 
       <p v-if="info.birthDate">
-        <span>
+        <span :title="language.birthDate">
           <i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i>
         </span>{{birthDate}}</p>
       <p v-if="info.location">
-        <span>
+        <span :title="language.location">
           <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>
         </span>{{info.location}}</p>
 
@@ -68,15 +68,15 @@ export default {
     userClassName () {
       const userClass = this.userClass
       if (userClass === 0) {
-        return 'Violet用户'
+        return this.language.className[0]
       } else if (userClass > 0 && userClass < 11) {
-        return '开发者'
+        return this.language.className[1]
       } else if (userClass === 50) {
-        return '管理员'
+        return this.language.className[2]
       } else if (userClass === 99) {
-        return '最高管理员'
+        return this.language.className[3]
       } else {
-        return '未知用户'
+        return this.language.className[4]
       }
     },
     birthDate () {
@@ -85,6 +85,9 @@ export default {
       } else {
         return ''
       }
+    },
+    language() {
+      return this.$store.getters.language.Profile
     },
     ...mapState({
       info: state => state.user.info,
@@ -122,6 +125,12 @@ export default {
       display: inline-block;
       color: #555;
       width: 40px;
+    }
+    .fa {
+      transition: all .4s;
+      &:hover {
+        transform: translateY(-4px);
+      }
     }
   }
   .control {

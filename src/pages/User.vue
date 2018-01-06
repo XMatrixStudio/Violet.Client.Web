@@ -3,9 +3,9 @@
     <Row type="flex" justify="center" class="code-row-bg">
       <Col class="show-col" :span="colLeft">
       <Menu ref="leftMenu" class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
-        <div class="user-avatar" title="更新你的照片">
+        <div class="user-avatar" :title="language.avatar">
           <img @click="toggleShow" class="hide-elm" :src="avatar" alt="Avatar" />
-          <my-upload field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></my-upload>
+          <my-upload :langExt="language.upload" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></my-upload>
         </div>
         <div class="user-name hide-elm">{{userName}}
           <i v-if="gender === 2" class="fa fa-venus i-pink" aria-hidden="true"></i>
@@ -14,34 +14,34 @@
         </div>
         <MenuItem name="">
         <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">我的主页</span>
+        <span class="menu-text">{{language.home}}</span>
         </MenuItem>
         <MenuItem name="infoSet">
         <i class="fa fa-sliders fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">用户设置</span>
+        <span class="menu-text">{{language.setting}}</span>
         </MenuItem>
         <MenuItem name="website">
         <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">授权网站</span>
+        <span class="menu-text">{{language.website}}</span>
         </MenuItem>
         <MenuItem name="dev">
         <i class="fa fa-terminal fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">开发者设置</span>
+        <span class="menu-text">{{language.dev}}</span>
         </MenuItem>
         <MenuItem name="logout">
         <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">退出登陆</span>
+        <span class="menu-text">{{language.logout}}</span>
         </MenuItem>
         <Modal v-model="modalLogout" width="360">
           <p slot="header" style="color:#f60;text-align:center">
             <Icon type="information-circled"></Icon>
-            <span>退出确认</span>
+            <span>{{language.modal.title}}</span>
           </p>
           <div style="text-align:center">
-            <p>是否退出登陆？</p>
+            <p>{{language.modal.content}}</p>
           </div>
           <div slot="footer">
-            <Button type="error" size="large" long @click="logout">退出</Button>
+            <Button type="error" size="large" long @click="logout">{{language.modal.button}}</Button>
           </div>
         </Modal>
       </Menu>
@@ -72,11 +72,16 @@ export default {
       colRight: 17
     }
   },
-  computed: mapState({
-    avatar: state => state.user.info.avatar,
-    gender: state => state.user.info.gender,
-    userName: state => state.user.name
-  }),
+  computed: {
+    ...mapState({
+      avatar: state => state.user.info.avatar,
+      gender: state => state.user.info.gender,
+      userName: state => state.user.name
+    }),
+    language() {
+      return this.$store.getters.language.User
+    }
+  },
   methods: {
     goTo: function (name) {
       if (name === 'logout') {
@@ -107,13 +112,13 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 400) {
           this.$Notice.error({
-            title: '操作失败',
-            desc: '未知错误，请联系管理员，错误参数' + error.response.data
+            title: this.$store.getters.language.Notice.failed,
+            desc: this.$store.getters.language.Notice.error.unknown + error.response.data
           })
         } else {
           this.$Notice.error({
-            title: '发生了奇奇怪怪的错误',
-            desc: '无法连接到服务器，请稍后重试'
+            title: this.$store.getters.language.Notice.failed,
+            desc: this.$store.getters.language.Notice.error.server
           })
         }
       }
@@ -123,10 +128,10 @@ export default {
         if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
           await this.$https.get('/self/users/login')
         }
-        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo')).data)
+        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo/?t=' + new Date().getTime())).data)
         this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
       } catch (error) {
-        this.$Notice.warning({ title: '登陆已过时， 请重新登陆' })
+        this.$Notice.warning({ title: this.$store.getters.language.Notice.error.logTimeout })
         this.$store.commit('logout')
         this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })
         this.$router.push({ name: 'login' })
@@ -169,8 +174,8 @@ export default {
   }
   .side-bar {
     .ivu-menu-item-active {
-      color: #1da13e!important;
-      border-right: none!important;
+      color: #1da13e !important;
+      border-right: none !important;
       border-left: 2px solid #1da13e;
     }
 
@@ -180,8 +185,9 @@ export default {
       text-align: center;
       > img {
         &:hover {
-          transform: rotateZ(360deg);
+          transform: translateY(-4px);
         }
+        cursor: pointer;
         transition: all 0.5s;
         margin-top: 30px;
         margin-bottom: 10px;
