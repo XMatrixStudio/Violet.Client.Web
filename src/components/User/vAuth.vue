@@ -1,7 +1,11 @@
 <template>
   <div class="comp-user-authcatd">
-    <p class="title">{{web.name}}</p>
-    <p class="detail">{{web.detail}}</p>
+    <Avatar class="avatar" :src="web.avatar"></Avatar>
+    <div class="info">
+      <a @click="goToWebsite" class="title">{{web.name}}</a>
+      <p class="detail">{{web.detail}}</p>
+      <p>上次登录: 2018-1-22 23:22</p>
+    </div>
     <p class="control">
       <Button type="info">授权登陆</Button>
       <Button type="warning" @click="toggleShow">取消授权</Button>
@@ -24,17 +28,20 @@
 <script>
 export default {
   props: ['web'],
-  data () {
+  data() {
     return {
       modalAuth: false
     }
   },
   methods: {
-    toggleShow () {
+    toggleShow() {
       this.modalAuth = true
     },
-    async deleteAuth () {
+    async deleteAuth() {
       this.modalAuth = false
+    },
+    async goToWebsite() {
+      window.location.href = this.web.url
     }
   }
 }
@@ -48,18 +55,37 @@ export default {
   border-bottom: 1px solid #e9eaec;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  .title {
-    font-size: 20px;
-  }
-  .detail {
-    font-size: 16px;
+  .info {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+    .title {
+      font-size: 20px;
+      &:hover {
+        text-decoration-line: underline;
+      }
+    }
+    .detail {
+      font-size: 16px;
+    }
   }
   .control {
     text-align: right;
+    display: inline-block;
+    vertical-align: middle;
     button {
       margin-left: 20px;
+      margin-top: 10px;
       margin-bottom: 10px;
     }
+  }
+  .avatar {
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+    height: 60px;
+    width: 60px;
+    margin-right: 20px;
   }
 }
 </style>

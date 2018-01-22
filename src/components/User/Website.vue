@@ -2,7 +2,7 @@
   <Card class="comp-user-web" dis-hover>
     <vTitle>
       <i class="fa fa-globe fa-fw" aria-hidden="true"></i> 授权网站</vTitle>
-    <v-auth v-for="(web, index) in webList" :key="index" :web="web"></v-auth>
+    <vAuth v-for="(web, index) in webList" :key="index" :web="web"></vAuth>
   </Card>
 </template>
 
@@ -16,11 +16,15 @@ export default {
       webList: [{
         id: 'dsajfojhsadofias',
         name: 'XMatrix Online Judging',
-        detail: '在线评测系统'
+        detail: '在线评测系统',
+        url: 'https://oj.xmatrix.studio',
+        avatar: 'http://violet-1252808268.cosgz.myqcloud.com/0.png'
       }, {
         id: 'jsadoifjaosdjf',
         name: 'Icy Blog',
-        detail: '冰镇博客'
+        detail: '冰镇博客',
+        url: 'https://icytown.com',
+        avatar: 'http://violet-1252808268.cosgz.myqcloud.com/0.png'
       }]
     }
   }
