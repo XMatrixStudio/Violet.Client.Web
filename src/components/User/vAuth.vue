@@ -2,7 +2,7 @@
   <div class="comp-user-authcatd">
     <Avatar class="avatar" :src="web.avatar"></Avatar>
     <div class="info">
-      <a @click="goToWebsite" class="title">{{web.name}}</a>
+      <a @click="goToWebsite" class="title" target="_blank">{{web.name}}</a>
       <p class="detail">{{web.detail}}</p>
       <p>上次登录: 2018-1-22 23:22</p>
     </div>
@@ -51,7 +51,7 @@ export default {
 <style lang="scss">
 .comp-user-authcatd {
   display: block;
-  max-width: 600px;
+  max-width: 800px;
   border-bottom: 1px solid #e9eaec;
   padding-bottom: 10px;
   margin-bottom: 20px;
