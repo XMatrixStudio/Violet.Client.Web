@@ -126,9 +126,9 @@ export default {
         })
         this.$router.push({ name: 'login' })
       } catch (error) {
-        if (error.response && error.response.status === 400) {
+        this.$service.errorHandle.call(this, error, message => {
           let content = ''
-          switch (error.response.data) {
+          switch (message) {
             case 'invalid_email':
               content = '邮箱不存在'
               break
@@ -142,18 +142,13 @@ export default {
               content = '邮箱验证码错误'
               break
             default:
-              content = '未知错误，请联系管理员，错误参数' + error.response.data
+              content = '未知错误，请联系管理员，错误参数' + message
           }
           this.$Notice.error({
             title: '找回密码失败',
             desc: content
           })
-        } else {
-          this.$Notice.error({
-            title: '找回密码失败',
-            desc: '无法连接到服务器，请稍后重试'
-          })
-        }
+        })
       }
     },
     setTimeBtn () {

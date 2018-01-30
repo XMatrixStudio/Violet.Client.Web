@@ -37,17 +37,7 @@ export default {
         this.$store.commit('logout')
         this.$router.push({ name: 'login' })
       } catch (error) {
-        if (error.response && error.response.status === 400) {
-          this.$Notice.error({
-            title: '操作失败',
-            desc: '未知错误，请联系管理员，错误参数' + error.response.data
-          })
-        } else {
-          this.$Notice.error({
-            title: '发生了奇奇怪怪的错误',
-            desc: '无法连接到服务器，请稍后重试'
-          })
-        }
+        this.$service.errorHandle.call(this, error)
       }
     },
     async getAuthState () {
@@ -66,8 +56,7 @@ export default {
     async authClient () {
       if (this.clientId) {
         try {
-          let res = await this.$https.post('/self/auth/' + this.clientId)
-          window.location.href = `${res.data.url}/?code=${res.data.code}&state=${this.clientState}&redirectUri=${this.redirectUri}`
+          this.$service.user.auth.call(this, this.web.id, this.clientState, this.redirectUri)
         } catch (error) {
           if (error.response && error.response.status === 400) {
             this.$Notice.error({

@@ -7,15 +7,16 @@ import Vuex from 'vuex'
 import store from './store'
 import ax from '@/lib/axios'
 import crypto from '@/lib/crypto'
+import service from '@/lib/service'
 import iView from 'iview'
 import qs from 'qs'
 Vue.use(Vuex)
 Vue.use(iView)
+Vue.use(service)
 Vue.config.productionTip = false
 Vue.prototype.$https = ax
 Vue.prototype.$crypto = crypto
 Vue.prototype.$qs = qs
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -139,11 +139,11 @@ export default {
             })
             this.$router.push({ name: 'login' })
           } catch (error) {
-            if (error.response && error.response.status === 400) {
+            this.$service.errorHandle.call(this, error, message => {
               this.registerForm.vCode = ''
-              await this.getVCode()
+              this.getVCode()
               let content = ''
-              switch (error.response.data) {
+              switch (message) {
                 case 'invalid_email':
                 case 'invalid_name':
                 case 'invalid_password':
@@ -159,19 +159,13 @@ export default {
                   content = '该用户名已存在'
                   break
                 default:
-                  content = '未知错误，请联系管理员，错误参数' + error.response.data
+                  content = '未知错误，请联系管理员，错误参数' + message
               }
               this.$Notice.error({
                 title: '注册失败',
                 desc: content
               })
-            } else {
-              console.log(error)
-              this.$Notice.error({
-                title: '注册失败',
-                desc: '服务器发生错误，请稍后重试'
-              })
-            }
+            })
           }
         }
       })

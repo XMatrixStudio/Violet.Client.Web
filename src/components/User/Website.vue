@@ -9,24 +9,20 @@
 <script>
 import vTitle from './vTitle'
 import vAuth from './vAuth'
+import { mapState } from 'vuex'
 export default {
   components: { vTitle, vAuth },
   data () {
     return {
-      webList: [{
-        id: 'dsajfojhsadofias',
-        name: 'XMatrix Online Judging',
-        detail: '在线评测系统',
-        url: 'https://oj.xmatrix.studio',
-        avatar: 'http://violet-1252808268.cosgz.myqcloud.com/0.png'
-      }, {
-        id: 'jsadoifjaosdjf',
-        name: 'Icy Blog',
-        detail: '冰镇博客',
-        url: 'https://icytown.com',
-        avatar: 'http://violet-1252808268.cosgz.myqcloud.com/0.png'
-      }]
     }
+  },
+  computed: {
+    ...mapState({
+      webList: state => state.user.webList
+    })
+  },
+  async mounted() {
+    await this.$service.user.getClientList.call(this)
   }
 }
 </script>

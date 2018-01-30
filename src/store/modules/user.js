@@ -7,7 +7,8 @@ const state = {
   autoLogin: false,
   logged: false,
   loginTime: '',
-  info: {}
+  info: {},
+  webList: []
 }
 
 const getters = {}
@@ -44,6 +45,9 @@ const mutations = {
     state.email = data.email
     // 刷新头像
     state.info.avatar = state.info.avatar + '?t=' + new Date().getTime()
+  },
+  setClientList (state, data) {
+    state.webList = data
   }
 }
 

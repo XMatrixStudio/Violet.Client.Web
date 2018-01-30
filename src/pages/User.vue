@@ -101,36 +101,25 @@ export default {
       try {
         await this.$https.put('/self/users/avatar', { avatar: this.imgDataUrl })
       } catch (error) {
-        console.log(error.response)
+        this.$service.errorHandle.call(this, error)
       }
     },
     async logout () {
       try {
-        await this.$https.delete('/self/users/login')
-        this.$store.commit('logout')
-        this.$router.push({ name: 'login' })
+        await this.$service.user.logout.call(this)
       } catch (error) {
-        if (error.response && error.response.status === 400) {
-          this.$Notice.error({
-            title: this.$store.getters.language.Notice.failed,
-            desc: this.$store.getters.language.Notice.error.unknown + error.response.data
-          })
-        } else {
-          this.$Notice.error({
-            title: this.$store.getters.language.Notice.failed,
-            desc: this.$store.getters.language.Notice.error.server
-          })
-        }
+        this.$service.errorHandle.call(this, error)
       }
     },
     async getInfo () {
       try {
-        if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
-          await this.$https.get('/self/users/login')
-        }
-        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo/?t=' + new Date().getTime())).data)
+        // if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
+        //   await this.$https.get('/self/users/login')
+        // }
+        await this.$service.user.getUserBaseInfo.call(this)
         this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
       } catch (error) {
+        console.log(error)
         this.$Notice.warning({ title: this.$store.getters.language.Notice.error.logTimeout })
         this.$store.commit('logout')
         this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })

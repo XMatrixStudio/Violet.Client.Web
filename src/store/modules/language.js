@@ -3,11 +3,11 @@ const state = {
   data: {
     zh: {
       Notice: {
-        failed: '发生了一些错误',
+        failed: '发生错误',
         error: {
           unknown: '未知错误，请联系管理员，错误参数：',
-          server: '无法连接到服务器，请稍后重试',
-          logTimeout: '登陆已过时，请重新登陆'
+          server: '无法连接到服务器，请稍后重试.',
+          logTimeout: '登陆已过时，请重新登陆.'
         }
       },
       User: {

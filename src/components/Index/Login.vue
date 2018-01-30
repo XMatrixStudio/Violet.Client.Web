@@ -79,18 +79,13 @@ export default {
           this.$router.push({ name: 'verify' })
         }
       } catch (error) {
-        if (error.response && error.response.status === 400) {
+        this.$service.errorHandle.call(this, error, message => {
           this.$Notice.error({
             title: '登陆失败',
             desc: '用户名或密码错误，请重新输入'
           })
           this.loginForm.password = ''
-        } else {
-          this.$Notice.error({
-            title: '登陆失败',
-            desc: '服务器发生错误，请稍后重试'
-          })
-        }
+        })
       }
     },
     handleSubmit (name) {

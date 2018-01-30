@@ -1,13 +1,13 @@
 <template>
   <div class="comp-user-authcatd">
-    <Avatar class="avatar" :src="web.avatar"></Avatar>
+    <Avatar class="avatar" :src="web.icon"></Avatar>
     <div class="info">
-      <a @click="goToWebsite" class="title" target="_blank">{{web.name}}</a>
+      <a :href="web.url" class="title" target="_blank">{{web.name}}</a>
       <p class="detail">{{web.detail}}</p>
-      <p>上次登录: 2018-1-22 23:22</p>
+      <!-- <p>上次登录: 2018-1-22 23:22</p> -->
     </div>
     <p class="control">
-      <Button type="info">授权登陆</Button>
+      <Button type="info" @click="auth">授权登陆</Button>
       <Button type="warning" @click="toggleShow">取消授权</Button>
     </p>
     <Modal v-model="modalAuth" width="360">
@@ -28,20 +28,33 @@
 <script>
 export default {
   props: ['web'],
-  data() {
+  data () {
     return {
       modalAuth: false
     }
   },
   methods: {
-    toggleShow() {
+    toggleShow () {
       this.modalAuth = true
     },
-    async deleteAuth() {
-      this.modalAuth = false
+    async auth () {
+      try {
+        await this.$service.user.auth.call(this, this.web.id)
+      } catch (error) {
+        this.$service.errorHandle.call(this, error)
+      }
     },
-    async goToWebsite() {
-      window.location.href = this.web.url
+    async deleteAuth () {
+      this.modalAuth = false
+      try {
+        await this.$service.user.deleteAuth.call(this, this.web.id)
+        await this.$service.user.getClientList.call(this)
+      } catch (error) {
+        this.$service.errorHandle.call(this, error)
+      }
+    },
+    async goToWebsite () {
+      window.location.href = this.web.home
     }
   }
 }

@@ -129,31 +129,26 @@ export default {
           showPhone: this.infoForm.show.phone,
           showLocation: this.infoForm.show.location
         }))
-        this.$store.commit('setUserInfo', (await this.$https.get('/self/users/baseInfo/?t=' + new Date().getTime())).data)
+        await this.$service.user.getUserBaseInfo.call(this)
         this.getInfo()
         this.$Notice.success({
           title: '修改成功'
         })
       } catch (error) {
-        if (error.response && error.response.status === 400) {
+        this.$service.errorHandle.call(this, error, message => {
           let content = ''
-          switch (error.response.data) {
+          switch (message) {
             case 'error_clientId':
               content = '无效的连接，将登陆到Violet用户系统'
               break
             default:
-              content = '未知错误， 错误参数' + error.response.data
+              content = '未知错误， 错误参数' + message
           }
           this.$Notice.error({
             title: '发生错误',
             desc: content
           })
-        } else {
-          this.$Notice.error({
-            title: '发生错误',
-            desc: '无法连接到服务器'
-          })
-        }
+        })
       }
     },
     handleSubmit (name) {
