@@ -38,9 +38,9 @@ export default {
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
-        let reg = /^[a-zA-Z][a-zA-Z0-9_]{5,18}$/
+        let reg = /^[a-zA-Z][a-zA-Z0-9_]{0,31}$/
         if (!reg.test(value)) {
-          callback(new Error('用户名以字母开头，包含字母数字下划线，6-18位'))
+          callback(new Error('用户名以字母开头，包含字母数字下划线，1-32位'))
         } else {
           callback()
         }
@@ -157,6 +157,9 @@ export default {
                   break
                 case 'exist_name':
                   content = '该用户名已存在'
+                  break
+                case 'reserved_name':
+                  content = '该用户名被系统保留'
                   break
                 default:
                   content = '未知错误，请联系管理员，错误参数' + message
