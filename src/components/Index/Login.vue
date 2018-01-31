@@ -106,6 +106,7 @@ export default {
           this.$router.push({ name: 'verify' })
         }
       } catch (error) {
+        this.$store.state.user.logged = false
         // 没有自动登陆
       }
     }

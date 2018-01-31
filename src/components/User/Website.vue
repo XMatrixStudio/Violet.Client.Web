@@ -3,6 +3,7 @@
     <vTitle>
       <i class="fa fa-globe fa-fw" aria-hidden="true"></i> 授权网站</vTitle>
     <vAuth v-for="(web, index) in webList" :key="index" :web="web"></vAuth>
+    <p v-if="webList.length === 0">无</p>
   </Card>
 </template>
 

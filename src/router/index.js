@@ -13,6 +13,7 @@ import Profile from '@/components/User/Profile'
 import Website from '@/components/User/Website'
 import Dev from '@/components/User/Dev'
 import InfoSet from '@/components/User/InfoSet'
+import Detail from '@/components/User/Detail'
 
 import Authorize from '@/pages/Authorize'
 
@@ -59,11 +60,16 @@ export default new Router({
       component: Website
     }, {
       path: 'dev',
+      name: 'dev',
       component: Dev
     }, {
       path: 'infoSet',
       name: 'InfoSet',
       component: InfoSet
+    }, {
+      path: 'detail',
+      name: 'detail',
+      component: Detail
     }]
   }]
 })

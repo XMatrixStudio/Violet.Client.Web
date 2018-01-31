@@ -8,7 +8,8 @@ const state = {
   logged: false,
   loginTime: '',
   info: {},
-  webList: []
+  webList: [],
+  devList: []
 }
 
 const getters = {}
@@ -48,6 +49,9 @@ const mutations = {
   },
   setClientList (state, data) {
     state.webList = data
+  },
+  setDevList (state, data) {
+    state.devList = data
   }
 }
 

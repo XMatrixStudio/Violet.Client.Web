@@ -24,7 +24,7 @@
         <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
         <span class="menu-text">{{language.website}}</span>
         </MenuItem>
-        <MenuItem name="dev">
+        <MenuItem v-if="userClass !== 0" name="dev">
         <i class="fa fa-terminal fa-fw" aria-hidden="true"></i>
         <span class="menu-text">{{language.dev}}</span>
         </MenuItem>
@@ -76,7 +76,8 @@ export default {
     ...mapState({
       avatar: state => state.user.info.avatar,
       gender: state => state.user.info.gender,
-      userName: state => state.user.name
+      userName: state => state.user.name,
+      userClass: state => state.user.userClass
     }),
     language() {
       return this.$store.getters.language.User
