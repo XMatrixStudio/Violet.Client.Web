@@ -1,7 +1,7 @@
 <template>
   <Card class="comp-user-dev" dis-hover>
     <vTitle>
-      <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 开发者设置</vTitle>
+      <i class="fa fa-terminal fa-fw" aria-hidden="true"></i> 开发者设置</vTitle>
     <vDev v-for="(web, index) in devList" :key="index" :web="web"></vDev>
     <p v-if="devList.length === 0">无</p>
     <div class="control">
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import vTitle from './vTitle'
-import vDev from './vDev'
+import vTitle from './part/vTitle'
+import vDev from './part/vDev'
 import { mapState } from 'vuex'
 export default {
   components: { vTitle, vDev },

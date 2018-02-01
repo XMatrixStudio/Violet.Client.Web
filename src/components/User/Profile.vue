@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import vTitle from './vTitle'
+import vTitle from './part/vTitle'
 import { mapState } from 'vuex'
 export default {
   components: { vTitle },

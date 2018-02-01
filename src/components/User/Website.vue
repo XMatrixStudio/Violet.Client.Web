@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import vTitle from './vTitle'
-import vAuth from './vAuth'
+import vTitle from './part/vTitle'
+import vAuth from './part/vAuth'
 import { mapState } from 'vuex'
 export default {
   components: { vTitle, vAuth },

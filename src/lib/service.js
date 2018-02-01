@@ -9,6 +9,7 @@ const service = {
     }
   },
   errorHandle: function (error, callback) {
+    console.error(error)
     if (error.response && error.response.status === 400) {
       if (callback) {
         callback(error.response.data)
@@ -20,7 +21,7 @@ const service = {
       }
     } else {
       this.$Notice.error({
-        title: this.$store.getters.language.Notice.failed + ' ' + error.response.status,
+        title: this.$store.getters.language.Notice.failed,
         desc: this.$store.getters.language.Notice.error.server
       })
     }

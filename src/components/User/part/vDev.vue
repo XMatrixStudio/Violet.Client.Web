@@ -1,5 +1,5 @@
 <template>
-  <div class="comp-user-authcatd">
+  <div class="comp-user-v-dev">
     <Avatar class="avatar" :src="web.icon"></Avatar>
     <div class="info">
       <a :href="web.url" class="title" target="_blank">{{web.name}}</a>
@@ -24,7 +24,7 @@ export default {
 
 
 <style lang="scss">
-.comp-user-authcatd {
+.comp-user-v-dev {
   display: block;
   max-width: 800px;
   border-bottom: 1px solid #e9eaec;
@@ -33,7 +33,7 @@ export default {
   .info {
     display: inline-block;
     vertical-align: middle;
-    width: 50%;
+    width: 60%;
     .title {
       font-size: 20px;
       &:hover {

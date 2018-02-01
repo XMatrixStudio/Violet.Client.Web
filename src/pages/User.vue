@@ -101,6 +101,7 @@ export default {
     async uploadAvatar () {
       try {
         await this.$https.put('/self/users/avatar', { avatar: this.imgDataUrl })
+        await this.getInfo()
       } catch (error) {
         this.$service.errorHandle.call(this, error)
       }

@@ -98,7 +98,7 @@ export default {
     vertical-align: middle;
     height: 60px;
     width: 60px;
-    margin-right: 20px;
+    margin-right: 10px;
   }
 }
 </style>
