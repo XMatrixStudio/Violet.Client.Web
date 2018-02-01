@@ -109,7 +109,7 @@ export default {
             await this.$service.user.setUserInfo.call(this, this.$qs.stringify({
               gender: this.infoForm.gender,
               location: this.infoForm.location,
-              birthDate: this.$util.formatDate(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
+              birthDate: this.infoForm.birthDate === '' ? '' : this.$util.formatDate(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
               phone: this.infoForm.phone,
               bio: this.infoForm.bio,
               url: this.infoForm.url,

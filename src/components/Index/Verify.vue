@@ -33,7 +33,7 @@ export default {
     }
     return {
       myTimer: false,
-      emailBtnText: this.formLanguage.getVCode,
+      emailBtnText: '',
       formCustom: {
         emailCode: ''
       },

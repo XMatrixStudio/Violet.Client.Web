@@ -45,8 +45,8 @@ export default {
         if (/^[0-9]*$/.test(value)) {
           callback(new Error(this.formLanguage.invalidPass))
         }
-        if (this.registerForm.passwordCheck !== '') {
-          this.$refs.registerForm.validateField('passwordCheck')
+        if (this.resetForm.passwordCheck !== '') {
+          this.$refs.resetForm.validateField('passwordCheck')
         }
         callback()
       }
@@ -54,7 +54,7 @@ export default {
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
         callback(new Error(this.formLanguage.againPass))
-      } else if (value !== this.registerForm.password) {
+      } else if (value !== this.resetForm.password) {
         callback(new Error(this.formLanguage.errorPass))
       } else {
         callback()
