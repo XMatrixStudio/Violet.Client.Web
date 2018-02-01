@@ -2,45 +2,53 @@
   <div class="violet-register">
     <Card class="violet-register-card">
       <p class="violet-register-card-title">
-        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>使用邮箱注册</p>
+        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>{{language.title}}</p>
       <Form class="violet-register-card-form" ref="registerForm" :model="registerForm" :rules="ruleCustom" :label-width="80">
-        <FormItem label="邮箱" prop="email">
+        <FormItem :label="formLanguage.email" prop="email">
           <Input type="text" v-model="registerForm.email" number></Input>
         </FormItem>
-        <FormItem label="用户名" prop="name">
+        <FormItem :label="formLanguage.userName" prop="name">
           <Input type="text" v-model="registerForm.name" number></Input>
         </FormItem>
-        <FormItem label="密码" prop="passwd">
-          <Input type="password" v-model="registerForm.passwd"></Input>
+        <FormItem :label="formLanguage.password" prop="password">
+          <Input type="password" v-model="registerForm.password"></Input>
         </FormItem>
-        <FormItem label="确认密码" prop="passwdCheck">
-          <Input type="password" v-model="registerForm.passwdCheck"></Input>
+        <FormItem :label="formLanguage.passwordCheck" prop="passwordCheck">
+          <Input type="password" v-model="registerForm.passwordCheck"></Input>
         </FormItem>
-        <FormItem label="验证码" prop="vCode">
+        <FormItem :label="formLanguage.vCode" prop="vCode">
           <Input type="text" v-model="registerForm.vCode" class="violet-register-card-form-vCode"></Input>
-          <img @click="getVCode" :src="registerForm.vCodeImg" alt="验证码">
+          <img @click="getVCode" :src="registerForm.vCodeImg" :alt="formLanguage.vCode">
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('registerForm')" class="violet-register-card-form-button">注册</Button>
+          <Button type="primary" @click="handleSubmit('registerForm')" class="violet-register-card-form-button">{{language.button}}</Button>
         </FormItem>
       </Form>
     </Card>
-    <p class="violet-register-login">已有账号？
-      <router-link to="/">立即登陆</router-link>
+    <p class="violet-register-login">{{language.hadAccount}}
+      <router-link to="/">{{language.login}}</router-link>
     </p>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    language() {
+      return this.$store.getters.language.Register
+    },
+    formLanguage() {
+      return this.$store.getters.language.Form
+    }
+  },
   data () {
     const validateName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入用户名'))
+        callback(new Error(this.formLanguage.nullName))
       } else {
         let reg = /^[a-zA-Z][a-zA-Z0-9_]{0,31}$/
         if (!reg.test(value)) {
-          callback(new Error('用户名以字母开头，包含字母数字下划线，1-32位'))
+          callback(new Error(this.formLanguage.invalidName))
         } else {
           callback()
         }
@@ -48,48 +56,45 @@ export default {
     }
     const validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error(this.formLanguage.nullPass))
       } else {
         if (value.length < 6) {
-          callback(new Error('密码不能小于6位'))
+          callback(new Error(this.formLanguage.lessPass))
         }
         if (value.length > 128) {
-          callback(new Error('密码不能大于128位'))
+          callback(new Error(this.formLanguage.largePass))
         }
-        let regExp = /^[0-9]*$/
-        if (regExp.test(value)) {
-          callback(new Error('密码不允许纯数字'))
+        if (/^[0-9]*$/.test(value)) {
+          callback(new Error(this.formLanguage.invalidPass))
         }
-        if (this.registerForm.passwdCheck !== '') {
-          // 对第二个密码框单独验证
-          this.$refs.registerForm.validateField('passwdCheck')
+        if (this.registerForm.passwordCheck !== '') {
+          this.$refs.registerForm.validateField('passwordCheck')
         }
         callback()
       }
     }
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.registerForm.passwd) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error(this.formLanguage.againPass))
+      } else if (value !== this.registerForm.password) {
+        callback(new Error(this.formLanguage.errorPass))
       } else {
         callback()
       }
     }
     const validateemail = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('邮箱不能为空'))
+        return callback(new Error(this.formLanguage.nullEmail))
       }
-      let reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/
-      if (!reg.test(value)) {
-        callback(new Error('请输入有效的邮箱'))
+      if (!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(value)) {
+        callback(new Error(this.formLanguage.invalidEmail))
       } else {
         callback()
       }
     }
     const validatevCode = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('验证码不能为空'))
+        return callback(new Error(this.formLanguage.nullVCode))
       } else {
         callback()
       }
@@ -97,8 +102,8 @@ export default {
     return {
       registerForm: {
         name: '',
-        passwd: '',
-        passwdCheck: '',
+        password: '',
+        passwordCheck: '',
         email: '',
         vCode: '',
         vCodeImg: ''
@@ -107,10 +112,10 @@ export default {
         name: [
           { validator: validateName, trigger: 'blur' }
         ],
-        passwd: [
+        password: [
           { validator: validatePass, trigger: 'blur' }
         ],
-        passwdCheck: [
+        passwordCheck: [
           { validator: validatePassCheck, trigger: 'blur' }
         ],
         email: [
@@ -127,15 +132,14 @@ export default {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
           try {
-            console.log(this.$crypto)
-            await this.$https.post('/self/users/register', this.$qs.stringify({
+            await this.$service.user.register.call(this, this.$qs.stringify({
               email: this.registerForm.email,
               name: this.registerForm.name,
-              userPass: this.$crypto.hash(this.registerForm.passwd),
+              userPass: this.$util.hash(this.registerForm.password),
               vCode: this.registerForm.vCode
             }))
             this.$Notice.success({
-              title: '注册成功'
+              title: this.language.success
             })
             this.$router.push({ name: 'login' })
           } catch (error) {
@@ -147,25 +151,25 @@ export default {
                 case 'invalid_email':
                 case 'invalid_name':
                 case 'invalid_password':
-                  content = '无法通过验证'
+                  content = this.formLanguage.invalid
                   break
                 case 'error_code':
-                  content = '验证码错误'
+                  content = this.formLanguage.errorVCode
                   break
                 case 'exist_email':
-                  content = '该邮箱已注册，请尝试登陆'
+                  content = this.formLanguage.existEmail
                   break
                 case 'exist_name':
-                  content = '该用户名已存在'
+                  content = this.formLanguage.existName
                   break
                 case 'reserved_name':
-                  content = '该用户名被系统保留'
+                  content = this.formLanguage.reservedName
                   break
                 default:
-                  content = '未知错误，请联系管理员，错误参数' + message
+                  content = this.formLanguage.otherError + message
               }
               this.$Notice.error({
-                title: '注册失败',
+                title: this.language.error,
                 desc: content
               })
             })
@@ -176,9 +180,9 @@ export default {
     async getVCode () {
       this.registerForm.vCode = ''
       try {
-        this.registerForm.vCodeImg = (await this.$https.get('/self/util/vCode')).data
+        this.registerForm.vCodeImg = await this.$service.util.getVCode.call(this)
       } catch (error) {
-        this.$Message.error('获取验证码失败, 请稍后重试')
+        this.$Message.error(this.formanguage.failVCode)
       }
     }
   },

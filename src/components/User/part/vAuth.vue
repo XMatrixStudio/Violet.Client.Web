@@ -4,39 +4,23 @@
     <div class="info">
       <a :href="web.url" class="title" target="_blank">{{web.name}}</a>
       <p class="detail">{{web.detail}}</p>
-      <!-- <p>上次登录: 2018-1-22 23:22</p> -->
     </div>
     <p class="control">
-      <Button type="info" @click="auth">授权登陆</Button>
-      <Button type="warning" @click="toggleShow">取消授权</Button>
+      <Button type="info" @click="auth">{{language.authLogin}}</Button>
+      <Button type="warning" @click="deleteAuth">{{language.cancelAuth}}</Button>
     </p>
-    <Modal v-model="modalAuth" width="360">
-      <p slot="header" style="color:#f60;text-align:center">
-        <Icon type="information-circled"></Icon>
-        <span>取消授权</span>
-      </p>
-      <div style="text-align:center">
-        <p>是否取消对 {{web.name}} 的授权？</p>
-      </div>
-      <div slot="footer">
-        <Button type="error" size="large" long @click="deleteAuth">确认</Button>
-      </div>
-    </Modal>
   </div>
 </template>
 
 <script>
 export default {
   props: ['web'],
-  data () {
-    return {
-      modalAuth: false
+  computed: {
+    language () {
+      return this.$store.getters.language.AuthList
     }
   },
   methods: {
-    toggleShow () {
-      this.modalAuth = true
-    },
     async auth () {
       try {
         await this.$service.user.auth.call(this, this.web.id)
@@ -45,13 +29,20 @@ export default {
       }
     },
     async deleteAuth () {
-      this.modalAuth = false
-      try {
-        await this.$service.user.deleteAuth.call(this, this.web.id)
-        await this.$service.user.getClientList.call(this)
-      } catch (error) {
-        this.$service.errorHandle.call(this, error)
-      }
+      this.$Modal.confirm({
+        title: this.language.confirmTitle,
+        content: `<p>${this.language.confirm}</p><p><b>${this.web.name}</b></p>`,
+        okText: this.language.sure,
+        cancelText: this.language.cancel,
+        onOk: async () => {
+          try {
+            await this.$service.user.deleteAuth.call(this, this.web.id)
+            await this.$service.user.getClientList.call(this)
+          } catch (error) {
+            this.$service.errorHandle.call(this, error)
+          }
+        }
+      })
     },
     async goToWebsite () {
       window.location.href = this.web.home

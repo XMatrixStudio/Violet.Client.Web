@@ -6,7 +6,7 @@
       <p class="detail">{{web.detail}}</p>
     </div>
     <p class="control">
-      <Button type="info" @click="detail">查看详情</Button>
+      <Button type="info" @click="detail">{{language.detail}}</Button>
     </p>
   </div>
 </template>
@@ -14,6 +14,11 @@
 <script>
 export default {
   props: ['web'],
+  computed: {
+    language () {
+      return this.$store.getters.language.Dev
+    }
+  },
   methods: {
     async detail () {
       this.$router.push({name: 'detail', query: {clientId: this.web.id}})

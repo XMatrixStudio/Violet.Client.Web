@@ -4,13 +4,13 @@
       <p class="violet-auth-card-avatar">
         <img :src="avatar" alt="Avatar" />
       </p>
-      <p>Hi, {{userName}}</p>
-      <p>是否授权登陆到{{clientName}}</p>
-      <Button type="success" size="large" @click="authClient">授权</Button>
-      <Button type="warning" size="large">取消</Button>
+      <p>{{language.Hi}}, {{userName}}</p>
+      <p>{{language.confirm}} {{clientName}}</p>
+      <Button type="success" size="large" @click="authClient">{{language.auth}}</Button>
+      <Button type="warning" size="large">{{language.cancel}}</Button>
     </Card>
     <p class="violet-auth-login">
-      <a @click="logout">切换账号</a>
+      <a @click="logout">{{language.change}}</a>
     </p>
   </div>
 </template>
@@ -18,39 +18,34 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  data () {
-    return {
+  computed: {
+    ...mapState({
+      userName: state => state.user.name,
+      clientName: state => state.client.name,
+      clientId: state => state.client.id,
+      clientState: state => state.client.state,
+      redirectUri: state => state.client.redirectUri,
+      avatar: state => state.user.info.avatar
+    }),
+    language() {
+      return this.$store.getters.language.Auth
     }
   },
-  computed: mapState({
-    userName: state => state.user.name,
-    clientName: state => state.client.name,
-    clientId: state => state.client.id,
-    clientState: state => state.client.state,
-    redirectUri: state => state.client.redirectUri,
-    avatar: state => state.user.info.avatar
-  }),
   methods: {
     async logout () {
       try {
-        await this.$https.delete('/self/users/login')
-        this.$store.commit('logout')
-        this.$router.push({ name: 'login' })
+        await this.$service.user.logout.call(this)
       } catch (error) {
         this.$service.errorHandle.call(this, error)
       }
     },
     async getAuthState () {
       try {
-        let res = await this.$https.get('/self/auth/' + this.clientId)
-        if (res.data.auth) {
+        if ((await this.$service.user.getAuthState.call(this, this.clientId)).auth) {
           this.authClient()
         }
       } catch (error) {
-        this.$Notice.warning({
-          title: '发生了一点错误',
-          desc: '错误参数' + error.response.data
-        })
+        this.$service.errorHandle.call(this, error)
       }
     },
     async authClient () {
@@ -58,17 +53,7 @@ export default {
         try {
           this.$service.user.auth.call(this, this.web.id, this.clientState, this.redirectUri)
         } catch (error) {
-          if (error.response && error.response.status === 400) {
-            this.$Notice.error({
-              title: '授权失败',
-              desc: '未知错误，请联系管理员，错误参数' + error.response.data
-            })
-          } else {
-            this.$Notice.error({
-              title: '授权失败',
-              desc: '无法连接到服务器，请稍后重试'
-            })
-          }
+          this.$service.errorHandle.call(this, error)
         }
       } else {
         this.$router.push({ path: '/' + this.userName + '/' }) // 跳转到用户中心
@@ -77,11 +62,11 @@ export default {
   },
   mounted () {
     if (this.$store.state.user.logged) {
-      // 自动授权 - 开启之后逻辑比较怪，先关闭着
+      // 自动授权
       if (this.clientId) {
-        // this.getAuthState() // 获取授权状态
-      // } else if (this.$store.state.client.redirectUri) { // 暂时不可控，潜在bug
-        // this.$router.push({ path: this.$store.state.client.redirectUri })
+        this.getAuthState() // 获取授权状态
+        // } else if (this.$store.state.client.redirectUri) { // 暂时不可控，潜在bug
+        //   this.$router.push({ path: this.$store.state.client.redirectUri })
       } else {
         this.$router.push({ path: `/${this.userName}/` }) // 跳转到用户中心
       }

@@ -4,11 +4,16 @@
 
 <script>
 export default {
+  computed: {
+    language () {
+      return this.$store.getters.language.Index
+    }
+  },
   methods: {
     gotoViolet () {
       this.$store.commit('setClientInfo', {
-        name: 'Violet User System',
-        detail: 'Violet 中央授权系统'
+        name: this.language.name,
+        detail: this.language.detail
       })
       this.$store.commit('setUrlInfo', { clientId: false })
       this.$router.push({ name: 'login' })
@@ -26,7 +31,7 @@ export default {
         this.$router.push({ name: 'login' })
       } else {
         this.$Notice.error({
-          title: '参数错误'
+          title: this.language.invalidQuery
         })
         this.gotoViolet()
       }

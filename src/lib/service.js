@@ -1,10 +1,13 @@
 const userService = require('./modules/user')
 const devService = require('./modules/dev')
+const utilService = require('./modules/util')
+
 const service = {
   install: function (Vue, options) {
     Vue.prototype.$service = {
       user: userService.default,
       dev: devService.default,
+      util: utilService.default,
       errorHandle: this.errorHandle
     }
   },

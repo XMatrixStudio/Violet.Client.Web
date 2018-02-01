@@ -1,12 +1,12 @@
 <template>
   <Card class="comp-user-dev" dis-hover>
     <vTitle>
-      <i class="fa fa-terminal fa-fw" aria-hidden="true"></i> 开发者设置</vTitle>
+      <i class="fa fa-terminal fa-fw" aria-hidden="true"></i> {{language.title}}</vTitle>
     <vDev v-for="(web, index) in devList" :key="index" :web="web"></vDev>
-    <p v-if="devList.length === 0">无</p>
+    <p v-if="devList.length === 0">{{language.none}}</p>
     <div class="control">
       <Button type="success" @click="addClient">
-        <i class="fa fa-plus fa-color-white fa-fw" aria-hidden="true"></i> 增加网站</Button>
+        <i class="fa fa-plus fa-color-white fa-fw" aria-hidden="true"></i> {{language.add}}</Button>
     </div>
   </Card>
 </template>
@@ -18,6 +18,9 @@ import { mapState } from 'vuex'
 export default {
   components: { vTitle, vDev },
   computed: {
+    language () {
+      return this.$store.getters.language.Dev
+    },
     ...mapState({
       userClass: state => state.user.userClass,
       devList: state => state.user.devList
@@ -30,8 +33,10 @@ export default {
     async addClient () {
       if (this.devList.length < this.userClass) {
         this.$Modal.confirm({
-          title: '新增应用',
-          content: `当前账号应用${this.devList.length}/${this.userClass}, 是否新增应用`,
+          title: this.language.add,
+          content: `${this.language.content}: ${this.devList.length}/${this.userClass}, ${this.language.content2}`,
+          okText: this.language.sure,
+          cancelText: this.language.cancel,
           onOk: async () => {
             await this.$service.dev.addClient.call(this)
             await this.$service.dev.getDevList.call(this)
@@ -41,8 +46,9 @@ export default {
         })
       } else {
         this.$Modal.info({
-          title: '新增失败',
-          content: `应用数量已达当前账户上限${this.userClass}`
+          okText: this.language.sure,
+          title: this.language.fail,
+          content: `${this.language.failContent}: ${this.userClass}`
         })
       }
     }

@@ -2,28 +2,28 @@
   <div class="violet-reset">
     <Card class="violet-reset-card">
       <p class="violet-reset-card-title">
-        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>找回密码</p>
+        <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>{{language.title}}</p>
       <Form class="violet-reset-card-form" ref="resetForm" :model="resetForm" :rules="ruleCustom" :label-width="80">
-        <FormItem label="邮箱" prop="email">
+        <FormItem :label="formLanguage.email" prop="email">
           <Input type="text" v-model="resetForm.email" number></Input>
         </FormItem>
-        <FormItem label="邮箱验证码" prop="emailCode">
+        <FormItem :label="formLanguage.emailCode" prop="emailCode">
           <Input type="text" v-model="resetForm.emailCode" class="violet-reset-card-form-vCode"></Input>
           <Button type="primary" class="violet-reset-card-form-get-code" @click="getEmailCode" :disabled='myTimer !== false'>{{emailBtnText}}</Button>
         </FormItem>
-        <FormItem label="密码" prop="passwd">
+        <FormItem :label="formLanguage.password" prop="passwd">
           <Input type="password" v-model="resetForm.passwd"></Input>
         </FormItem>
-        <FormItem label="确认密码" prop="passwdCheck">
+        <FormItem :label="formLanguage.passwordCheck" prop="passwdCheck">
           <Input type="password" v-model="resetForm.passwdCheck"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('resetForm')" class="violet-reset-card-form-button">重置密码</Button>
+          <Button type="primary" @click="handleSubmit('resetForm')" class="violet-reset-card-form-button">{{language.button}}</Button>
         </FormItem>
       </Form>
     </Card>
-    <p class="violet-reset-login">记起来了？
-      <router-link to="/">立即登陆</router-link>
+    <p class="violet-reset-login">{{language.remember}}
+      <router-link to="/">{{language.login}}</router-link>
     </p>
   </div>
 </template>
@@ -34,46 +34,45 @@ export default {
   data () {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error(this.formLanguage.nullPass))
       } else {
         if (value.length < 6) {
-          callback(new Error('密码不能小于6位'))
+          callback(new Error(this.formLanguage.lessPass))
         }
         if (value.length > 128) {
-          callback(new Error('密码不能大于128位'))
+          callback(new Error(this.formLanguage.largePass))
         }
-        if (/^[0-9]$/.test(value)) {
-          callback(new Error('密码不允许纯数字'))
+        if (/^[0-9]*$/.test(value)) {
+          callback(new Error(this.formLanguage.invalidPass))
         }
-        if (this.resetForm.passwdCheck !== '') {
-          // 对第二个密码框单独验证
-          this.$refs.resetForm.validateField('passwdCheck')
+        if (this.registerForm.passwordCheck !== '') {
+          this.$refs.registerForm.validateField('passwordCheck')
         }
         callback()
       }
     }
     const validatePassCheck = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.resetForm.passwd) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error(this.formLanguage.againPass))
+      } else if (value !== this.registerForm.password) {
+        callback(new Error(this.formLanguage.errorPass))
       } else {
         callback()
       }
     }
     const validateemail = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('邮箱不能为空'))
+        return callback(new Error(this.formLanguage.nullEmail))
       }
       if (!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(value)) {
-        callback(new Error('请输入有效的邮箱'))
+        callback(new Error(this.formLanguage.invalidEmail))
       } else {
         callback()
       }
     }
     const validatevCode = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('验证码不能为空'))
+        return callback(new Error(this.formLanguage.nullVCode))
       } else {
         callback()
       }
@@ -85,7 +84,7 @@ export default {
         email: '',
         emailCode: ''
       },
-      emailBtnText: '获取验证码',
+      emailBtnText: '',
       myTimer: false,
       ruleCustom: {
         passwd: [
@@ -103,10 +102,21 @@ export default {
       }
     }
   },
-  computed: mapState({
-    emailTime: state => state.user.emailTime
-  }),
+  computed: {
+    language () {
+      return this.$store.getters.language.Reset
+    },
+    formLanguage () {
+      return this.$store.getters.language.Form
+    },
+    ...mapState({
+      emailTime: state => state.user.emailTime
+    })
+  },
   methods: {
+    setLanguage() {
+      this.emailBtnText = this.formLanguage.getVCode
+    },
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
@@ -116,13 +126,13 @@ export default {
     },
     async resetPass () {
       try {
-        await this.$https.post('/self/users/password', this.$qs.stringify({
+        await this.$service.user.resetPass.call(this, this.$qs.stringify({
           email: this.resetForm.email,
           vCode: this.resetForm.emailCode,
           password: this.$crypto.hash(this.resetForm.passwd)
         }))
         this.$Notice.success({
-          title: '修改密码成功，请重新登陆'
+          title: this.language.success
         })
         this.$router.push({ name: 'login' })
       } catch (error) {
@@ -130,22 +140,22 @@ export default {
           let content = ''
           switch (message) {
             case 'invalid_email':
-              content = '邮箱不存在'
+              content = this.formLanguage.noExistEmail
               break
             case 'invalid_password':
-              content = '无效密码'
+              content = this.formLanguage.invalidPassword
               break
             case 'timeout_emailCode':
-              content = '邮箱验证码已失效，请重新获取'
+              content = this.formLanguage.timeoutEmailCode
               break
             case 'error_emailCode':
-              content = '邮箱验证码错误'
+              content = this.formLanguage.errorEmailCode
               break
             default:
-              content = '未知错误，请联系管理员，错误参数' + message
+              content = this.formLanguage.otherError + message
           }
           this.$Notice.error({
-            title: '找回密码失败',
+            title: this.language.fail,
             desc: content
           })
         })
@@ -153,24 +163,20 @@ export default {
     },
     setTimeBtn () {
       if (this.emailTime === false || (new Date()).getTime() - (new Date(this.emailTime)).getTime() >= 60 * 1000) {
-        this.emailBtnText = '获取验证码'
+        this.emailBtnText = this.formLanguage.getVCode
         this.myTimer = false
       } else {
-        this.emailBtnText = '重新获取(' + Math.ceil((90 * 1000 - (new Date()).getTime() + (new Date(this.emailTime)).getTime()) / 1000) + 's)'
+        this.emailBtnText = this.formLanguage.againGetVCode + '(' + Math.ceil((90 * 1000 - (new Date()).getTime() + (new Date(this.emailTime)).getTime()) / 1000) + 's)'
         this.myTimer = setTimeout(this.setTimeBtn, 1000)
       }
     },
     async getEmailCode () {
       try {
-        if (!this.resetForm.email) throw (new Error('邮箱不能为空'))
+        if (!this.resetForm.email) throw (new Error(this.formLanguage.nullEmail))
         if (!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(this.resetForm.email)) throw (new Error('请输入有效的邮箱'))
-
-        await this.$https.post('/self/util/EmailCode', this.$qs.stringify({
-          email: this.resetForm.email
-        }))
-        this.$store.commit('setEmailTime', new Date())
+        await this.$service.util.getEmailCode.call(this, this.resetForm.email)
         this.$Notice.success({
-          title: '验证码已发送到你的邮箱',
+          title: this.formLanguage.sentEmailCode,
           desc: this.resetForm.email
         })
         clearTimeout(this.myTimer)
@@ -180,21 +186,21 @@ export default {
           let content = ''
           switch (error.response.data) {
             case 'invalid_email':
-              content = '邮箱不存在'
+              content = this.formLanguage.noExistEmail
               break
             case 'limit_time':
-              content = '你的请求太频繁了，请过一会儿再请求'
+              content = this.formLanguage.limitTime
               break
             default:
-              content = '未知错误，请联系管理员，错误参数' + error.response.data
+              content = this.formLanguage.otherError + error.response.data
           }
           this.$Notice.error({
-            title: '获取验证码失败',
+            title: this.formLanguage.failVCode,
             desc: content
           })
         } else {
           this.$Notice.error({
-            title: '获取验证码失败',
+            title: this.formLanguage.failVCode,
             desc: error.message
           })
         }
@@ -202,6 +208,7 @@ export default {
     }
   },
   mounted () {
+    this.setLanguage()
     if (this.$store.state.user.logged) {
       this.$router.push({ name: 'login' })
     } else {

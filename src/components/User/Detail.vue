@@ -1,42 +1,43 @@
 <template>
   <Card class="comp-user-detail" dis-hover>
     <vTitle>
-      <i class="fa fa-info fa-fw" aria-hidden="true"></i> 应用详情</vTitle>
+      <i class="fa fa-info fa-fw" aria-hidden="true"></i> {{language.title}}</vTitle>
     <div class="left-box">
       <div>
         <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
-        <span>ID：{{client._id}}</span>
+        <span>{{language.id}}：{{client._id}}</span>
       </div>
       <div>
         <i class="fa fa-key fa-fw" aria-hidden="true"></i>
-        <span>KEY（建议定时更改保证安全）：
-          <a @click="changeKey">更换</a>
+        <span>{{language.key}}（{{language.keyHelp}}）：
+          <a @click="changeKey">{{language.change}}</a>
         </span>
         <p>{{client.key}}</p>
       </div>
       <Form ref="client" :model="client" :rules="ruleValidate" :label-width="80">
-        <FormItem label="应用名称" prop="name">
-          <Input v-model="client.name" placeholder="Enter your name"></Input>
+        <FormItem :label="language.name" prop="name">
+          <Input v-model="client.name" :placeholder="language.nameHelp"></Input>
         </FormItem>
-        <FormItem label="应用主页" prop="url">
-          <Input v-model="client.url" placeholder="Enter your home"></Input>
+        <FormItem :label="language.url" prop="url">
+          <Input v-model="client.url" :placeholder="language.urlHelp"></Input>
         </FormItem>
-        <FormItem label="回调地址" prop="callBack">
-          <Input v-model="client.callBack" placeholder="Enter your callback"></Input>
+        <FormItem :label="language.callBack" prop="callBack">
+          <Input v-model="client.callBack" :placeholder="language.callBackHelp"></Input>
         </FormItem>
-        <FormItem label="应用简介" prop="detail">
-          <Input v-model="client.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+        <FormItem :label="language.detail" prop="detail">
+          <Input v-model="client.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="language.detailHelp"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('client')">修改信息</Button>
-          <Button type="error" @click="deleteClient">删除应用</Button>
+          <Button type="primary" @click="handleSubmit('client')">{{language.submit}}</Button>
+          <Button type="error" @click="deleteClient">{{language.delete}}</Button>
         </FormItem>
       </Form>
     </div>
     <div class="right-box">
+      <a target="_blank" href="https://oauth.xmatrix.studio/doc/?url=v2.yml">{{language.help}}</a>
       <div class="client-icon">
-        <img @click="toggleShow" :src="client.icon" alt="Avatar" title="更改图标" />
-        <my-upload field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></my-upload>
+        <img @click="toggleShow" :src="client.icon" alt="Avatar" :title="language.icon" />
+        <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
       </div>
     </div>
   </Card>
@@ -47,6 +48,14 @@ import vTitle from './part/vTitle'
 import myUpload from 'vue-image-crop-upload'
 export default {
   components: { vTitle, myUpload },
+  computed: {
+    language () {
+      return this.$store.getters.language.DevDetail
+    },
+    uploadLanguage () {
+      return this.$store.getters.language.Upload
+    }
+  },
   data () {
     return {
       clientId: '',
@@ -54,34 +63,46 @@ export default {
       show: false,
       ruleValidate: {
         name: [
-          { required: true, message: '应用名不能为空', trigger: 'blur' },
-          { type: 'string', min: 1, max: 64, message: '长度需要在1 - 64之间', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' },
+          { type: 'string', min: 1, max: 64, message: '', trigger: 'blur' }
         ],
         url: [
-          { required: true, message: '主页不能为空', trigger: 'blur' },
-          { type: 'string', min: 6, max: 512, message: '长度需要在6 - 512之间', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' },
+          { type: 'string', min: 6, max: 512, message: '', trigger: 'blur' }
         ],
         callBack: [
-          { required: true, message: '回调地址不能为空', trigger: 'blur' },
-          { type: 'string', min: 6, max: 512, message: '长度需要在6 - 512之间', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' },
+          { type: 'string', min: 6, max: 512, message: '', trigger: 'blur' }
         ],
         detail: [
-          { required: true, message: '应用简介不能为空', trigger: 'blur' },
-          { type: 'string', min: 6, max: 512, message: '长度需要在6 - 1024之间', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' },
+          { type: 'string', min: 6, max: 512, message: '', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
+    setLanguage () {
+      this.ruleValidate.name[0].message = this.language.nullName
+      this.ruleValidate.url[0].message = this.language.nullUrl
+      this.ruleValidate.callBack[0].message = this.language.nullCallBack
+      this.ruleValidate.detail[0].message = this.language.nullDetail
+      this.ruleValidate.name[1].message = this.language.lengthLimit.replace('%1d', 1).replace('%2d', 64)
+      this.ruleValidate.url[1].message = this.language.lengthLimit.replace('%1d', 6).replace('%2d', 512)
+      this.ruleValidate.callBack[1].message = this.language.lengthLimit.replace('%1d', 6).replace('%2d', 512)
+      this.ruleValidate.detail[1].message = this.language.lengthLimit.replace('%1d', 6).replace('%2d', 1024)
+    },
     async changeKey () {
       this.$Modal.confirm({
-        title: '更改KEY确认',
-        content: '<p>更改KEY之后会导致当前服务立刻失效</p><p>需要重新部署服务才能使用服务</p>',
+        title: this.language.keyTitle,
+        content: `<p>${this.language.keyContent1}</p><p>${this.language.keyContent2}</p>`,
+        okText: this.language.sure,
+        cancelText: this.language.cancel,
         onOk: async () => {
           try {
             await this.$service.dev.changeKey.call(this, this.clientId)
             this.$Notice.success({
-              title: '修改KEY成功'
+              title: this.language.keySuccess
             })
             await this.getInfo()
           } catch (error) {
@@ -99,7 +120,7 @@ export default {
       } catch (error) {
         this.$service.errorHandle.call(this, error, message => {
           this.$Notice.warning({
-            title: '无效的应用ID'
+            title: this.language.invalidId
           })
           this.$router.push({ name: 'dev' })
         })
@@ -112,7 +133,7 @@ export default {
             await this.$service.dev.setClient.call(this, this.clientId, this.client)
             await this.getInfo()
             this.$Notice.success({
-              title: '修改信息成功'
+              title: this.language.setSuccess
             })
           } catch (error) {
             this.$service.errorHandle.call(this, error)
@@ -125,13 +146,15 @@ export default {
     },
     async deleteClient () {
       this.$Modal.confirm({
-        title: '删除应用确认',
-        content: '<p>是否删除应用</p><p><b>' + this.client.name + '</b></p><p>删除之后将不可恢复</p>',
+        title: this.language.deleteTitle,
+        content: `<p>${this.language.deleteContent1}</p><p><b>${this.client.name}</b></p><p>${this.language.deleteContent2}</p>`,
+        okText: this.language.sure,
+        cancelText: this.language.cancel,
         onOk: async () => {
           try {
             await this.$service.dev.deleteClient.call(this, this.clientId)
             this.$Notice.warning({
-              title: '删除应用成功'
+              title: this.language.deleteSuccess
             })
             this.$router.push({ name: 'dev' })
           } catch (error) {
@@ -146,7 +169,7 @@ export default {
         await this.$service.dev.setIcon.call(this, this.clientId, imgDataUrl)
         await this.getInfo()
         this.$Notice.success({
-          title: '修改图标成功'
+          title: this.language.iconSuccess
         })
       } catch (error) {
         this.$service.errorHandle.call(this, error)
@@ -158,7 +181,7 @@ export default {
       await this.getInfo()
     } else {
       this.$Notice.warning({
-        title: '参数错误'
+        title: this.language.invalidQuery
       })
       this.$router.push({ name: 'dev' })
     }
@@ -186,6 +209,7 @@ export default {
     text-align: right;
     width: 20%;
     .client-icon {
+      margin-top: 50px;
       text-align: center;
       > img {
         &:hover {
@@ -196,8 +220,8 @@ export default {
         margin-top: 30px;
         margin-bottom: 10px;
         border-radius: 10px;
-        height: 70px;
-        width: 70px;
+        height: 100px;
+        width: 100px;
       }
     }
   }

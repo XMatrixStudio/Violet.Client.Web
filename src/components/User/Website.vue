@@ -1,9 +1,9 @@
 <template>
   <Card class="comp-user-web" dis-hover>
     <vTitle>
-      <i class="fa fa-globe fa-fw" aria-hidden="true"></i> 授权网站</vTitle>
+      <i class="fa fa-globe fa-fw" aria-hidden="true"></i> {{language.title}}</vTitle>
     <vAuth v-for="(web, index) in webList" :key="index" :web="web"></vAuth>
-    <p v-if="webList.length === 0">无</p>
+    <p v-if="webList.length === 0">{{language.none}}</p>
   </Card>
 </template>
 
@@ -13,17 +13,16 @@ import vAuth from './part/vAuth'
 import { mapState } from 'vuex'
 export default {
   components: { vTitle, vAuth },
-  data () {
-    return {
-    }
-  },
   computed: {
+    language() {
+      return this.$store.getters.language.AuthList
+    },
     ...mapState({
       webList: state => state.user.webList
     })
   },
   async mounted() {
-    await this.$service.user.getClientList.call(this)
+    await this.$service.user.getAuthList.call(this)
   }
 }
 </script>

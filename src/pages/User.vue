@@ -5,7 +5,7 @@
       <Menu ref="leftMenu" class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
         <div class="user-avatar" :title="language.avatar">
           <img @click="toggleShow" class="hide-elm" :src="avatar" alt="Avatar" />
-          <my-upload :langExt="language.upload" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></my-upload>
+          <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
         </div>
         <div class="user-name hide-elm">{{userName}}
           <i v-if="gender === 2" class="fa fa-venus i-pink" aria-hidden="true"></i>
@@ -57,9 +57,7 @@
 import { mapState } from 'vuex'
 import myUpload from 'vue-image-crop-upload'
 export default {
-  components: {
-    'my-upload': myUpload
-  },
+  components: { myUpload },
   data () {
     return {
       show: false,
@@ -67,7 +65,6 @@ export default {
       modalLogout: false,
       actionMenu: '',
       theme: 'light',
-      name: this.$route.params.username,
       colLeft: 4,
       colRight: 17
     }
@@ -79,8 +76,11 @@ export default {
       userName: state => state.user.name,
       userClass: state => state.user.userClass
     }),
-    language() {
+    language () {
       return this.$store.getters.language.User
+    },
+    uploadLanguage () {
+      return this.$store.getters.language.Upload
     }
   },
   methods: {
@@ -115,11 +115,8 @@ export default {
     },
     async getInfo () {
       try {
-        // if (new Date() - new Date(this.$store.state.user.loginTime) > 60 * 60 * 1000) {
-        //   await this.$https.get('/self/users/login')
-        // }
         await this.$service.user.getUserBaseInfo.call(this)
-        this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || '' // 最好可以改用正则匹配
+        this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || ''
       } catch (error) {
         console.log(error)
         this.$Notice.warning({ title: this.$store.getters.language.Notice.error.logTimeout })
