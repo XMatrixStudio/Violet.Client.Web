@@ -74,11 +74,11 @@ export default {
     },
     async login () {
       try {
-        let res = await this.$service.user.login.call(this, this.$qs.stringify({
+        let res = await this.$service.user.login.call(this, {
           userName: this.loginForm.user,
           userPass: this.$util.hash(this.loginForm.password),
-          remember: this.remember
-        }))
+          remember: this.remember.toString()
+        })
         if (res.valid) {
           this.$router.push({ name: 'auth' })
         } else {

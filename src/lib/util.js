@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { createHash } from 'crypto'
 
 export default {
   /**
@@ -7,7 +7,7 @@ export default {
    * @param {string} value 需要进行hash的字符串
    * @returns {string} SHA512hash后的字符串
    */
-  hash: value => crypto.createHash('sha512').update(value).digest('hex'),
+  hash: value => createHash('sha512').update(value).digest('hex'),
   formatDate: (date, fmt) => {
     var o = {
       'M+': date.getMonth() + 1,

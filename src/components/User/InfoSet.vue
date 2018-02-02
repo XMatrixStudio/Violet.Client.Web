@@ -111,17 +111,17 @@ export default {
       this.$refs[name].validate(async valid => {
         if (valid) {
           try {
-            await this.$service.user.setUserInfo.call(this, this.$qs.stringify({
-              gender: this.infoForm.gender,
-              location: this.infoForm.location,
+            await this.$service.user.setUserInfo.call(this, {
+              gender: this.infoForm.gender.toString(),
+              location: this.infoForm.location.toString(),
               birthDate: this.infoForm.birthDate === null ? '' : this.$util.formatDate(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
-              phone: this.infoForm.phone,
+              phone: this.infoForm.phone.toString(),
               bio: this.infoForm.bio,
               url: this.infoForm.url,
-              showBirthDate: this.infoForm.show.birthDate,
-              showPhone: this.infoForm.show.phone,
-              showLocation: this.infoForm.show.location
-            }))
+              showBirthDate: this.infoForm.show.birthDate.toString(),
+              showPhone: this.infoForm.show.phone.toString(),
+              showLocation: this.infoForm.show.location.toString()
+            })
             await this.$service.user.getUserBaseInfo.call(this)
             this.infoForm = this.info
             this.$Notice.success({

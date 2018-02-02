@@ -126,11 +126,11 @@ export default {
     },
     async resetPass () {
       try {
-        await this.$service.user.resetPass.call(this, this.$qs.stringify({
+        await this.$service.user.resetPass.call(this, {
           email: this.resetForm.email,
-          vCode: this.resetForm.emailCode,
+          vCode: this.resetForm.emailCode.toString(),
           password: this.$util.hash(this.resetForm.password)
-        }))
+        })
         this.$Notice.success({
           title: this.language.success
         })

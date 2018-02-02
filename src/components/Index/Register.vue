@@ -132,12 +132,12 @@ export default {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
           try {
-            await this.$service.user.register.call(this, this.$qs.stringify({
+            await this.$service.user.register.call(this, {
               email: this.registerForm.email,
               name: this.registerForm.name,
               userPass: this.$util.hash(this.registerForm.password),
-              vCode: this.registerForm.vCode
-            }))
+              vCode: this.registerForm.vCode.toString()
+            })
             this.$Notice.success({
               title: this.language.success
             })

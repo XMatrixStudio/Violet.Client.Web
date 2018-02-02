@@ -36,6 +36,7 @@ export default {
   padding-bottom: 10px;
   margin-bottom: 20px;
   .info {
+    width: 300px;
     display: inline-block;
     vertical-align: middle;
     .title {

@@ -15,14 +15,19 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production' ?
-      config.build.assetsPublicPath : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath : config.dev.assetsPublicPath
+  },
+  externals: {
+    'vue': 'Vue',
+    'iview': 'iview',
+    'vue-router': 'VueRouter'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      '@': resolve('src')
     }
   },
   module: {
@@ -71,7 +76,7 @@ module.exports = {
     },
     {
       test: /\.(scss)$/,
-      loaders: ["style", "css", "scss"]
+      loaders: ['style', 'css', 'scss']
     }
     ]
   }

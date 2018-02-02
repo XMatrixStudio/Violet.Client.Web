@@ -63,9 +63,9 @@ async function resetPass (data) {
 }
 
 async function validEmail (code) {
-  await this.$https.post('/self/users/email', this.$qs.stringify({
-    vCode: code
-  }))
+  await this.$https.post('/self/users/email', {
+    vCode: code.toString()
+  })
 }
 
 export default {

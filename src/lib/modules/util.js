@@ -3,9 +3,9 @@ async function getVCode () {
 }
 
 async function getEmailCode (email) {
-  await this.$https.post('/self/util/EmailCode', this.$qs.stringify({
+  await this.$https.post('/self/util/EmailCode', {
     email: email
-  }))
+  })
   this.$store.commit('setEmailTime', new Date())
 }
 

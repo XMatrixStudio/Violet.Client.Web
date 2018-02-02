@@ -36,7 +36,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         warnings: false
       },
       output: {
-        comments: false, // remove all comments
+        comments: false
       },
       sourceMap: false
     }),
@@ -73,7 +73,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function(module) {
+      minChunks: function (module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&

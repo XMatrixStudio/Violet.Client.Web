@@ -4,9 +4,9 @@
       <a @click="showModal">{{languageData.data[languageData.language].label}}</a>
     </p>
     <Modal v-model="languageSelect" title="Language" @on-ok="setLanguage">
-      <Select v-model="language">
-        <Option v-for="item in languageList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-      </Select>
+      <i-select v-model="language">
+        <i-option v-for="item in languageList" :value="item.value" :key="item.value">{{ item.label }}</i-option>
+      </i-select>
     </Modal>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default {
 .comp-language {
   .language {
     margin-top: 40px;
+    margin-bottom: 10px;
     text-align: center;
     font-size: 15px;
     a {

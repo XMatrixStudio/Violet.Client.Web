@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="wrapper">
     <Row type="flex" justify="center">
-      <Col :span="20" class="violet-login-title">
+      <i-col :span="20" class="violet-login-title">
       <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
-      </Col>
+      </i-col>
     </Row>
     <router-view/>
     <Language></Language>
