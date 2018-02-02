@@ -6,6 +6,7 @@
       </Col>
     </Row>
     <router-view/>
+    <Language></Language>
     <ul id="cssQ" class="bg-bubbles">
       <li></li>
       <li></li>
@@ -22,8 +23,12 @@
 </template>
 
 <script>
+import Language from './components/Language'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Language
+  }
 }
 </script>
 
@@ -36,7 +41,7 @@ export default {
   min-width: 500px;
 }
 
-.fa{
+.fa {
   color: #80848f;
 }
 
@@ -200,9 +205,4 @@ export default {
   transform: translateY(85px);
 }
 </style>
-<script>
-export default {
-  name: 'app'
-}
-</script>
 

@@ -2,6 +2,7 @@ const state = {
   language: 'zh',
   data: {
     zh: {
+      label: '简体中文',
       Notice: {
         failed: '发生错误',
         error: {
@@ -215,9 +216,225 @@ const state = {
         invalidQuery: '参数错误'
       }
     },
-    en: {
+    zhs: {
+      label: '繁體中文',
       Notice: {
-        failed: 'An error occured.',
+        failed: '發生錯誤',
+        error: {
+          unknown: '未知錯誤，請聯系管理員，錯誤參數：',
+          server: '無法連接到服務器，請稍後重試.',
+          logTimeout: '登陸已過時，請重新登陸.'
+        }
+      },
+      User: {
+        home: '我的主頁',
+        setting: '用戶設置',
+        website: '授權網站',
+        dev: '應用管理',
+        logout: '退出登陸',
+        modal: {
+          title: '退出確認',
+          content: '是否退出登陸？',
+          button: '退出'
+        },
+        avatar: '更新你的照片'
+      },
+      Upload: {
+        hint: '點擊，或拖動圖片至此處！',
+        loading: '正在上傳……',
+        noSupported: '瀏覽器不支持該功能，請使用IE10以上或其他現代瀏覽器！',
+        success: '上傳成功',
+        fail: '圖片上傳失敗',
+        preview: '頭像預覽',
+        btn: {
+          off: '取消',
+          close: '關閉',
+          back: '上一步',
+          save: '保存'
+        },
+        error: {
+          onlyImg: '僅限圖片格式',
+          outOfSize: '單文件大小不能超過 ',
+          lowestPx: '圖片最低像素為（寬*高）：'
+        }
+      },
+      UserInfo: {
+        email: '郵箱',
+        url: '個人主頁',
+        phone: '手機號碼',
+        location: '位置',
+        locationInput: '你所在的城市',
+        birthDate: '生日',
+        bio: '個人簡介',
+        className: ['Violet用戶', '開發者', '管理員', '最高管理員', '神秘用戶'],
+        switchOn: '公開',
+        switchOff: '私密',
+        gender: {
+          label: '性別',
+          man: '男',
+          woman: '女',
+          other: '其他'
+        },
+        edit: '編輯個人資料',
+        submit: '確認修改',
+        success: '修改成功',
+        invalid: '無效的格式',
+        error: '錯誤： ',
+        overflow: '不能超過%d個字符'
+      },
+      Login: {
+        error: '用戶名或密碼錯誤，請重新輸入',
+        nullUser: '請填寫用戶名或郵箱',
+        nullPass: '請填寫密碼',
+        userHelp: '用戶名 / 郵箱',
+        passHelp: '密碼',
+        login: '登陸',
+        auto: '記住登陸狀態',
+        forget: '忘記密碼？',
+        noAccount: '還沒有賬號？',
+        register: '註冊一個'
+      },
+      Register: {
+        title: '使用郵箱註冊',
+        button: '註冊',
+        hadAccount: '已有賬號',
+        login: '立刻登陸',
+        success: '註冊成功',
+        error: '註冊失敗'
+      },
+      Auth: {
+        Hi: 'Hi',
+        confirm: '是否授權登陸到',
+        auth: '授權',
+        cancel: '取消',
+        change: '切換賬號'
+      },
+      Reset: {
+        title: '找回密碼',
+        button: '重置密碼',
+        remember: '記起來了？',
+        login: '立即登陸',
+        success: '修改密碼成功，請重新登陸',
+        fail: '找回密碼失敗'
+      },
+      Verify: {
+        title: '認證你的郵箱',
+        button: '認證郵箱',
+        change: '切換賬號',
+        success: '郵箱驗證成功',
+        fail: '郵箱驗證失敗',
+        toLogin: '請先登陸'
+      },
+      Form: {
+        register: '註冊',
+        login: '登陸',
+        email: '郵箱',
+        userName: '用戶名',
+        password: '密碼',
+        passwordCheck: '確認密碼',
+        vCode: '驗證碼',
+        emailCode: '郵箱驗證碼',
+        getVCode: '獲取驗證碼',
+        againGetVCode: '重新獲取',
+        sentEmailCode: '驗證碼已發送到你的郵箱',
+        nullName: '請輸入用戶名',
+        invalidName: '用戶名以字母開頭，包含字母數字下劃線，1-32位',
+        nullPass: '請輸入密碼',
+        lessPass: '密碼不能小於6位',
+        largePass: '密碼不能大於128位',
+        invalidPassword: '無效密碼',
+        invalidPass: '密碼不允許為純數字',
+        againPass: '請再次輸入密碼',
+        errorPass: '兩次輸入密碼不一致',
+        nullEmail: '郵箱不能為空',
+        invalidEmail: '請輸入有效的郵箱',
+        limitTime: '你的請求太頻繁了，請過一會兒再請求',
+        nullVCode: '驗證碼不能為空',
+        timeoutEmailCode: '郵箱驗證碼已失效，請重新獲取',
+        errorEmailCode: '郵箱驗證碼錯誤',
+        invalid: '無法通過驗證',
+        errorVCode: '驗證碼錯誤',
+        noExistEmail: '郵箱不存在',
+        existEmail: '該郵箱已註冊，請嘗試登陸',
+        existName: '該用戶名已存在',
+        reservedName: '該用戶名被系統保留',
+        otherError: '未知錯誤，請聯系管理員，錯誤參數',
+        failVCode: '獲取驗證碼失敗, 請稍後重試'
+      },
+      AuthList: {
+        title: '授權網站',
+        none: '當前沒有授權過的網站',
+        authLogin: '授權登陸',
+        cancelAuth: '取消授權',
+        confirmTitle: '取消授權確認',
+        confirm: '是否取消對以下應用授權',
+        sure: '確認',
+        cancel: '取消'
+      },
+      Dev: {
+        title: '應用管理',
+        none: '當前賬號沒有應用',
+        add: '新增應用',
+        content: '當前賬號應用數',
+        content2: '是否新增應用',
+        fail: '新增失敗',
+        failContent: '應用數量已達當前賬戶上限',
+        sure: '確認',
+        cancel: '取消',
+        detail: '查看詳情'
+      },
+      DevDetail: {
+        title: '應用詳情',
+        id: 'ID',
+        key: 'Key',
+        sure: '確認',
+        cancel: '取消',
+        keyHelp: '建議定時更改保證安全',
+        change: '更換',
+        name: '應用名稱',
+        nameHelp: '應用名稱是你應用最直觀的展示',
+        url: '應用主頁',
+        urlHelp: '應用的主頁',
+        callBack: '回調地址',
+        callBackHelp: '登陸後Code返回的地址，你需要設置接受他的頁面',
+        detail: '應用簡介',
+        detailHelp: '在用戶登陸時展示',
+        help: 'API文檔',
+        submit: '修改信息',
+        delete: '刪除應用',
+        nullName: '應用名不能為空',
+        nullUrl: '主頁不能為空',
+        nullCallBack: '回調地址不能為空',
+        nullDetail: '應用簡介不能為空',
+        lengthLimit: '長度需要在%1d - %2d之間',
+        keyTitle: '更改Key確認',
+        keyContent1: '更改Key之後會導致當前服務立刻失效',
+        keyContent2: '需要重新部署服務才能使用服務',
+        keySuccess: '修改Key成功',
+        invalidId: '無效的應用ID',
+        setSuccess: '修改信息成功',
+        deleteTitle: '刪除應用確認',
+        deleteContent1: '是否刪除應用',
+        deleteContent2: '刪除之後將不可恢復',
+        deleteSuccess: '刪除應用成功',
+        iconSuccess: '修改圖標成功',
+        icon: '更改圖標',
+        invalidQuery: '參數錯誤'
+      },
+      Index: {
+        welcome: '你即將登陸到',
+        violet: '不，我想登陸到Violet',
+        errorClientId: '無效的連接，將登陸到Violet用戶系統',
+        errorOther: '未知錯誤， 錯誤參數',
+        name: 'Violet User System',
+        detail: 'Violet 中央授權系統',
+        invalidQuery: '參數錯誤'
+      }
+    },
+    en: {
+      label: 'English',
+      Notice: {
+        failed: 'An error occurred.',
         error: {
           unknown: 'Unknown error. Please contact with the administrator. Error parameter: ',
           server: 'Unable to connect to the server, please try again later.',
@@ -336,7 +553,7 @@ const state = {
         againGetVCode: 'Get code again',
         sentEmailCode: 'The code has been sent to your email',
         nullName: 'Please input your username',
-        invalidName: 'Username begins with a letter, including letter, number and underline (maximun is 32 characters)',
+        invalidName: 'Username begins with a letter, including letter, number and underline (maximum is 32 characters)',
         nullPass: 'Please input your password',
         lessPass: 'Password can\'t be less than 6 characters',
         largePass: 'Password can\'t be greater than 128 characters',
@@ -361,7 +578,7 @@ const state = {
       },
       AuthList: {
         title: 'Authorized website',
-        none: 'There is no websit authorized',
+        none: 'There is no website authorized',
         authLogin: 'Authorize to login',
         cancelAuth: 'Remove the authorization',
         confirmTitle: 'Confirm to remove the authorization',
@@ -376,7 +593,7 @@ const state = {
         content: 'The number of applications: ',
         content2: 'Do you want to create application?',
         fail: 'Create application fail',
-        failContent: 'The number of applications has reahced the limit of the current account',
+        failContent: 'The number of applications has reached the limit of the current account',
         sure: 'Confirm',
         cancel: 'Cancel',
         detail: 'View the details'
@@ -396,7 +613,7 @@ const state = {
         callBack: 'Callback URL',
         callBackHelp: '登陆后Code返回的地址，你需要设置接受他的页面',
         detail: 'APP introduction',
-        detailHelp: 'Display at the user\'s loginning',
+        detailHelp: 'Display at the user\'s loading',
         help: 'API documents',
         submit: 'Edit information',
         delete: 'Delete APP',

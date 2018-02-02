@@ -127,10 +127,10 @@ export default {
     }
   },
   async mounted () {
-    if (!this.$store.state.user.logged) {
-      this.$router.push({ name: 'login' })
-    } else {
+    if (this.$store.state.user.logged) {
       this.getInfo()
+    } else {
+      this.$router.push({ name: 'login' })
     }
   }
 }

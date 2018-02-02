@@ -24,7 +24,7 @@
             <span slot="close">{{language.switchOff}}</span>
           </i-switch>
         </FormItem>
-        <FormItem :label="language.brithDate">
+        <FormItem :label="language.birthDate">
           <FormItem prop="date">
             <DatePicker class="inputShow" type="date" placeholder="Select date" v-model="infoForm.birthDate"></DatePicker>
             <i-switch v-model="infoForm.show.birthDate" size="large">
@@ -105,11 +105,12 @@ export default {
     setUserInfo (name) {
       this.$refs[name].validate(async valid => {
         if (valid) {
+          console.log(this.infoForm.birthDate)
           try {
             await this.$service.user.setUserInfo.call(this, this.$qs.stringify({
               gender: this.infoForm.gender,
               location: this.infoForm.location,
-              birthDate: this.infoForm.birthDate === '' ? '' : this.$util.formatDate(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
+              birthDate: this.infoForm.birthDate === null ? '' : this.$util.formatDate(new Date(this.infoForm.birthDate), 'yyyy-MM-dd'),
               phone: this.infoForm.phone,
               bio: this.infoForm.bio,
               url: this.infoForm.url,

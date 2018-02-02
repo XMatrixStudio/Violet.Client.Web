@@ -13,6 +13,7 @@ import qs from 'qs'
 Vue.use(Vuex)
 Vue.use(iView)
 Vue.use(service)
+Vue.use(require('vue-cookies'))
 Vue.config.productionTip = false
 Vue.prototype.$https = ax
 Vue.prototype.$util = util

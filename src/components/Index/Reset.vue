@@ -11,11 +11,11 @@
           <Input type="text" v-model="resetForm.emailCode" class="violet-reset-card-form-vCode"></Input>
           <Button type="primary" class="violet-reset-card-form-get-code" @click="getEmailCode" :disabled='myTimer !== false'>{{emailBtnText}}</Button>
         </FormItem>
-        <FormItem :label="formLanguage.password" prop="passwd">
-          <Input type="password" v-model="resetForm.passwd"></Input>
+        <FormItem :label="formLanguage.password" prop="password">
+          <Input type="password" v-model="resetForm.password"></Input>
         </FormItem>
-        <FormItem :label="formLanguage.passwordCheck" prop="passwdCheck">
-          <Input type="password" v-model="resetForm.passwdCheck"></Input>
+        <FormItem :label="formLanguage.passwordCheck" prop="passwordCheck">
+          <Input type="password" v-model="resetForm.passwordCheck"></Input>
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handleSubmit('resetForm')" class="violet-reset-card-form-button">{{language.button}}</Button>
@@ -79,18 +79,18 @@ export default {
     }
     return {
       resetForm: {
-        passwd: '',
-        passwdCheck: '',
+        password: '',
+        passwordCheck: '',
         email: '',
         emailCode: ''
       },
       emailBtnText: '',
       myTimer: false,
       ruleCustom: {
-        passwd: [
+        password: [
           { validator: validatePass, trigger: 'blur' }
         ],
-        passwdCheck: [
+        passwordCheck: [
           { validator: validatePassCheck, trigger: 'blur' }
         ],
         email: [
@@ -129,7 +129,7 @@ export default {
         await this.$service.user.resetPass.call(this, this.$qs.stringify({
           email: this.resetForm.email,
           vCode: this.resetForm.emailCode,
-          password: this.$crypto.hash(this.resetForm.passwd)
+          password: this.$util.hash(this.resetForm.password)
         }))
         this.$Notice.success({
           title: this.language.success

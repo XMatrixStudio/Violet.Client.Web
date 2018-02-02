@@ -63,6 +63,8 @@ export default {
   async mounted () {
     if (this.clientId) {
       await this.getClientInfo()
+    } else {
+      this.setUrlInfo()
     }
   }
 }
