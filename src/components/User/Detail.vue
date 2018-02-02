@@ -1,45 +1,62 @@
 <template>
   <Card class="comp-user-detail" dis-hover>
     <vTitle>
-      <i class="fa fa-info fa-fw" aria-hidden="true"></i> {{language.title}}</vTitle>
-    <div class="left-box">
-      <div>
-        <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
-        <span>{{language.id}}：{{client._id}}</span>
+      <i class="fa fa-info fa-fw" aria-hidden="true"></i> {{language.title}}
+      <span class="helper">
+        <a @click="backList">{{language.backToList}}</a> |
+        <a target="_blank" href="https://oauth.xmatrix.studio/doc/?url=v2.yml">{{language.help}}</a>
+      </span>
+    </vTitle>
+    <div class="content-box">
+      <div class="left-box">
+        <div>
+          <i class="fa fa-address-card-o fa-fw" aria-hidden="true"></i>
+          {{language.id}}：
+          <Tooltip :content="language.clickToCopy" placement="top">
+            <Tag color="green">
+              <span id="idText" @click="copyId">{{client._id}}</span>
+            </Tag>
+          </Tooltip>
+        </div>
+        <div>
+          <p>
+            <i class="fa fa-key fa-fw" aria-hidden="true"></i>{{language.key}}（{{language.keyHelp}}）：
+          </p>
+          <p>
+            <Tooltip :content="language.clickToCopy" placement="top">
+              <Tag color="green">
+                <span @click="copyKey">{{client.key}}</span>
+              </Tag>
+            </Tooltip>
+            <Button @click="changeKey" type="dashed">{{language.change}}</Button>
+          </p>
+        </div>
       </div>
-      <div>
-        <i class="fa fa-key fa-fw" aria-hidden="true"></i>
-        <span>{{language.key}}（{{language.keyHelp}}）：
-          <a @click="changeKey">{{language.change}}</a>
-        </span>
-        <p>{{client.key}}</p>
+      <div class="right-box">
+        <div class="client-icon">
+          <img @click="toggleShow" :src="client.icon" alt="Avatar" :title="language.icon" />
+          <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
+        </div>
       </div>
-      <Form ref="client" :model="client" :rules="ruleValidate" :label-width="80">
-        <FormItem :label="language.name" prop="name">
-          <Input v-model="client.name" :placeholder="language.nameHelp"></Input>
-        </FormItem>
-        <FormItem :label="language.url" prop="url">
-          <Input v-model="client.url" :placeholder="language.urlHelp"></Input>
-        </FormItem>
-        <FormItem :label="language.callBack" prop="callBack">
-          <Input v-model="client.callBack" :placeholder="language.callBackHelp"></Input>
-        </FormItem>
-        <FormItem :label="language.detail" prop="detail">
-          <Input v-model="client.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="language.detailHelp"></Input>
-        </FormItem>
-        <FormItem>
-          <Button type="primary" @click="handleSubmit('client')">{{language.submit}}</Button>
-          <Button type="error" @click="deleteClient">{{language.delete}}</Button>
-        </FormItem>
-      </Form>
     </div>
-    <div class="right-box">
-      <a target="_blank" href="https://oauth.xmatrix.studio/doc/?url=v2.yml">{{language.help}}</a>
-      <div class="client-icon">
-        <img @click="toggleShow" :src="client.icon" alt="Avatar" :title="language.icon" />
-        <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
-      </div>
-    </div>
+    <Form ref="client" :model="client" :rules="ruleValidate" :label-width="80">
+      <FormItem :label="language.name" prop="name">
+        <Input clearable v-model="client.name" :placeholder="language.nameHelp"></Input>
+      </FormItem>
+      <FormItem :label="language.url" prop="url">
+        <Input clearable v-model="client.url" :placeholder="language.urlHelp"></Input>
+      </FormItem>
+      <FormItem :label="language.callBack" prop="callBack">
+        <Input clearable v-model="client.callBack" :placeholder="language.callBackHelp"></Input>
+      </FormItem>
+      <FormItem :label="language.detail" prop="detail">
+        <Input v-model="client.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" :placeholder="language.detailHelp"></Input>
+      </FormItem>
+      <FormItem>
+        <Button type="primary" @click="handleSubmit('client')">{{language.submit}}</Button>
+        <Button type="error" @click="deleteClient">{{language.delete}}</Button>
+      </FormItem>
+    </Form>
   </Card>
 </template>
 
@@ -82,6 +99,32 @@ export default {
     }
   },
   methods: {
+    copyId () {
+      this.copyText(this.client._id)
+    },
+    copyKey () {
+      this.copyText(this.client.key)
+    },
+    copyText (text) {
+      let target = document.createElement('textarea')
+      target.style.position = 'absolute'
+      target.style.left = '-9999px'
+      target.style.top = '0'
+      target.textContent = text
+      document.body.appendChild(target)
+      target.focus()
+      target.setSelectionRange(0, target.value.length)
+      try {
+        document.execCommand('copy')
+        target.remove()
+        this.$Message.success(this.language.copySuccess)
+      } catch (e) {
+        this.$Message.error(this.language.copyFail)
+      }
+    },
+    backList () {
+      this.$router.push({ name: 'dev' })
+    },
     setLanguage () {
       this.ruleValidate.name[0].message = this.language.nullName
       this.ruleValidate.url[0].message = this.language.nullUrl
@@ -167,7 +210,9 @@ export default {
       this.imgDataUrl = imgDataUrl
       try {
         await this.$service.dev.setIcon.call(this, this.clientId, imgDataUrl)
-        await this.getInfo()
+        setTimeout(async () => {
+          await this.getInfo()
+        }, 1000)
         this.$Notice.success({
           title: this.language.iconSuccess
         })
@@ -185,6 +230,7 @@ export default {
       })
       this.$router.push({ name: 'dev' })
     }
+    this.$Loading.finish()
   }
 }
 </script>
@@ -195,33 +241,43 @@ export default {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 20px;
-  .left-box {
-    vertical-align: top;
-    display: inline-block;
-    text-align: left;
-    width: 70%;
-    > div {
-      margin: 20px 10px;
-    }
+  .helper {
+    margin-top: 13px;
+    font-size: 16px;
+    float: right;
   }
-  .right-box {
-    display: inline-block;
-    text-align: right;
-    width: 20%;
-    .client-icon {
-      margin-top: 50px;
-      text-align: center;
-      > img {
-        &:hover {
-          transform: translateY(-4px);
+  .content-box {
+    display: flex;
+    width: 100%;
+    align-content: stretch;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .left-box {
+      vertical-align: top;
+      display: inline-block;
+      text-align: left;
+      > div {
+        margin: 20px 10px;
+      }
+    }
+    .right-box {
+      display: inline-block;
+      text-align: right;
+      .client-icon {
+        margin-top: 10px;
+        margin-right: 20px;
+        text-align: center;
+        > img {
+          &:hover {
+            transform: translateY(-4px);
+          }
+          cursor: pointer;
+          transition: all 0.5s;
+          margin: 10px;
+          border-radius: 10px;
+          height: 80px;
+          width: 80px;
         }
-        cursor: pointer;
-        transition: all 0.5s;
-        margin-top: 30px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        height: 100px;
-        width: 100px;
       }
     }
   }

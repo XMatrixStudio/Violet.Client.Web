@@ -23,6 +23,7 @@ export default {
   },
   async mounted() {
     await this.$service.user.getAuthList.call(this)
+    this.$Loading.finish()
   }
 }
 </script>

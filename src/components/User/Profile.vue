@@ -5,7 +5,7 @@
         <i class="fa fa-circle-o fa-fw" aria-hidden="true"></i> {{name}}
         <Tag color="green">{{userClassName}}</Tag>
       </p>
-      <p class="bio">{{info.bio}}</p>
+      <pre class="bio" v-html="info.bio"></pre>
     </vTitle>
     <div class="content">
       <p>
@@ -31,7 +31,6 @@
         <span :title="language.location">
           <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>
         </span>{{info.location}}</p>
-
     </div>
   </Card>
 </template>
@@ -41,6 +40,9 @@ import vTitle from './part/vTitle'
 import { mapState } from 'vuex'
 export default {
   components: { vTitle },
+  mounted () {
+    this.$Loading.finish()
+  },
   computed: {
     userClassName () {
       const userClass = this.userClass
@@ -63,7 +65,7 @@ export default {
         return ''
       }
     },
-    language() {
+    language () {
       return this.$store.getters.language.UserInfo
     },
     ...mapState({
@@ -97,6 +99,11 @@ export default {
     font-size: 17px;
     p {
       margin: 20px;
+      &:hover {
+        .fa {
+          transform: translateY(-4px);
+        }
+      }
     }
     span {
       display: inline-block;
@@ -104,10 +111,7 @@ export default {
       width: 40px;
     }
     .fa {
-      transition: all .4s;
-      &:hover {
-        transform: translateY(-4px);
-      }
+      transition: all 0.4s;
     }
   }
   .control {

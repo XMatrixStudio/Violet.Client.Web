@@ -16,6 +16,7 @@ import InfoSet from '@/components/User/InfoSet'
 import Detail from '@/components/User/Detail'
 
 import Authorize from '@/pages/Authorize'
+import NotFound from '@/pages/404'
 
 Vue.use(Router)
 
@@ -49,7 +50,11 @@ export default new Router({
     name: 'Authorize',
     component: Authorize
   }, {
-    path: '/:username',
+    path: '/404',
+    name: '404',
+    component: NotFound
+  }, {
+    path: '/:userName',
     component: User,
     children: [{
       path: '',

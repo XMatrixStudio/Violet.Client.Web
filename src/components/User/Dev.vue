@@ -1,7 +1,9 @@
 <template>
   <Card class="comp-user-dev" dis-hover>
     <vTitle>
-      <i class="fa fa-terminal fa-fw" aria-hidden="true"></i> {{language.title}}</vTitle>
+      <i class="fa fa-terminal fa-fw" aria-hidden="true"></i> {{language.title}}
+      <span class="client-num">( {{this.devList.length}} / {{this.userClass}} )</span>
+    </vTitle>
     <vDev v-for="(web, index) in devList" :key="index" :web="web"></vDev>
     <p v-if="devList.length === 0">{{language.none}}</p>
     <div class="control">
@@ -28,6 +30,7 @@ export default {
   },
   async mounted () {
     await this.$service.dev.getDevList.call(this)
+    this.$Loading.finish()
   },
   methods: {
     async addClient () {
@@ -61,13 +64,16 @@ export default {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 20px;
-  .control {
+  .client-num {
+    font-size: 20px;
+  }
+  .fa-color-white {
+    color: #fff;
+  }
+  > .control {
     margin-top: 30px;
     position: relative;
     bottom: 0;
-    .fa-color-white {
-      color: #fff;
-    }
   }
 }
 </style>

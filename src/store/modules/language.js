@@ -14,7 +14,7 @@ const state = {
       User: {
         home: '我的主页',
         setting: '用户设置',
-        website: '授权网站',
+        website: '授权管理',
         dev: '应用管理',
         logout: '退出登陆',
         modal: {
@@ -147,14 +147,15 @@ const state = {
         failVCode: '获取验证码失败, 请稍后重试'
       },
       AuthList: {
-        title: '授权网站',
+        title: '授权管理',
         none: '当前没有授权过的网站',
         authLogin: '授权登陆',
         cancelAuth: '取消授权',
         confirmTitle: '取消授权确认',
         confirm: '是否取消对以下应用授权',
         sure: '确认',
-        cancel: '取消'
+        cancel: '取消',
+        lastLogin: '最后一次登陆'
       },
       Dev: {
         title: '应用管理',
@@ -204,7 +205,11 @@ const state = {
         deleteSuccess: '删除应用成功',
         iconSuccess: '修改图标成功',
         icon: '更改图标',
-        invalidQuery: '参数错误'
+        invalidQuery: '参数错误',
+        clickToCopy: '点击复制',
+        copySuccess: '复制成功',
+        copyFail: '复制失败',
+        backToList: '返回列表'
       },
       Index: {
         welcome: '你即将登陆到',
@@ -229,7 +234,7 @@ const state = {
       User: {
         home: '我的主頁',
         setting: '用戶設置',
-        website: '授權網站',
+        website: '授權管理',
         dev: '應用管理',
         logout: '退出登陸',
         modal: {
@@ -362,14 +367,15 @@ const state = {
         failVCode: '獲取驗證碼失敗, 請稍後重試'
       },
       AuthList: {
-        title: '授權網站',
+        title: '授權管理',
         none: '當前沒有授權過的網站',
         authLogin: '授權登陸',
         cancelAuth: '取消授權',
         confirmTitle: '取消授權確認',
         confirm: '是否取消對以下應用授權',
         sure: '確認',
-        cancel: '取消'
+        cancel: '取消',
+        lastLogin: '最後一次登陸'
       },
       Dev: {
         title: '應用管理',
@@ -419,7 +425,11 @@ const state = {
         deleteSuccess: '刪除應用成功',
         iconSuccess: '修改圖標成功',
         icon: '更改圖標',
-        invalidQuery: '參數錯誤'
+        invalidQuery: '參數錯誤',
+        clickToCopy: '點擊複製',
+        copySuccess: '複製成功',
+        copyFail: '複製失敗',
+        backToList: '返回列表'
       },
       Index: {
         welcome: '你即將登陸到',
@@ -577,14 +587,15 @@ const state = {
         failVCode: 'Get verification code fail, please get it later'
       },
       AuthList: {
-        title: 'Authorized website',
+        title: 'Authorized management',
         none: 'There is no website authorized',
         authLogin: 'Authorize to login',
         cancelAuth: 'Remove the authorization',
         confirmTitle: 'Confirm to remove the authorization',
         confirm: 'Do you really want to remove the authorization?',
         sure: 'Confirm',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+        lastLogin: 'Last login time'
       },
       Dev: {
         title: 'App management',
@@ -634,7 +645,11 @@ const state = {
         deleteSuccess: 'Delete application success',
         iconSuccess: 'Update icon success',
         icon: 'Change icon',
-        invalidQuery: 'Error parameter'
+        invalidQuery: 'Error parameter',
+        clickToCopy: 'Click to copy',
+        copySuccess: 'Copied',
+        copyFail: 'Copy failed!',
+        backToList: 'Back to list'
       },
       Index: {
         welcome: 'You are login to ',

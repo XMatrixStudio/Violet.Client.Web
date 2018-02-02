@@ -1,5 +1,9 @@
 async function getDevList () {
-  this.$store.commit('setDevList', (await this.$https.get('/self/client/list?t=' + new Date().getTime())).data)
+  let data = (await this.$https.get('/self/client/list?t=' + new Date().getTime())).data
+  for (let i of data) {
+    i.icon += `?t=${new Date().getTime()}`
+  }
+  this.$store.commit('setDevList', data)
 }
 
 async function addClient (name, url, detail) {

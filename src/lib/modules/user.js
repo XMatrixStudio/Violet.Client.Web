@@ -23,14 +23,19 @@ async function getLoginState () {
 }
 
 async function getAuthList () {
-  this.$store.commit('setClientList', (await this.$https.get('/self/auth/list?t=' + new Date().getTime())).data)
+  let data = (await this.$https.get('/self/auth/list?t=' + new Date().getTime())).data
+  for (let i of data) {
+    i.icon += `?t=${new Date().getTime()}`
+  }
+  this.$store.commit('setClientList', data)
 }
 
-async function getAuthSate (id) {
+async function getAuthState (id) {
   return (await this.$https.get(`/self/auth/${id}`)).data
 }
 
 async function auth (clientId, clientState, redirectUri) {
+  console.log(clientId, clientState, redirectUri)
   let newWin
   if (!(clientState && redirectUri)) {
     newWin = window.open('about:blank')
@@ -71,7 +76,7 @@ export default {
   getAuthList: getAuthList,
   auth: auth,
   deleteAuth: deleteAuth,
-  getAuthSate: getAuthSate,
+  getAuthState: getAuthState,
   // Login
   login: login,
   logout: logout,

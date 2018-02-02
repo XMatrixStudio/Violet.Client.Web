@@ -1,19 +1,16 @@
 <template>
   <Row :gutter="16" class="violet-login-box">
-    <Col :xs="{ span: 22, offset: 2  }" :sm="{ span: 22, offset: 2  }" :md="{ span: 8, offset: 2 }" :lg="{ span: 8, offset: 2 }" class="violet-login-detail">
+    <Col :xs="{ span: 22, offset: 2  }" :sm="{ span: 22, offset: 2  }" :md="{ span: 6, offset: 0 }" :lg="{ span: 6, offset: 0 }" class="violet-login-detail">
     <div class="violet-login-text">
       <p>{{language.welcome}}</p>
       <p class="violet-login-text-title">{{clientName}}</p>
-      <ul>
-        <li>
-          <Icon type="android-done" slot="open"></Icon> {{clientDetail}}</li>
-      </ul>
+      <pre v-html="clientDetail"></pre>
       <div class="control">
         <a :class="{'hide-text': clientId == false}" @click="setUrlInfo">{{language.violet}}</a>
       </div>
     </div>
     </Col>
-    <Col :xs="{ span: 6, offset: 2 }" :sm="{ span: 6, offset: 4 }" :md="{ span: 6, offset: 0 }" :lg="{ span: 6, offset: 0 }">
+    <Col :xs="{ span: 6, offset: 4 }" :sm="{ span: 6, offset: 6 }" :md="{ span: 6, offset: 0 }" :lg="{ span: 6, offset: 0 }">
     <router-view></router-view>
     </Col>
   </Row>
@@ -79,7 +76,7 @@ export default {
     color: #fff;
     text-align: left;
     .violet-login-text {
-      margin-left: 10vw;
+      margin-left: 5vw;
       margin-bottom: 40px;
       .control {
         margin-top: 60px;
@@ -98,7 +95,7 @@ export default {
         font-weight: bold;
         font-size: 22px;
       }
-      ul {
+      pre {
         margin-left: 40px;
       }
     }

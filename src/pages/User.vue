@@ -88,7 +88,8 @@ export default {
       if (name === 'logout') {
         this.modalLogout = true
       } else {
-        this.$router.push({ path: '/' + this.$route.params.username + '/' + name })
+        this.$Loading.start()
+        this.$router.push({ path: '/' + this.userName + '/' + name })
       }
     },
     toggleShow () {
@@ -116,9 +117,12 @@ export default {
     async getInfo () {
       try {
         await this.$service.user.getUserBaseInfo.call(this)
-        this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || ''
+        if (this.userName.toLowerCase() !== this.$route.params.userName.toLowerCase()) {
+          this.$router.push({ name: '404', query: { user: this.userName } })
+        } else {
+          this.$refs.leftMenu.currentActiveName = this.$route.path.toString().split('/')[2] || ''
+        }
       } catch (error) {
-        console.log(error)
         this.$Notice.warning({ title: this.$store.getters.language.Notice.error.logTimeout })
         this.$store.commit('logout')
         this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })

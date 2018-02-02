@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.17.0",
     "express-http-proxy": "^1.1.0",
-    "iview": "^2.8.0",
+    "iview": "^2.9.2",
     "node-sass": "^4.7.2",
     "qs": "^6.5.1",
     "vue": "^2.5.2",

@@ -51,7 +51,7 @@ export default {
     async authClient () {
       if (this.clientId) {
         try {
-          this.$service.user.auth.call(this, this.web.id, this.clientState, this.redirectUri)
+          this.$service.user.auth.call(this, this.clientId, this.clientState, this.redirectUri)
         } catch (error) {
           this.$service.errorHandle.call(this, error)
         }
@@ -64,7 +64,7 @@ export default {
     if (this.$store.state.user.logged) {
       // 自动授权
       if (this.clientId) {
-        this.getAuthState() // 获取授权状态
+        // this.getAuthState() // 获取授权状态
         // } else if (this.$store.state.client.redirectUri) { // 暂时不可控，潜在bug
         //   this.$router.push({ path: this.$store.state.client.redirectUri })
       } else {

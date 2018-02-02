@@ -1,13 +1,12 @@
 <template>
   <div class="comp-user-v-dev">
-    <Avatar class="avatar" :src="web.icon"></Avatar>
-    <div class="info">
-      <a :href="web.url" class="title" target="_blank">{{web.name}}</a>
-      <p class="detail">{{web.detail}}</p>
-    </div>
     <p class="control">
-      <Button type="info" @click="detail">{{language.detail}}</Button>
+      <img @click="detail" class="avatar" :src="web.icon"></img>
     </p>
+    <div class="info">
+      <a @click="detail" class="title" target="_blank">{{web.name}}</a>
+      <pre class="detail" v-html="web.detail"></pre>
+    </div>
   </div>
 </template>
 
@@ -21,7 +20,8 @@ export default {
   },
   methods: {
     async detail () {
-      this.$router.push({name: 'detail', query: {clientId: this.web.id}})
+      this.$Loading.start()
+      this.$router.push({ name: 'detail', query: { clientId: this.web.id } })
     }
   }
 }
@@ -38,7 +38,6 @@ export default {
   .info {
     display: inline-block;
     vertical-align: middle;
-    width: 60%;
     .title {
       font-size: 20px;
       &:hover {
@@ -50,7 +49,8 @@ export default {
     }
   }
   .control {
-    text-align: right;
+    text-align: left;
+    width: 140px;
     display: inline-block;
     vertical-align: middle;
     button {
@@ -60,12 +60,18 @@ export default {
     }
   }
   .avatar {
+    &:hover {
+      transform: translateY(-6px);
+    }
+    cursor: pointer;
     text-align: left;
     display: inline-block;
-    vertical-align: middle;
-    height: 60px;
-    width: 60px;
-    margin-right: 20px;
+    vertical-align: top;
+    height: 80px;
+    width: 80px;
+    border-radius: 10px;
+    margin: auto 20px;
+    transition: all 0.5s;
   }
 }
 </style>

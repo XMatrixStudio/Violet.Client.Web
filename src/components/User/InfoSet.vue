@@ -35,9 +35,9 @@
         </FormItem>
         <FormItem :label="language.gender.label" prop="gender">
           <RadioGroup v-model="infoForm.gender">
-            <Radio label="1">{{language.gender.man}}</Radio>
-            <Radio label="2">{{language.gender.woman}}</Radio>
-            <Radio label="0">{{language.gender.other}}</Radio>
+            <Radio :label="1">{{language.gender.man}}</Radio>
+            <Radio :label="2">{{language.gender.woman}}</Radio>
+            <Radio :label="0">{{language.gender.other}}</Radio>
           </RadioGroup>
         </FormItem>
         <FormItem>
@@ -65,7 +65,6 @@ export default {
   },
   data () {
     return {
-      overflow: '',
       infoForm: {
         url: '',
         location: '',
@@ -96,16 +95,21 @@ export default {
     }
   },
   mounted () {
-    this.infoForm = this.info
+    for (let i in this.info) {
+      if (i !== 'show') this.infoForm[i] = this.info[i]
+    }
+    for (let i in this.info.show) {
+      this.infoForm.show[i] = this.info.show[i]
+    }
     for (let i in this.ruleValidate) {
       this.ruleValidate[i][0].message = this.language.overflow.replace('%d', this.ruleValidate[i][0].max)
     }
+    this.$Loading.finish()
   },
   methods: {
     setUserInfo (name) {
       this.$refs[name].validate(async valid => {
         if (valid) {
-          console.log(this.infoForm.birthDate)
           try {
             await this.$service.user.setUserInfo.call(this, this.$qs.stringify({
               gender: this.infoForm.gender,
@@ -150,7 +154,8 @@ export default {
   border-bottom-left-radius: 0;
   padding: 20px;
   .inputShow {
-    width: 70%;
+    display: inline-block;
+    width: 65%;
     margin-right: 20px;
   }
 }
