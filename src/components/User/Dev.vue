@@ -60,9 +60,6 @@ export default {
 </script>
 <style lang="scss">
 .comp-user-dev {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 20px;
   .client-num {
     font-size: 20px;

@@ -237,9 +237,6 @@ export default {
 
 <style lang="scss">
 .comp-user-detail {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 20px;
   .helper {
     margin-top: 13px;

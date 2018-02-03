@@ -149,14 +149,17 @@ export default {
 
 <style lang="scss">
 .comp-user-info {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 20px;
   .inputShow {
     display: inline-block;
     width: 65%;
     margin-right: 20px;
   }
+  .ivu-switch-large {
+    width: 70px !important;
+  }
+  .ivu-switch-checked:after {
+    left: 47px !important;
+}
 }
 </style>

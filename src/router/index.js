@@ -14,6 +14,7 @@ import Website from '@/components/User/Website'
 import Dev from '@/components/User/Dev'
 import InfoSet from '@/components/User/InfoSet'
 import Detail from '@/components/User/Detail'
+import Users from '@/components/User/Users'
 
 import Authorize from '@/pages/Authorize'
 import NotFound from '@/pages/404'
@@ -75,6 +76,10 @@ export default new Router({
       path: 'detail',
       name: 'detail',
       component: Detail
+    }, {
+      path: 'users',
+      name: 'users',
+      component: Users
     }]
   }]
 })

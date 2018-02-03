@@ -81,9 +81,6 @@ export default {
 
 <style lang="scss">
 .comp-user-profile {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 20px;
   .fa-circle-o {
     color: rgb(27, 204, 51);
@@ -101,7 +98,7 @@ export default {
       margin: 20px;
       &:hover {
         .fa {
-          transform: translateY(-4px);
+          transform: translateY(-2px);
         }
       }
     }

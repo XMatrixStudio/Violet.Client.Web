@@ -1,11 +1,13 @@
 <template>
   <div class="pages-user">
+    <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
     <Row type="flex" justify="center" class="code-row-bg">
       <Col class="show-col" :span="colLeft">
       <Menu ref="leftMenu" class="side-bar" :theme="theme" @on-select="goTo" :active-name="actionMenu" width="auto">
-        <div class="user-avatar" :title="language.avatar">
-          <img @click="toggleShow" class="hide-elm" :src="avatar" alt="Avatar" />
-          <myUpload :langExt="uploadLanguage" field="img" @crop-success="cropSuccess" v-model="show" :width="200" :height="200" img-format="jpg"></myUpload>
+        <div class="user-avatar">
+          <Tooltip :content="language.avatar" placement="top">
+            <img @click="toggleShow" class="hide-elm img-avatar" :src="avatar" alt="Avatar" />
+          </Tooltip>
         </div>
         <div class="user-name hide-elm">{{userName}}
           <i v-if="gender === 2" class="fa fa-venus i-pink" aria-hidden="true"></i>
@@ -28,6 +30,10 @@
         <i class="fa fa-terminal fa-fw" aria-hidden="true"></i>
         <span class="menu-text">{{language.dev}}</span>
         </MenuItem>
+        <!-- <MenuItem v-if="userClass > 10" name="users">
+        <i class="fa fa-users fa-fw" aria-hidden="true"></i>
+        <span class="menu-text">用户管理</span>
+        </MenuItem> -->
         <MenuItem name="logout">
         <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
         <span class="menu-text">{{language.logout}}</span>
@@ -102,7 +108,9 @@ export default {
     async uploadAvatar () {
       try {
         await this.$https.put('/self/users/avatar', { avatar: this.imgDataUrl })
-        await this.getInfo()
+        setTimeout(async () => {
+          await this.getInfo()
+        }, 1000)
       } catch (error) {
         this.$service.errorHandle.call(this, error)
       }
@@ -175,14 +183,14 @@ export default {
     border-right: none;
     .user-avatar {
       text-align: center;
-      > img {
+      .img-avatar {
         &:hover {
           transform: translateY(-4px);
         }
         cursor: pointer;
         transition: all 0.5s;
-        margin-top: 30px;
-        margin-bottom: 10px;
+        margin-top: 25px;
+        margin-bottom: 5px;
         border-radius: 50%;
         height: 100px;
         width: 100px;

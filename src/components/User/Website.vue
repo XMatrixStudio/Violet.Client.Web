@@ -30,9 +30,6 @@ export default {
 
 <style lang="scss">
 .comp-user-web {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
   padding: 20px;
 }
 </style>

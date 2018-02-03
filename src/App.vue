@@ -2,7 +2,9 @@
   <div id="app" class="wrapper">
     <Row type="flex" justify="center">
       <i-col :span="20" class="violet-login-title">
-      <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
+        <p><img src="./assets/favicon.svg" class="violet-login-logo" />
+          <span class="title-violet">Violet</span>
+        </p>
       </i-col>
     </Row>
     <router-view/>
@@ -39,6 +41,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-width: 500px;
+  overflow-y: overlay;
 }
 
 .fa {
@@ -56,11 +59,19 @@ export default {
   > p {
     margin-bottom: 20px;
   }
-}
-.violet-login-logo {
-  width: 40px;
-  margin-right: 13px;
-  vertical-align: sub;
+  .violet-login-logo {
+    width: 40px;
+    margin-left: 13px;
+    vertical-align: sub;
+  }
+  .title-violet {
+    margin-left: 6px;
+    letter-spacing: 1px;
+    transition: all 0.5s;
+    &:hover {
+      color: #fff;
+    }
+  }
 }
 
 .bg-bubbles {

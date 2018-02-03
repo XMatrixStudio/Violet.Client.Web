@@ -34,10 +34,10 @@
 <script>
 export default {
   computed: {
-    language() {
+    language () {
       return this.$store.getters.language.Register
     },
-    formLanguage() {
+    formLanguage () {
       return this.$store.getters.language.Form
     }
   },
@@ -128,6 +128,22 @@ export default {
     }
   },
   methods: {
+    async login () {
+      try {
+        let res = await this.$service.user.login.call(this, {
+          userName: this.registerForm.email,
+          userPass: this.$util.hash(this.registerForm.password),
+          remember: 'false'
+        })
+        if (res.valid) {
+          this.$router.push({ name: 'auth' })
+        } else {
+          this.$router.push({ name: 'verify' })
+        }
+      } catch (error) {
+        this.$service.errorHandle.call(this, error)
+      }
+    },
     handleSubmit (name) {
       this.$refs[name].validate(async (valid) => {
         if (valid) {
@@ -141,7 +157,7 @@ export default {
             this.$Notice.success({
               title: this.language.success
             })
-            this.$router.push({ name: 'login' })
+            await this.login()
           } catch (error) {
             this.$service.errorHandle.call(this, error, message => {
               this.registerForm.vCode = ''

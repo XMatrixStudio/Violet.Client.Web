@@ -68,7 +68,11 @@ export default {
     margin-top: 40px;
     margin-bottom: 10px;
     text-align: center;
-    font-size: 15px;
+    font-size: 13px;
+    transition: all 0.3s;
+    &:hover {
+      transform: translateY(-1px);
+    }
     a {
       color: #fff;
     }
