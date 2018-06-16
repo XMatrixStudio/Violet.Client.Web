@@ -15,8 +15,8 @@
           <i v-if="gender === 0" class="fa fa-transgender i-other" aria-hidden="true"></i>
         </div>
         <MenuItem name="">
-        <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">{{language.home}}</span>
+          <i class="fa fa-user-o fa-fw" aria-hidden="true"></i>
+          <span class="menu-text">{{language.home}}</span>
         </MenuItem>
         <MenuItem name="infoSet">
         <i class="fa fa-sliders fa-fw" aria-hidden="true"></i>
