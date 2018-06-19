@@ -26,7 +26,7 @@ export default {
         this.$store.commit('setUrlInfo', {
           clientId: query.clientId,
           state: query.state,
-          redirectUri: query.redirectUri
+          redirectUrl: query.redirectUrl
         })
         this.$router.push({ name: 'login' })
       } else {

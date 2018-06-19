@@ -32,7 +32,7 @@
         </MenuItem>
         <!-- <MenuItem v-if="userClass > 10" name="users">
         <i class="fa fa-users fa-fw" aria-hidden="true"></i>
-        <span class="menu-text">用户管理</span>
+        <span class="menu-text">用户管睆</span>
         </MenuItem> -->
         <MenuItem name="logout">
         <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
@@ -133,7 +133,7 @@ export default {
       } catch (error) {
         this.$Notice.warning({ title: this.$store.getters.language.Notice.error.logTimeout })
         this.$store.commit('logout')
-        this.$store.commit('setUrlInfo', { redirectUri: this.$route.path })
+        this.$store.commit('setUrlInfo', { redirectUrl: this.$route.path })
         this.$router.push({ name: 'login' })
       }
     }

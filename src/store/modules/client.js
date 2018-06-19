@@ -3,7 +3,7 @@ const state = {
   detail: 'Violet 中央授权系统',
   id: false,
   state: '',
-  redirectUri: ''
+  redirectUrl: ''
 }
 
 const getters = {}
@@ -20,7 +20,7 @@ const mutations = {
   setUrlInfo (state, data) {
     state.id = data.clientId
     state.state = data.state
-    state.redirectUri = data.redirectUri
+    state.redirectUrl = data.redirectUrl
   }
 }
 

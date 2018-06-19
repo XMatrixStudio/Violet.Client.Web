@@ -24,7 +24,7 @@ export default {
       clientName: state => state.client.name,
       clientId: state => state.client.id,
       clientState: state => state.client.state,
-      redirectUri: state => state.client.redirectUri,
+      redirectUrl: state => state.client.redirectUrl,
       avatar: state => state.user.info.avatar
     }),
     language() {
@@ -51,7 +51,7 @@ export default {
     async authClient () {
       if (this.clientId) {
         try {
-          this.$service.user.auth.call(this, this.clientId, this.clientState, this.redirectUri)
+          this.$service.user.auth.call(this, this.clientId, this.clientState, this.redirectUrl)
         } catch (error) {
           this.$service.errorHandle.call(this, error)
         }
@@ -65,8 +65,8 @@ export default {
       // 自动授权
       if (this.clientId) {
         // this.getAuthState() // 获取授权状态
-        // } else if (this.$store.state.client.redirectUri) { // 暂时不可控，潜在bug
-        //   this.$router.push({ path: this.$store.state.client.redirectUri })
+        // } else if (this.$store.state.client.redirectUrl) { // 暂时不可控，潜在bug
+        //   this.$router.push({ path: this.$store.state.client.redirectUrl })
       } else {
         this.$router.push({ path: `/${this.userName}/` }) // 跳转到用户中心
       }

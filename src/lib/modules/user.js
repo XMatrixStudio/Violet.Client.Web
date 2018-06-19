@@ -34,16 +34,16 @@ async function getAuthState (id) {
   return (await this.$https.get(`/self/auth/${id}`)).data
 }
 
-async function auth (clientId, clientState, redirectUri) {
-  console.log(clientId, clientState, redirectUri)
+async function auth (clientId, clientState, redirectUrl) {
+  console.log(clientId, clientState, redirectUrl)
   let newWin
-  if (!(clientState && redirectUri)) {
+  if (!(clientState && redirectUrl)) {
     newWin = window.open('about:blank')
   }
   let res = await this.$https.post('/self/auth/' + clientId)
   let url = `${res.data.callBack}/?code=${res.data.code}`
   if (!newWin) {
-    url += `&state=${clientState}&redirectUri=${redirectUri}`
+    url += `&state=${clientState}&redirectUrl=${redirectUrl}`
     window.location.href = url
   } else {
     newWin.location.href = url
