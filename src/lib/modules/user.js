@@ -41,7 +41,7 @@ async function auth (clientId, clientState, redirectUrl) {
     newWin = window.open('about:blank')
   }
   let res = await this.$https.post('/self/auth/' + clientId)
-  let url = `${res.data.callBack}/?code=${res.data.code}`
+  let url = `${res.data.callBack}?code=${res.data.code}`
   if (!newWin) {
     url += `&state=${clientState}&redirectUrl=${redirectUrl}`
     window.location.href = url
