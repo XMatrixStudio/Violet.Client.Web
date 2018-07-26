@@ -35,7 +35,10 @@ const webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true
+      output: {
+        comments: false
+      },
+      sourceMap: false
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -59,8 +62,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+          // more options:
+          // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
@@ -88,13 +91,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       chunks: ['vendor']
     }),
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static'),
+      to: config.build.assetsSubDirectory,
+      ignore: ['.*']
+    }])
   ]
 })
 

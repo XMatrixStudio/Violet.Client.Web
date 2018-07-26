@@ -9,6 +9,7 @@ if (!process.env.NODE_ENV) {
 const opn = require('opn')
 const path = require('path')
 const express = require('express')
+const proxy = require('express-http-proxy')
 const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
@@ -65,6 +66,8 @@ app.use(devMiddleware)
 // serve pure static assets
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
+
+app.use('/api', proxy(config.dev.apiServer))
 
 const uri = 'http://localhost:' + port
 

@@ -1,11 +1,14 @@
 <template>
   <div id="app" class="wrapper">
-    <Row>
-      <Col span="8" offset="4" class="violet-login-title">
-      <p><img src="./assets/favicon.svg" class="violet-login-logo" />Violet</p>
-      </Col>
+    <Row type="flex" justify="center">
+      <i-col :span="20" class="violet-login-title">
+        <p><img src="./assets/favicon.svg" class="violet-login-logo" />
+          <span class="title-violet">Violet</span>
+        </p>
+      </i-col>
     </Row>
     <router-view/>
+    <Language></Language>
     <ul id="cssQ" class="bg-bubbles">
       <li></li>
       <li></li>
@@ -22,8 +25,12 @@
 </template>
 
 <script>
+import Language from './components/Language'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Language
+  }
 }
 </script>
 
@@ -33,22 +40,38 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  min-width: 500px;
+  overflow-y: overlay;
+}
+
+.fa {
+  color: #80848f;
 }
 
 .violet-login-title {
+  max-width: 1100px;
+  user-select: none;
   color: #eee;
   font-size: 34px;
   margin-top: 30px;
   margin-bottom: 30px;
   border-bottom: 1px solid #73c3b6;
-  >p {
+  > p {
     margin-bottom: 20px;
   }
-}
-.violet-login-logo {
-  width: 40px;
-  margin-right: 13px;
-  vertical-align: sub;
+  .violet-login-logo {
+    width: 40px;
+    margin-left: 13px;
+    vertical-align: sub;
+  }
+  .title-violet {
+    margin-left: 6px;
+    letter-spacing: 1px;
+    transition: all 0.5s;
+    &:hover {
+      color: #fff;
+    }
+  }
 }
 
 .bg-bubbles {
@@ -193,9 +216,4 @@ export default {
   transform: translateY(85px);
 }
 </style>
-<script>
-export default {
-  name: 'app'
-}
-</script>
 

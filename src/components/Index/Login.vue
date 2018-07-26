@@ -1,65 +1,120 @@
 <template>
   <div>
     <Card class="violet-login-card">
-      <p class="violet-login-card-title">Login</p>
-      <Form ref="formItem" :model="formItem" :rules="ruleItem">
+      <p class="violet-login-card-title">{{language.login}}</p>
+      <Form ref="loginForm" :model="loginForm" :rules="ruleItem">
         <FormItem prop="user">
-          <Input type="text" v-model="formItem.user" placeholder="用户名 / 邮箱">
+          <Input type="text" v-model="loginForm.user" :placeholder="language.userHelp">
           <span slot="prepend">
             <i class="fa fa-user" aria-hidden="true"></i>
           </span>
           </Input>
         </FormItem>
         <FormItem prop="password">
-          <Input type="password" v-model="formItem.password" placeholder="密码">
+          <Input type="password" v-model="loginForm.password" :placeholder="language.passHelp">
           <span slot="prepend">
             <i class="fa fa-key" aria-hidden="true"></i>
           </span>
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="handleSubmit('formItem')">登陆</Button>
+          <Button type="primary" @click="handleSubmit('loginForm')" long> {{language.login}} </Button>
+        </FormItem>
+        <FormItem :label="language.auto">
+          <i-switch v-model="remember">
+            <Icon type="android-done" slot="open"></Icon>
+            <Icon type="android-close" slot="close"></Icon>
+          </i-switch>
+          <router-link class="violet-login-reset" to="/reset">{{language.forget}}</router-link>
         </FormItem>
       </Form>
-      <p>
-        <router-link to="/reset">忘记密码？</router-link>
-      </p>
     </Card>
     <p class="violet-login-signin">
-      还没有账号？
-      <router-link to="/register">注册一个</router-link>
+      {{language.noAccount}}
+      <router-link to="/register">{{language.register}}</router-link>
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      formItem: {
+      loginForm: {
         user: '',
         password: ''
       },
       ruleItem: {
         user: [
-          { required: true, message: '请填写用户名', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请填写密码', trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
+          { required: true, message: '', trigger: 'blur' }
         ]
       }
     }
   },
+  computed: {
+    remember: {
+      get () {
+        return this.$store.state.user.autoLogin
+      },
+      set (value) {
+        this.$store.commit('setAuto', value)
+      }
+    },
+    language () {
+      return this.$store.getters.language.Login
+    }
+  },
   methods: {
-    handleSubmit(name) {
+    setLanguage() {
+      this.ruleItem.user.message = this.language.nullUser
+      this.ruleItem.password.message = this.language.nullPass
+    },
+    async login () {
+      try {
+        let res = await this.$service.user.login.call(this, {
+          userName: this.loginForm.user,
+          userPass: this.$util.hash(this.loginForm.password),
+          remember: this.remember.toString()
+        })
+        if (res.valid) {
+          this.$router.push({ name: 'auth' })
+        } else {
+          this.$router.push({ name: 'verify' })
+        }
+      } catch (error) {
+        this.$service.errorHandle.call(this, error, message => {
+          this.$Notice.error({
+            title: this.language.error
+          })
+          this.loginForm.password = ''
+        })
+      }
+    },
+    handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('登陆成功!')
-        } else {
-          this.$Message.error('表单验证失败!')
+          this.login()
         }
       })
+    }
+  },
+  async mounted () {
+    this.setLanguage()
+    if (this.$store.state.user.logged) {
+      try {
+        await this.$service.user.getLoginState.call(this)
+        this.$store.state.user.logged = true
+        if (this.$store.state.user.valid) {
+          this.$router.push({ name: 'auth' })
+        } else {
+          this.$router.push({ name: 'verify' })
+        }
+      } catch (error) {
+        this.$store.state.user.logged = false
+      }
     }
   }
 }
@@ -69,6 +124,7 @@ export default {
 .violet-login-card {
   width: 400px;
   padding: 30px;
+  padding-bottom: 0;
   .violet-login-card-title {
     text-align: center;
     font-size: 30px;
@@ -78,9 +134,9 @@ export default {
     text-align: right;
     font-size: 13px;
   }
-  button {
-    width: 100%;
-  }
+}
+.violet-login-reset {
+  float: right;
 }
 .violet-login-signin {
   text-align: center;
