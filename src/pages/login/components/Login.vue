@@ -6,25 +6,24 @@
     </div>
     <Form class="login-form" ref="formItem" :model="formItem" :rules="ruleInline">
       <FormItem prop="user">
-        <Input class="input-box" type="text" v-model="formItem.user" placeholder="手机号 / 邮箱 / 用户名">
-        <Icon type="ios-person" slot="prepend" />
-        </Input>
+        <i-input class="input-box" type="text" v-model="formItem.user" placeholder="手机号 / 邮箱 / 用户名">
+          <Icon type="ios-person" slot="prepend" />
+        </i-input>
       </FormItem>
       <FormItem prop="password">
-        <Input class="input-box" type="password" v-model="formItem.password" placeholder="密码">
-        <Icon type="md-key" slot="prepend" />
-        </Input>
+        <i-input class="input-box" type="password" v-model="formItem.password" placeholder="密码">
+          <Icon type="md-key" slot="prepend" />
+        </i-input>
       </FormItem>
       <FormItem>
         <Row>
-          <Col span="12">
-          <CheckboxGroup class="remember-box" v-model="formItem.checkbox">
-            <Checkbox label="保持登陆状态"></Checkbox>
-          </CheckboxGroup>
-          </Col>
-          <Col class="forget-pass" span="12">
-          <Button type="text">忘记密码？</Button>
-          </Col>
+          <i-col class="keep-login" span="12">
+            <i-switch size="small" />
+            <span>保持登陆状态</span>
+          </i-col>
+          <i-col class="forget-pass" span="12">
+            <Button type="text">忘记密码？</Button>
+          </i-col>
         </Row>
       </FormItem>
       <FormItem>
@@ -78,7 +77,7 @@ export default {
 
 <style lang="scss">
 .comp-login {
-  padding-top: 10vh;
+  padding-top: 5vh;
   margin: 10px;
   .title {
     display: inline;
@@ -156,9 +155,14 @@ export default {
     }
   }
 
-  .remember-box {
+  .keep-login {
+    padding-left: 28px;
     text-align: left;
-    margin-left: 25px;
+    span {
+      padding-left: 10px;
+      vertical-align: middle;
+      user-select: none;
+    }
   }
 
   .long-button {
