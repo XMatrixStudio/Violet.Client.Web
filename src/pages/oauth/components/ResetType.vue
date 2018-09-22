@@ -1,7 +1,7 @@
 <template>
   <div class="comp-reset-type">
     <Card class="reset-type-card">
-      <Icon class="btn-back" type="md-arrow-round-back" @click="gotoLogin" />
+      <Icon class="btn-back" type="md-arrow-round-back" @click="goBack" />
       <div class="title">
         <p class="card-title">{{helpText.title}}</p>
         <div class="line"></div>
@@ -13,7 +13,7 @@
           </i-input>
         </FormItem>
         <FormItem prop="code">
-          <img class="v-code-btn" src="../../../assets/code.png"/>
+          <img class="v-code-btn" src="../../../assets/code.png" />
           <i-input class="input-box v-code-input" type="text" v-model="formItemAccount.code" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       helpText: {
-        title: 'Reset'
+        title: 'Verify'
       },
       formItemAccount: {
         account: '',
@@ -43,7 +43,7 @@ export default {
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { type: 'string', len: 4,  message: '请输入有效的验证码', trigger: 'blur' }
+          { type: 'string', len: 4, message: '请输入有效的验证码', trigger: 'blur' }
         ]
       }
     }
@@ -52,20 +52,19 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
+          this.$Message.success('Success!')
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error('Fail!')
         }
       })
     },
 
-    gotoLogin () {
-      this.$router.push({ name: 'login' })
+    goBack () {
+      this.$router.push({ name: 'reset' })
     }
   }
 }
 </script>
-
 
 <style lang="scss">
 .comp-reset-type {

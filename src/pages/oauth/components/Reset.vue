@@ -52,7 +52,7 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
+          this.$Message.success('Success!')
           this.$router.push({ name: 'resetType'})
         } else {
           this.$Message.error('Fail!');
@@ -66,7 +66,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
 .comp-reset {
