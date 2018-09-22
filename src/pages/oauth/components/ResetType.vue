@@ -1,25 +1,53 @@
 <template>
   <div class="comp-reset-type">
     <Card class="reset-type-card">
-      <Icon class="btn-back" type="md-arrow-round-back" @click="gotoLogin" />
+      <Icon class="btn-back" type="md-arrow-round-back" @click="goBack" />
       <div class="title">
         <p class="card-title">{{helpText.title}}</p>
         <div class="line"></div>
       </div>
       <Form class="reset-form" ref="formItemAccount" :model="formItemAccount" :rules="ruleInline">
+
+        <FormItem>
+          <p>为你的账号 ZhenlyChen 重新设置密码</p>
+        </FormItem>
         <FormItem prop="account">
-          <i-input class="input-box" type="text" v-model="formItemAccount.account" placeholder="邮箱 / 手机号 / 用户名">
+          <Select v-model="resetType" @on-change="formItemAccount.account = ''">
+            <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </FormItem>
+
+        <FormItem>
+          <i-input class="input-box" type="text" v-model="formItemAccount.account" :placeholder="accounthelpText">
             <Icon type="ios-person" slot="prepend" />
           </i-input>
         </FormItem>
-        <FormItem prop="code">
-          <img class="v-code-btn" src="../../../assets/code.png"/>
-          <i-input class="input-box v-code-input" type="text" v-model="formItemAccount.code" placeholder="验证码">
+
+        <FormItem v-show="resetType !== 2" prop="code">
+          <Button class="v-code-btn" type="success">发送验证码</Button>
+          <i-input class="input-box  v-code-input" type="text" v-model="formItemAccount.code" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
         </FormItem>
-        <FormItem>
-          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>找回密码</Button>
+
+        <FormItem v-show="resetType !== 2">
+          <i-input class="input-box" type="password" v-model="formItemAccount.password" placeholder="新密码">
+            <Icon type="md-key" slot="prepend" />
+          </i-input>
+        </FormItem>
+
+        <FormItem v-show="resetType !== 2">
+          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>修改密码</Button>
+        </FormItem>
+
+        <FormItem v-show="resetType === 2">
+          <i-input class="textarea-box" type="textarea" v-model="formItemAccount.password" placeholder="请描述你的账号的详细信息" :rows="4">
+            <Icon type="md-information" slot="prepend" />
+          </i-input>
+        </FormItem>
+
+        <FormItem v-show="resetType === 2">
+          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>提交信息</Button>
         </FormItem>
       </Form>
     </Card>
@@ -30,12 +58,24 @@
 export default {
   data () {
     return {
+      resetType: 0,
       helpText: {
-        title: 'Reset'
+        title: 'Verify'
       },
+      typeList: [{
+        value: 0,
+        label: '通过邮箱zhen*******@qq.com获取验证码'
+      }, {
+        value: 1,
+        label: '通过手机188******31获取验证码'
+      }, {
+        value: 2,
+        label: '以上都不能用，我需要人工处理'
+      }],
       formItemAccount: {
         account: '',
-        code: ''
+        code: '',
+        password: ''
       },
       ruleInline: {
         account: [
@@ -43,8 +83,17 @@ export default {
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { type: 'string', len: 4,  message: '请输入有效的验证码', trigger: 'blur' }
+          { type: 'string', len: 6, message: '请输入有效的验证码', trigger: 'blur' }
         ]
+      }
+    }
+  },
+  computed: {
+    accounthelpText () {
+      switch (this.resetType) {
+        case 0: return '请输入完整的邮箱地址'
+        case 1: return '请输入完整的手机号'
+        case 2: return '请输入联系邮箱，我们会有专人跟进处理'
       }
     }
   },
@@ -52,20 +101,19 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
+          this.$Message.success('Success!')
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error('Fail!')
         }
       })
     },
 
-    gotoLogin () {
-      this.$router.push({ name: 'login' })
+    goBack () {
+      this.$router.push({ name: 'reset' })
     }
   }
 }
 </script>
-
 
 <style lang="scss">
 .comp-reset-type {
@@ -117,7 +165,7 @@ export default {
       z-index: 100;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 48px;
+      margin-top: 18px;
       width: 300px;
 
       .input-box {
@@ -138,6 +186,17 @@ export default {
     .v-code-btn {
       position: absolute;
       right: 20px;
+    }
+  }
+
+  .textarea-box {
+    textarea {
+      padding: 5px;
+      border: 2px solid rgba(0, 27, 9, 0.301) !important;
+      width: 85%;
+      &:focus {
+        border: 2px solid rgba(42, 126, 236, 0.788) !important;
+      }
     }
   }
 }

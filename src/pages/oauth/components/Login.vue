@@ -56,8 +56,7 @@ export default {
           { required: true, message: '请输入有效的手机号/邮箱/用户名', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码错误', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' }
         ]
       }
     }
@@ -66,9 +65,10 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
+          this.$Message.success('Success!')
+          this.$router.push({ name: 'auth' })
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error('Fail!')
         }
       })
     },
@@ -83,7 +83,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
 .comp-login {
@@ -161,6 +160,5 @@ export default {
   .forget-pass {
     text-align: right;
   }
-
 }
 </style>
