@@ -28,7 +28,7 @@
           </Row>
         </FormItem>
         <FormItem>
-          <Button class="long-button" type="info" @click="handleSubmit('formItem')" long>登陆</Button>
+          <Button class="long-button login-btn" type="info" @click="handleSubmit('formItem')" long>登陆</Button>
         </FormItem>
         <FormItem>
           <Button type="text" @click="gotoRegister" long>注册</Button>
@@ -86,10 +86,25 @@ export default {
 
 <style lang="scss">
 .comp-login {
-  padding-top: 5vh;
+  $card-color: rgba(42, 126, 236, 0.788);
+  $card-color-hover: rgba(42, 126, 236, 0.952);
+
+  padding-top: 3vh;
   margin: 10px;
 
+  .login-btn {
+    background: $card-color;
+    border-color: $card-color;
+    &:hover {
+      background: $card-color-hover;
+    }
+  }
+
   .login-card {
+    border-top: 5px solid $card-color;
+    &:hover {
+      border-top: 5px solid $card-color !important;
+    }
     width: 400px;
     margin: auto;
   }

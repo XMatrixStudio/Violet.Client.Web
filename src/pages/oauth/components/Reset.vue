@@ -19,7 +19,7 @@
           </i-input>
         </FormItem>
         <FormItem>
-          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>找回密码</Button>
+          <Button class="long-button reset-btn" type="info" @click="handleSubmit('formItemAccount')" long>找回密码</Button>
         </FormItem>
       </Form>
     </Card>
@@ -69,11 +69,25 @@ export default {
 
 <style lang="scss">
 .comp-reset {
-  padding-top: 5vh;
+  $card-color: rgba(233, 132, 16, 0.685);
+  $card-color-hover: rgba(233, 132, 16, 0.863);
+  padding-top: 3vh;
   margin: 10px;
   .reset-card {
+    border-top: 5px solid $card-color;
+    &:hover {
+      border-top: 5px solid $card-color !important;
+    }
     width: 400px;
     margin: auto;
+
+    .reset-btn {
+      background: $card-color;
+      border-color: $card-color;
+      &:hover {
+        background: $card-color-hover;
+      }
+    }
     .reg-type {
       margin-top: 30px;
     }
@@ -84,7 +98,7 @@ export default {
       font-size: 23px;
       transition: all 0.2s;
       &:hover {
-        color: rgba(42, 126, 236, 0.788);
+        color: $card-color;
       }
     }
     .title {
@@ -108,7 +122,7 @@ export default {
         margin-left: auto;
         margin-right: auto;
         width: 65px;
-        border-bottom: 2px solid rgba(42, 126, 236, 0.788);
+        border-bottom: 2px solid $card-color;
         margin-top: 5px;
       }
     }

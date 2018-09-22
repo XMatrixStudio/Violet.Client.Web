@@ -17,7 +17,7 @@
         </ButtonGroup>
       </div>
       <Modal class-name="vertical-center-modal" :title="registerType === 0 ? '发送邮件' : '发送短信'" v-model="sendCodeModel" width="400px">
-        <Form  ref="formItemMail" :model="formItemMail" :rules="ruleInline">
+        <Form ref="formItemMail" :model="formItemMail" :rules="ruleInline">
           <FormItem prop="code">
             <img class="img-code" src="../../../assets/code.png" />
             <i-input class="input-box img-code-input" type="text" v-model="formItemCode.code" placeholder="验证码">
@@ -33,7 +33,7 @@
           </i-input>
         </FormItem>
         <FormItem prop="vCode">
-          <Button class="v-code-btn" type="success" @click="showCodeModel">发送邮件</Button>
+          <Button class="v-code-btn register-btn" type="success" @click="showCodeModel">发送邮件</Button>
           <i-input class="input-box v-code-input" type="text" v-model="formItemMail.vCode" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
@@ -49,7 +49,7 @@
           </i-input>
         </FormItem>
         <FormItem>
-          <Button class="long-button" type="info" @click="handleSubmit('formItemMail')" long>注册</Button>
+          <Button class="long-button register-btn" type="info" @click="handleSubmit('formItemMail')" long>注册</Button>
         </FormItem>
       </Form>
       <Form v-show="registerType === 1" class="register-form" ref="formItemPhone" :model="formItemPhone" :rules="ruleInline">
@@ -59,7 +59,7 @@
           </i-input>
         </FormItem>
         <FormItem prop="vCode">
-          <Button class="v-code-btn" type="success" @click="showCodeModel">发送短信</Button>
+          <Button class="v-code-btn register-btn" type="success"  @click="showCodeModel">发送短信</Button>
           <i-input class="input-box v-code-input" type="text" v-model="formItemMail.vCode" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
@@ -75,7 +75,7 @@
           </i-input>
         </FormItem>
         <FormItem>
-          <Button class="long-button" type="info" @click="handleSubmit('formItemPhone')" long>注册</Button>
+          <Button class="long-button register-btn" type="info" @click="handleSubmit('formItemPhone')" long>注册</Button>
         </FormItem>
       </Form>
     </Card>
@@ -113,19 +113,19 @@ export default {
         ],
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { type: 'string', len: 11,  message: '仅支持中国大陆号码', trigger: 'blur' }
+          { type: 'string', len: 11, message: '仅支持中国大陆号码', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { type: 'string', min: 6, max: 128,  message: '请输入6位以上的密码', trigger: 'blur' }
+          { type: 'string', min: 6, max: 128, message: '请输入6位以上的密码', trigger: 'blur' }
         ],
         vCode: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { type: 'string', len: 6,  message: '请输入有效的验证码', trigger: 'blur' }
+          { type: 'string', len: 6, message: '请输入有效的验证码', trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { type: 'string', min:3, max: 16, message: '请输入3-16位的用户名', trigger: 'blur' }
+          { type: 'string', min: 3, max: 16, message: '请输入3-16位的用户名', trigger: 'blur' }
         ]
       }
     }
@@ -152,8 +152,8 @@ export default {
     },
 
     showCodeModel () {
-       this.sendCodeModel = true
-       this.formItemCode.code = ''
+      this.sendCodeModel = true
+      this.formItemCode.code = ''
     }
   }
 }
@@ -162,11 +162,40 @@ export default {
 
 <style lang="scss">
 .comp-register {
-  padding-top: 5vh;
+  $card-color: rgba(5, 150, 24, 0.685);
+  $card-color-hover: rgba(5, 150, 24, 0.884);
+  padding-top: 3vh;
   margin: 10px;
   .register-card {
+    border-top: 5px solid $card-color;
+    &:hover {
+      border-top: 5px solid $card-color !important;
+    }
     width: 400px;
     margin: auto;
+
+    .register-btn {
+      background: $card-color !important;
+      border-color: $card-color;
+      &:hover {
+        background: $card-color-hover !important;
+      }
+    }
+    .ivu-btn-primary {
+      background: $card-color;
+      border-color: $card-color !important;
+      &:hover {
+        background: $card-color-hover !important;
+      }
+    }
+    .ivu-btn-default {
+      // border-left-color: $card-color !important;
+      &:hover {
+        color: $card-color-hover;
+        border-color: $card-color-hover;
+      }
+    }
+
     .reg-type {
       margin-top: 20px;
     }
@@ -177,7 +206,7 @@ export default {
       font-size: 23px;
       transition: all 0.2s;
       &:hover {
-        color: rgba(42, 126, 236, 0.788);
+        color: $card-color;
       }
     }
     .title {
@@ -201,7 +230,7 @@ export default {
         margin-left: auto;
         margin-right: auto;
         width: 65px;
-        border-bottom: 2px solid rgba(42, 126, 236, 0.788);
+        border-bottom: 2px solid $card-color;
         margin-top: 5px;
       }
     }

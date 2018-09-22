@@ -8,7 +8,16 @@
     </div>
     <p class="help-text">
       授权
-      <strong>Icytown</strong>
+      <Poptip trigger="hover" title="Icytown" content="">
+        <div slot="content">
+          <p>Icytown博客评论系统</p>
+          <p>By
+            <a href="github.com/MegaShow" target="_blank">MegaShow</a>
+          </p>
+          <a href="https://icytown.com" target="_blank">https://icytown.com</a>
+        </div>
+        <strong>Icytown</strong>
+      </Poptip>
       访问你的信息
     </p>
     <Card class="auth-card">
@@ -18,19 +27,31 @@
       </div>
       <div class="client">
         <p>您将授予
-          <strong>Icytown</strong> 以下权限：</p>
+          <Poptip trigger="hover" title="Icytown" content="">
+            <div slot="content">
+              <p>Icytown博客评论系统</p>
+              <p>By
+                <a href="github.com/MegaShow" target="_blank">MegaShow</a>
+              </p>
+              <a href="https://icytown.com" target="_blank">https://icytown.com</a>
+            </div>
+            <strong>Icytown</strong>
+          </Poptip>
+          以下权限：
+        </p>
         <CheckboxGroup v-model="power">
           <Checkbox label="base" disabled>
-             <span>获取您的昵称、头像、性别</span>
+            <span>获取您的昵称、头像、性别</span>
           </Checkbox>
           <Checkbox label="info">
             <span>获取您的公开个人信息</span>
           </Checkbox>
           <Checkbox label="message">
-            <span>向您发送通知</span></Checkbox>
+            <span>向您发送通知</span>
+          </Checkbox>
         </CheckboxGroup>
       </div>
-      <Button type="info" long>授权</Button>
+      <Button class="auth-btn" type="info" long>授权</Button>
       <Button type="text" long @click="logout">切换账号</Button>
     </Card>
   </div>
@@ -44,7 +65,7 @@ export default {
     }
   },
   methods: {
-    logout() {
+    logout () {
       this.$router.push({ name: 'login' })
     }
   }
@@ -83,9 +104,13 @@ export default {
   }
 
   .auth-card {
+    border-top: 3px solid rgb(0, 132, 255);
+    &:hover {
+      border-top: 3px solid rgb(0, 132, 255) !important;
+    }
     margin: auto;
     width: 400px;
-    margin-top: 40px;
+    margin-top: 50px;
     padding: 20px;
     .info {
       transform: translateY(-70px);
@@ -94,6 +119,7 @@ export default {
         height: 70px;
         width: 70px;
         border-radius: 50%;
+        border: 3px solid rgba(0, 132, 255, 0.425);
       }
     }
     .client {
@@ -105,6 +131,12 @@ export default {
         font-size: 15px;
         margin: 20px 50px;
       }
+    }
+    .auth-btn {
+      margin-top: 10px;
+      font-weight: bold;
+      width: 80%;
+      font-size: 15px;
     }
   }
 }

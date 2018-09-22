@@ -24,7 +24,7 @@
         </FormItem>
 
         <FormItem v-show="resetType !== 2" prop="code">
-          <Button class="v-code-btn" type="success">发送验证码</Button>
+          <Button class="v-code-btn reset-btn" type="success">发送验证码</Button>
           <i-input class="input-box  v-code-input" type="text" v-model="formItemAccount.code" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
@@ -37,7 +37,7 @@
         </FormItem>
 
         <FormItem v-show="resetType !== 2">
-          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>修改密码</Button>
+          <Button class="long-button reset-btn" type="info" @click="handleSubmit('formItemAccount')" long>修改密码</Button>
         </FormItem>
 
         <FormItem v-show="resetType === 2">
@@ -47,7 +47,7 @@
         </FormItem>
 
         <FormItem v-show="resetType === 2">
-          <Button class="long-button" type="info" @click="handleSubmit('formItemAccount')" long>提交信息</Button>
+          <Button class="long-button reset-btn" type="info" @click="handleSubmit('formItemAccount')" long>提交信息</Button>
         </FormItem>
       </Form>
     </Card>
@@ -117,11 +117,25 @@ export default {
 
 <style lang="scss">
 .comp-reset-type {
-  padding-top: 5vh;
+  $card-color: rgba(233, 132, 16, 0.685);
+  $card-color-hover: rgba(233, 132, 16, 0.863);
+  padding-top: 3vh;
   margin: 10px;
   .reset-type-card {
+    border-top: 5px solid $card-color;
+    &:hover {
+      border-top: 5px solid $card-color !important;
+    }
     width: 400px;
     margin: auto;
+
+    .reset-btn {
+      background: $card-color;
+      border-color: $card-color;
+      &:hover {
+        background: $card-color-hover;
+      }
+    }
     .reg-type {
       margin-top: 30px;
     }
@@ -132,7 +146,7 @@ export default {
       font-size: 23px;
       transition: all 0.2s;
       &:hover {
-        color: rgba(42, 126, 236, 0.788);
+        color: $card-color;
       }
     }
     .title {
@@ -156,7 +170,7 @@ export default {
         margin-left: auto;
         margin-right: auto;
         width: 65px;
-        border-bottom: 2px solid rgba(42, 126, 236, 0.788);
+        border-bottom: 2px solid $card-color;
         margin-top: 5px;
       }
     }
