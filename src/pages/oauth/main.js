@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './Login.vue'
+import App from './Oauth.vue'
 import router from './router'
 import store from './store'
 import iView from 'iview'
