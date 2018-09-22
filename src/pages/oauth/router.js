@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Reset from './components/Reset'
 import ResetType from './components/ResetType'
+import Auth from './components/Auth'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/reset/',
       name: 'reset',
       component: Reset
+    },
+    {
+      path: '/auth/',
+      name: 'auth',
+      component: Auth
     },
     {
       path: '/reset/type',

@@ -13,7 +13,7 @@
           </i-input>
         </FormItem>
         <FormItem prop="code">
-          <img class="v-code-btn" src="../../../assets/code.png"/>
+          <img class="v-code-btn" src="../../../assets/code.png" />
           <i-input class="input-box v-code-input" type="text" v-model="formItemAccount.code" placeholder="验证码">
             <Icon type="ios-ribbon" slot="prepend" />
           </i-input>
@@ -43,7 +43,7 @@ export default {
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { type: 'string', len: 4,  message: '请输入有效的验证码', trigger: 'blur' }
+          { type: 'string', len: 4, message: '请输入有效的验证码', trigger: 'blur' }
         ]
       }
     }
@@ -53,9 +53,9 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.$Message.success('Success!')
-          this.$router.push({ name: 'resetType'})
+          this.$router.push({ name: 'resetType' })
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error('Fail!')
         }
       })
     },

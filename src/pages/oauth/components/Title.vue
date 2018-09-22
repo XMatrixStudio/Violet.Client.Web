@@ -18,7 +18,7 @@ export default {
 
 <style lang="scss">
 .comp-title {
-  font-size: 25px;
+  font-size: 26px;
 
   .title {
     padding: 20px;
