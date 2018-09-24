@@ -86,8 +86,8 @@ export default {
 
 <style lang="scss">
 .comp-login {
-  $card-color: rgba(42, 126, 236, 0.788);
-  $card-color-hover: rgba(42, 126, 236, 0.952);
+  $card-color: rgba(76, 194, 200, 0.774);
+  $card-color-hover: rgb(76, 194, 200);
 
   padding-top: 3vh;
   margin: 10px;
@@ -140,7 +140,7 @@ export default {
       margin-left: auto;
       margin-right: auto;
       width: 45px;
-      border-bottom: 2px solid rgba(42, 126, 236, 0.788);
+      border-bottom: 2px solid $card-color;
       margin-top: 5px;
     }
   }

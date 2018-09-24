@@ -1,18 +1,28 @@
 <template>
   <div id="app">
-    <index/>
+    <nav-bar :selected="path"/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Index from './views/Index'
+import NavBar from './components/Nav'
 export default {
   components: {
-    Index
+    NavBar
+  },
+  data() {
+    return {
+      path: 'home'
+    }
+  },
+  watch: {
+  '$route' (to, from) {
+    this.path = to.name
   }
 }
+}
 </script>
-
 
 <style lang="scss">
 #app {
@@ -22,7 +32,16 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-body {
-  background-color: rgb(240, 243, 248) !important;
+
+body{
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    min-width:850px;
+    width:100%;
+    overflow:auto;
+    padding:0;
+    margin:0;
 }
 </style>
