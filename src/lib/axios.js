@@ -1,5 +1,5 @@
-import axios from 'axios';
-import config from '@/config';
+import axios from 'axios'
+import config from '@/config'
 
 const ax = axios.create({
   timeout: 3000,

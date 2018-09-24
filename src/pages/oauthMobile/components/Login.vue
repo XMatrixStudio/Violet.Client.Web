@@ -25,54 +25,53 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       helpText: {
-        loginTo: "Login"
+        loginTo: 'Login'
       },
-      clientName: "用户中心",
+      clientName: '用户中心',
       formItem: {
-        user: "",
-        password: "",
+        user: '',
+        password: '',
         switch: false
       },
       ruleInline: {
         user: [
           {
             required: true,
-            message: "请输入有效的手机号/邮箱/用户名",
-            trigger: "blur"
+            message: '请输入有效的手机号/邮箱/用户名',
+            trigger: 'blur'
           }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { type: "string", min: 6, message: "密码错误", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { type: 'string', min: 6, message: '密码错误', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
-    handleSubmit(name) {
+    handleSubmit (name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("Success!");
+          this.$Message.success('Success!')
         } else {
-          this.$Message.error("Fail!");
+          this.$Message.error('Fail!')
         }
-      });
+      })
     },
 
-    gotoRegister() {
-      this.$router.push({ name: "register" });
+    gotoRegister () {
+      this.$router.push({ name: 'register' })
     },
 
-    gotoReset() {
-      this.$router.push({ name: "reset" });
+    gotoReset () {
+      this.$router.push({ name: 'reset' })
     }
   }
-};
+}
 </script>
-
 
 <style lang="scss">
 .comp-login {

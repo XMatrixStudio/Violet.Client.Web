@@ -134,9 +134,9 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
+          this.$Message.success('Success!')
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error('Fail!')
         }
       })
     },
