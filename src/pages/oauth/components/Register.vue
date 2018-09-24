@@ -159,7 +159,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss">
 .comp-register {
   $card-color: rgba(5, 150, 24, 0.685);

@@ -72,7 +72,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss">
 .comp-auth {
   .my-line {
