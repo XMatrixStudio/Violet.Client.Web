@@ -12,9 +12,6 @@
   </div>
 </template>
 
-
-
-
 <style lang="scss">
 .comp-index {
   color: rgba(54, 88, 126, 0.788);

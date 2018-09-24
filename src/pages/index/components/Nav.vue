@@ -5,7 +5,7 @@
       <div class="right-box">
         <a @click="$router.push({name: 'home'})" :class="selected === 'home' ? 'nav-selected' : ''">Home</a>
         <a @click="$router.push({name: 'about'})" :class="selected === 'about' ? 'nav-selected' : ''">About</a>
-        <Button class="login-btn" size="large" type="primary">Login</Button>
+        <Button class="login-btn" size="large" type="primary" @click="gotoLogin">Login</Button>
       </div>
     </div>
   </div>
@@ -21,6 +21,11 @@ export default {
   data () {
     return {
       windowsScroll: 0
+    }
+  },
+  methods: {
+    gotoLogin () {
+      window.location.href = '/oauth'
     }
   },
   mounted () {
