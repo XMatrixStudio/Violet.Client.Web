@@ -1,6 +1,5 @@
 <template>
   <Menu class="comp-nav" mode="horizontal" theme="light" active-name="1">
-    <div class="line"></div>
     <a class="nav-title">Violet</a>
     <MenuItem name="1">
     <Icon type="ios-person" /> 用户中心
