@@ -14,8 +14,6 @@ UI: `Ant Design`
 
 Time: 2019/1/11 - Now
 
-
-
 ### 2.0
 
 Status: `Working`
@@ -26,13 +24,11 @@ UI: `iview 2`
 
 Time: 2017/10/31 - 2019/1/10
 
-
-
 ### 1.0
 
-Status: `Expired `
+Status: `Expired`
 
-Framework:`JQuery` 
+Framework:`JQuery`
 
 UI: `Bootstrap 3`
 

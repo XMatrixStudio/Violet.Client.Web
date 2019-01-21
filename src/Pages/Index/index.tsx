@@ -1,6 +1,5 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import App from './App'
 import './index.less'
 import '../../Assets/variable.less'
 import registerServiceWorker from '../../registerServiceWorker'
@@ -14,7 +13,9 @@ import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 import AuthStore from '../../Store/AuthStore'
 
 import { Root } from '../../Root'
-import About from '../../Components/About'
+import Home from './Containers/Home/Home'
+import About from './Containers/About/About'
+import NavBar from './Components/NavBar/NavBar'
 
 const browserHistory = createBrowserHistory()
 const routerStore = new RouterStore()
@@ -28,10 +29,13 @@ ReactDOM.render(
   <Provider {...rootStore}>
     <Root>
       <Router history={history}>
-        <Switch>
-          <Route exact={true} path='/' component={App} />
-          <Route path='/about' component={About} />
-        </Switch>
+        <div>
+          <NavBar />
+          <Switch>
+            <Route path='/about' component={About} />
+            <Route path='/' component={Home} />
+          </Switch>
+        </div>
       </Router>
     </Root>
   </Provider>,
