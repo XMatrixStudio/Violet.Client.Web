@@ -11,7 +11,7 @@ export class Root extends React.Component<{}, {}> {
   }
 
   private renderDevTool() {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'dev') {
       const DevTools = require('mobx-react-devtools').default
       return <DevTools />
     }

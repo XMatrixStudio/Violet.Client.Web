@@ -46,7 +46,9 @@ class NavBar extends Component<any, any> {
               About
             </NavLink>
             <Button className='login-btn' size='large' type='primary'>
-              <a href='/account'>Login</a>
+              <a className='btn-link' href='/account'>
+                Login
+              </a>
             </Button>
           </div>
         </div>
