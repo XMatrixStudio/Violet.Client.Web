@@ -3,7 +3,7 @@ import './About.less'
 
 class About extends Component {
   public render() {
-    return <div>Hello</div>
+    return <div className='cont-about'>Violet</div>
   }
 }
 

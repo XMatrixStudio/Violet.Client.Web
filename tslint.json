@@ -9,6 +9,8 @@
   },
   "rules": {
     "semicolon": [true, "never"],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-console": false
   }
 }
