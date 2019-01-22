@@ -1,8 +1,22 @@
 import React, { Component } from 'react'
+import { Switch, Route } from 'react-router'
+import Login from '../../Components/Login/Login'
+import Register from '../../Components/Register/Register'
+import Auth from '../../Components/Auth/Auth'
+import Reset from '../../Components/Reset/Reset'
 
 class Account extends Component {
   public render() {
-    return <div>Account</div>
+    return (
+      <div>
+        <Switch>
+          <Route exact={true} path='/account' component={Login} />
+          <Route path='/account/register' component={Register} />
+          <Route path='/account/auth' component={Auth} />
+          <Route path='/account/reset' component={Reset} />
+        </Switch>
+      </div>
+    )
   }
 }
 

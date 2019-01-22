@@ -1,32 +1,30 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 import './NavBar.less'
 
 import logo from '@/Assets/logo.svg'
+import { observable, action } from 'mobx'
+import { observer } from 'mobx-react'
 
-const initialState = { scroll: 0 }
-type State = Readonly<typeof initialState>
-
+@observer
 class NavBar extends Component<any, any> {
-  public readonly state: State = initialState
+  @observable public scrollValue = 0
 
   public componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-  }
-
-  public handleScroll = () => {
-    this.setState({
-      scroll: window.scrollY
-    })
+    window.addEventListener(
+      'scroll',
+      action(() => {
+        this.scrollValue = window.scrollY
+      })
+    )
   }
 
   public render() {
-    const { scroll } = this.state
     return (
       <div className='comp-nav'>
-        <div className={scroll > 30 ? 'nav' : 'nav-top'}>
+        <div className={this.scrollValue > 30 ? 'nav' : 'nav-top'}>
           <div className='title'>
             <img src={logo} className='logo-img' /> Violet
           </div>
@@ -57,4 +55,4 @@ class NavBar extends Component<any, any> {
   }
 }
 
-export default NavBar
+export default withRouter(NavBar)

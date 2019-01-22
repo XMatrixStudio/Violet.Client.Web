@@ -5,7 +5,7 @@ import '../../Assets/variable.less'
 import registerServiceWorker from '../../registerServiceWorker'
 
 // router
-import { Route, Router, Switch } from 'react-router'
+import { Router } from 'react-router'
 import { createBrowserHistory } from 'history'
 import { Provider } from 'mobx-react'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
@@ -17,17 +17,13 @@ const rootStore = {
 }
 
 import { Root } from '../../Root'
-import About from '../../Components/About'
 import Account from './Containers/Account/Account'
 
 ReactDOM.render(
   <Provider {...rootStore}>
     <Root>
       <Router history={history}>
-        <Switch>
-          <Route exact={true} path='/account' component={Account} />
-          <Route path='/account/about' component={About} />
-        </Switch>
+        <Account />
       </Router>
     </Root>
   </Provider>,
