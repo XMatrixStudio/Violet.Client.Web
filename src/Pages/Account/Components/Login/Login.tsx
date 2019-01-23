@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import './Login.less'
 import { Card } from 'antd'
+import LoginForm from './LoginForm'
 
 class Login extends Component {
   public render() {
     return (
       <div className='comp-login'>
-        <Card className='login-card' bodyStyle={{ textAlign: 'center' }}>
-          <div className='title'>
-            <p className='login-to'>登陆</p>
+        <Card className='account-card' bodyStyle={{ textAlign: 'center' }}>
+          <div className='card-title'>
+            <p className='title-to'>登 陆</p>
             <div className='line' />
           </div>
+          <LoginForm />
         </Card>
       </div>
     )

@@ -11,6 +11,8 @@
     "semicolon": [true, "never"],
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-console": false
+    "no-console": false,
+    "member-access": false,
+    "jsx-no-lambda": false
   }
 }

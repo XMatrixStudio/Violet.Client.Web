@@ -1,92 +1,40 @@
 .comp-login {
   @card-color: rgba(76, 194, 200, 0.774);
   @card-color-hover: rgb(76, 194, 200);
-
-  padding-top: 20vh;
   margin: 10px;
 
   .login-btn {
+    margin-top: 25px;
+    margin-bottom: 10px;
     background: @card-color;
     border-color: @card-color;
-    &:hover {
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.089);
+    &:hover,
+    &:focus {
       background: @card-color-hover;
     }
   }
 
-  .login-card {
+  .icon-color {
+    color: @card-color;
+  }
+
+  .account-card {
     border-top: 5px solid @card-color;
     &:hover {
-      border-top: 5px solid @card-color !important;
+      border-top: 5px solid @card-color-hover !important;
     }
-    width: 400px;
-    margin: auto;
   }
 
-  .bg {
-    position: fixed;
-    transform: skew(0deg, -15deg);
-    top: 200px;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background: #5d83eb;
-    z-index: 0;
-  }
-  .title {
-    display: inline-table;
-    text-align: center;
-    padding-top: 24px;
-    &:hover {
-      .line {
-        width: 65px;
-      }
-    }
-    .login-to {
-      display: inline;
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: 3px;
-      user-select: none;
-    }
-
+  .card-title {
     .line {
-      transition: all 0.2s;
-      margin-left: auto;
-      margin-right: auto;
-      width: 45px;
-      border-bottom: 2px solid @card-color;
-      margin-top: 5px;
+      border-bottom: 3px solid @card-color;
     }
   }
 
   .login-form {
-    z-index: 100;
     margin-left: auto;
     margin-right: auto;
     margin-top: 48px;
-    width: 300px;
-
-    .input-box {
-      transform: translateX(-20px);
-    }
-  }
-
-  .keep-login {
-    padding-left: 28px;
-    text-align: left;
-    span {
-      padding-left: 10px;
-      vertical-align: middle;
-      user-select: none;
-    }
-  }
-
-  .long-button {
-    width: 200px;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.089);
-  }
-
-  .forget-pass {
-    text-align: right;
   }
 }

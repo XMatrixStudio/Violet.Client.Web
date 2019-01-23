@@ -18,6 +18,7 @@ const rootStore = {
 
 import { Root } from '../../Root'
 import Account from './Containers/Account/Account'
+import './index.tsx'
 
 ReactDOM.render(
   <Provider {...rootStore}>
