@@ -38,7 +38,7 @@ class NormalLoginForm extends React.Component<{ form: WrappedFormUtils }, any> {
             />
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item className='last-item'>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true

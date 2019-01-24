@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { Steps } from 'antd'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 const Step = Steps.Step
 
-class StepBar extends Component {
+interface IRouterProps extends RouteComponentProps<any> {
+  currentStep: number
+}
+
+class StepBar extends Component<IRouterProps> {
   render() {
     return (
       <div
@@ -11,7 +16,7 @@ class StepBar extends Component {
           maxWidth: '500px'
         }}
       >
-        <Steps progressDot={true} current={0}>
+        <Steps progressDot={true} current={this.props.currentStep}>
           <Step title='验证' />
           <Step title='完善信息' />
           <Step title='注册成功' />
@@ -22,4 +27,4 @@ class StepBar extends Component {
   }
 }
 
-export default StepBar
+export default withRouter(StepBar)

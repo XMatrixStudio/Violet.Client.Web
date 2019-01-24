@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Input, Icon, Button, Row, Col } from 'antd'
-import { RouteComponentProps } from 'react-router-dom'
 
 import testCode from '@/Assets/code.png'
 
-interface IValidFormProps extends RouteComponentProps<any> {
+interface IValidFormProps {
   form: WrappedFormUtils
+  next: (id?: string) => void
 }
 
 class ValidForm extends Component<IValidFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.history.push('/account/register/info')
+    this.props.next('a@zhenly.cn')
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
@@ -70,7 +70,7 @@ class ValidForm extends Component<IValidFormProps> {
             </Col>
           </Row>
         </Form.Item>
-        <Form.Item>
+        <Form.Item className='last-item'>
           <Button
             type='primary'
             htmlType='submit'
