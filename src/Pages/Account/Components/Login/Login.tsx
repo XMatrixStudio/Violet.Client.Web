@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Login.less'
 import { Card } from 'antd'
-import LoginForm from './LoginForm'
+import LoginForm from './Components/LoginForm'
 
 class Login extends Component {
   public render() {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import './Register.less'
-import StepBar from './Components/StepBar'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Card, Icon, Button } from 'antd'
 import ValidForm from './Components/ValidForm'
 import InfoForm from './Components/InfoForm'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
+import Title from './Components/Title'
 
 interface IRouterProps extends RouteComponentProps<any> {}
 
@@ -15,15 +15,12 @@ class Register extends Component<IRouterProps> {
   @observable currentStep = 0
   @observable id = 'Null'
 
-  constructor(props: IRouterProps) {
-    super(props)
-  }
-
   nextStep = (id?: string) => {
     if (id !== undefined) {
       this.id = id
     }
     this.currentStep++
+    console.log(this.currentStep)
   }
 
   UserForm = () => {
@@ -76,13 +73,13 @@ class Register extends Component<IRouterProps> {
   }
 
   public render() {
+    const currentStep = this.currentStep
     return (
       <div className='comp-register'>
-        <StepBar currentStep={this.currentStep} />
         <Card className='account-card' bodyStyle={{ textAlign: 'center' }}>
           <this.BackIcon />
           <div className='card-title'>
-            <p className='title-to'>注 册</p>
+            <Title currentStep={currentStep} />
             <div className='line' />
             <this.UserForm />
           </div>

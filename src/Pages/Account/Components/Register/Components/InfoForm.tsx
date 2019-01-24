@@ -24,8 +24,8 @@ class InfoForm extends Component<IInfoFormProps, any> {
     return (
       <Form onSubmit={this.handleSubmit} className='info-form'>
         <Form.Item>
-          <span className='ant-form-text'>{this.props.id}</span>
           <Icon type='check' className='icon-color' />
+          <span className='ant-form-text'>{this.props.id}</span>
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('userName', {

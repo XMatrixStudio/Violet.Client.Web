@@ -1,17 +1,19 @@
 .comp-register {
-  @card-color: rgba(76, 200, 148, 0.774);
-  @card-color-hover: rgb(76, 200, 148);
+  @card-color: rgba(69, 209, 151, 0.774);
+  @card-color-hover: rgb(69, 209, 151);
+  margin: 10px;
   text-align: left;
   padding-bottom: 20px;
 
   .register-btn {
     margin: 10px auto 0 auto;
     background: @card-color;
+    border-color: @card-color;
     border-color: rgba(0, 0, 0, 0.089);
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.089);
     &:hover,
     &:focus {
       background: @card-color-hover;
+      border-color: @card-color-hover;
     }
   }
 
