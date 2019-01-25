@@ -23,7 +23,7 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
             })(
               <Input
                 prefix={<Icon type='mail' className='icon-color' />}
-                placeholder='邮箱 / 手机验证码'
+                placeholder='收到的验证码'
               />
             )}
           </Col>

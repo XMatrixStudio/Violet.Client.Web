@@ -1,11 +1,16 @@
 import * as React from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Link } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 
-class NormalLoginForm extends React.Component<{ form: WrappedFormUtils }, any> {
+interface ILoginFormProps extends RouteComponentProps<any> {
+  form: WrappedFormUtils
+}
+
+class NormalLoginForm extends React.Component<ILoginFormProps, any> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    this.props.history.push('/account/auth')
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values)
@@ -61,4 +66,4 @@ class NormalLoginForm extends React.Component<{ form: WrappedFormUtils }, any> {
   }
 }
 
-export default Form.create()(NormalLoginForm)
+export default withRouter(Form.create()(NormalLoginForm))
