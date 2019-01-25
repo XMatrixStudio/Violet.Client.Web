@@ -12,6 +12,7 @@ const getClientEnvironment = require('./env')
 const paths = require('./paths')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const loaders = require('./loaders')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -190,11 +191,13 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // Perform type checking and linting in a separate process to speed up compilation
     new ForkTsCheckerWebpackPlugin({
-      async: false,
+      async: true,
       watch: paths.appSrc,
       tsconfig: paths.appTsConfig,
-      tslint: paths.appTsLint
-    })
+      tslint: paths.appTsLint,
+      useTypescriptIncrementalApi: true
+    }),
+    new HardSourceWebpackPlugin()
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

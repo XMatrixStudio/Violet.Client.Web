@@ -80,6 +80,7 @@ const tsLoader = {
       loader: require.resolve('ts-loader'),
       options: {
         transpileOnly: true,
+        //happyPackMode: true,
         getCustomTransformers: () => ({
           before: [tsImportPluginFactory(importPluginOption)]
         })
@@ -128,7 +129,7 @@ const rawCssLoaderProd = {
 
 const cssLoaderDev = {
   test: /\.css$/,
-  use: [require.resolve('style-loader'), rawCssLoaderDev, postcssLoader]
+  use: [require.resolve('style-loader'), rawCssLoaderDev]
 }
 
 const cssLoaderProd = {
@@ -137,7 +138,7 @@ const cssLoaderProd = {
     Object.assign(
       {
         fallback: require.resolve('style-loader'),
-        use: [rawCssLoaderProd, postcssLoader]
+        use: [rawCssLoaderProd]
       },
       extractTextPluginOptions
     )
@@ -148,7 +149,7 @@ const cssLoaderProd = {
 // scss loader
 const scssLoaderDev = {
   test: /\.scss$/,
-  use: [require.resolve('style-loader'), rawCssLoaderDev, precssLoader]
+  use: [require.resolve('style-loader'), rawCssLoaderDev]
 }
 
 const scssLoaderProd = {
@@ -157,7 +158,7 @@ const scssLoaderProd = {
     Object.assign(
       {
         fallback: require.resolve('style-loader'),
-        use: [rawCssLoaderProd, precssLoader]
+        use: [rawCssLoaderProd]
       },
       extractTextPluginOptions
     )
@@ -170,7 +171,6 @@ const lessLoaderDev = {
   use: [
     require.resolve('style-loader'),
     rawCssLoaderDev,
-    postcssLoader,
     {
       loader: 'less-loader',
       options: {
@@ -191,7 +191,6 @@ const lessLoaderProd = {
         fallback: require.resolve('style-loader'),
         use: [
           rawCssLoaderProd,
-          postcssLoader,
           ,
           {
             loader: 'less-loader',

@@ -22,7 +22,7 @@ class AuthForm extends Component<IAuthFormProps> {
     return (
       <Form onSubmit={this.handleSubmit} style={{ marginTop: '40px' }}>
         <Form.Item>
-          {getFieldDecorator('checkbox-group', {
+          {getFieldDecorator('authList', {
             initialValue: ['base', 'info', 'message']
           })(
             <Checkbox.Group style={{ textAlign: 'left' }}>
