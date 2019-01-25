@@ -3,7 +3,8 @@
     "captcha",
     "icytown",
     "mobx",
-    "polyfills"
+    "polyfills",
+    "tsloader"
   ],
   "typescript.updateImportsOnFileMove.enabled": "always"
 }

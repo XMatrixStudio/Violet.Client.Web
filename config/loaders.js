@@ -1,31 +1,31 @@
-const paths = require('./paths');
-const tsImportPluginFactory = require('ts-import-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const paths = require('./paths')
+const tsImportPluginFactory = require('ts-import-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const autoprefixer = require('autoprefixer')({
   browsers: [
     '>1%',
     'last 4 versions',
     'Firefox ESR',
-    'not ie < 9', // React doesn't support IE8 anyway
+    'not ie < 9' // React doesn't support IE8 anyway
   ],
-  flexbox: 'no-2009',
-});
+  flexbox: 'no-2009'
+})
 
-const precss = require('precss')();
-const flexBugFixes = require('postcss-flexbugs-fixes')();
+const precss = require('precss')()
+const flexBugFixes = require('postcss-flexbugs-fixes')()
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
-const publicPath = paths.servedPath;
+const publicPath = paths.servedPath
 // Some apps do not use client-side routing with pushState.
 // For these, "homepage" can be set to "." to enable relative asset paths.
-const shouldUseRelativeAssetPaths = publicPath === './';
+const shouldUseRelativeAssetPaths = publicPath === './'
 // Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
 
 // Note: defined here because it will be used more than once.
-const cssFilename = 'static/css/[name].[contenthash:8].css';
+const cssFilename = 'static/css/[name].[contenthash:8].css'
 
 // ExtractTextPlugin expects the build output to be flat.
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
@@ -33,9 +33,8 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-  { publicPath: Array(cssFilename.split('/').length).join('../') }
-  : {};
-
+    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  : {}
 
 // "url" loader works like "file" loader except that it embeds assets
 // smaller than specified limit in bytes as data URLs to avoid requests.
@@ -45,22 +44,22 @@ const urlLoader = {
   loader: require.resolve('url-loader'),
   options: {
     limit: 10000,
-    name: 'static/media/[name].[hash:8].[ext]',
-  },
-};
+    name: 'static/media/[name].[hash:8].[ext]'
+  }
+}
 
 const importPluginOption = [
   {
     libraryName: 'antd',
-    libraryDirectory: 'lib',
-    style: 'css'
+    libraryDirectory: 'es',
+    style: true
   },
   {
     libraryName: 'antd-mobile',
-    libraryDirectory: 'lib',
-    style: 'css',
+    libraryDirectory: 'es',
+    style: true
   }
-];
+]
 
 // js loader
 const jsLoader = {
@@ -68,11 +67,9 @@ const jsLoader = {
   include: paths.appSrc,
   loader: require.resolve('babel-loader'),
   options: {
-    
-    compact: true,
-  },
-};
-
+    compact: true
+  }
+}
 
 // ts loader
 const tsLoader = {
@@ -89,7 +86,7 @@ const tsLoader = {
       }
     }
   ]
-};
+}
 
 const postcssLoader = {
   loader: require.resolve('postcss-loader'),
@@ -98,12 +95,9 @@ const postcssLoader = {
     // https://github.com/facebookincubator/create-react-app/issues/2677
     // don't need now
     // ident: 'postcss',
-    plugins: () => [
-      flexBugFixes,
-      autoprefixer
-    ],
-  },
-};
+    plugins: () => [flexBugFixes, autoprefixer]
+  }
+}
 
 const precssLoader = {
   loader: require.resolve('postcss-loader'),
@@ -112,38 +106,30 @@ const precssLoader = {
     // https://github.com/facebookincubator/create-react-app/issues/2677
     // don't need now
     // ident: 'postcss',
-    plugins: () => [
-      precss,
-      flexBugFixes,
-      autoprefixer
-    ],
-  },
-};
+    plugins: () => [precss, flexBugFixes, autoprefixer]
+  }
+}
 
 const rawCssLoaderDev = {
   loader: require.resolve('css-loader'),
   options: {
-    importLoaders: 1,
-  },
-};
+    importLoaders: 1
+  }
+}
 
 const rawCssLoaderProd = {
   loader: require.resolve('css-loader'),
   options: {
     importLoaders: 1,
     minimize: true,
-    sourceMap: shouldUseSourceMap,
-  },
-};
+    sourceMap: shouldUseSourceMap
+  }
+}
 
 const cssLoaderDev = {
   test: /\.css$/,
-  use: [
-    require.resolve('style-loader'),
-    rawCssLoaderDev,
-    postcssLoader,
-  ],
-};
+  use: [require.resolve('style-loader'), rawCssLoaderDev, postcssLoader]
+}
 
 const cssLoaderProd = {
   test: /\.css$/,
@@ -151,26 +137,19 @@ const cssLoaderProd = {
     Object.assign(
       {
         fallback: require.resolve('style-loader'),
-        use: [
-          rawCssLoaderProd,
-          postcssLoader,
-        ],
+        use: [rawCssLoaderProd, postcssLoader]
       },
       extractTextPluginOptions
     )
-  ),
+  )
   // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
-};
+}
 
 // scss loader
 const scssLoaderDev = {
   test: /\.scss$/,
-  use: [
-    require.resolve('style-loader'),
-    rawCssLoaderDev,
-    precssLoader,
-  ],
-};
+  use: [require.resolve('style-loader'), rawCssLoaderDev, precssLoader]
+}
 
 const scssLoaderProd = {
   test: /\.scss$/,
@@ -178,15 +157,12 @@ const scssLoaderProd = {
     Object.assign(
       {
         fallback: require.resolve('style-loader'),
-        use: [
-          rawCssLoaderProd,
-          precssLoader,
-        ],
+        use: [rawCssLoaderProd, precssLoader]
       },
       extractTextPluginOptions
     )
   )
-};
+}
 
 // less loader
 const lessLoaderDev = {
@@ -195,9 +171,17 @@ const lessLoaderDev = {
     require.resolve('style-loader'),
     rawCssLoaderDev,
     postcssLoader,
-    require.resolve('less-loader')
-  ],
-};
+    {
+      loader: 'less-loader',
+      options: {
+        javascriptEnabled: true,
+        modifyVars: {
+          '@primary-color': 'rgba(76, 194, 200, 0.774)'
+        }
+      }
+    }
+  ]
+}
 
 const lessLoaderProd = {
   test: /\.less$/,
@@ -208,13 +192,22 @@ const lessLoaderProd = {
         use: [
           rawCssLoaderProd,
           postcssLoader,
-          require.resolve('less-loader')
-        ],
+          ,
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+              modifyVars: {
+                '@primary-color': 'rgba(76, 194, 200, 0.774)'
+              }
+            }
+          }
+        ]
       },
       extractTextPluginOptions
     )
   )
-};
+}
 
 // Exclude `js` files to keep "css" loader working as it injects
 // it's runtime that would otherwise processed through "file" loader.
@@ -228,9 +221,9 @@ const fileLoader = {
   // by webpacks internal loaders.
   exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
   options: {
-    name: 'static/media/[name].[hash:8].[ext]',
-  },
-};
+    name: 'static/media/[name].[hash:8].[ext]'
+  }
+}
 
 module.exports = {
   urlLoader,
@@ -244,4 +237,4 @@ module.exports = {
   lessLoaderProd,
   fileLoader,
   postcssLoader
-};
+}

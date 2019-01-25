@@ -22,24 +22,24 @@ class Auth extends Component<{form: WrappedFormUtils}> {
   public render() {
     return <div className='comp-auth'>
         <div className='banner'>
-          <img src={ImgIcytown} />
+          <Popover content={this.popoverContent} title='Icytown'>
+            <img src={ImgIcytown} />
+          </Popover>
           <Icon className='icon-check' type='check-circle' theme='filled' />
           <img src={ImgLogo} />
           <div className='my-line' />
         </div>
-        <p className='help-text'>
-          授权
-          <Popover content={this.popoverContent} title='Icytown'>
-            <strong>Icytown</strong>
-          </Popover>
-          访问你的信息
-        </p>
         <Card className='auth-card'>
           <div className='info'>
             <img className='avatar' src={ImgAvatar} />
-          <p>ZhenlyChen</p>
-        </div>
-        <AuthForm popoverContent={this.popoverContent} />
+            <p>ZhenlyChen</p>
+          </div>
+          <div className='client'>
+            <p>
+              您将授予 <strong>Icytown</strong>以下权限：
+            </p>
+          </div>
+          <AuthForm />
         </Card>
       </div>
   }

@@ -59,7 +59,9 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
           >
             登陆
           </Button>
-          <Link to='/account/register'>现在注册</Link>
+          <Link style={{ display: 'block' }} to='/account/register'>
+            现在注册
+          </Link>
         </Form.Item>
       </Form>
     )

@@ -1,4 +1,7 @@
 .comp-auth {
+  @card-color: rgba(76, 194, 200, 0.774);
+  @card-color-hover: rgb(76, 194, 200);
+
   .my-line {
     position: relative;
     top: -30px;
@@ -28,16 +31,16 @@
   }
 
   .auth-card {
-    border-top: 3px solid rgb(0, 132, 255);
+    border-top: 3px solid @card-color;
     &:hover {
-      border-top: 3px solid rgb(0, 132, 255) !important;
+      border-top: 3px solid @card-color !important;
     }
     margin: auto;
     width: 400px;
     margin-top: 50px;
     padding: 20px;
     .info {
-      transform: translateY(-70px);
+      transform: translateY(-80px);
       font-size: 20px;
       .avatar {
         height: 70px;
@@ -47,7 +50,7 @@
       }
     }
     .client {
-      margin-top: -55px;
+      margin-top: -90px;
       font-size: 17px;
       .ivu-checkbox-group-item {
         text-align: left;
