@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Input, Icon, Button, Row, Col } from 'antd'
-
-import testCode from '@/Assets/code.png'
+import { Input, Icon, Button } from 'antd'
+import ImageCaptcha from '../../Util/ImageCaptcha'
+import ValidCaptcha from '../../Util/ValidCaptcha'
 
 interface IValidFormProps {
   form: WrappedFormUtils
@@ -34,42 +34,8 @@ class ValidForm extends Component<IValidFormProps> {
             />
           )}
         </Form.Item>
-        <Form.Item>
-          <Row gutter={8}>
-            <Col span={16}>
-              {getFieldDecorator('imageCaptcha', {
-                rules: [{ required: true, message: '请输入右边的验证码' }]
-              })(
-                <Input
-                  prefix={<Icon type='check' className='icon-color' />}
-                  placeholder='图形验证码'
-                />
-              )}
-            </Col>
-            <Col span={8}>
-              <img src={testCode} />
-            </Col>
-          </Row>
-        </Form.Item>
-        <Form.Item>
-          <Row gutter={8}>
-            <Col span={16}>
-              {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: '请输入你收到的验证码' }]
-              })(
-                <Input
-                  prefix={<Icon type='mail' className='icon-color' />}
-                  placeholder='邮箱 / 手机验证码'
-                />
-              )}
-            </Col>
-            <Col span={8}>
-              <Button type='primary' className='bg-color'>
-                获取验证码
-              </Button>
-            </Col>
-          </Row>
-        </Form.Item>
+        <ImageCaptcha form={this.props.form} />
+        <ValidCaptcha form={this.props.form} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

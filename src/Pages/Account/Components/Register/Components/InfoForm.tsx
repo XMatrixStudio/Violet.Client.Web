@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Icon, Button } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import NewPassword from '../../Util/NewPassword'
 
 interface IInfoFormProps {
   form: WrappedFormUtils
@@ -24,8 +25,14 @@ class InfoForm extends Component<IInfoFormProps, any> {
     return (
       <Form onSubmit={this.handleSubmit} className='info-form'>
         <Form.Item>
-          <Icon type='check' className='icon-color' />
-          <span className='ant-form-text'>{this.props.id}</span>
+          <Icon
+            type='check'
+            className='icon-color'
+            style={{ fontSize: '18px' }}
+          />
+          <span className='ant-form-text' style={{ marginLeft: '10px' }}>
+            {this.props.id}
+          </span>
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('userName', {
@@ -47,28 +54,7 @@ class InfoForm extends Component<IInfoFormProps, any> {
             />
           )}
         </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请输入你的密码' }]
-          })(
-            <Input
-              prefix={<Icon type='key' className='icon-color' />}
-              type='password'
-              placeholder='密码'
-            />
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('passwordAgain', {
-            rules: [{ required: true, message: '请再次输入你的密码' }]
-          })(
-            <Input
-              prefix={<Icon type='key' className='icon-color' />}
-              type='password'
-              placeholder='再次输入密码'
-            />
-          )}
-        </Form.Item>
+        <NewPassword form={this.props.form} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

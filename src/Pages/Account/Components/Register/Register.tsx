@@ -20,16 +20,16 @@ class Register extends Component<IRouterProps> {
       this.id = id
     }
     this.currentStep++
-    console.log(this.currentStep)
+    if (this.currentStep > 3) {
+      this.currentStep = 0
+    }
   }
 
   UserForm = () => {
     switch (this.currentStep) {
       case 1:
         return <InfoForm next={this.nextStep} id={this.id} />
-      case 0:
-        return <ValidForm next={this.nextStep} />
-      default:
+      case 2:
         return (
           <div>
             <Icon
@@ -49,6 +49,8 @@ class Register extends Component<IRouterProps> {
             </Button>
           </div>
         )
+      default:
+        return <ValidForm next={this.nextStep} />
     }
   }
 

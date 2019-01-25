@@ -3,5 +3,6 @@
     "captcha",
     "mobx",
     "polyfills"
-  ]
+  ],
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }
