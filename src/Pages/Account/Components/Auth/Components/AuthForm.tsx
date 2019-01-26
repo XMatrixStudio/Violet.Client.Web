@@ -20,7 +20,7 @@ class AuthForm extends Component<IAuthFormProps> {
   render() {
     const { getFieldDecorator } = this.props.form
     return (
-      <Form onSubmit={this.handleSubmit} style={{ marginTop: '40px' }}>
+      <Form onSubmit={this.handleSubmit} style={{ marginTop: '24px' }}>
         <Form.Item>
           {getFieldDecorator('authList', {
             initialValue: ['base', 'info', 'message']
@@ -58,7 +58,7 @@ class AuthForm extends Component<IAuthFormProps> {
           授权
         </Button>
         <Button
-          className='auth-btn'
+          className='auth-second-btn'
           type='dashed'
           block={true}
           onClick={() => {

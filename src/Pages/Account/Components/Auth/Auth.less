@@ -1,6 +1,7 @@
 .comp-auth {
   @card-color: rgba(76, 194, 200, 0.774);
   @card-color-hover: rgb(76, 194, 200);
+  margin: 10px;
 
   .my-line {
     position: relative;
@@ -35,9 +36,9 @@
     &:hover {
       border-top: 3px solid @card-color !important;
     }
-    margin: auto;
-    width: 400px;
-    margin-top: 50px;
+    margin: 50px auto;
+    max-width: 400px;
+    min-width: 360px;
     padding: 20px;
     .info {
       transform: translateY(-80px);
@@ -59,11 +60,22 @@
         margin: 20px 50px;
       }
     }
-    .auth-btn {
-      margin-top: 10px;
-      font-weight: bold;
+    .auth-second-btn {
       width: 80%;
       font-size: 15px;
+    }
+
+    .auth-btn {
+      margin-top: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+      background: @card-color;
+      border-color: @card-color;
+      &:hover,
+      &:focus {
+        background: @card-color-hover;
+        border-color: @card-color-hover;
+      }
     }
   }
 }
