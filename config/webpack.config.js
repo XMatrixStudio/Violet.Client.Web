@@ -30,7 +30,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP === 'true'
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false'
@@ -129,9 +129,8 @@ module.exports = function(webpackEnv) {
       react: 'React',
       'react-dom': 'ReactDOM',
       antd: 'antd',
-      '@ant-design/icons': 'AntDesignIcons',
-      moment: 'moment',
-      mobx: 'mobx'
+      mobx: 'mobx',
+      '@ant-design/icons': 'AntDesignIcons'
     },
     optimization: {
       minimize: isEnvProduction,
@@ -207,16 +206,9 @@ module.exports = function(webpackEnv) {
             enforce: true
           },
           antIcon: {
-            test: /@ant-design/,
+            test: /[\\/]@ant-design[\\/]icons[\\/]lib/,
             chunks: 'all',
             name: 'ant-design',
-            priority: 20,
-            enforce: true
-          },
-          antd: {
-            test: /antd/,
-            chunks: 'all',
-            name: 'antd',
             priority: 20,
             enforce: true
           }
@@ -225,38 +217,6 @@ module.exports = function(webpackEnv) {
       // Automatically split vendor and commons
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      // splitChunks: {
-      //   chunks: 'all', //异步模块
-      //   minSize: 30000, //超过30000才打包
-      //   minChunks: 1, //最小引入次数1
-      //   maxAsyncRequests: 5, //一次异步加载的最大模块请求数
-      //   maxInitialRequests: 3, //入口文件最大的模块请求数
-      //   automaticNameDelimiter: '~', //默认的文件名分隔符
-      //   name: true, //根据chunk名或cahceGroups里的key生成文件名
-      //   cacheGroups: {
-      //     antIcon: {
-      //       test: /@ant-design/,
-      //       chunks: 'all',
-      //       name: 'ant-design',
-      //       priority: 20,
-      //       enforce: true
-      //     },
-      //     antd: {
-      //       test: /antd/,
-      //       chunks: 'all',
-      //       name: 'antd',
-      //       priority: 20,
-      //       enforce: true
-      //     }
-      //     // vendors: {
-      //     //   test: /node_modules/,
-      //     //   chunks: 'all',
-      //     //   name: 'vendor',
-      //     //   priority: 10,
-      //     //   minChunks: 1
-      //     // },
-      //   }
-      // },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
       runtimeChunk: {
