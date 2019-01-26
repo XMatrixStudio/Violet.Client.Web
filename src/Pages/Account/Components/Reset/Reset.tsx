@@ -94,8 +94,10 @@ class Reset extends Component<IResetProps, any> {
           </div>
           <CSSTransition
             in={this.showAnim}
-            classNames='fade'
-            timeout={300}
+            classNames={{
+              enterActive: 'animated fadeIn faster'
+            }}
+            timeout={500}
             onEntered={() => {
               this.showAnim = false
             }}

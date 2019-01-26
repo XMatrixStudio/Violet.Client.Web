@@ -10,7 +10,7 @@ Status: `Developing`
 
 Framework: `React 16`
 
-UI: `Ant Design`
+UI: `Ant Design 3`
 
 Time: 2019/1/11 - Now
 

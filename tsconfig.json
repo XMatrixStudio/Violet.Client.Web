@@ -26,10 +26,8 @@
     "scripts",
     "acceptance-tests",
     "webpack",
-    "jest",
     "src/setupTests.ts",
     "config-overrides.js",
-    "config",
-    "lib"
+    "config"
   ]
 }

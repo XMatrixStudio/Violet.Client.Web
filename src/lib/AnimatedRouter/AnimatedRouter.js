@@ -1,29 +1,37 @@
-var _createClass = (function() {
+var createClass = (function() {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i]
       descriptor.enumerable = descriptor.enumerable || false
       descriptor.configurable = true
-      if ('value' in descriptor) descriptor.writable = true
+      if ('value' in descriptor) {
+        descriptor.writable = true
+      }
       Object.defineProperty(target, descriptor.key, descriptor)
     }
   }
   return function(Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps)
-    if (staticProps) defineProperties(Constructor, staticProps)
+    if (protoProps) {
+      defineProperties(Constructor.prototype, protoProps)
+    }
+    if (staticProps) {
+      defineProperties(Constructor, staticProps)
+    }
     return Constructor
   }
 })()
 
-var _class, _class2, _temp2
+var class1
+var class2
+var temp2
 
-function _classCallCheck(instance, Constructor) {
+function classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError('Cannot call a class as a function')
   }
 }
 
-function _possibleConstructorReturn(self, call) {
+function possibleConstructorReturn(self, call) {
   if (!self) {
     throw new ReferenceError(
       "this hasn't been initialised - super() hasn't been called"
@@ -100,7 +108,7 @@ var isHistoryPush = function isHistoryPush(location, update) {
 
 var AnimatedRouter =
   withRouter(
-    (_class = ((_temp2 = _class2 = (function(_Component) {
+    (class1 = ((temp2 = class2 = (function(_Component) {
       _inherits(AnimatedRouter, _Component)
 
       function AnimatedRouter() {
@@ -108,7 +116,7 @@ var AnimatedRouter =
 
         var _temp, _this, _ret
 
-        _classCallCheck(this, AnimatedRouter)
+        classCallCheck(this, AnimatedRouter)
 
         for (
           var _len = arguments.length, args = Array(_len), _key = 0;
@@ -119,7 +127,7 @@ var AnimatedRouter =
         }
 
         return (
-          (_ret = ((_temp = ((_this = _possibleConstructorReturn(
+          (_ret = ((_temp = ((_this = possibleConstructorReturn(
             this,
             (_ref =
               AnimatedRouter.__proto__ ||
@@ -154,11 +162,11 @@ var AnimatedRouter =
             }
           }),
           _temp)),
-          _possibleConstructorReturn(_this, _ret)
+          possibleConstructorReturn(_this, _ret)
         )
       }
 
-      _createClass(AnimatedRouter, [
+      createClass(AnimatedRouter, [
         {
           key: 'setInTransition',
           value: function setInTransition(isAdd) {
@@ -183,16 +191,16 @@ var AnimatedRouter =
         {
           key: 'render',
           value: function render() {
-            var _props = this.props,
-              className = _props.className,
-              location = _props.location,
-              children = _props.children,
-              timeout = _props.timeout,
-              prefix = _props.prefix,
-              appear = _props.appear,
-              enter = _props.enter,
-              exit = _props.exit,
-              component = _props.component
+            var myProps = this.props,
+              className = myProps.className,
+              location = myProps.location,
+              children = myProps.children,
+              timeout = myProps.timeout,
+              prefix = myProps.prefix,
+              appear = myProps.appear,
+              enter = myProps.enter,
+              exit = myProps.exit,
+              component = myProps.component
 
             var groupProps = {
               appear: appear,
@@ -263,7 +271,7 @@ var AnimatedRouter =
 
       return AnimatedRouter
     })(Component)),
-    (_class2.propTypes = {
+    (class2.propTypes = {
       className: PropTypes.string,
       transitionKey: PropTypes.any,
       timeout: PropTypes.number,
@@ -273,10 +281,10 @@ var AnimatedRouter =
       exit: PropTypes.bool,
       component: PropTypes.any
     }),
-    (_class2.defaultProps = {
+    (class2.defaultProps = {
       prefix: 'animated-router'
     }),
-    _temp2))
-  ) || _class
+    temp2))
+  ) || class1
 
 export default AnimatedRouter

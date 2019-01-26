@@ -11,29 +11,6 @@ body {
   min-width: 380px;
 }
 
-.fade-enter {
-  opacity: 0;
-  animation-duration: 0.3s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
-  animation-play-state: paused;
-}
-
-.fade-enter.fade-enter-active {
-  animation-name: fadeIn;
-  animation-play-state: running;
-}
-
-@keyframes fadeIn {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .account-div {
   .ant-input-affix-wrapper .ant-input:not(:first-child) {
     padding-left: 40px;
