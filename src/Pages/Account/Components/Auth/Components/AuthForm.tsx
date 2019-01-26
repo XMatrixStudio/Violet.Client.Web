@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Checkbox, Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import RouterUtil from '../../Util/RouterUtil'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
@@ -62,7 +63,7 @@ class AuthForm extends Component<IAuthFormProps> {
           type='dashed'
           block={true}
           onClick={() => {
-            this.props.history.replace('/account')
+            RouterUtil.GoBackAccount(this.props.history, this.props.location)
           }}
         >
           切换账号

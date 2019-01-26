@@ -4,11 +4,17 @@ import { Card, Icon, Button } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import ResetForm from './Components/ResetForm'
 import TypeForm from './Components/TypeForm'
+import { CSSTransition } from 'react-transition-group'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
+import RouterUtil from '../Util/RouterUtil'
 
 interface IResetProps extends RouteComponentProps<any> {}
 
+@observer
 class Reset extends Component<IResetProps, any> {
-  currentStep = 0
+  @observable showAnim = false
+  @observable currentStep = 0
 
   UserForm = () => {
     switch (this.currentStep) {
@@ -17,7 +23,7 @@ class Reset extends Component<IResetProps, any> {
           <TypeForm
             next={() => {
               this.currentStep = 2
-              this.setState({})
+              this.showAnim = true
             }}
           />
         )
@@ -34,7 +40,10 @@ class Reset extends Component<IResetProps, any> {
               type='primary'
               className='reset-btn'
               onClick={() => {
-                this.props.history.replace('/account')
+                RouterUtil.GoBackAccount(
+                  this.props.history,
+                  this.props.location
+                )
               }}
             >
               立即登陆
@@ -46,7 +55,7 @@ class Reset extends Component<IResetProps, any> {
           <ResetForm
             next={() => {
               this.currentStep = 1
-              this.setState({})
+              this.showAnim = true
             }}
           />
         )
@@ -62,9 +71,9 @@ class Reset extends Component<IResetProps, any> {
           onClick={() => {
             if (this.currentStep === 1) {
               this.currentStep--
-              this.setState({})
+              this.showAnim = true
             } else if (this.currentStep === 0) {
-              this.props.history.replace('/account')
+              RouterUtil.GoBackAccount(this.props.history, this.props.location)
             }
           }}
         />
@@ -83,7 +92,16 @@ class Reset extends Component<IResetProps, any> {
             <p className='title-to'>找回密码</p>
             <div className='line' />
           </div>
-          <this.UserForm />
+          <CSSTransition
+            in={this.showAnim}
+            classNames='fade'
+            timeout={300}
+            onEntered={() => {
+              this.showAnim = false
+            }}
+          >
+            <this.UserForm />
+          </CSSTransition>
         </Card>
       </div>
     )

@@ -7,6 +7,8 @@ import InfoForm from './Components/InfoForm'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import Title from './Components/Title'
+import { CSSTransition } from 'react-transition-group'
+import RouterUtil from '../Util/RouterUtil'
 
 interface IRouterProps extends RouteComponentProps<any> {}
 
@@ -14,12 +16,14 @@ interface IRouterProps extends RouteComponentProps<any> {}
 class Register extends Component<IRouterProps> {
   @observable currentStep = 0
   @observable id = 'Null'
+  @observable showAnim = false
 
   nextStep = (id?: string) => {
     if (id !== undefined) {
       this.id = id
     }
     this.currentStep++
+    this.showAnim = true
     if (this.currentStep > 3) {
       this.currentStep = 0
     }
@@ -42,7 +46,10 @@ class Register extends Component<IRouterProps> {
               type='primary'
               className='register-btn'
               onClick={() => {
-                this.props.history.replace('/account')
+                RouterUtil.GoBackAccount(
+                  this.props.history,
+                  this.props.location
+                )
               }}
             >
               立即登陆
@@ -63,8 +70,9 @@ class Register extends Component<IRouterProps> {
           onClick={() => {
             if (this.currentStep === 1) {
               this.currentStep--
+              this.showAnim = true
             } else if (this.currentStep === 0) {
-              this.props.history.replace('/account')
+              RouterUtil.GoBackAccount(this.props.history, this.props.location)
             }
           }}
         />
@@ -83,7 +91,16 @@ class Register extends Component<IRouterProps> {
           <div className='card-title'>
             <Title currentStep={currentStep} />
             <div className='line' />
-            <this.UserForm />
+            <CSSTransition
+              in={this.showAnim}
+              classNames='fade'
+              timeout={300}
+              onEntered={() => {
+                this.showAnim = false
+              }}
+            >
+              <this.UserForm />
+            </CSSTransition>
           </div>
         </Card>
       </div>

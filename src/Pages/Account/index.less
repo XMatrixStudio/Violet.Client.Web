@@ -10,3 +10,100 @@ body {
   height: 0 !important;
   min-width: 380px;
 }
+
+.fade-enter {
+  opacity: 0;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2);
+  animation-play-state: paused;
+}
+
+.fade-enter.fade-enter-active {
+  animation-name: fadeIn;
+  animation-play-state: running;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.account-div {
+  .ant-input-affix-wrapper .ant-input:not(:first-child) {
+    padding-left: 40px;
+  }
+  .ant-input {
+    font-size: 16px;
+    text-align: left;
+    background: rgba(42, 89, 104, 0);
+    border: none;
+    border-bottom: 2px solid rgba(0, 27, 26, 0.158);
+    border-radius: 0;
+    padding: 16px;
+    &::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #344b6ea8;
+      opacity: 1; /* Firefox */
+      text-align: center;
+    }
+    &:focus {
+      border: none;
+      border-radius: 0;
+      border-bottom: 2px solid #6f91d6;
+      box-shadow: 0 0 0 0 rgba(45, 140, 240, 0.2);
+    }
+  }
+  .account-title {
+    font-size: 28px;
+    padding: 20px;
+    color: #0000006b;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .account-card {
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.048);
+    &:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    }
+    max-width: 400px;
+    min-width: 360px;
+    margin: auto;
+  }
+
+  .card-title {
+    display: inline-table;
+    text-align: center;
+    width: 100%;
+
+    .title-to:hover + .line {
+      width: 65px;
+    }
+    .title-to {
+      display: inline;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      user-select: none;
+    }
+
+    .line {
+      transition: all 0.2s;
+      margin-left: auto;
+      margin-right: auto;
+      width: 45px;
+      margin-top: 5px;
+    }
+  }
+
+  .last-item {
+    margin-bottom: 0;
+  }
+}

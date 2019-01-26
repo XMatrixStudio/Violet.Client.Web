@@ -29,6 +29,7 @@
     "jest",
     "src/setupTests.ts",
     "config-overrides.js",
-    "config"
+    "config",
+    "lib"
   ]
 }
