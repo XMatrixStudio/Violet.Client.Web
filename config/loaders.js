@@ -1,6 +1,6 @@
 const paths = require('./paths')
 const tsImportPluginFactory = require('ts-import-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const autoprefixer = require('autoprefixer')({
   browsers: [
@@ -79,11 +79,11 @@ const tsLoader = {
     {
       loader: require.resolve('ts-loader'),
       options: {
-        transpileOnly: true,
+        transpileOnly: true
         //happyPackMode: true,
-        getCustomTransformers: () => ({
-          before: [tsImportPluginFactory(importPluginOption)]
-        })
+        // getCustomTransformers: () => ({
+        //   before: [tsImportPluginFactory(importPluginOption)]
+        // })
       }
     }
   ]
@@ -122,47 +122,44 @@ const rawCssLoaderProd = {
   loader: require.resolve('css-loader'),
   options: {
     importLoaders: 1,
-    minimize: true,
     sourceMap: shouldUseSourceMap
   }
 }
 
 const cssLoaderDev = {
   test: /\.css$/,
-  use: [require.resolve('style-loader'), rawCssLoaderDev]
+  use: [require.resolve('style-loader'), rawCssLoaderDev, postcssLoader]
 }
 
 const cssLoaderProd = {
   test: /\.css$/,
-  loader: ExtractTextPlugin.extract(
-    Object.assign(
-      {
-        fallback: require.resolve('style-loader'),
-        use: [rawCssLoaderProd]
-      },
-      extractTextPluginOptions
-    )
-  )
+  loader: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: extractTextPluginOptions
+    },
+    rawCssLoaderProd,
+    postcssLoader
+  ]
   // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
 }
 
 // scss loader
 const scssLoaderDev = {
   test: /\.scss$/,
-  use: [require.resolve('style-loader'), rawCssLoaderDev]
+  use: [require.resolve('style-loader'), rawCssLoaderDev, precssLoader]
 }
 
 const scssLoaderProd = {
   test: /\.scss$/,
-  loader: ExtractTextPlugin.extract(
-    Object.assign(
-      {
-        fallback: require.resolve('style-loader'),
-        use: [rawCssLoaderProd]
-      },
-      extractTextPluginOptions
-    )
-  )
+  loader: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: extractTextPluginOptions
+    },
+    rawCssLoaderProd,
+    precssLoader
+  ]
 }
 
 // less loader
@@ -171,6 +168,7 @@ const lessLoaderDev = {
   use: [
     require.resolve('style-loader'),
     rawCssLoaderDev,
+    postcssLoader,
     {
       loader: 'less-loader',
       options: {
@@ -185,27 +183,23 @@ const lessLoaderDev = {
 
 const lessLoaderProd = {
   test: /\.less$/,
-  loader: ExtractTextPlugin.extract(
-    Object.assign(
-      {
-        fallback: require.resolve('style-loader'),
-        use: [
-          rawCssLoaderProd,
-          ,
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true,
-              modifyVars: {
-                '@primary-color': 'rgba(76, 194, 200, 0.774)'
-              }
-            }
-          }
-        ]
-      },
-      extractTextPluginOptions
-    )
-  )
+  loader: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: extractTextPluginOptions
+    },
+    rawCssLoaderProd,
+    postcssLoader,
+    {
+      loader: 'less-loader',
+      options: {
+        javascriptEnabled: true,
+        modifyVars: {
+          '@primary-color': 'rgba(76, 194, 200, 0.774)'
+        }
+      }
+    }
+  ]
 }
 
 // Exclude `js` files to keep "css" loader working as it injects

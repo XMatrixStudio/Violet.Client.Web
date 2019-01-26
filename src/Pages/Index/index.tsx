@@ -1,8 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import './index.less'
-import '../../Assets/variable.less'
-import registerServiceWorker from '../../registerServiceWorker'
+import * as serviceWorker from '../../serviceWorker'
 
 // router
 import { Route, Router, Switch } from 'react-router'
@@ -41,4 +40,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement
 )
-registerServiceWorker()
+
+serviceWorker.unregister()

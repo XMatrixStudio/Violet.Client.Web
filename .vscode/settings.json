@@ -1,9 +1,12 @@
 {
   "cSpell.words": [
     "captcha",
+    "devtool",
     "icytown",
     "mobx",
+    "pathinfo",
     "polyfills",
+    "precss",
     "tsloader"
   ],
   "typescript.updateImportsOnFileMove.enabled": "always"
