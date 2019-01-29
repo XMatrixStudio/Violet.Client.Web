@@ -1,15 +1,27 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon, Button } from 'antd'
+import { Form, Row, Col, Input, Icon, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import UserService from 'src/Services/UserService'
 
 interface IValidCaptchaProps {
   form: WrappedFormUtils
 }
 
 class ValidCaptcha extends Component<IValidCaptchaProps> {
-  getCaptcha = () => {
-    console.log('update')
-    // todo 发送验证码
+  sendCaptcha = () => {
+    this.props.form.validateFields(['account', 'imageCaptcha'], (err, val) => {
+      console.log(err, val)
+      if (err === null) {
+        UserService.GetValid(val.account, val.imageCaptcha, true)
+          .then(v => {
+            console.log(v)
+            message.success('验证码已发送到' + val.account)
+          })
+          .catch(res => {
+            console.log(res.response)
+          })
+      }
+    })
   }
 
   render() {
@@ -31,7 +43,7 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
             <Button
               type='primary'
               className='bg-color'
-              onClick={this.getCaptcha}
+              onClick={this.sendCaptcha}
             >
               获取验证码
             </Button>

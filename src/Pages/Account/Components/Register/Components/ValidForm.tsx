@@ -26,7 +26,7 @@ class ValidForm extends Component<IValidFormProps> {
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
         <Form.Item>
-          {getFieldDecorator('userAccount', {
+          {getFieldDecorator('account', {
             rules: [{ required: true, message: '请输入电子邮箱 / 手机号码' }]
           })(
             <Input

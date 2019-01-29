@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Input, Icon, Button, Row, Col } from 'antd'
-
-import testCode from '@/Assets/code.png'
+import { Input, Icon, Button } from 'antd'
 import ImageCaptcha from '../../Util/ImageCaptcha'
 
 interface IResetFormProps {
