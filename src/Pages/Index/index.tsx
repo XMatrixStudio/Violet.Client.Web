@@ -11,7 +11,7 @@ import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 // store
 import AuthStore from '../../Store/AuthStore'
 
-import { Root } from '../../Root'
+import { Root } from '../../Components/Root'
 import Home from './Containers/Home/Home'
 import About from './Containers/About/About'
 import NavBar from './Components/NavBar/NavBar'

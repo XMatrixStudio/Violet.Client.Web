@@ -83,7 +83,14 @@ module.exports = function(proxy, allowedHost) {
       rewrites: [{ from: /^\/account/, to: '/account.html' }]
     },
     public: allowedHost,
-    proxy,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:30002',
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
     before(app, server) {
       if (fs.existsSync(paths.proxySetup)) {
         // This registers user provided middleware for proxy reasons

@@ -15,10 +15,10 @@ const rootStore = {
   router: routerStore
 }
 
-import { Root } from '../../Root'
-import '@/lib/AnimatedRouter/animate.css'
+import { Root } from '../../Components/Root'
+import '@/Lib/AnimatedRouter/animate.css'
 import './index.tsx'
-import AnimatedRouter from '../../lib/AnimatedRouter/AnimatedRouter'
+import AnimatedRouter from '../../Lib/AnimatedRouter/AnimatedRouter'
 import Login from './Components/Login/Login'
 import Register from './Components/Register/Register'
 import Auth from './Components/Auth/Auth'

@@ -1,5 +1,9 @@
 import { observable, action } from 'mobx'
-import { IUser } from 'src/Models'
+
+export interface IUser {
+  email: string
+  id: string
+}
 
 class AuthStore {
   @observable private id: string
@@ -31,6 +35,7 @@ class AuthStore {
     localStorage.setItem('id', id)
     localStorage.setItem('email', email)
   }
+
   private clearStorage() {
     localStorage.clear()
   }

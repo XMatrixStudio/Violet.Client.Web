@@ -1,16 +1,27 @@
 import React, { Component } from 'react'
 import { Form, Row, Col, Input, Icon } from 'antd'
-import testCode from '@/Assets/code.png'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
+import UtilService from 'src/Services/UtilService'
 
 interface IImageCaptchaProps {
   form: WrappedFormUtils
 }
 
+@observer
 class ImageCaptcha extends Component<IImageCaptchaProps> {
+  @observable imageCaptchaBase64: string
+
+  constructor(props: IImageCaptchaProps) {
+    super(props)
+    this.updateImage()
+  }
+
   updateImage = () => {
-    console.log('update')
-    // todo 获取新的验证码
+    UtilService.getImageCaptcha().then(v => {
+      this.imageCaptchaBase64 = v
+    })
   }
 
   render() {
@@ -29,7 +40,12 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
             )}
           </Col>
           <Col span={8}>
-            <img src={testCode} onClick={this.updateImage} />
+            <img
+              title='换一张'
+              style={{ cursor: 'pointer' }}
+              src={this.imageCaptchaBase64}
+              onClick={this.updateImage}
+            />
           </Col>
         </Row>
       </Form.Item>

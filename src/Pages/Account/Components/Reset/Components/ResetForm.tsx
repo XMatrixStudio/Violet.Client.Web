@@ -3,6 +3,7 @@ import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Input, Icon, Button, Row, Col } from 'antd'
 
 import testCode from '@/Assets/code.png'
+import ImageCaptcha from '../../Util/ImageCaptcha'
 
 interface IResetFormProps {
   form: WrappedFormUtils
@@ -34,23 +35,7 @@ class ResetForm extends Component<IResetFormProps> {
             />
           )}
         </Form.Item>
-        <Form.Item>
-          <Row gutter={8}>
-            <Col span={16}>
-              {getFieldDecorator('imageCaptcha', {
-                rules: [{ required: true, message: '请输入右边的验证码' }]
-              })(
-                <Input
-                  prefix={<Icon type='check' className='icon-color' />}
-                  placeholder='图形验证码'
-                />
-              )}
-            </Col>
-            <Col span={8}>
-              <img src={testCode} />
-            </Col>
-          </Row>
-        </Form.Item>
+        <ImageCaptcha form={this.props.form} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

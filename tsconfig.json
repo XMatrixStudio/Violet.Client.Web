@@ -28,6 +28,7 @@
     "webpack",
     "src/setupTests.ts",
     "config-overrides.js",
-    "config"
+    "config",
+    "src/lib/**/*.js"
   ]
 }
