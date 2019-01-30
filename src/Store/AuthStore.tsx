@@ -1,43 +1,41 @@
-import { observable, action } from 'mobx'
+import { observable, action, autorun, IReactionDisposer } from 'mobx'
 
 export interface IUser {
   email: string
   id: string
+  registerValidTime: Date
+  resetValidTime: Date
 }
 
 class AuthStore {
-  @observable private id: string
-  @observable private email: string
+  @observable state: IUser
+  autoSave: IReactionDisposer
   constructor() {
-    this.id = ''
-    this.email = ''
-  }
-  @action public async signIn(data: IUser) {
-    try {
-      this.id = data.id
-      this.email = data.email
-      this.setLocalStorage({
-        email: this.email,
-        id: this.id
-      })
-      return null
-    } catch (error) {
-      return error
+    const state = localStorage.getItem('auth_state')
+    if (state) {
+      try {
+        this.state = JSON.parse(state)
+      } catch (error) {
+        console.log('非法本地存储', error)
+      }
     }
-  }
-  @action public signOut() {
-    this.id = ''
-    this.email = ''
-    this.clearStorage()
+
+    this.autoSave = autorun(() => {
+      localStorage.setItem('auth_state', JSON.stringify(this.state))
+    })
   }
 
-  private setLocalStorage({ id, email }: IUser) {
-    localStorage.setItem('id', id)
-    localStorage.setItem('email', email)
+  @action setRegisterValidTime() {
+    this.state.registerValidTime = new Date()
   }
 
-  private clearStorage() {
-    localStorage.clear()
+  @action setResetValidTime() {
+    this.state.resetValidTime = new Date()
+  }
+
+  @action signOut() {
+    this.state.id = ''
+    this.state.email = ''
   }
 }
 

@@ -56,7 +56,6 @@ class TypeForm extends Component<ITypeFormProps> {
                 />
               )}
             </Form.Item>
-            <ImageCaptcha form={this.props.form} />
             <ValidCaptcha form={this.props.form} />
             <NewPassword form={this.props.form} />
           </>

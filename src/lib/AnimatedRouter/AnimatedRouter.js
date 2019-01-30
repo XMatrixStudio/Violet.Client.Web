@@ -51,16 +51,17 @@ function _inherits(subClass, superClass) {
   }
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: {
-      value: subClass,
+      configurable: true,
       enumerable: false,
-      writable: true,
-      configurable: true
+      value: subClass,
+      writable: true
     }
   })
-  if (superClass)
+  if (superClass) {
     Object.setPrototypeOf
       ? Object.setPrototypeOf(subClass, superClass)
       : (subClass.__proto__ = superClass)
+  }
 }
 
 import React, { Component } from 'react'
@@ -74,7 +75,7 @@ var REACT_HISTORIES_KEY = 'REACT_HISTORIES_KEY'
 var histories = (sessionStorage.getItem(REACT_HISTORIES_KEY) || '')
   .split(',')
   .filter(Boolean)
-var isHistoryPush = function isHistoryPush(location, update) {
+var isHistoryPush = function(location, update) {
   var key = location.key || location.pathname + location.search
   var lastKey = lastLocation.key
   if (update && key !== lastLocation.key) {

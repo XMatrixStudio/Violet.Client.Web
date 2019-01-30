@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Input, Icon, Button } from 'antd'
-import ImageCaptcha from '../../Util/ImageCaptcha'
+import { Input, Icon, Button, message } from 'antd'
 import ValidCaptcha from '../../Util/ValidCaptcha'
+import UserService from 'src/Services/UserService'
 
 interface IValidFormProps {
   form: WrappedFormUtils
@@ -10,13 +10,15 @@ interface IValidFormProps {
 }
 
 class ValidForm extends Component<IValidFormProps> {
-  imageCaptcha: ?ImageCaptcha
-
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.next('a@zhenly.cn')
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
+        UserService.Valid(values.captcha, true).then(_ => {
+          message.success('验证成功，请完善账号信息以完成注册')
+          this.props.next(values.account)
+        })
         console.log('Received values of form: ', values)
       }
     })
@@ -37,12 +39,7 @@ class ValidForm extends Component<IValidFormProps> {
             />
           )}
         </Form.Item>
-        <ImageCaptcha form={this.props.form} ref={(inst) => this.imageCaptcha = inst} />
-        <ValidCaptcha form={this.props.form} next={() => {
-          if (this.imageCaptcha) {
-            this.imageCaptcha.updateImage()
-          }
-        }} />
+        <ValidCaptcha form={this.props.form} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

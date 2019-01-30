@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createHash } from 'crypto'
+import { message } from 'antd'
 
 export default {
   // 注册

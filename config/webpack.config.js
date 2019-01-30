@@ -404,15 +404,7 @@ module.exports = function(webpackEnv) {
           isolatedModules: true,
           noEmit: true,
           jsx: 'preserve'
-        },
-        reportFiles: [
-          '**',
-          '!**/*.json',
-          '!**/__tests__/**',
-          '!**/?(*.)(spec|test).*',
-          '!**/src/setupProxy.*',
-          '!**/src/setupTests.*'
-        ]
+        }
       }),
       isEnvDevelopment && new HardSourceWebpackPlugin()
     ].filter(Boolean),

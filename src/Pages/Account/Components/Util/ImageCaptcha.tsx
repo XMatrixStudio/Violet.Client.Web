@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon } from 'antd'
+import { Form, Row, Col, Input, Icon, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
@@ -19,9 +19,14 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
   }
 
   updateImage = () => {
-    UtilService.getImageCaptcha().then(v => {
-      this.imageCaptchaBase64 = v
-    })
+    this.props.form.resetFields(['imageCaptcha'])
+    UtilService.getImageCaptcha()
+      .then(v => {
+        this.imageCaptchaBase64 = v.data
+      })
+      .catch(_ => {
+        message.error('无法获取验证码')
+      })
   }
 
   render() {
@@ -31,7 +36,10 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
         <Row gutter={8}>
           <Col span={16}>
             {getFieldDecorator('imageCaptcha', {
-              rules: [{ required: true, message: '请输入右边的验证码' }]
+              rules: [
+                { required: true, message: '请输入右边的验证码' },
+                { pattern: /^[0-9]{4}$/, message: '请输入4位数字验证码' }
+              ]
             })(
               <Input
                 prefix={<Icon type='check' className='icon-color' />}
