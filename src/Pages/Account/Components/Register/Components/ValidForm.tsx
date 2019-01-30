@@ -10,6 +10,8 @@ interface IValidFormProps {
 }
 
 class ValidForm extends Component<IValidFormProps> {
+  imageCaptcha: ?ImageCaptcha
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.next('a@zhenly.cn')
@@ -35,8 +37,12 @@ class ValidForm extends Component<IValidFormProps> {
             />
           )}
         </Form.Item>
-        <ImageCaptcha form={this.props.form} />
-        <ValidCaptcha form={this.props.form} />
+        <ImageCaptcha form={this.props.form} ref={(inst) => this.imageCaptcha = inst} />
+        <ValidCaptcha form={this.props.form} next={() => {
+          if (this.imageCaptcha) {
+            this.imageCaptcha.updateImage()
+          }
+        }} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

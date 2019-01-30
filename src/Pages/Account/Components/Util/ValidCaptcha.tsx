@@ -5,6 +5,7 @@ import UserService from 'src/Services/UserService'
 
 interface IValidCaptchaProps {
   form: WrappedFormUtils
+  next?: () => void
 }
 
 class ValidCaptcha extends Component<IValidCaptchaProps> {
@@ -16,6 +17,9 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
           .then(v => {
             console.log(v)
             message.success('验证码已发送到' + val.account)
+            if (this.props.next !== undefined) {
+              this.props.next()
+            }
           })
           .catch(res => {
             console.log(res.response)
