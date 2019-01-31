@@ -12,11 +12,19 @@ class AuthStore {
   autoSave: IReactionDisposer
   constructor() {
     const state = localStorage.getItem('auth_state')
-    if (state) {
+    if (state && state !== undefined && state !== 'undefined') {
+      console.log(state)
       try {
         this.state = JSON.parse(state)
       } catch (error) {
         console.log('非法本地存储', error)
+      }
+    } else {
+      this.state = {
+        email: '',
+        id: '',
+        registerValidTime: new Date(0),
+        resetValidTime: new Date(0)
       }
     }
 
@@ -27,6 +35,10 @@ class AuthStore {
 
   @action setRegisterValidTime() {
     this.state.registerValidTime = new Date()
+  }
+
+  @action resetRegisterValidTime() {
+    this.state.registerValidTime = new Date(0)
   }
 
   @action setResetValidTime() {

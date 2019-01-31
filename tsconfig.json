@@ -29,6 +29,6 @@
     "src/setupTests.ts",
     "config-overrides.js",
     "config",
-    "src/lib/**/*.js"
+    "src/Lib/**/*.js"
   ]
 }

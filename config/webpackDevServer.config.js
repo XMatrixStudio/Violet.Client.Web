@@ -85,7 +85,7 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:30002',
+        target: 'http://127.0.0.1:40002',
         pathRewrite: {
           '^/api': ''
         }

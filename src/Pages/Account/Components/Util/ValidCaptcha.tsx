@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon, Button, message } from 'antd'
+import { Form, Row, Col, Input, Icon, message, Button } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import UserService from 'src/Services/UserService'
 import ImageCaptcha from './ImageCaptcha'
 import ServiceTool from 'src/Services/ServiceTool'
 import { inject, observer } from 'mobx-react'
 import AuthStore from 'src/Store/AuthStore'
+import CountDownButton from './CountDownButton'
 
 interface IValidCaptchaProps {
   form: WrappedFormUtils
-  authStore?: AuthStore
+  AuthStore?: AuthStore
 }
 
-@inject('auth')
+@inject('AuthStore')
 @observer
 class ValidCaptcha extends Component<IValidCaptchaProps> {
   imageCaptcha: ImageCaptcha | null
@@ -25,15 +26,16 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
 
   sendCaptcha = () => {
     this.props.form.validateFields(['account', 'imageCaptcha'], (err, val) => {
-      console.log(err, val)
       if (err === null) {
+        console.log(this.props)
+        this.props.AuthStore!.setRegisterValidTime()
         UserService.GetValid(val.account, val.imageCaptcha, true)
           .then(_ => {
             message.success('验证码已发送到' + val.account)
-            this.props.authStore!.setRegisterValidTime()
             this.refreshCaptcha()
           })
           .catch(resError => {
+            // this.props.AuthStore!.resetRegisterValidTime()
             ServiceTool.errorHandler(resError, msg => {
               switch (msg) {
                 case 'error_captcha':
@@ -77,13 +79,10 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
               )}
             </Col>
             <Col span={8}>
-              <Button
-                type='primary'
-                className='bg-color'
-                onClick={this.sendCaptcha}
-              >
-                获取验证码
-              </Button>
+              <CountDownButton
+                lastTime={this.props.AuthStore!.state.registerValidTime}
+                sendCaptcha={this.sendCaptcha}
+              />
             </Col>
           </Row>
         </Form.Item>
