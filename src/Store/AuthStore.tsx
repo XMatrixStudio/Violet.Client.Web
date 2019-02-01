@@ -1,8 +1,18 @@
 import { observable, action, autorun, IReactionDisposer } from 'mobx'
+import Login from 'src/Pages/Account/Components/Login/Login'
+
+// export interface IUserInfo {
+//   id?: string
+//   name?: string
+//   nickname?: string
+//   email?: string
+//   phone?: string
+//   avatar?: string
+// }
 
 export interface IUser {
-  email: string
-  id: string
+  isLogin: boolean
+  // info: IUserInfo
   registerValidTime: Date
   resetValidTime: Date
 }
@@ -20,8 +30,8 @@ class AuthStore {
       }
     } else {
       this.state = {
-        email: '',
-        id: '',
+        isLogin: false,
+        // info: {},
         registerValidTime: new Date(0),
         resetValidTime: new Date(0)
       }
@@ -31,6 +41,10 @@ class AuthStore {
       localStorage.setItem('auth_state', JSON.stringify(this.state))
     })
   }
+
+  // @action setInfo(info: IUserInfo) {
+  //   this.state.info = info
+  // }
 
   @action setRegisterValidTime() {
     this.state.registerValidTime = new Date()
@@ -44,9 +58,13 @@ class AuthStore {
     this.state.resetValidTime = new Date()
   }
 
+  @action login() {
+    this.state.isLogin = true
+  }
+
   @action signOut() {
-    this.state.id = ''
-    this.state.email = ''
+    this.state.isLogin = false
+    // this.state.info = {}
   }
 }
 

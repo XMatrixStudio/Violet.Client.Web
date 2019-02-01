@@ -1,19 +1,44 @@
 import * as React from 'react'
-import { Form, Icon, Input, Button, Checkbox } from 'antd'
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
+import { inject, observer } from 'mobx-react'
+import AuthStore from 'src/Store/AuthStore'
 
 interface ILoginFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
+  AuthStore?: AuthStore
 }
 
+@inject('AuthStore')
+@observer
 class NormalLoginForm extends React.Component<ILoginFormProps, any> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.history.push('/account/auth')
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        // {account: "zhenly", password: "123456", remember: true}
+        UserService.Login(values.account, values.password, values.remember)
+          .then(_ => {
+            this.props.AuthStore!.login()
+            this.props.history.push('/account/auth')
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              switch (msg) {
+                case 'invalid_email':
+                case 'invalid_phone':
+                case 'invalid_name':
+                case 'error_user_or_password':
+                  message.error('用户名或密码错误')
+                  break
+                default:
+                  message.error('发生错误:' + msg)
+              }
+            })
+          })
       }
     })
   }
@@ -23,7 +48,7 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
         <Form.Item>
-          {getFieldDecorator('userName', {
+          {getFieldDecorator('account', {
             rules: [{ required: true, message: '请输入用户名 / 手机 / 邮箱' }]
           })(
             <Input

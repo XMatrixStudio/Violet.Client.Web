@@ -3,11 +3,16 @@ import { Form, Checkbox, Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import RouterUtil from '../../Util/RouterUtil'
+import { inject, observer } from 'mobx-react'
+import AuthStore from 'src/Store/AuthStore'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
+  AuthStore?: AuthStore
 }
 
+@inject('AuthStore')
+@observer
 class AuthForm extends Component<IAuthFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,6 +68,7 @@ class AuthForm extends Component<IAuthFormProps> {
           type='dashed'
           block={true}
           onClick={() => {
+            this.props.AuthStore!.signOut()
             RouterUtil.GoBackAccount(this.props.history, this.props.location)
           }}
         >

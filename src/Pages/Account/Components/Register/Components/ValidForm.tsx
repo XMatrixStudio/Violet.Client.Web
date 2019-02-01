@@ -13,6 +13,7 @@ interface IValidFormProps {
 class ValidForm extends Component<IValidFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    // this.props.next('test')
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}

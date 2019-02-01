@@ -27,10 +27,14 @@ class NewPassword extends Component<INewPasswordProps> {
 
   validateToNextPassword = (_: any, value: any, callback: any) => {
     const form = this.props.form
-    if (value && this.state.confirmDirty) {
+    if (!/^[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]/.test(value)) {
+      callback('密码不能为纯数字或纯字母')
+    } else if (value && this.state.confirmDirty) {
       form.validateFields(['confirm'], { force: true })
+      callback()
+    } else {
+      callback()
     }
-    callback()
   }
 
   render() {
@@ -41,6 +45,8 @@ class NewPassword extends Component<INewPasswordProps> {
           {getFieldDecorator('password', {
             rules: [
               { required: true, message: '请输入你的密码' },
+              { min: 6, message: '密码不能小于6位' },
+              { max: 512, message: '密码不能大于512位' },
               {
                 validator: this.validateToNextPassword
               }

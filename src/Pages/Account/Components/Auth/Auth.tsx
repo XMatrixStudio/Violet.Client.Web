@@ -1,28 +1,51 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { Icon, Popover, Card} from 'antd'
+import { Icon, Popover, Card } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import AuthForm from './Components/AuthForm'
 
 import ImgIcytown from '@/Assets/icytown.png'
-import ImgAvatar from '@/Assets/avatar.jpg'
 import ImgLogo from '@/Assets/logo.svg'
+import UserService from 'src/Services/UserService'
 
-class Auth extends Component<{form: WrappedFormUtils}> {
+interface IAuth {
+  form: WrappedFormUtils
+}
 
-  popoverContent = (
-      <div>
-        <p>Icytown博客评论系统</p>
-        <p>By <a href="github.com/MegaShow" target="_blank"> MegaShow</a>
-        </p>
-        <a href="https://icytown.com" target="_blank">https://icytown.com</a>
-      </div>
-    )
+class Auth extends Component<IAuth> {
+  userName: string
+  userAvatar: string
+
+  constructor(props: IAuth) {
+    super(props)
+    UserService.GetInfo(info => {
+      this.userName = info.nickname
+      this.userAvatar = info.avatar
+    })
+  }
 
   public render() {
-    return <div className='comp-auth'>
+    return (
+      <div className='comp-auth'>
         <div className='banner'>
-          <Popover content={this.popoverContent} title='Icytown'>
+          <Popover
+            content={
+              <div>
+                <p>Icytown博客评论系统</p>
+                <p>
+                  By{' '}
+                  <a href='github.com/MegaShow' target='_blank'>
+                    {' '}
+                    MegaShow
+                  </a>
+                </p>
+                <a href='https://icytown.com' target='_blank'>
+                  https://icytown.com
+                </a>
+              </div>
+            }
+            title='Icytown'
+          >
             <img src={ImgIcytown} />
           </Popover>
           <Icon className='icon-check' type='check-circle' theme='filled' />
@@ -31,8 +54,8 @@ class Auth extends Component<{form: WrappedFormUtils}> {
         </div>
         <Card className='auth-card'>
           <div className='info'>
-            <img className='avatar' src={ImgAvatar} />
-            <p>ZhenlyChen</p>
+            <img className='avatar' src={this.userAvatar} />
+            <p>{this.userName}</p>
           </div>
           <div className='client'>
             <p>
@@ -42,6 +65,7 @@ class Auth extends Component<{form: WrappedFormUtils}> {
           <AuthForm />
         </Card>
       </div>
+    )
   }
 }
 
