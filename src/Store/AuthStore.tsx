@@ -13,7 +13,6 @@ class AuthStore {
   constructor() {
     const state = localStorage.getItem('auth_state')
     if (state && state !== undefined && state !== 'undefined') {
-      console.log(state)
       try {
         this.state = JSON.parse(state)
       } catch (error) {

@@ -8,6 +8,7 @@ interface ICountDownProps {
 
 class CountDownButton extends Component<ICountDownProps> {
   timer: any | null
+  waitTime: 60
 
   constructor(props: ICountDownProps) {
     super(props)
@@ -16,7 +17,7 @@ class CountDownButton extends Component<ICountDownProps> {
 
   remainTime = () => {
     const time = new Date().getTime() - new Date(this.props.lastTime).getTime()
-    return 60 - time / 1000
+    return this.waitTime - time / 1000
   }
 
   buttonTitle = () => {
@@ -24,7 +25,7 @@ class CountDownButton extends Component<ICountDownProps> {
       clearTimeout(this.timer)
     }
     const remainTime = this.remainTime()
-    if (remainTime < 60 && remainTime > 0) {
+    if (remainTime < this.waitTime && remainTime > 0) {
       this.timer = setTimeout(() => {
         this.setState({})
       }, 1000)
@@ -36,7 +37,7 @@ class CountDownButton extends Component<ICountDownProps> {
   render() {
     return (
       <Button
-        disabled={this.remainTime() < 60 && this.remainTime() > 0}
+        disabled={this.remainTime() < this.waitTime && this.remainTime() > 0}
         type='primary'
         className='bg-color'
         style={{ color: '#fff' }}

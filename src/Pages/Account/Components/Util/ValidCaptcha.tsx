@@ -29,19 +29,19 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
       if (err === null) {
         console.log(this.props)
         this.props.AuthStore!.setRegisterValidTime()
+        message.success('邮件发送中...')
         UserService.GetValid(val.account, val.imageCaptcha, true)
           .then(_ => {
             message.success('验证码已发送到' + val.account)
             this.refreshCaptcha()
           })
           .catch(resError => {
-            // this.props.AuthStore!.resetRegisterValidTime()
+            this.props.AuthStore!.resetRegisterValidTime()
             ServiceTool.errorHandler(resError, msg => {
               switch (msg) {
                 case 'error_captcha':
                 case 'not_exist_captcha':
-                  message.error('验证码错误')
-                  this.refreshCaptcha()
+                  message.error('图形验证码错误')
                   break
                 case 'invalid_email':
                   message.error('无效的邮箱地址')
@@ -52,6 +52,7 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                 default:
                   message.error('发生错误:' + msg)
               }
+              this.refreshCaptcha()
             })
           })
       }
@@ -70,7 +71,10 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
           <Row gutter={8}>
             <Col span={16}>
               {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: '请输入你收到的验证码' }]
+                rules: [
+                  { required: true, message: '请输入你收到的验证码' },
+                  { len: 6, message: '请输入六位验证码' }
+                ]
               })(
                 <Input
                   prefix={<Icon type='mail' className='icon-color' />}

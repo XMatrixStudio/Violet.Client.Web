@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Input, Icon, Button } from 'antd'
+import { Form, Input, Icon, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from '../../Util/NewPassword'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IInfoFormProps {
   form: WrappedFormUtils
@@ -12,10 +14,29 @@ interface IInfoFormProps {
 class InfoForm extends Component<IInfoFormProps, any> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.next()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        // {userName: "zhenly", nickName: "ZhenlyChen", password: "123456", passwordAgain: "123456"}
+        UserService.Register(values.userName, values.nickName, values.password)
+          .then(_ => {
+            this.props.next()
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              switch (msg) {
+                case 'not_exist_email':
+                  message.error('用户邮箱未验证，无法完成注册')
+                  break
+                case 'reserved_name':
+                case 'exist_name':
+                  message.error('用户名已存在')
+                  this.props.form.resetFields(['userName'])
+                  break
+                default:
+                  message.error('发生错误：' + msg)
+              }
+            })
+          })
       }
     })
   }
@@ -36,7 +57,16 @@ class InfoForm extends Component<IInfoFormProps, any> {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('userName', {
-            rules: [{ required: true, message: '请输入用户名' }]
+            rules: [
+              { required: true, message: '请输入用户名' },
+              {
+                pattern: /^[a-zA-Z0-9_-]*$/,
+                message: '用户名由字母、数字、下划线或横杠组成'
+              },
+              { pattern: /^[a-zA-Z].*$/, message: '用户名必须由字母开头' },
+              { min: 3, message: '用户名不能小于3个字符' },
+              { max: 24, message: '用户名不能大于24个字符' }
+            ]
           })(
             <Input
               prefix={<Icon type='user' className='icon-color' />}
@@ -46,7 +76,10 @@ class InfoForm extends Component<IInfoFormProps, any> {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('nickName', {
-            rules: [{ required: true, message: '请输入昵称' }]
+            rules: [
+              { required: true, message: '请输入昵称' },
+              { max: 24, message: '昵称不能大于24个字符' }
+            ]
           })(
             <Input
               prefix={<Icon type='robot' className='icon-color' />}
