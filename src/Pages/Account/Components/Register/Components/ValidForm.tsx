@@ -17,7 +17,7 @@ class ValidForm extends Component<IValidFormProps> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
-        UserService.Valid(values.captcha, true)
+        UserService.Valid(values.account, values.captcha, true)
           .then(_ => {
             message.success('验证成功，请完善账号信息以完成注册')
             this.props.next(values.account)
@@ -58,7 +58,7 @@ class ValidForm extends Component<IValidFormProps> {
             />
           )}
         </Form.Item>
-        <ValidCaptcha form={this.props.form} />
+        <ValidCaptcha form={this.props.form} isNew={true} />
         <Form.Item className='last-item'>
           <Button
             type='primary'

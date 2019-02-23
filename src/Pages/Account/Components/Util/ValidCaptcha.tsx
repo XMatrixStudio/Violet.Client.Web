@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon, message, Button } from 'antd'
+import { Form, Row, Col, Input, Icon, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import UserService from 'src/Services/UserService'
 import ImageCaptcha from './ImageCaptcha'
@@ -11,6 +11,7 @@ import CountDownButton from './CountDownButton'
 interface IValidCaptchaProps {
   form: WrappedFormUtils
   AuthStore?: AuthStore
+  isNew?: boolean
 }
 
 @inject('AuthStore')
@@ -30,7 +31,12 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
         console.log(this.props)
         this.props.AuthStore!.setRegisterValidTime()
         message.success('邮件发送中...')
-        UserService.GetValid(val.account, val.imageCaptcha, true)
+        console.log(val)
+        UserService.GetValid(
+          val.account,
+          val.imageCaptcha,
+          this.props.isNew === true
+        )
           .then(_ => {
             message.success('验证码已发送到' + val.account)
             this.refreshCaptcha()
@@ -42,6 +48,9 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                 case 'error_captcha':
                 case 'not_exist_captcha':
                   message.error('图形验证码错误')
+                  break
+                case 'timeout_captcha':
+                  message.error('验证码已超时')
                   break
                 case 'invalid_email':
                   message.error('无效的邮箱地址')

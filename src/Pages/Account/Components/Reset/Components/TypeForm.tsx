@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Input, Icon, Button, Select } from 'antd'
-const { Option, OptGroup } = Select
+const { Option } = Select
 
 import TextArea from 'antd/lib/input/TextArea'
-import ImageCaptcha from '../../Util/ImageCaptcha'
 import ValidCaptcha from '../../Util/ValidCaptcha'
 import NewPassword from '../../Util/NewPassword'
 
 interface ITypeFormProps {
   form: WrappedFormUtils
   next: (id?: string) => void
-  defaultType?: 'email'
+  defaultType?: 'account'
 }
 
 class TypeForm extends Component<ITypeFormProps> {
-  resetType = 'email'
+  resetType = 'account'
 
   constructor(props: ITypeFormProps) {
     super(props)
@@ -42,39 +41,22 @@ class TypeForm extends Component<ITypeFormProps> {
 
   SelectedForm = () => {
     const { getFieldDecorator } = this.props.form
+    console.log(this.resetType)
     switch (this.resetType) {
-      case 'email':
+      case 'account':
         return (
           <>
             <Form.Item>
-              {getFieldDecorator('userAccount', {
-                rules: [{ required: true, message: '请输入完整的邮箱地址' }]
+              {getFieldDecorator('account', {
+                rules: [{ required: true, message: '请输入邮箱地址或手机号码' }]
               })(
                 <Input
                   prefix={<Icon type='mail' className='icon-color' />}
-                  placeholder='完整的邮箱地址'
+                  placeholder='邮箱地址/手机号'
                 />
               )}
             </Form.Item>
-            <ValidCaptcha form={this.props.form} />
-            <NewPassword form={this.props.form} />
-          </>
-        )
-      case 'phone':
-        return (
-          <>
-            <Form.Item>
-              {getFieldDecorator('userAccount', {
-                rules: [{ required: true, message: '请输入完整的手机号码' }]
-              })(
-                <Input
-                  prefix={<Icon type='mobile' className='icon-color' />}
-                  placeholder='完整的手机号码'
-                />
-              )}
-            </Form.Item>
-            <ImageCaptcha form={this.props.form} />
-            <ValidCaptcha form={this.props.form} />
+            <ValidCaptcha form={this.props.form} isNew={false} />
             <NewPassword form={this.props.form} />
           </>
         )
@@ -114,16 +96,11 @@ class TypeForm extends Component<ITypeFormProps> {
       <Form onSubmit={this.handleSubmit} className='normal-form'>
         <Form.Item>
           {getFieldDecorator('selectType', {
-            initialValue: 'email'
+            initialValue: 'account'
           })(
             <Select onChange={this.handleTypeChange}>
-              <OptGroup label='身份验证'>
-                <Option value='email'>通过邮箱5*****@qq.com验证</Option>
-                <Option value='phone'>通过手机138*******1验证</Option>
-              </OptGroup>
-              <OptGroup label='申诉'>
-                <Option value='contact'>联系客服</Option>
-              </OptGroup>
+              <Option value='account'>通过邮箱/手机号验证</Option>
+              <Option value='contact'>联系客服</Option>
             </Select>
           )}
         </Form.Item>

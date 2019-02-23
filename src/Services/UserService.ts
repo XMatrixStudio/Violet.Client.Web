@@ -56,11 +56,15 @@ export default {
     return res
   },
   // 验证邮箱/手机
-  Valid: async (captcha: string, isNew: boolean) => {
-    const res = await axios.put('/api/i/user/email', {
-      operator: isNew ? 'register' : 'other',
-      code: captcha
-    })
+  Valid: async (account: string, captcha: string, isNew: boolean) => {
+    const isEmail = account.includes('@')
+    const res = await axios.put(
+      isEmail ? '/api/i/user/email' : '/api/i/user/phone',
+      {
+        operator: isNew ? 'register' : 'reset',
+        code: captcha
+      }
+    )
     return res
   },
   // 获取验证码
@@ -69,7 +73,7 @@ export default {
     const res = await axios.post(
       isEmail ? '/api/i/user/email' : '/api/i/user/phone',
       {
-        operator: isNew ? 'register' : 'other',
+        operator: isNew ? 'register' : 'reset',
         [isEmail ? 'email' : 'phone']: account,
         captcha: captcha
       }

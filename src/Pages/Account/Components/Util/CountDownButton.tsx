@@ -31,7 +31,7 @@ class CountDownButton extends Component<ICountDownProps> {
       }, 1000)
       return remainTime.toFixed(0).toString() + 's 后重试'
     }
-    return '获取验证码'
+    return '发送验证码'
   }
 
   render() {

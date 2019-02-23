@@ -14,7 +14,7 @@ interface IResetProps extends RouteComponentProps<any> {}
 @observer
 class Reset extends Component<IResetProps, any> {
   @observable showAnim = false
-  @observable currentStep = 0
+  @observable currentStep = 1
 
   UserForm = () => {
     switch (this.currentStep) {
@@ -63,18 +63,19 @@ class Reset extends Component<IResetProps, any> {
   }
 
   BackIcon = () => {
-    if (this.currentStep < 2) {
+    if (this.currentStep < 3) {
       return (
         <Icon
           type='arrow-left'
           className='icon-back'
           onClick={() => {
-            if (this.currentStep === 1) {
-              this.currentStep--
-              this.showAnim = true
-            } else if (this.currentStep === 0) {
-              RouterUtil.GoBackAccount(this.props.history, this.props.location)
-            }
+            RouterUtil.GoBackAccount(this.props.history, this.props.location)
+            // if (this.currentStep === 1) {
+            //   this.currentStep--
+            //   this.showAnim = true
+            // } else if (this.currentStep === 0) {
+            //   RouterUtil.GoBackAccount(this.props.history, this.props.location)
+            // }
           }}
         />
       )
