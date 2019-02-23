@@ -93,6 +93,12 @@ module.exports = function(webpackEnv) {
         isEnvDevelopment &&
           require.resolve('react-dev-utils/webpackHotDevClient'),
         paths.appAccountJs
+      ].filter(Boolean),
+      user: [
+        // require.resolve('./polyfills'),
+        isEnvDevelopment &&
+          require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appUserJs
       ].filter(Boolean)
     },
     output: {
@@ -322,6 +328,32 @@ module.exports = function(webpackEnv) {
             chunks: ['account'],
             template: paths.appHtml,
             filename: 'account.html'
+          },
+          isEnvProduction
+            ? {
+                minify: {
+                  removeComments: true,
+                  collapseWhitespace: true,
+                  removeRedundantAttributes: true,
+                  useShortDoctype: true,
+                  removeEmptyAttributes: true,
+                  removeStyleLinkTypeAttributes: true,
+                  keepClosingSlash: true,
+                  minifyJS: true,
+                  minifyCSS: true,
+                  minifyURLs: true
+                }
+              }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['user'],
+            template: paths.appHtml,
+            filename: 'user.html'
           },
           isEnvProduction
             ? {

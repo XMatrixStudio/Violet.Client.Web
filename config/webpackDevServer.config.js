@@ -80,7 +80,10 @@ module.exports = function(proxy, allowedHost) {
       // See https://github.com/facebookincubator/create-react-app/issues/387.
       disableDotRule: true,
       // 多入口重定向
-      rewrites: [{ from: /^\/account/, to: '/account.html' }]
+      rewrites: [
+        { from: /^\/account/, to: '/account.html' },
+        { from: /^\/user/, to: '/user.html' }
+      ]
     },
     public: allowedHost,
     proxy: {

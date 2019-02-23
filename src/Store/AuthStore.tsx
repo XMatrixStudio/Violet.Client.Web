@@ -1,5 +1,4 @@
 import { observable, action, autorun, IReactionDisposer } from 'mobx'
-import Login from 'src/Pages/Account/Components/Login/Login'
 
 // export interface IUserInfo {
 //   id?: string
