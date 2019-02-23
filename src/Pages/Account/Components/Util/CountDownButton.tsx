@@ -8,11 +8,12 @@ interface ICountDownProps {
 
 class CountDownButton extends Component<ICountDownProps> {
   timer: any | null
-  waitTime: 60
+  waitTime: number
 
   constructor(props: ICountDownProps) {
     super(props)
     this.timer = null
+    this.waitTime = 60
   }
 
   remainTime = () => {

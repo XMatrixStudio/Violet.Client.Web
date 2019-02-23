@@ -14,7 +14,7 @@ class ValidForm extends Component<IValidFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // this.props.next('test')
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['account', 'captcha'], (err, values) => {
       if (!err) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
         UserService.Valid(values.account, values.captcha, true)
