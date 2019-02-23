@@ -29,6 +29,7 @@ class Home extends React.Component<IHomeProps, any> {
     return (
       <Layout className='home'>
         <Sider
+          className='home-side'
           collapsible={true}
           collapsed={this.collapsed}
           onCollapse={this.onCollapse}
@@ -74,16 +75,7 @@ class Home extends React.Component<IHomeProps, any> {
           </Menu>
         </Sider>
         <Layout>
-          <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              background: '#fff',
-              minHeight: 280
-            }}
-          >
-            Content
-          </Content>
+          <Content className='content-layout'>Content</Content>
         </Layout>
       </Layout>
     )
