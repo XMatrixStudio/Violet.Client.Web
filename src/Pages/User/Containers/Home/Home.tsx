@@ -5,13 +5,21 @@ import { Layout, Menu, Icon } from 'antd'
 const { Header, Sider, Content } = Layout
 import { observable } from 'mobx'
 
-import Logo from '@/Assets/logo.white.svg'
+import Logo from '@/Assets/logo.svg'
 import Avatar from '@/Assets/avatar.jpg'
+import { RouteComponentProps } from 'react-router-dom'
+
+interface IHomeProps extends RouteComponentProps<any> {}
 
 @inject('router')
 @observer
-class Home extends React.Component {
+class Home extends React.Component<IHomeProps, any> {
   @observable collapsed: boolean
+
+  constructor(props: IHomeProps) {
+    super(props)
+    this.collapsed = true
+  }
 
   onCollapse = (collapsed: boolean) => {
     this.collapsed = collapsed
@@ -38,27 +46,34 @@ class Home extends React.Component {
             <img src={Avatar} className='user-avatar' />
             <p>ZhenlyChen</p>
           </div>
-          <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>
-            <Menu.Item key='1'>
+          <Menu mode='inline' defaultSelectedKeys={['user']}>
+            <Menu.Item key='user'>
               <Icon type='user' />
               <span>个人信息</span>
             </Menu.Item>
-            <Menu.Item key='2'>
-              <Icon type='video-camera' />
+            <Menu.Item key='auth'>
+              <Icon type='safety' />
+              <span>授权管理</span>
+            </Menu.Item>
+            <Menu.Item key='message'>
+              <Icon type='message' />
+              <span>通知信息</span>
+            </Menu.Item>
+            <Menu.Item key='app'>
+              <Icon type='code' />
               <span>应用管理</span>
             </Menu.Item>
-            <Menu.Item key='3'>
-              <Icon type='upload' />
-              <span>授权管理</span>
+            <Menu.Item key='setting'>
+              <Icon type='setting' />
+              <span>系统设置</span>
+            </Menu.Item>
+            <Menu.Item key='help'>
+              <Icon type='question' />
+              <span>反馈帮助</span>
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: '10px' }}>
-            {' '}
-            <Icon type='user' />
-            <span>个人信息</span>
-          </Header>
           <Content
             style={{
               margin: '24px 16px',
