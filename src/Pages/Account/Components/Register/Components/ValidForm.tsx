@@ -4,12 +4,17 @@ import { Input, Icon, Button, message } from 'antd'
 import ValidCaptcha from '../../Util/ValidCaptcha'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import AuthStore from 'src/Store/AuthStore'
+import { inject, observer } from 'mobx-react'
 
 interface IValidFormProps {
   form: WrappedFormUtils
+  AuthStore?: AuthStore
   next: (id?: string) => void
 }
 
+@inject('AuthStore')
+@observer
 class ValidForm extends Component<IValidFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,9 +22,10 @@ class ValidForm extends Component<IValidFormProps> {
     this.props.form.validateFields(['account', 'captcha'], (err, values) => {
       if (!err) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
-        UserService.Valid(values.account, values.captcha, true)
+        UserService.Valid(values.account, values.captcha)
           .then(_ => {
             message.success('验证成功，请完善账号信息以完成注册')
+            this.props.AuthStore!.resetRegisterValidTime()
             this.props.next(values.account)
           })
           .catch(error => {

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { createHash } from 'crypto'
 
 export interface IUserInfo {
-  id: string
+  class: string
   name: string
   nickname: string
   email: string
@@ -18,12 +18,12 @@ export default {
       .then(res => {
         if (res && res.data) {
           success({
-            id: res.data.id,
+            class: res.data.class,
             name: res.data.name,
-            nickname: res.data.nickname,
             email: res.data.email,
             phone: res.data.phone,
-            avatar: res.data.avatar
+            nickname: res.data.info.nickname,
+            avatar: res.data.info.avatar
           })
         } else {
           failed!()
@@ -56,12 +56,12 @@ export default {
     return res
   },
   // 验证邮箱/手机
-  Valid: async (account: string, captcha: string, isNew: boolean) => {
+  Valid: async (account: string, captcha: string) => {
     const isEmail = account.includes('@')
     const res = await axios.put(
       isEmail ? '/api/i/user/email' : '/api/i/user/phone',
       {
-        operator: isNew ? 'register' : 'reset',
+        operator: 'register',
         code: captcha
       }
     )
@@ -79,5 +79,24 @@ export default {
       }
     )
     return res
+  },
+  // 重置密码
+  ResetPassword: async (account: string, captcha: string, password: string) => {
+    const isEmail = account.includes('@')
+    const res = await axios.put(
+      isEmail ? '/api/i/user/email' : '/api/i/user/phone',
+      {
+        operator: 'reset',
+        code: captcha,
+        password: createHash('sha512')
+          .update(password)
+          .digest('hex')
+      }
+    )
+    return res
+  },
+  // 退出登陆
+  Logout: async () => {
+    await axios.delete('/api/i/user/session')
   }
 }

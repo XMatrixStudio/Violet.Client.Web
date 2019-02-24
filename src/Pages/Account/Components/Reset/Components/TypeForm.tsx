@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Input, Icon, Button, Select } from 'antd'
+import { Input, Icon, Button, Select, message } from 'antd'
 const { Option } = Select
 
 import TextArea from 'antd/lib/input/TextArea'
 import ValidCaptcha from '../../Util/ValidCaptcha'
 import NewPassword from '../../Util/NewPassword'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface ITypeFormProps {
   form: WrappedFormUtils
@@ -25,12 +27,45 @@ class TypeForm extends Component<ITypeFormProps> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.next('a@zhenly.cn')
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values)
-      }
-    })
+    console.log(this.props.form.getFieldValue('selectType'))
+    switch (this.props.form.getFieldValue('selectType')) {
+      case 'account': // 重置密码
+        this.props.form.validateFields(
+          ['account', 'captcha', 'password', 'confirm'],
+          (err, values) => {
+            if (!err) {
+              // {account: "18823066231", captcha: "123456", password: "123qwe", confirm: "123qwe"}
+              UserService.ResetPassword(
+                values.account,
+                values.captcha,
+                values.password
+              )
+                .then(res => {
+                  this.props.next(values.account)
+                })
+                .catch(error => {
+                  ServiceTool.errorHandler(error, msg => {
+                    switch (msg) {
+                      case 'error_code':
+                        message.error('验证码错误')
+                        this.props.form.resetFields(['captcha'])
+                        break
+                      case 'timeout_code':
+                        message.error('验证码已过期，请重新发送')
+                        this.props.form.resetFields(['captcha'])
+                        break
+                      default:
+                        message.error('发生错误：' + msg)
+                    }
+                  })
+                })
+            }
+          }
+        )
+        break
+      case 'contact': // 申诉
+        break
+    }
   }
 
   handleTypeChange = (value: string) => {
@@ -41,7 +76,6 @@ class TypeForm extends Component<ITypeFormProps> {
 
   SelectedForm = () => {
     const { getFieldDecorator } = this.props.form
-    console.log(this.resetType)
     switch (this.resetType) {
       case 'account':
         return (

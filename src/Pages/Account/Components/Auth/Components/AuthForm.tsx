@@ -5,6 +5,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import RouterUtil from '../../Util/RouterUtil'
 import { inject, observer } from 'mobx-react'
 import AuthStore from 'src/Store/AuthStore'
+import UserService from 'src/Services/UserService'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
@@ -60,6 +61,9 @@ class AuthForm extends Component<IAuthFormProps> {
           type='primary'
           block={true}
           htmlType='submit'
+          onClick={() => {
+            window.location.href = '/user'
+          }}
         >
           授权
         </Button>
@@ -69,6 +73,7 @@ class AuthForm extends Component<IAuthFormProps> {
           block={true}
           onClick={() => {
             this.props.AuthStore!.signOut()
+            UserService.Logout()
             RouterUtil.GoBackAccount(this.props.history, this.props.location)
           }}
         >

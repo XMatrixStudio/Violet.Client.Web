@@ -7,18 +7,22 @@ import AuthForm from './Components/AuthForm'
 import ImgIcytown from '@/Assets/icytown.png'
 import ImgLogo from '@/Assets/logo.svg'
 import UserService from 'src/Services/UserService'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
 
 interface IAuth {
   form: WrappedFormUtils
 }
 
+@observer
 class Auth extends Component<IAuth> {
-  userName: string
-  userAvatar: string
+  @observable userName: string
+  @observable userAvatar: string
 
   constructor(props: IAuth) {
     super(props)
     UserService.GetInfo(info => {
+      console.log(info)
       this.userName = info.nickname
       this.userAvatar = info.avatar
     })
