@@ -1,0 +1,91 @@
+.info-content {
+  padding: 20px;
+  .user-avatar {
+    transition: all 0.5s;
+    width: 100px;
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px 0 hsla(0, 0, 0, 0.3);
+    }
+  }
+  .top-info {
+    margin: 40px 0 0 40px;
+    .edit-div {
+      transition: all 0.5s;
+      height: 25px;
+      width: 25px;
+      display: inline-block;
+      position: relative;
+      border-radius: 50%;
+      background: #6adcda;
+      text-align: center;
+      border: 2px solid #fff;
+      top: 35px;
+      right: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px 0 hsla(0, 0, 0, 0.1);
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px 0 hsla(0, 0, 0, 0.2);
+      }
+      i {
+        font-size: 12px;
+        color: #fff;
+        margin: auto;
+      }
+    }
+  }
+  .user-base-info {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    p {
+      margin-bottom: 0;
+    }
+    .user-name {
+      font-size: 24px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    .user-bio {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .more-info {
+    padding: 40px;
+    .info-box {
+      .info-title {
+        padding-left: 4px;
+        color: rgba(0, 0, 0, 0.5);
+        margin-bottom: 4px;
+      }
+      .info-text {
+        margin-left: 10px;
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .gender-icon {
+        margin-right: 5px;
+      }
+      .gender-man {
+        color: #2547dd;
+      }
+      .gender-woman {
+        color: #ca409c;
+      }
+      .gender-other {
+        color: #40ca63;
+      }
+    }
+    button {
+      margin-top: 4px;
+    }
+    .info-help-text {
+      margin: 10px 0 0 0;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

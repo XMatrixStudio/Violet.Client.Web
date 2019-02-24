@@ -4,7 +4,7 @@ import './index.less'
 import * as serviceWorker from '../../serviceWorker'
 
 // router
-import { Route, Router, Switch } from 'react-router'
+import { Router } from 'react-router'
 import { createBrowserHistory } from 'history'
 import { Provider } from 'mobx-react'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
@@ -26,11 +26,7 @@ ReactDOM.render(
   <Provider {...rootStore}>
     <Root>
       <Router history={history}>
-        <div>
-          <Switch>
-            <Route path='/' component={Home} />
-          </Switch>
-        </div>
+        <Home />
       </Router>
     </Root>
   </Provider>,

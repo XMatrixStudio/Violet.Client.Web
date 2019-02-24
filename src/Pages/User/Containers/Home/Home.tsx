@@ -1,13 +1,23 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import './Home.less'
-import { Layout, Menu, Icon } from 'antd'
-const { Header, Sider, Content } = Layout
+import { Layout, Menu, Icon, Tooltip, Modal } from 'antd'
+const { Sider, Content } = Layout
 import { observable } from 'mobx'
+const confirm = Modal.confirm
 
 import Logo from '@/Assets/logo.svg'
 import Avatar from '@/Assets/avatar.jpg'
-import { RouteComponentProps } from 'react-router-dom'
+import {
+  RouteComponentProps,
+  withRouter,
+  Route,
+  Switch
+} from 'react-router-dom'
+import Info from './Components/Info/Info'
+import Nothing from './Components/Nothing/Nothing'
+import { ClickParam } from 'antd/lib/menu'
+import UserService from 'src/Services/UserService'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -15,14 +25,43 @@ interface IHomeProps extends RouteComponentProps<any> {}
 @observer
 class Home extends React.Component<IHomeProps, any> {
   @observable collapsed: boolean
+  defaultMenuKey: string
 
   constructor(props: IHomeProps) {
     super(props)
     this.collapsed = true
+    switch (this.props.location.pathname) {
+      case '/user/info':
+        this.defaultMenuKey = 'user'
+        break
+      default:
+        this.defaultMenuKey = ''
+    }
   }
 
-  onCollapse = (collapsed: boolean) => {
-    this.collapsed = collapsed
+  onClickMenu = (p: ClickParam) => {
+    switch (p.key) {
+      case 'user':
+        this.props.history.push('/user/info')
+        break
+      default:
+        this.props.history.push('/user')
+    }
+  }
+
+  onClickLogout = () => {
+    confirm({
+      title: '操作确认',
+      content: '你即将退出该账号',
+      okText: '退出',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk() {
+        UserService.Logout()
+        window.location.href = '/account'
+      }
+    })
   }
 
   public render() {
@@ -32,7 +71,9 @@ class Home extends React.Component<IHomeProps, any> {
           className='home-side'
           collapsible={true}
           collapsed={this.collapsed}
-          onCollapse={this.onCollapse}
+          onCollapse={(collapsed: boolean) => {
+            this.collapsed = collapsed
+          }}
         >
           <div
             className='logo'
@@ -45,15 +86,32 @@ class Home extends React.Component<IHomeProps, any> {
           </div>
           <div className={this.collapsed ? 'user-info-small' : 'user-info'}>
             <img src={Avatar} className='user-avatar' />
-            <p>ZhenlyChen</p>
+            <p className='user-name'>
+              ZhenlyChen
+              <Tooltip placement='right' title='退出登陆'>
+                <Icon
+                  className='logout-btn'
+                  type='logout'
+                  onClick={this.onClickLogout}
+                />
+              </Tooltip>
+            </p>
           </div>
-          <Menu mode='inline' defaultSelectedKeys={['user']}>
+          <Menu
+            onClick={this.onClickMenu}
+            mode='inline'
+            defaultSelectedKeys={[this.defaultMenuKey]}
+          >
             <Menu.Item key='user'>
-              <Icon type='user' />
+              <Icon type='idcard' />
               <span>个人信息</span>
             </Menu.Item>
-            <Menu.Item key='auth'>
+            <Menu.Item key='secure'>
               <Icon type='safety' />
+              <span>账户安全</span>
+            </Menu.Item>
+            <Menu.Item key='auth'>
+              <Icon type='link' />
               <span>授权管理</span>
             </Menu.Item>
             <Menu.Item key='message'>
@@ -75,11 +133,16 @@ class Home extends React.Component<IHomeProps, any> {
           </Menu>
         </Sider>
         <Layout>
-          <Content className='content-layout'>Content</Content>
+          <Content className='content-layout'>
+            <Switch>
+              <Route path='/user' exact={true} component={Nothing} />
+              <Route path='/user/info' exact={true} component={Info} />
+            </Switch>
+          </Content>
         </Layout>
       </Layout>
     )
   }
 }
 
-export default Home
+export default withRouter(Home)

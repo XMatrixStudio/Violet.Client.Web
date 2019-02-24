@@ -19,6 +19,7 @@ class AuthForm extends Component<IAuthFormProps> {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        window.location.href = '/user'
         console.log('Received values of form: ', values)
       }
     })
