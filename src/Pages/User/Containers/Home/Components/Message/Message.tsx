@@ -76,6 +76,11 @@ class Message extends Component {
               </p>
               <Divider />
               <div className='chat-center'>
+                <p className='notice-time'>前天 12:11</p>
+                <div className='chat-notice'>
+                  <p className='notice-title'>通知</p>
+                  <p>在座的各位都是辣鸡</p>
+                </div>
                 <div className='chat-item'>
                   <img src={AppAvatar} className='avatar' />
                   <div className='chat-content'>
