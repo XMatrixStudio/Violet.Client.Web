@@ -7,11 +7,11 @@ import {
   Button,
   Card,
   Icon,
-  Tooltip,
   Popconfirm,
   Popover,
   Tag,
-  Modal
+  Modal,
+  Tooltip
 } from 'antd'
 
 import IcytownIcon from '@/Assets/icytown.png'
@@ -28,7 +28,22 @@ class Auth extends Component {
       render: (text: any, recond: any) => (
         <>
           <img className='app-icon' src={IcytownIcon} />
-          {text}
+          <strong className='app-name'>{text}</strong>
+          <Popover
+            placement='top'
+            content={
+              <div>
+                Violet认证: <strong>XMatrix Studio 出品</strong>
+              </div>
+            }
+          >
+            <Icon
+              className='ca-icon'
+              type='safety-certificate'
+              theme='twoTone'
+              twoToneColor='#73c731'
+            />
+          </Popover>
         </>
       )
     },
@@ -37,7 +52,7 @@ class Auth extends Component {
       dataIndex: 'lastAuth'
     },
     {
-      title: '取消授权',
+      title: '操作',
       key: 'action',
       render: () => (
         <>
@@ -50,8 +65,30 @@ class Auth extends Component {
               console.log('del')
             }}
           >
-            <Icon className='control-icon' type='close' />
+            <Tooltip placement='bottom' title='取消授权'>
+              <Icon
+                type='close-circle'
+                className='control-icon'
+                theme='twoTone'
+                twoToneColor='#f9757a'
+              />
+            </Tooltip>
           </Popconfirm>
+          <Tooltip placement='bottom' title='举报'>
+            <Icon
+              type='frown'
+              theme='twoTone'
+              className='control-icon'
+              twoToneColor='#fcdc9b'
+            />
+          </Tooltip>
+          <Tooltip placement='bottom' title='反馈'>
+            <Icon
+              type='notification'
+              theme='twoTone'
+              className='control-icon'
+            />
+          </Tooltip>
         </>
       )
     }
@@ -115,7 +152,7 @@ class Auth extends Component {
             已授权应用数: <strong>2</strong>
           </div>
         </div>
-        <Card hoverable={true} className='auth-card'>
+        <div className='auth-card'>
           <div>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}
             <Button type='danger' onClick={this.start} disabled={!hasSelected}>
@@ -145,6 +182,7 @@ class Auth extends Component {
                         <p>地区: 广州</p>
                         <p>联系邮箱: zhenlychen@foxmail.com</p>
                         <p>联系电话: 18823456789</p>
+                        <Button icon='message'>联系</Button>
                       </div>
                     }
                   >
@@ -170,7 +208,7 @@ class Auth extends Component {
             )}
             dataSource={this.data}
           />
-        </Card>
+        </div>
       </div>
     )
   }

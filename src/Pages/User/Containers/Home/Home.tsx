@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import './Home.less'
-import { Layout, Menu, Icon, Tooltip, Modal } from 'antd'
+import { Layout, Menu, Icon, Tooltip, Modal, Badge } from 'antd'
 const { Sider, Content } = Layout
 import { observable } from 'mobx'
 const confirm = Modal.confirm
@@ -21,6 +21,7 @@ import UserService from 'src/Services/UserService'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import Secure from './Components/Secure/Secure'
 import Auth from './Components/Auth/Auth'
+import MessageIndex from './Components/Message/Index'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -40,6 +41,8 @@ class Home extends React.Component<IHomeProps, any> {
       this.defaultMenuKey = 'secure'
     } else if (pathname.includes('/user/auth')) {
       this.defaultMenuKey = 'auth'
+    } else if (pathname.includes('/user/message')) {
+      this.defaultMenuKey = 'message'
     } else {
       this.defaultMenuKey = ''
     }
@@ -55,6 +58,9 @@ class Home extends React.Component<IHomeProps, any> {
         break
       case 'auth':
         this.props.history.push('/user/auth')
+        break
+      case 'message':
+        this.props.history.push('/user/message')
         break
       default:
         this.props.history.push('/user')
@@ -130,6 +136,7 @@ class Home extends React.Component<IHomeProps, any> {
             <Menu.Item key='message'>
               <Icon type='message' />
               <span>通知信息</span>
+              <Badge dot={true} />
             </Menu.Item>
             <Menu.Item key='app'>
               <Icon type='code' />
@@ -155,6 +162,7 @@ class Home extends React.Component<IHomeProps, any> {
                 timeout={300}
               >
                 <Switch>
+                  <Route path='/user/message' component={MessageIndex} />
                   <Route path='/user/info' component={Info} />
                   <Route path='/user/secure' component={Secure} />
                   <Route path='/user/auth' component={Auth} />

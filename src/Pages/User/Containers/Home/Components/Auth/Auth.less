@@ -2,16 +2,16 @@
   padding: 60px 60px 30px 60px;
   min-width: 600px;
   .auth-card {
-    margin-top: 30px;
     text-align: right;
     button {
       margin-left: 20px;
     }
-    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
-    cursor: default;
   }
   .auth-table {
     margin-top: 20px;
+    .ant-table-body {
+      // box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+    }
     .own-name {
       cursor: pointer;
     }
@@ -20,17 +20,36 @@
         margin-right: 10px;
       }
     }
+    .ca-icon {
+      margin-left: 4px;
+    }
+    .ant-table-thead {
+      th {
+        background: #ffffff;
+      }
+    }
+    .ant-table-tbody {
+      td {
+        background: #fcfcfc;
+      }
+    }
   }
   .control-icon {
     margin: auto 5px;
     transition: all 0.4s;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 20px;
     &:hover {
-      color: rgb(207, 58, 58);
+      transform: translateY(-1px);
     }
   }
   .app-icon {
     width: 30px;
     margin: 10px;
+  }
+  .app-name {
+    color: #5f6874;
   }
 }
 .own-info {
@@ -54,5 +73,8 @@
     padding: 6px;
     text-align: left;
     margin-bottom: 4px;
+  }
+  button {
+    margin-top: 6px;
   }
 }
