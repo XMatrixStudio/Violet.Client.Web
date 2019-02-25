@@ -18,6 +18,7 @@ import Info from './Components/Info/Info'
 import Nothing from './Components/Nothing/Nothing'
 import { ClickParam } from 'antd/lib/menu'
 import UserService from 'src/Services/UserService'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -98,6 +99,7 @@ class Home extends React.Component<IHomeProps, any> {
             </p>
           </div>
           <Menu
+            className='home-menu'
             onClick={this.onClickMenu}
             mode='inline'
             defaultSelectedKeys={[this.defaultMenuKey]}
@@ -134,10 +136,19 @@ class Home extends React.Component<IHomeProps, any> {
         </Sider>
         <Layout>
           <Content className='content-layout'>
-            <Switch>
-              <Route path='/user' exact={true} component={Nothing} />
-              <Route path='/user/info' exact={true} component={Info} />
-            </Switch>
+            <TransitionGroup style={{ height: '100vh' }}>
+              <CSSTransition
+                key={this.props.location.pathname}
+                classNames='fade'
+                exit={false}
+                timeout={300}
+              >
+                <Switch>
+                  <Route path='/user' exact={true} component={Nothing} />
+                  <Route path='/user/info' component={Info} />
+                </Switch>
+              </CSSTransition>
+            </TransitionGroup>
           </Content>
         </Layout>
       </Layout>
