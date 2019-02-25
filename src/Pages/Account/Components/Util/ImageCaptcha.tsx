@@ -7,6 +7,7 @@ import UtilService from 'src/Services/UtilService'
 
 interface IImageCaptchaProps {
   form: WrappedFormUtils
+  label?: boolean
 }
 
 @observer
@@ -32,7 +33,7 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
   render() {
     const { getFieldDecorator } = this.props.form
     return (
-      <Form.Item>
+      <Form.Item label={this.props.label === true ? '图形验证码' : null}>
         <Row gutter={8}>
           <Col span={16}>
             {getFieldDecorator('imageCaptcha', {
@@ -42,8 +43,12 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
               ]
             })(
               <Input
-                prefix={<Icon type='check' className='icon-color' />}
-                placeholder='图形验证码'
+                prefix={
+                  this.props.label === true ? null : (
+                    <Icon type='check' className='icon-color' />
+                  )
+                }
+                placeholder={this.props.label === true ? '' : '图形验证码'}
               />
             )}
           </Col>

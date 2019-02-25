@@ -41,7 +41,7 @@ class CountDownButton extends Component<ICountDownProps> {
         disabled={this.remainTime() < this.waitTime && this.remainTime() > 0}
         type='primary'
         className='bg-color'
-        style={{ color: '#fff' }}
+        style={{ color: '#fff', marginTop: '0' }}
         onClick={this.props.sendCaptcha}
       >
         {this.buttonTitle()}

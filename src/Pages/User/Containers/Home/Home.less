@@ -1,8 +1,11 @@
 .ant-layout {
-  background: #fcfcfc;
+  background: #f4f5f7;
 }
 
 .home {
+  .content-layout {
+    background: #f4f5f7;
+  }
   .ant-layout-sider {
     background: #fefefe;
   }
@@ -50,9 +53,6 @@
         color: #71cdd2;
       }
     }
-  }
-  .content-layout {
-    background: #fcfcfc;
   }
 
   height: 100vh;
@@ -103,6 +103,49 @@
       vertical-align: top;
       margin: 6px 16px 6px 6px;
       color: aliceblue;
+    }
+  }
+
+  // 底部标题样式
+  .top-layout {
+    .top-text {
+      border-left: 4px solid #71cdd2;
+      padding-left: 10px;
+      display: inline-block;
+      p {
+        margin-bottom: 3px;
+      }
+      .title {
+        font-size: 24px;
+      }
+      .sub-title {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+    .right-text {
+      float: right;
+      font-size: 18px;
+      strong {
+        font-size: 32px;
+        color: rgba(14, 85, 90, 0.699);
+      }
+    }
+  }
+
+  // 表单样式
+  .form-layout {
+    padding: 60px 60px 30px 60px;
+    max-width: 700px;
+    margin: auto;
+    .my-form {
+      margin: 60px auto 20px auto;
+      max-width: 500px;
+    }
+    .back-btn {
+      margin-left: 20px;
+    }
+    button {
+      margin-top: 20px;
     }
   }
 }

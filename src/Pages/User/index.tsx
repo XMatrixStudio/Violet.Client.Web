@@ -18,7 +18,7 @@ const browserHistory = createBrowserHistory()
 const routerStore = new RouterStore()
 const history = syncHistoryWithStore(browserHistory, routerStore)
 const rootStore = {
-  auth: new AuthStore(),
+  AuthStore: new AuthStore(),
   router: routerStore
 }
 

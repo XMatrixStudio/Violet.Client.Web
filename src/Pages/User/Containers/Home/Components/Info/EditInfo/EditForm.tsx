@@ -130,17 +130,17 @@ class EditForm extends Component<IEditFormProps, any> {
         </Form.Item>
         <Form.Item label='性别'>
           {getFieldDecorator('gender', { initialValue: 'man' })(
-            <Radio.Group buttonStyle='solid'>
-              <Radio.Button value='man'>
+            <Radio.Group>
+              <Radio value='man'>
                 <Icon type='man' className='gender-icon gender-man' />男
-              </Radio.Button>
-              <Radio.Button value='woman'>
+              </Radio>
+              <Radio value='woman'>
                 <Icon type='woman' className='gender-icon gender-woman' />女
-              </Radio.Button>
-              <Radio.Button value='other'>
+              </Radio>
+              <Radio value='other'>
                 <Icon type='robot' className='gender-icon gender-other' />
                 其他
-              </Radio.Button>
+              </Radio>
             </Radio.Group>
           )}
         </Form.Item>

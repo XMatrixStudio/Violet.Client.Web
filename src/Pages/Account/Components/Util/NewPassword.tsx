@@ -4,6 +4,7 @@ import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 
 interface INewPasswordProps {
   form: WrappedFormUtils
+  label?: boolean
 }
 
 class NewPassword extends Component<INewPasswordProps> {
@@ -41,7 +42,7 @@ class NewPassword extends Component<INewPasswordProps> {
     const { getFieldDecorator } = this.props.form
     return (
       <>
-        <Form.Item>
+        <Form.Item label={this.props.label === true ? '密码' : null}>
           {getFieldDecorator('password', {
             rules: [
               { required: true, message: '请输入你的密码' },
@@ -52,14 +53,17 @@ class NewPassword extends Component<INewPasswordProps> {
               }
             ]
           })(
-            <Input
-              prefix={<Icon type='key' className='icon-color' />}
-              type='password'
-              placeholder='密码'
+            <Input.Password
+              prefix={
+                this.props.label === true ? null : (
+                  <Icon type='key' className='icon-color' />
+                )
+              }
+              placeholder={this.props.label === true ? '' : '密码'}
             />
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item label={this.props.label === true ? '再次输入密码' : null}>
           {getFieldDecorator('confirm', {
             rules: [
               { required: true, message: '请再次输入你的密码' },
@@ -68,10 +72,13 @@ class NewPassword extends Component<INewPasswordProps> {
               }
             ]
           })(
-            <Input
-              prefix={<Icon type='key' className='icon-color' />}
-              type='password'
-              placeholder='再次输入密码'
+            <Input.Password
+              prefix={
+                this.props.label === true ? null : (
+                  <Icon type='key' className='icon-color' />
+                )
+              }
+              placeholder={this.props.label === true ? '' : '再次输入密码'}
               onBlur={this.handleConfirmBlur}
             />
           )}

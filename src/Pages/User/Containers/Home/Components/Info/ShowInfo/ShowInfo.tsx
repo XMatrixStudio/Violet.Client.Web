@@ -13,17 +13,25 @@ class ShowInfo extends Component<IShowInfoProps, any> {
       <div>
         <div className='top-info'>
           <img className='user-avatar' src={TestAvatar} />
-          <div className='edit-div'>
-            <Tooltip placement='bottom' title='修改头像'>
+          <Tooltip placement='bottom' title='修改头像'>
+            <div className='edit-div'>
               <Icon type='edit' />
-            </Tooltip>
-          </div>
+            </div>
+          </Tooltip>
           <div className='user-base-info'>
             <p>
               <span className='user-name'>ZhenlyChen</span>
               <Tag className='user-tag' color='green'>
                 管理员
               </Tag>
+              <Tooltip title='这是什么？'>
+                <Icon
+                  style={{ fontSize: '18px', cursor: 'pointer' }}
+                  type='question-circle'
+                  theme='twoTone'
+                  twoToneColor='#71cdd2'
+                />
+              </Tooltip>
             </p>
 
             <p className='user-bio'>我好菜啊</p>

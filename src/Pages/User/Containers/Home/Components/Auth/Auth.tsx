@@ -109,12 +109,13 @@ class Auth extends Component {
         <div className='top-layout'>
           <div className='top-text'>
             <p className='title'>授权管理</p>
-            <p>
-              已授权应用：<strong>6</strong>
-            </p>
+            <p className='sub-title'>管理你授权过的应用</p>
+          </div>
+          <div className='right-text'>
+            已授权应用数: <strong>2</strong>
           </div>
         </div>
-        <Card hoverable={true} className='auth-control'>
+        <Card hoverable={true} className='auth-card'>
           <div>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}
             <Button type='danger' onClick={this.start} disabled={!hasSelected}>
@@ -128,7 +129,7 @@ class Auth extends Component {
             expandedRowRender={record => (
               <div>
                 <p>
-                  创建者:
+                  <strong>创建者: </strong>
                   <Popover
                     placement='rightTop'
                     content={
@@ -147,10 +148,15 @@ class Auth extends Component {
                       </div>
                     }
                   >
-                    {record.own}
+                    <span className='own-name'>{record.own}</span>
                   </Popover>
                 </p>
-                <p>权限: </p>
+                <p>
+                  <strong>授权时间:</strong> 2019/1/1 12:00:21
+                </p>
+                <p>
+                  <strong>权限:</strong>
+                </p>
                 <ul>
                   <li>获取您的昵称、头像</li>
                   {record.permission.indexOf('info') === -1 ? null : (

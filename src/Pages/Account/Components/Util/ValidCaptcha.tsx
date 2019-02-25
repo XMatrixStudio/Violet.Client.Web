@@ -13,6 +13,7 @@ interface IValidCaptchaProps {
   form: WrappedFormUtils
   AuthStore?: AuthStore
   isNew?: boolean
+  label?: boolean
 }
 
 @inject('AuthStore')
@@ -103,9 +104,10 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
           <ImageCaptcha
             form={this.props.form}
             ref={inst => (this.imageCaptcha = inst)}
+            label={this.props.label}
           />
         </div>
-        <Form.Item>
+        <Form.Item label={this.props.label === true ? '验证码' : null}>
           <Row gutter={8}>
             <Col span={16}>
               {getFieldDecorator('captcha', {
@@ -115,8 +117,12 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                 ]
               })(
                 <Input
-                  prefix={<Icon type='mail' className='icon-color' />}
-                  placeholder='收到的验证码'
+                  prefix={
+                    this.props.label === true ? null : (
+                      <Icon type='mail' className='icon-color' />
+                    )
+                  }
+                  placeholder={this.props.label === true ? '' : '收到的验证码'}
                 />
               )}
             </Col>

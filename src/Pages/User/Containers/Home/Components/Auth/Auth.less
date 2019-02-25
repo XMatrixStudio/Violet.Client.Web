@@ -1,28 +1,25 @@
 .auth-layout {
-  padding: 60px;
+  padding: 60px 60px 30px 60px;
   min-width: 600px;
-  .top-layout {
-    .top-text {
-      border-left: 4px solid #71cdd2;
-      padding-left: 10px;
-      display: inline-block;
-      p {
-        margin-bottom: 3px;
-      }
-      .title {
-        font-size: 24px;
-      }
-    }
-  }
-  .auth-control {
+  .auth-card {
     margin-top: 30px;
     text-align: right;
     button {
       margin-left: 20px;
     }
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+    cursor: default;
   }
   .auth-table {
     margin-top: 20px;
+    .own-name {
+      cursor: pointer;
+    }
+    p {
+      strong {
+        margin-right: 10px;
+      }
+    }
   }
   .control-icon {
     margin: auto 5px;
