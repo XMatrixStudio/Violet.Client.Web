@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import TestAvatar from '@/Assets/avatar.jpg'
-import { Icon, Button, Tooltip } from 'antd'
+import { Icon, Button, Tooltip, Tag } from 'antd'
 
 interface IShowInfoProps {
   onClickEdit: () => void
@@ -19,7 +19,13 @@ class ShowInfo extends Component<IShowInfoProps, any> {
             </Tooltip>
           </div>
           <div className='user-base-info'>
-            <p className='user-name'>ZhenlyChen</p>
+            <p>
+              <span className='user-name'>ZhenlyChen</span>
+              <Tag className='user-tag' color='green'>
+                管理员
+              </Tag>
+            </p>
+
             <p className='user-bio'>我好菜啊</p>
           </div>
         </div>
@@ -36,7 +42,7 @@ class ShowInfo extends Component<IShowInfoProps, any> {
           </div>
           <div className='info-box'>
             <p className='info-title'>联系电话</p>
-            <p className='info-text'>+86-18823066231</p>
+            <p className='info-text'>+86-18823456789</p>
           </div>
           <div className='info-box'>
             <p className='info-title'>地区</p>

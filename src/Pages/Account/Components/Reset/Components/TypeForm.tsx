@@ -34,7 +34,7 @@ class TypeForm extends Component<ITypeFormProps> {
           ['account', 'captcha', 'password', 'confirm'],
           (err, values) => {
             if (!err) {
-              // {account: "18823066231", captcha: "123456", password: "123qwe", confirm: "123qwe"}
+              // {account: "18823456789", captcha: "123456", password: "123qwe", confirm: "123qwe"}
               UserService.ResetPassword(
                 values.account,
                 values.captcha,

@@ -20,6 +20,7 @@ import { ClickParam } from 'antd/lib/menu'
 import UserService from 'src/Services/UserService'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import Secure from './Components/Secure/Secure'
+import Auth from './Components/Auth/Auth'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -34,9 +35,11 @@ class Home extends React.Component<IHomeProps, any> {
     this.collapsed = true
     const pathname = this.props.location.pathname
     if (pathname.includes('/user/info')) {
-      this.defaultMenuKey = 'user'
+      this.defaultMenuKey = 'info'
     } else if (pathname.includes('/user/secure')) {
       this.defaultMenuKey = 'secure'
+    } else if (pathname.includes('/user/auth')) {
+      this.defaultMenuKey = 'auth'
     } else {
       this.defaultMenuKey = ''
     }
@@ -44,11 +47,14 @@ class Home extends React.Component<IHomeProps, any> {
 
   onClickMenu = (p: ClickParam) => {
     switch (p.key) {
-      case 'user':
+      case 'info':
         this.props.history.push('/user/info')
         break
       case 'secure':
         this.props.history.push('/user/secure')
+        break
+      case 'auth':
+        this.props.history.push('/user/auth')
         break
       default:
         this.props.history.push('/user')
@@ -109,7 +115,7 @@ class Home extends React.Component<IHomeProps, any> {
             mode='inline'
             defaultSelectedKeys={[this.defaultMenuKey]}
           >
-            <Menu.Item key='user'>
+            <Menu.Item key='info'>
               <Icon type='idcard' />
               <span>个人信息</span>
             </Menu.Item>
@@ -151,6 +157,7 @@ class Home extends React.Component<IHomeProps, any> {
                 <Switch>
                   <Route path='/user/info' component={Info} />
                   <Route path='/user/secure' component={Secure} />
+                  <Route path='/user/auth' component={Auth} />
                   <Route component={Nothing} />
                 </Switch>
               </CSSTransition>

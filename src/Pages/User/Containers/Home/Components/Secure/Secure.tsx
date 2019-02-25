@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Secure.less'
 import SafeImage from '@/Assets/User/safe.png'
-import { Icon, Button, Rate, Divider } from 'antd'
+import { Icon, Button, Rate, Divider, Timeline } from 'antd'
 
 class Secure extends Component {
   render() {
@@ -33,7 +33,31 @@ class Secure extends Component {
               <span className='content-text'>zhenlychen</span>
             </p>
             <p className='content-text'>注册时间：2019/1/1</p>
-            <p className='content-text'>上次登陆：2019/2/25 14:32 广东 广州 </p>
+          </div>
+          <Divider />
+        </div>
+        <div className='secure-content'>
+          <Icon
+            className='status-icon'
+            type='safety-certificate'
+            theme='twoTone'
+            twoToneColor='#71cdd2'
+          />
+          <div className='text-box'>
+            <p className='title-text'>最近登陆</p>
+            <p className='content-text'>
+              <Timeline>
+                <Timeline.Item>
+                  2019/2/25 14:32 广东 广州 (125.23.42.1)
+                </Timeline.Item>
+                <Timeline.Item>
+                  2019/2/22 12:53 广东 广州 (125.23.42.1)
+                </Timeline.Item>
+                <Timeline.Item>
+                  2019/1/12 9:32 广东 湛江 (145.64.142.12)
+                </Timeline.Item>
+              </Timeline>
+            </p>
           </div>
           <Divider />
         </div>
