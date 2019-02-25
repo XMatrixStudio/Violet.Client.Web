@@ -19,6 +19,7 @@ import Nothing from './Components/Nothing/Nothing'
 import { ClickParam } from 'antd/lib/menu'
 import UserService from 'src/Services/UserService'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import Secure from './Components/Secure/Secure'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -31,12 +32,13 @@ class Home extends React.Component<IHomeProps, any> {
   constructor(props: IHomeProps) {
     super(props)
     this.collapsed = true
-    switch (this.props.location.pathname) {
-      case '/user/info':
-        this.defaultMenuKey = 'user'
-        break
-      default:
-        this.defaultMenuKey = ''
+    const pathname = this.props.location.pathname
+    if (pathname.includes('/user/info')) {
+      this.defaultMenuKey = 'user'
+    } else if (pathname.includes('/user/secure')) {
+      this.defaultMenuKey = 'secure'
+    } else {
+      this.defaultMenuKey = ''
     }
   }
 
@@ -44,6 +46,9 @@ class Home extends React.Component<IHomeProps, any> {
     switch (p.key) {
       case 'user':
         this.props.history.push('/user/info')
+        break
+      case 'secure':
+        this.props.history.push('/user/secure')
         break
       default:
         this.props.history.push('/user')
@@ -144,8 +149,9 @@ class Home extends React.Component<IHomeProps, any> {
                 timeout={300}
               >
                 <Switch>
-                  <Route path='/user' exact={true} component={Nothing} />
                   <Route path='/user/info' component={Info} />
+                  <Route path='/user/secure' component={Secure} />
+                  <Route component={Nothing} />
                 </Switch>
               </CSSTransition>
             </TransitionGroup>

@@ -73,12 +73,7 @@ class EditForm extends Component<IEditFormProps, any> {
       <Form.Item label={index === 0 ? '联系邮箱' : ''} required={false} key={k}>
         {getFieldDecorator(`email[${k}]`, {
           rules: [{ type: 'email', message: '请输入合法的邮箱' }]
-        })(
-          <Input
-            placeholder='联系邮箱'
-            style={{ width: '90%', marginRight: 8 }}
-          />
-        )}
+        })(<Input style={{ width: '90%', marginRight: 8 }} />)}
         {index > 0 ? (
           <Icon
             type='minus'
@@ -100,10 +95,7 @@ class EditForm extends Component<IEditFormProps, any> {
     const phoneItems = phoneKeys.map((k: string, index: number) => (
       <Form.Item label={index === 0 ? '联系手机' : ''} required={false} key={k}>
         {getFieldDecorator(`phone[${k}]`)(
-          <Input
-            placeholder='联系手机'
-            style={{ width: '90%', marginRight: 8 }}
-          />
+          <Input style={{ width: '90%', marginRight: 8 }} />
         )}
         {index > 0 ? (
           <Icon
@@ -158,7 +150,7 @@ class EditForm extends Component<IEditFormProps, any> {
           {getFieldDecorator('location')(<Input />)}
         </Form.Item>
         <Form.Item label='生日'>
-          {getFieldDecorator('birthday')(<DatePicker />)}
+          {getFieldDecorator('birthday')(<DatePicker placeholder='选择日期' />)}
         </Form.Item>
         <Button htmlType='submit' type='primary'>
           保存
