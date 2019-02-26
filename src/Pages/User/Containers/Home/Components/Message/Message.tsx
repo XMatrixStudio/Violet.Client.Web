@@ -5,7 +5,6 @@ import AppAvatar from '@/Assets/icytown.png'
 import UserAvatar from '@/Assets/avatar.jpg'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
-import Nothing from '../Nothing/Nothing'
 
 interface IMessageContent {
   time: Date
