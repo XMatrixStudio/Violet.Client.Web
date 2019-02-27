@@ -5,6 +5,7 @@ import AppAvatar from '@/Assets/icytown.png'
 import UserAvatar from '@/Assets/avatar.jpg'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
+import dateFormat from 'dateformat'
 
 interface IMessageContent {
   time: Date
@@ -38,19 +39,19 @@ class Message extends Component {
         name: '系统通知',
         data: [
           {
-            time: new Date(new Date().getTime() - 1232234),
+            time: new Date(new Date().getTime() - 28434521),
             type: 'notice',
             title: '辣鸡通知',
             content: '在座的各位都是辣鸡'
           },
           {
-            time: new Date(new Date().getTime() - 1431234),
+            time: new Date(new Date().getTime() - 18434521),
             type: 'notice',
             title: '咸鸡通知',
             content: '在座的各位都是秀秀'
           },
           {
-            time: new Date(new Date().getTime() - 532234),
+            time: new Date(new Date().getTime() - 8434521),
             type: 'notice',
             title: '田鸡通知',
             content: '在座的各位都是田鸡'
@@ -64,18 +65,18 @@ class Message extends Component {
         name: 'Icytown',
         data: [
           {
-            time: new Date(new Date().getTime() - 12234),
+            time: new Date(new Date().getTime() - 12249432145),
             type: 'message-me',
             content: '你好奇'
           },
           {
-            time: new Date(new Date().getTime() - 332234),
+            time: new Date(new Date().getTime() - 39432145),
             type: 'notice',
             title: '辣鸡通知',
             content: '在座的各位都是辣鸡'
           },
           {
-            time: new Date(new Date().getTime() - 231234),
+            time: new Date(new Date().getTime() - 9432145),
             type: 'message',
             content: '我好奇'
           }
@@ -90,38 +91,17 @@ class Message extends Component {
     if (diffYear === 0) {
       if (diffDay === 0) {
         // 今天
-        return date.getHours() + ':' + date.getMinutes()
+        return dateFormat(date, 'h:MM')
       } else if (diffDay === 1) {
-        return '昨天' + date.getHours() + ':' + date.getMinutes()
+        return '昨天 ' + dateFormat(date, 'h:MM')
       } else if (diffDay === 2) {
-        return '前天' + date.getHours() + ':' + date.getMinutes()
+        return '前天 ' + dateFormat(date, 'h:MM')
       } else {
-        return (
-          date.getMonth() +
-          1 +
-          '/' +
-          date.getDay() +
-          date.getHours() +
-          ':' +
-          date.getMinutes()
-        )
+        return dateFormat(date, 'm/d h:MM')
       }
     } else {
-      return (
-        date.getFullYear() +
-        ' ' +
-        date.getMonth() +
-        '/' +
-        date.getDay() +
-        date.getHours() +
-        ':' +
-        date.getMinutes()
-      )
+      return dateFormat(date, 'yyyy/m/d h:MM')
     }
-  }
-
-  onClickListItem = (index: number) => () => {
-    this.selectIndex = index
   }
 
   render() {
@@ -133,7 +113,9 @@ class Message extends Component {
               'item-card ' +
               (index === this.selectIndex ? 'item-card-select' : '')
             }
-            onClick={this.onClickListItem(index)}
+            onClick={() => {
+              this.selectIndex = index
+            }}
           >
             <Icon
               className='avatar'

@@ -10,15 +10,21 @@ import {
   Popover,
   Tag,
   Modal,
-  Tooltip
+  Tooltip,
+  Form,
+  Radio
 } from 'antd'
 
 import IcytownIcon from '@/Assets/icytown.png'
 import UserAvatar from '@/Assets/avatar.jpg'
+import dateFormat from 'dateformat'
+import { WrappedFormUtils } from 'antd/lib/form/Form'
+import TextArea from 'antd/lib/input/TextArea'
 
 @observer
-class Auth extends Component {
+class Auth extends Component<{ form: WrappedFormUtils }, any> {
   @observable selectedRowKeys: number[]
+  @observable visibleReport: boolean
 
   columns = [
     {
@@ -79,6 +85,10 @@ class Auth extends Component {
               theme='twoTone'
               className='control-icon'
               twoToneColor='#fcdc9b'
+              onClick={() => {
+                this.props.form.resetFields()
+                this.visibleReport = true
+              }}
             />
           </Tooltip>
           <Tooltip placement='bottom' title='反馈'>
@@ -112,8 +122,8 @@ class Auth extends Component {
     }
   ]
 
-  constructor() {
-    super({})
+  constructor(props: any) {
+    super(props)
     this.selectedRowKeys = []
   }
 
@@ -144,6 +154,41 @@ class Auth extends Component {
     const hasSelected = this.selectedRowKeys.length > 0
     return (
       <div className='auth-layout'>
+        <Modal
+          visible={this.visibleReport}
+          okText='举报'
+          title='举报应用'
+          cancelText='取消'
+          onOk={() => {
+            this.props.form.validateFields((err, values) => {
+              if (!err) {
+                this.visibleReport = false
+                console.log('Received values of form: ', values)
+              }
+            })
+          }}
+          onCancel={() => {
+            this.visibleReport = false
+          }}
+        >
+          <Form>
+            <Form.Item label='举报原因'>
+              {this.props.form.getFieldDecorator('reason')(
+                <Radio.Group>
+                  <Radio value='1'>诈骗</Radio>
+                  <Radio value='2'>盗取信息</Radio>
+                  <Radio value='3'>其他</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label='详情描述'>
+              {this.props.form.getFieldDecorator('detail')(
+                <TextArea autosize={{ minRows: 2, maxRows: 6 }} />
+              )}
+            </Form.Item>
+          </Form>
+        </Modal>
+
         <div className='top-layout'>
           <div className='top-text'>
             <p className='title'>授权管理</p>
@@ -191,7 +236,8 @@ class Auth extends Component {
                   </Popover>
                 </p>
                 <p>
-                  <strong>授权时间:</strong> 2019/1/1 12:00:21
+                  <strong>授权时间:</strong>{' '}
+                  {dateFormat(record.authTime, 'yyyy/mm/dd h:MM:ss')}
                 </p>
                 <p>
                   <strong>权限:</strong>
@@ -215,4 +261,4 @@ class Auth extends Component {
   }
 }
 
-export default Auth
+export default Form.create()(Auth)
