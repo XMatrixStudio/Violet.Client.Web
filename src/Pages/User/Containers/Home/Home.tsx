@@ -22,6 +22,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import Secure from './Components/Secure/Secure'
 import Auth from './Components/Auth/Auth'
 import MessageIndex from './Components/Message/Index'
+import Apps from './Components/Apps/Apps'
 
 interface IHomeProps extends RouteComponentProps<any> {}
 
@@ -43,6 +44,8 @@ class Home extends React.Component<IHomeProps, any> {
       this.defaultMenuKey = 'auth'
     } else if (pathname.includes('/user/message')) {
       this.defaultMenuKey = 'message'
+    } else if (pathname.includes('/user/apps')) {
+      this.defaultMenuKey = 'apps'
     } else {
       this.defaultMenuKey = ''
     }
@@ -61,6 +64,9 @@ class Home extends React.Component<IHomeProps, any> {
         break
       case 'message':
         this.props.history.push('/user/message')
+        break
+      case 'apps':
+        this.props.history.push('/user/apps')
         break
       default:
         this.props.history.push('/user')
@@ -138,7 +144,7 @@ class Home extends React.Component<IHomeProps, any> {
               <span>通知信息</span>
               <Badge dot={true} />
             </Menu.Item>
-            <Menu.Item key='app'>
+            <Menu.Item key='apps'>
               <Icon type='code' />
               <span>应用管理</span>
             </Menu.Item>
@@ -162,6 +168,7 @@ class Home extends React.Component<IHomeProps, any> {
                 timeout={300}
               >
                 <Switch>
+                  <Route path='/user/apps' component={Apps} />
                   <Route path='/user/message' component={MessageIndex} />
                   <Route path='/user/info' component={Info} />
                   <Route path='/user/secure' component={Secure} />

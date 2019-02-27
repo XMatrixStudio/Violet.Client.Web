@@ -1,9 +1,9 @@
 import './Info.less'
 import React, { Component } from 'react'
 
-import ShowInfo from './ShowInfo/ShowInfo'
+import ShowInfo from './ShowInfo'
 import { RouteComponentProps, Route, Switch } from 'react-router-dom'
-import EditInfo from './EditInfo/EditInfo'
+import EditInfo from './EditInfo'
 import Nothing from '../Nothing/Nothing'
 
 interface IInfoProps extends RouteComponentProps<any> {}
