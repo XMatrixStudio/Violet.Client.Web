@@ -24,7 +24,7 @@ class Auth extends Component {
     {
       title: '应用',
       dataIndex: 'name',
-      render: (text: any, recond: any) => (
+      render: (text: any, record: any) => (
         <>
           <img className='app-icon' src={IcytownIcon} />
           <strong className='app-name'>{text}</strong>
@@ -99,14 +99,16 @@ class Auth extends Component {
       name: 'Icytown',
       own: 'MegaShow',
       lastAuth: '3周前',
-      permission: ['base', 'info', 'message']
+      permission: ['base', 'info', 'message'],
+      authTime: new Date(new Date().getTime() - 1000000)
     },
     {
       key: 2,
       name: 'Coffee',
       own: 'ZhenlyChen',
       lastAuth: '昨天',
-      permission: ['base', 'info']
+      permission: ['base', 'info'],
+      authTime: new Date(new Date().getTime() - 1000000)
     }
   ]
 
@@ -118,7 +120,7 @@ class Auth extends Component {
   start = () => {
     Modal.confirm({
       title: '操作确认',
-      content: '是否取消选中应用的授权，该操作不可逆',
+      content: '是否取消选中应用的授权',
       okText: '确认',
       okType: 'danger',
       cancelText: '放弃',

@@ -8,6 +8,7 @@
     "mobx",
     "pathinfo",
     "polyfills",
+    "popconfirm",
     "precss",
     "tsloader"
   ],
