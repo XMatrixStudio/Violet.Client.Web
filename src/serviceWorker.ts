@@ -1,3 +1,5 @@
+import console = require('console')
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -117,11 +119,20 @@ function checkValidServiceWorker(swUrl: string, config?: IConfig) {
         (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
         // No service worker found. Probably a different app. Reload the page.
-        navigator.serviceWorker.ready.then(registration => {
-          registration.unregister().then(() => {
-            window.location.reload()
+        navigator.serviceWorker.ready
+          .then(registration => {
+            registration
+              .unregister()
+              .then(() => {
+                window.location.reload()
+              })
+              .catch(() => {
+                console.log('catch error')
+              })
           })
-        })
+          .catch(() => {
+            console.log('catch error')
+          })
       } else {
         // Service worker found. Proceed as normal.
         registerValidSW(swUrl, config)
@@ -136,8 +147,12 @@ function checkValidServiceWorker(swUrl: string, config?: IConfig) {
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
-      registration.unregister()
-    })
+    navigator.serviceWorker.ready
+      .then(registration => {
+        registration.unregister()
+      })
+      .catch(() => {
+        console.log('catch error')
+      })
   }
 }
