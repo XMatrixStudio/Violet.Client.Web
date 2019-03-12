@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'antd'
+import { Button, Icon } from 'antd'
 import { NavLink, withRouter } from 'react-router-dom'
 
 import './NavBar.less'

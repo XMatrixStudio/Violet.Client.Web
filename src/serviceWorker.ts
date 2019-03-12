@@ -1,4 +1,4 @@
-import console = require('console')
+// import console = require('console')
 
 // This optional code is used to register a service worker.
 // register() is not called by default.

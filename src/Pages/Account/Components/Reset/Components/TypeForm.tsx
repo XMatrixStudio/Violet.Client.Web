@@ -40,7 +40,7 @@ class TypeForm extends Component<ITypeFormProps> {
                 values.captcha,
                 values.password
               )
-                .then(res => {
+                .then(_ => {
                   this.props.next(values.account)
                 })
                 .catch(error => {

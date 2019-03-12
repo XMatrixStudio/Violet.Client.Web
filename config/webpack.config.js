@@ -428,17 +428,9 @@ module.exports = function(webpackEnv) {
         watch: paths.appSrc,
         tsconfig: paths.appTsConfig,
         tslint: paths.appTsLint,
-        useTypescriptIncrementalApi: true,
-        compilerOptions: {
-          module: 'esnext',
-          moduleResolution: 'node',
-          resolveJsonModule: true,
-          isolatedModules: true,
-          noEmit: true,
-          jsx: 'preserve'
-        }
-      }),
-      isEnvDevelopment && new HardSourceWebpackPlugin()
+        useTypescriptIncrementalApi: true
+      })
+      // isEnvDevelopment && new HardSourceWebpackPlugin()
     ].filter(Boolean),
     node: {
       dgram: 'empty',
