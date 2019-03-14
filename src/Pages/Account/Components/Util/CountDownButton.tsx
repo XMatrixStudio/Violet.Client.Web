@@ -21,6 +21,12 @@ class CountDownButton extends Component<ICountDownProps> {
     return this.waitTime - time / 1000
   }
 
+  componentWillUnmount() {
+    if (this.timer !== null) {
+      clearTimeout(this.timer)
+    }
+  }
+
   buttonTitle = () => {
     if (this.timer !== null) {
       clearTimeout(this.timer)
