@@ -16,6 +16,9 @@ class Reset extends Component<IResetProps, any> {
   @observable showAnim = false
   @observable currentStep = 1
 
+  componentDidMount() {
+    document.title = '重置密码 | Violet'
+  }
   UserForm = () => {
     switch (this.currentStep) {
       case 1:

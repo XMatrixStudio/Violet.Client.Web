@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from 'src/Pages/Account/Components/Util/NewPassword'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IEditPasswordProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -17,6 +19,30 @@ class EditPassword extends Component<IEditPasswordProps, any> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log(values)
+        UserService.UpdateInfo({
+          secure: {
+            old_password: values.oldPassword,
+            new_password: values.password
+          }
+        })
+          .then(_ => {
+            message.success('修改密码成功')
+            this.props.history.goBack()
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              switch (msg) {
+                case 'same_password':
+                  message.error('新密码不能与旧密码相同')
+                  break
+                case 'error_password':
+                  message.error('旧密码错误')
+                  break
+                default:
+                  message.error('发生错误' + msg)
+              }
+            })
+          })
       }
     })
   }

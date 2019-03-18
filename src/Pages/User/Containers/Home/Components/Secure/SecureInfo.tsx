@@ -1,17 +1,52 @@
 import React, { Component } from 'react'
 import './SecureInfo.less'
 import SafeImage from '@/Assets/User/safe.png'
-import { Icon, Button, Rate, Divider, Timeline } from 'antd'
+import { Icon, Button, Rate, Divider, Timeline, message } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
+import { inject, observer } from 'mobx-react'
+import UserStore from 'src/Store/UserStore'
+import moment from 'moment'
 
-interface ISecureInfoProps extends RouteComponentProps<any> {}
+interface ISecureInfoProps extends RouteComponentProps<any> {
+  UserStore?: UserStore
+}
 
+@inject('UserStore')
+@observer
 class SecureInfo extends Component<ISecureInfoProps, any> {
   componentDidMount() {
     document.title = '安全中心 | Violet'
   }
 
+  statusIcon(ok: boolean) {
+    if (ok === true) {
+      return (
+        <Icon
+          className='status-icon'
+          type='check-circle'
+          theme='twoTone'
+          twoToneColor='#52c41a'
+        />
+      )
+    } else {
+      return (
+        <Icon
+          className='status-icon'
+          type='close-circle'
+          theme='twoTone'
+          twoToneColor='#eb2f96'
+        />
+      )
+    }
+  }
+
+  deleteAccount = () => {
+    message.destroy()
+    message.warning('当前账号已锁定，不允许删除')
+  }
+
   render() {
+    const userInfo = this.props.UserStore!.state.info
     return (
       <div className='secure-layout'>
         {/* <p className='top-title'>
@@ -37,9 +72,11 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           <div className='text-box'>
             <p>
               <span className='title-text'>账号:</span>
-              <span className='content-text'>zhenlychen</span>
+              <span className='content-text'>{userInfo.name}</span>
             </p>
-            <p className='content-text'>注册时间：2019/1/1</p>
+            <p className='content-text'>
+              注册时间：{moment(userInfo.createTime).format('YYYY/MM/DD')}
+            </p>
           </div>
           <Divider />
         </div>
@@ -69,18 +106,13 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           <Divider />
         </div>
         <div className='secure-content'>
-          <Icon
-            className='status-icon'
-            type='check-circle'
-            theme='twoTone'
-            twoToneColor='#52c41a'
-          />
+          {this.statusIcon(true)}
           <div className='text-box'>
             <p className='title-text'>密码:</p>
             <p className='content-text'>于2018/2/22修改</p>
           </div>
           <Button
-            type='primary'
+            type='default'
             className='edit-btn'
             onClick={() => {
               this.props.history.push('/user/secure/password')
@@ -91,46 +123,36 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           <Divider />
         </div>
         <div className='secure-content'>
-          <Icon
-            className='status-icon'
-            type='check-circle'
-            theme='twoTone'
-            twoToneColor='#52c41a'
-          />
+          {this.statusIcon(userInfo.email !== '')}
           <div className='text-box'>
             <p className='title-text'>绑定邮箱:</p>
-            <p className='content-text'>zhenlychen@foxmail.com</p>
+            <p className='content-text'>{userInfo.email || '未绑定'}</p>
           </div>
           <Button
-            type='primary'
+            type={userInfo.email !== '' ? 'default' : 'danger'}
             className='edit-btn'
             onClick={() => {
               this.props.history.push('/user/secure/email')
             }}
           >
-            更换邮箱
+            {userInfo.email !== '' ? '更换邮箱' : '绑定邮箱'}
           </Button>
           <Divider />
         </div>
         <div className='secure-content'>
-          <Icon
-            className='status-icon'
-            type='close-circle'
-            theme='twoTone'
-            twoToneColor='#eb2f96'
-          />
+          {this.statusIcon(userInfo.phone !== '')}
           <div className='text-box'>
             <p className='title-text'>绑定手机:</p>
-            <p className='content-text'>未绑定</p>
+            <p className='content-text'>{userInfo.phone || '未绑定'} </p>
           </div>
           <Button
-            type='primary'
+            type={userInfo.phone !== '' ? 'default' : 'danger'}
             className='edit-btn'
             onClick={() => {
               this.props.history.push('/user/secure/phone')
             }}
           >
-            绑定手机
+            {userInfo.phone !== '' ? '更换手机' : '绑定手机'}
           </Button>
           <Divider />
         </div>
@@ -145,6 +167,28 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
             <p className='title-text'>手机令牌:</p>
             <p className='content-text'>即将上线</p>
           </div>
+        </div>
+        <Divider />
+        <div className='secure-content'>
+          <Icon
+            className='status-icon'
+            type='info-circle'
+            theme='twoTone'
+            twoToneColor='#72ced3'
+          />
+          <div className='text-box'>
+            <p className='title-text'>彻底删除账号</p>
+            <p className='content-text'>
+              注意：你的所有个人信息都会被删除，所关联的站点将不能登陆
+            </p>
+          </div>
+          <Button
+            type='danger'
+            className='edit-btn'
+            onClick={this.deleteAccount}
+          >
+            删除账号
+          </Button>
         </div>
       </div>
     )

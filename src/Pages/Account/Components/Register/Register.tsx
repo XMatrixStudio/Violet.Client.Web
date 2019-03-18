@@ -29,6 +29,9 @@ class Register extends Component<IRouterProps> {
     }
   }
 
+  componentDidMount() {
+    document.title = '注册 | Violet'
+  }
   UserForm = () => {
     switch (this.currentStep) {
       case 1:

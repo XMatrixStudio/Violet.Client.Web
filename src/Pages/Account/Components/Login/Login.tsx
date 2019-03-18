@@ -4,6 +4,9 @@ import { Card } from 'antd'
 import LoginForm from './Components/LoginForm'
 
 class Login extends Component {
+  componentDidMount() {
+    document.title = '登陆 | Violet'
+  }
   public render() {
     return (
       <div className='comp-login'>

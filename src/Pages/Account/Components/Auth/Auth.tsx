@@ -32,6 +32,10 @@ class Auth extends Component<IAuth> {
     )
   }
 
+  componentDidMount() {
+    document.title = '授权 | Violet'
+  }
+
   public render() {
     return (
       <div className='comp-auth'>

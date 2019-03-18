@@ -23,9 +23,13 @@ import Secure from './Components/Secure/Secure'
 import Auth from './Components/Auth/Auth'
 import MessageIndex from './Components/Message/Index'
 import Apps from './Components/Apps/Apps'
+import UserStore from 'src/Store/UserStore'
 
-interface IHomeProps extends RouteComponentProps<any> {}
+interface IHomeProps extends RouteComponentProps<any> {
+  UserStore?: UserStore
+}
 
+@inject('UserStore')
 @inject('router')
 @observer
 class Home extends React.Component<IHomeProps, any> {
@@ -90,6 +94,21 @@ class Home extends React.Component<IHomeProps, any> {
 
   componentWillMount() {
     document.title = '用户中心 | Violet'
+  }
+
+  updateInfo = () => {
+    UserService.GetInfo(
+      data => {
+        this.props.UserStore!.setInfo(data)
+      },
+      () => {
+        window.location.href = '/account'
+      }
+    )
+  }
+
+  componentDidMount() {
+    this.updateInfo()
   }
 
   public render() {

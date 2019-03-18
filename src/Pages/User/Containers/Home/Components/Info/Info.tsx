@@ -7,7 +7,6 @@ import EditInfo from './EditInfo'
 import Nothing from '../Nothing/Nothing'
 import { observer, inject } from 'mobx-react'
 import UserService from 'src/Services/UserService'
-import { message } from 'antd'
 import UserStore from 'src/Store/UserStore'
 
 interface IInfoProps extends RouteComponentProps<any> {
@@ -23,14 +22,9 @@ class Info extends Component<IInfoProps, any> {
         this.props.UserStore!.setInfo(data)
       },
       () => {
-        message.error('请先登陆')
-        this.props.history.replace('/account')
+        window.location.href = '/account'
       }
     )
-  }
-
-  componentDidMount() {
-    this.updateInfo()
   }
 
   render() {

@@ -20,6 +20,14 @@ export default {
   },
   // 修改信息
   UpdateInfo: async (req: User.PATCH.RequestBody) => {
+    if (req.secure) {
+      req.secure.old_password = createHash('sha512')
+        .update(req.secure.old_password)
+        .digest('hex')
+      req.secure.new_password = createHash('sha512')
+        .update(req.secure.new_password)
+        .digest('hex')
+    }
     const res = await axios.patch('/api/i/users', req)
     return res
   },
@@ -77,7 +85,7 @@ export default {
   // 获取验证码
   GetValid: async (account: string, captcha: string, isNew: boolean) => {
     const isEmail = account.includes('@')
-    const url = isEmail ? '/api/i/user/email' : '/api/i/user/phone'
+    const url = isEmail ? '/api/i/users/email' : '/api/i/users/phone'
     const req:
       | User.Email.POST.RequestBody
       | User.Phone.POST.RequestBody = isEmail
@@ -96,6 +104,6 @@ export default {
   },
   // 退出登陆
   Logout: async () => {
-    await axios.delete('/api/i/user/session')
+    await axios.delete('/api/i/users/session')
   }
 }
