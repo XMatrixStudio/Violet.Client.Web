@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import EditForm from './EditForm'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-interface IEditInfo extends RouteComponentProps<any> {}
+interface IEditInfo extends RouteComponentProps<any> {
+  updateData: () => void
+  userInfo: User.GET.ResponseBody
+}
 
 class EditInfo extends Component<IEditInfo, any> {
   render() {
@@ -19,12 +22,16 @@ class EditInfo extends Component<IEditInfo, any> {
         </div>
         <EditForm
           next={isEdit => {
+            if (isEdit) {
+              this.props.updateData()
+            }
             this.props.history.goBack()
           }}
+          userInfo={this.props.userInfo}
         />
       </div>
     )
   }
 }
 
-export default EditInfo
+export default withRouter(EditInfo)

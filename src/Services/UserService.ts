@@ -18,6 +18,11 @@ export default {
       failed!()
     }
   },
+  // 修改信息
+  UpdateInfo: async (req: User.PATCH.RequestBody) => {
+    const res = await axios.patch('/api/i/users', req)
+    return res
+  },
   // 登陆
   Login: async (account: string, password: string, remember: boolean) => {
     const req: User.Session.POST.RequestBody = {

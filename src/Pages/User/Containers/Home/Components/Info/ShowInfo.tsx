@@ -1,29 +1,36 @@
 import React, { Component } from 'react'
 
-import TestAvatar from '@/Assets/avatar.jpg'
-import { Icon, Button, Tooltip, Tag } from 'antd'
+import { Icon, Button, Tooltip } from 'antd'
+import { RouteComponentProps, withRouter } from 'react-router'
+import UserLevel from './Components/UserLevel'
+import UserGender from './Components/UserGender'
+import moment from 'moment'
 
-interface IShowInfoProps {
+interface IShowInfoProps extends RouteComponentProps<any> {
   onClickEdit: () => void
+  userInfo: User.GET.ResponseBody
 }
 
 class ShowInfo extends Component<IShowInfoProps, any> {
+  constructor(props: IShowInfoProps) {
+    super(props)
+  }
+
   render() {
+    const { info } = this.props.userInfo
     return (
       <div>
         <div className='top-info'>
-          <img className='user-avatar' src={TestAvatar} />
+          <img className='user-avatar' src={info.avatar} />
           <Tooltip placement='bottom' title='修改头像'>
             <div className='edit-div'>
               <Icon type='edit' />
             </div>
           </Tooltip>
           <div className='user-base-info'>
-            <p>
-              <span className='user-name'>ZhenlyChen</span>
-              <Tag className='user-tag' color='green'>
-                管理员
-              </Tag>
+            <div>
+              <span className='user-name'>{info.nickname}</span>
+              <UserLevel level={this.props.userInfo.level} />
               <Tooltip title='这是什么？'>
                 <Icon
                   style={{ fontSize: '18px', cursor: 'pointer' }}
@@ -32,33 +39,38 @@ class ShowInfo extends Component<IShowInfoProps, any> {
                   twoToneColor='#71cdd2'
                 />
               </Tooltip>
-            </p>
-
-            <p className='user-bio'>我好菜啊</p>
+            </div>
+            <p className='user-bio'>{info.bio || '这里是个人简介'}</p>
           </div>
         </div>
         <div className='more-info'>
           <div className='info-box'>
             <p className='info-title'>性别</p>
-            <p className='info-text'>
-              <Icon className='gender-icon gender-man' type='man' />男
-            </p>
+            <UserGender gender={info.gender} />
           </div>
           <div className='info-box'>
             <p className='info-title'>联系邮箱</p>
-            <p className='info-text'>zhenlychen@foxmail.com</p>
+            <p className='info-text'>{info.email || '空'}</p>
           </div>
           <div className='info-box'>
             <p className='info-title'>联系电话</p>
-            <p className='info-text'>+86-18823456789</p>
+            <p className='info-text'>{info.phone || '空'}</p>
+          </div>
+          <div className='info-box'>
+            <p className='info-title'>个人主页</p>
+            <p className='info-text'>{info.url || '空'}</p>
           </div>
           <div className='info-box'>
             <p className='info-title'>地区</p>
-            <p className='info-text'>中国</p>
+            <p className='info-text'>{info.location || '地球'}</p>
           </div>
           <div className='info-box'>
             <p className='info-title'>生日</p>
-            <p className='info-text'>1987/6/5</p>
+            <p className='info-text'>
+              {info.birthday
+                ? moment(info.birthday).format('YYYY-MM-DD')
+                : '很久很久之前'}
+            </p>
           </div>
           <Button onClick={this.props.onClickEdit}>编辑个人信息</Button>
           <p className='info-help-text'>
@@ -70,4 +82,4 @@ class ShowInfo extends Component<IShowInfoProps, any> {
   }
 }
 
-export default ShowInfo
+export default withRouter(ShowInfo)
