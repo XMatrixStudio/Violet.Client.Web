@@ -10,6 +10,9 @@ interface IEditPhoneProps extends RouteComponentProps<any> {
 }
 
 class EditPhone extends Component<IEditPhoneProps, any> {
+  componentDidMount() {
+    document.title = '绑定手机号 | Violet'
+  }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {

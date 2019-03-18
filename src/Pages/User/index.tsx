@@ -9,7 +9,8 @@ import { createBrowserHistory } from 'history'
 import { Provider } from 'mobx-react'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 // store
-import AuthStore from '../../Store/AuthStore'
+import AuthStore from 'src/Store/AuthStore'
+import UserStore from 'src/Store/UserStore'
 
 import { Root } from '../../Components/Root'
 import Home from './Containers/Home/Home'
@@ -19,6 +20,7 @@ const routerStore = new RouterStore()
 const history = syncHistoryWithStore(browserHistory, routerStore)
 const rootStore = {
   AuthStore: new AuthStore(),
+  UserStore: new UserStore(),
   router: routerStore
 }
 

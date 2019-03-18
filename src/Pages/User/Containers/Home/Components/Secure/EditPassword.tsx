@@ -9,6 +9,9 @@ interface IEditPasswordProps extends RouteComponentProps<any> {
 }
 
 class EditPassword extends Component<IEditPasswordProps, any> {
+  componentDidMount() {
+    document.title = '修改密码 | Violet'
+  }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {

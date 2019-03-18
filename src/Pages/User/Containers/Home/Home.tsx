@@ -88,6 +88,10 @@ class Home extends React.Component<IHomeProps, any> {
     })
   }
 
+  componentWillMount() {
+    document.title = '用户中心 | Violet'
+  }
+
   public render() {
     return (
       <Layout className='home'>

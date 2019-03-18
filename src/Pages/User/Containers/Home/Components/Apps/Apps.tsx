@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import './Apps.less'
 import { Icon, Button } from 'antd'
 class Apps extends Component {
+  componentDidMount() {
+    document.title = '应用管理 | Violet'
+  }
+
   render() {
     const AppManger = false ? null : (
       <div className='not-dev'>

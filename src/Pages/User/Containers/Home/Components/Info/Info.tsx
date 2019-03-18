@@ -5,36 +5,22 @@ import ShowInfo from './ShowInfo'
 import { RouteComponentProps, Route, Switch } from 'react-router-dom'
 import EditInfo from './EditInfo'
 import Nothing from '../Nothing/Nothing'
-import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { observer, inject } from 'mobx-react'
 import UserService from 'src/Services/UserService'
 import { message } from 'antd'
+import UserStore from 'src/Store/UserStore'
 
-interface IInfoProps extends RouteComponentProps<any> {}
+interface IInfoProps extends RouteComponentProps<any> {
+  UserStore?: UserStore
+}
 
+@inject('UserStore')
 @observer
 class Info extends Component<IInfoProps, any> {
-  @observable userInfo: User.GET.ResponseBody = {
-    name: '',
-    level: 0,
-    createTime: new Date(),
-    info: {
-      avatar: '',
-      bio: '',
-      birthday: new Date(),
-      email: '',
-      gender: 0,
-      location: '',
-      nickname: '',
-      phone: '',
-      url: ''
-    }
-  }
-
   updateInfo = () => {
     UserService.GetInfo(
       data => {
-        this.userInfo = data
+        this.props.UserStore!.setInfo(data)
       },
       () => {
         message.error('请先登陆')
@@ -52,14 +38,17 @@ class Info extends Component<IInfoProps, any> {
       <div className='info-content'>
         <Switch>
           <Route exact={true} path='/user/info/edit'>
-            <EditInfo updateData={this.updateInfo} userInfo={this.userInfo} />
+            <EditInfo
+              updateData={this.updateInfo}
+              userInfo={this.props.UserStore!.state.info}
+            />
           </Route>
           <Route exact={true} path='/user/info'>
             <ShowInfo
               onClickEdit={() => {
                 this.props.history.push('/user/info/edit')
               }}
-              userInfo={this.userInfo}
+              userInfo={this.props.UserStore!.state.info}
             />
           </Route>
           <Route component={Nothing} />

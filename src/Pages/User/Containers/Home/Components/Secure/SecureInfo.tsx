@@ -7,6 +7,10 @@ import { RouteComponentProps } from 'react-router-dom'
 interface ISecureInfoProps extends RouteComponentProps<any> {}
 
 class SecureInfo extends Component<ISecureInfoProps, any> {
+  componentDidMount() {
+    document.title = '安全中心 | Violet'
+  }
+
   render() {
     return (
       <div className='secure-layout'>

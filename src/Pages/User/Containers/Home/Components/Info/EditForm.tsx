@@ -28,7 +28,7 @@ class EditForm extends Component<IEditFormProps, any> {
             url: values.url
           }
         }
-        if (values.birthday !== undefined) {
+        if (values.birthday) {
           newInfo.info!.birthday = values.birthday.format('YYYY-MM-DD')
         }
         UserService.UpdateInfo(newInfo)
@@ -109,7 +109,7 @@ class EditForm extends Component<IEditFormProps, any> {
           {getFieldDecorator('birthday', {
             initialValue: userInfo.info.birthday
               ? moment(userInfo.info.birthday)
-              : undefined
+              : null
           })(<DatePicker placeholder='选择日期' />)}
         </Form.Item>
         <Button htmlType='submit' type='primary'>

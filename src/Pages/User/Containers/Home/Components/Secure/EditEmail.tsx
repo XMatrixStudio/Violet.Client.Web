@@ -10,6 +10,9 @@ interface IEditEmailProps extends RouteComponentProps<any> {
 }
 
 class EditEmail extends Component<IEditEmailProps, any> {
+  componentDidMount() {
+    document.title = '绑定邮箱 | Violet'
+  }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {

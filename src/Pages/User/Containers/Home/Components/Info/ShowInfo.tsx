@@ -15,6 +15,9 @@ class ShowInfo extends Component<IShowInfoProps, any> {
   constructor(props: IShowInfoProps) {
     super(props)
   }
+  componentDidMount() {
+    document.title = '个人信息 | Violet'
+  }
 
   render() {
     const { info } = this.props.userInfo

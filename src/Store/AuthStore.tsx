@@ -1,17 +1,7 @@
 import { observable, action, autorun, IReactionDisposer } from 'mobx'
 
-// export interface IUserInfo {
-//   id?: string
-//   name?: string
-//   nickname?: string
-//   email?: string
-//   phone?: string
-//   avatar?: string
-// }
-
 export interface IUser {
   isLogin: boolean
-  // info: IUserInfo
   registerValidTime: Date
   resetValidTime: Date
 }

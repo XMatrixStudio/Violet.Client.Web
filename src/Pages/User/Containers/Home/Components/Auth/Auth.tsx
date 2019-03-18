@@ -127,6 +127,10 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
     this.selectedRowKeys = []
   }
 
+  componentDidMount() {
+    document.title = '授权管理 | Violet'
+  }
+
   start = () => {
     Modal.confirm({
       title: '操作确认',
