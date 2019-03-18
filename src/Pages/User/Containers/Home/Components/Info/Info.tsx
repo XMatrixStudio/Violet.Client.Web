@@ -6,7 +6,6 @@ import { RouteComponentProps, Route, Switch } from 'react-router-dom'
 import EditInfo from './EditInfo'
 import Nothing from '../Nothing/Nothing'
 import { observer, inject } from 'mobx-react'
-import UserService from 'src/Services/UserService'
 import UserStore from 'src/Store/UserStore'
 
 interface IInfoProps extends RouteComponentProps<any> {
@@ -17,14 +16,9 @@ interface IInfoProps extends RouteComponentProps<any> {
 @observer
 class Info extends Component<IInfoProps, any> {
   updateInfo = () => {
-    UserService.GetInfo(
-      data => {
-        this.props.UserStore!.setInfo(data)
-      },
-      () => {
-        window.location.href = '/account'
-      }
-    )
+    this.props.UserStore!.updateInfo(() => {
+      window.location.href = '/account'
+    })
   }
 
   render() {

@@ -12,7 +12,7 @@ import { observable } from 'mobx'
 interface IValidCaptchaProps {
   form: WrappedFormUtils
   AuthStore?: AuthStore
-  isNew?: boolean
+  type: 'register' | 'reset' | 'update'
   label?: boolean
 }
 
@@ -51,15 +51,11 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
 
   sendCaptcha = () => {
     this.props.form.validateFields(['account', 'imageCaptcha'], (err, val) => {
-      if (err === null) {
+      if (!err) {
         this.props.AuthStore!.setRegisterValidTime()
         this.hideImageCaptcha()
         message.success('验证码发送中...')
-        UserService.GetValid(
-          val.account,
-          val.imageCaptcha,
-          this.props.isNew === true
-        )
+        UserService.GetValid(val.account, val.imageCaptcha, this.props.type)
           .then(_ => {
             message.destroy()
             message.success('验证码已发送到' + val.account)
@@ -77,15 +73,31 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                 case 'timeout_captcha':
                   message.error('验证码已超时')
                   break
+                case 'not_exist_user':
+                  message.error('用户不存在')
+                  break
                 case 'invalid_email':
                   message.error('无效的邮箱地址')
                   break
                 case 'exist_email':
                   message.error('该邮箱已被注册')
                   break
+                case 'invalid_phone':
+                  message.error('无效的手机号码')
+                  break
+                case 'exist_phone':
+                  message.error('该手机已被注册')
+                  break
+                case 'same_email':
+                  message.error('当前邮箱已绑定')
+                  break
+                case 'same_phone':
+                  message.error('当前手机已绑定')
+                  break
                 case 'limit_time':
                   message.error('发送太频繁了，请稍后重试')
                   break
+
                 default:
                   message.error('发生错误:' + msg)
               }

@@ -64,7 +64,7 @@ class ValidForm extends Component<IValidFormProps> {
             />
           )}
         </Form.Item>
-        <ValidCaptcha form={this.props.form} isNew={true} />
+        <ValidCaptcha form={this.props.form} type='register' />
         <Form.Item className='last-item'>
           <Button
             type='primary'

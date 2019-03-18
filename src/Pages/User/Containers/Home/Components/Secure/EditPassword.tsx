@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Form, Input, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from 'src/Pages/Account/Components/Util/NewPassword'
@@ -8,6 +8,7 @@ import ServiceTool from 'src/Services/ServiceTool'
 
 interface IEditPasswordProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
+  finish: (isEdit: boolean) => void
 }
 
 class EditPassword extends Component<IEditPasswordProps, any> {
@@ -27,6 +28,7 @@ class EditPassword extends Component<IEditPasswordProps, any> {
         })
           .then(_ => {
             message.success('修改密码成功')
+            this.props.finish(true)
             this.props.history.goBack()
           })
           .catch(error => {
@@ -89,4 +91,4 @@ class EditPassword extends Component<IEditPasswordProps, any> {
   }
 }
 
-export default Form.create()(EditPassword)
+export default withRouter(Form.create()(EditPassword))

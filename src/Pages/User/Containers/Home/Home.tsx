@@ -97,14 +97,9 @@ class Home extends React.Component<IHomeProps, any> {
   }
 
   updateInfo = () => {
-    UserService.GetInfo(
-      data => {
-        this.props.UserStore!.setInfo(data)
-      },
-      () => {
-        window.location.href = '/account'
-      }
-    )
+    this.props.UserStore!.updateInfo(() => {
+      window.location.href = '/account'
+    })
   }
 
   componentDidMount() {

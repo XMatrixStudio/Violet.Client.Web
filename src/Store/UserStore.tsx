@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx'
+import UserService from 'src/Services/UserService'
 
 export interface IUser {
   info: User.GET.ResponseBody
@@ -18,6 +19,12 @@ class UserStore {
         }
       }
     }
+  }
+
+  updateInfo(failed: () => void) {
+    UserService.GetInfo(data => {
+      this.setInfo(data)
+    }, failed)
   }
 
   @action setInfo(info: User.GET.ResponseBody) {

@@ -82,20 +82,36 @@ export default {
     const res = await axios.put(url, req)
     return res
   },
+  // 验证手机/邮箱 - 更改绑定
+  UpdateAccount: async (account: string, captcha: string) => {
+    const url = account.includes('@')
+      ? '/api/i/users/email'
+      : '/api/i/users/phone'
+    const req: User.Email.PUT.RequestBody | User.Phone.PUT.RequestBody = {
+      operator: 'update',
+      code: captcha
+    }
+    const res = await axios.put(url, req)
+    return res
+  },
   // 获取验证码
-  GetValid: async (account: string, captcha: string, isNew: boolean) => {
+  GetValid: async (
+    account: string,
+    captcha: string,
+    type: 'register' | 'reset' | 'update'
+  ) => {
     const isEmail = account.includes('@')
     const url = isEmail ? '/api/i/users/email' : '/api/i/users/phone'
     const req:
       | User.Email.POST.RequestBody
       | User.Phone.POST.RequestBody = isEmail
       ? {
-          operator: isNew ? 'register' : 'reset',
+          operator: type,
           email: account,
           captcha: captcha
         }
       : {
-          operator: isNew ? 'register' : 'reset',
+          operator: type,
           phone: account,
           captcha: captcha
         }

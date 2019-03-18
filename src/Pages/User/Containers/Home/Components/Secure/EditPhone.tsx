@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import Input from 'antd/lib/input/Input'
 import ValidCaptcha from 'src/Pages/Account/Components/Util/ValidCaptcha'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IEditPhoneProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
+  finish: (isEdit: boolean) => void
 }
 
 class EditPhone extends Component<IEditPhoneProps, any> {
@@ -15,9 +18,19 @@ class EditPhone extends Component<IEditPhoneProps, any> {
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['account', 'captcha'], (err, values) => {
       if (!err) {
-        console.log(values)
+        UserService.UpdateAccount(values.account, values.captcha)
+          .then(_ => {
+            message.success('绑定成功')
+            this.props.finish(true)
+            this.props.history.goBack()
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('发生错误' + msg)
+            })
+          })
       }
     })
   }
@@ -37,7 +50,7 @@ class EditPhone extends Component<IEditPhoneProps, any> {
 
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item label='绑定手机号'>
-            {getFieldDecorator('email', {
+            {getFieldDecorator('account', {
               rules: [
                 {
                   required: true,
@@ -46,7 +59,7 @@ class EditPhone extends Component<IEditPhoneProps, any> {
               ]
             })(<Input />)}
           </Form.Item>
-          <ValidCaptcha form={this.props.form} isNew={false} label={true} />
+          <ValidCaptcha form={this.props.form} type='update' label={true} />
           <Button type='primary' htmlType='submit'>
             绑定手机号
           </Button>
@@ -64,4 +77,4 @@ class EditPhone extends Component<IEditPhoneProps, any> {
   }
 }
 
-export default Form.create()(EditPhone)
+export default withRouter(Form.create()(EditPhone))

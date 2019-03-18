@@ -4,15 +4,33 @@ import SecureInfo from './SecureInfo'
 import EditPassword from './EditPassword'
 import EditEmail from './EditEmail'
 import EditPhone from './EditPhone'
+import UserStore from 'src/Store/UserStore'
+import { inject, observer } from 'mobx-react'
 
-class Secure extends Component {
+@inject('UserStore')
+@observer
+class Secure extends Component<{ UserStore?: UserStore }> {
+  updateInfo = (isEdit: boolean) => {
+    if (isEdit) {
+      this.props.UserStore!.updateInfo(() => {
+        window.location.href = '/account'
+      })
+    }
+  }
+
   render() {
     return (
       <div>
         <Switch>
-          <Route path='/user/secure/phone' component={EditPhone} />
-          <Route path='/user/secure/email' component={EditEmail} />
-          <Route path='/user/secure/password' component={EditPassword} />
+          <Route path='/user/secure/phone'>
+            <EditPhone finish={this.updateInfo} />
+          </Route>
+          <Route path='/user/secure/email' component={EditEmail}>
+            <EditEmail finish={this.updateInfo} />
+          </Route>
+          <Route path='/user/secure/password' component={EditPassword}>
+            <EditPassword finish={this.updateInfo} />
+          </Route>
           <Route path='/user/secure' component={SecureInfo} />
         </Switch>
       </div>

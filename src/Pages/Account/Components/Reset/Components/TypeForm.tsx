@@ -90,7 +90,7 @@ class TypeForm extends Component<ITypeFormProps> {
                 />
               )}
             </Form.Item>
-            <ValidCaptcha form={this.props.form} isNew={false} />
+            <ValidCaptcha form={this.props.form} type='reset' />
             <NewPassword form={this.props.form} />
           </>
         )
