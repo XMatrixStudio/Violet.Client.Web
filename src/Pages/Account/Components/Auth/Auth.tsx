@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { Icon, Popover, Card } from 'antd'
+import { Icon, Popover, Card, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import AuthForm from './Components/AuthForm'
 
@@ -21,11 +21,16 @@ class Auth extends Component<IAuth> {
 
   constructor(props: IAuth) {
     super(props)
-    UserService.GetInfo(info => {
-      console.log(info)
-      this.userName = info.nickname
-      this.userAvatar = info.avatar
-    })
+    UserService.GetInfo(
+      info => {
+        console.log(info)
+        this.userName = info.nickname
+        this.userAvatar = info.avatar
+      },
+      () => {
+        message.error('无法获取个人信息')
+      }
+    )
   }
 
   public render() {

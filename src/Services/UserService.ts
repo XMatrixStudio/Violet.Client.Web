@@ -12,30 +12,28 @@ export interface IUserInfo {
 
 export default {
   // 获取信息
-  GetInfo: (success: (info: IUserInfo) => void, failed?: () => void) => {
-    axios
-      .get('/api/i/user')
-      .then(res => {
-        if (res && res.data) {
-          success({
-            class: res.data.class,
-            name: res.data.name,
-            email: res.data.email,
-            phone: res.data.phone,
-            nickname: res.data.info.nickname,
-            avatar: res.data.info.avatar
-          })
-        } else {
-          failed!()
-        }
-      })
-      .catch(_ => {
+  GetInfo: async (success: (info: IUserInfo) => void, failed?: () => void) => {
+    try {
+      const res = await axios.get('/api/i/users/me')
+      if (res && res.data) {
+        success({
+          class: res.data.class,
+          name: res.data.name,
+          email: res.data.email,
+          phone: res.data.phone,
+          nickname: res.data.info.nickname,
+          avatar: res.data.info.avatar
+        })
+      } else {
         failed!()
-      })
+      }
+    } catch (_) {
+      failed!()
+    }
   },
   // 登陆
   Login: async (account: string, password: string, remember: boolean) => {
-    const res = await axios.post('/api/i/user/session', {
+    const res = await axios.post('/api/i/users/session', {
       user: account,
       password: createHash('sha512')
         .update(password)
@@ -46,7 +44,7 @@ export default {
   },
   // 注册
   Register: async (userName: string, nickname: string, password: string) => {
-    const res = await axios.post('/api/i/user', {
+    const res = await axios.post('/api/i/users', {
       name: userName,
       nickname: nickname,
       password: createHash('sha512')
@@ -59,7 +57,7 @@ export default {
   Valid: async (account: string, captcha: string) => {
     const isEmail = account.includes('@')
     const res = await axios.put(
-      isEmail ? '/api/i/user/email' : '/api/i/user/phone',
+      isEmail ? '/api/i/users/email' : '/api/i/users/phone',
       {
         operator: 'register',
         code: captcha
