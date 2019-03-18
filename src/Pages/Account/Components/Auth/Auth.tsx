@@ -22,10 +22,9 @@ class Auth extends Component<IAuth> {
   constructor(props: IAuth) {
     super(props)
     UserService.GetInfo(
-      info => {
-        console.log(info)
-        this.userName = info.nickname
-        this.userAvatar = info.avatar
+      data => {
+        this.userName = data.info.nickname
+        this.userAvatar = data.info.avatar
       },
       () => {
         message.error('无法获取个人信息')
