@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import './Apps.less'
 import { Icon, Button } from 'antd'
+import DeveloperForm from './DeveloperForm'
 class Apps extends Component {
   componentDidMount() {
     document.title = '应用管理 | Violet'
   }
 
   render() {
-    const AppManger = false ? null : (
+    const AppManger = false ? (
+      <DeveloperForm />
+    ) : (
       <div className='not-dev'>
         <p className='oops-icon'>
           <Icon type='frown' theme='twoTone' twoToneColor='#7ce0de' />

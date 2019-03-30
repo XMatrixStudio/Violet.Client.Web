@@ -28,7 +28,17 @@ class EditPhone extends Component<IEditPhoneProps, any> {
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
-              message.error('发生错误' + msg)
+              switch (msg) {
+                case 'not_exist_code':
+                case 'error_code':
+                  message.error('验证码错误')
+                  break
+                case 'timeout_code':
+                  message.error('验证码已超时，请重新发送')
+                  break
+                default:
+                  message.error('发生错误' + msg)
+              }
             })
           })
       }
