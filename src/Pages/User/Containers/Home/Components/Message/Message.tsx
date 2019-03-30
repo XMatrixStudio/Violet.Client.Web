@@ -28,8 +28,8 @@ class Message extends Component {
 
   @observable selectIndex: number
 
-  constructor() {
-    super({})
+  constructor(props: any) {
+    super(props)
     this.selectIndex = -1
     this.messageData = [
       {
@@ -111,7 +111,7 @@ class Message extends Component {
   render() {
     const messageList = this.messageData.map(
       (value: IMessageData, index: number) => (
-        <>
+        <div key={value.name}>
           <div
             className={
               'item-card ' +
@@ -133,7 +133,7 @@ class Message extends Component {
             </div>
             <span className='item-time'>{this.formatTime(value.lastTime)}</span>
           </div>
-        </>
+        </div>
       )
     )
 
@@ -146,17 +146,17 @@ class Message extends Component {
           switch (value.type) {
             case 'notice':
               return (
-                <>
+                <div key={value.time.getTime()}>
                   <p className='notice-time'>{this.formatTime(value.time)}</p>
                   <div className='chat-notice'>
                     <p className='notice-title'>{value.title}</p>
                     <p>{value.content}</p>
                   </div>
-                </>
+                </div>
               )
             case 'message':
               return (
-                <div className='chat-item'>
+                <div key={value.time.getTime()} className='chat-item'>
                   <img src={AppAvatar} className='avatar' />
                   <div className='chat-content'>
                     <p className='item-time'>{this.formatTime(value.time)}</p>
@@ -166,7 +166,10 @@ class Message extends Component {
               )
             case 'message-me':
               return (
-                <div className='chat-item chat-item-me'>
+                <div
+                  key={value.time.getTime()}
+                  className='chat-item chat-item-me'
+                >
                   <div className='chat-content'>
                     <p className='item-time'>{this.formatTime(value.time)}</p>
                     <p className='item-text'>{value.content}</p>
