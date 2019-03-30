@@ -5,6 +5,7 @@ import DeveloperForm from './DeveloperForm'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import AppManger from './AppManger'
 
 interface IAppsProps extends RouteComponentProps<any> {}
 
@@ -13,9 +14,9 @@ class Apps extends Component<IAppsProps> {
   @observable showForm = false
   componentDidMount() {
     document.title = '应用管理 | Violet'
-    if (this.props.location.pathname === '/user/apps') {
-      this.props.history.replace('/user/apps/not')
-    }
+    // if (this.props.location.pathname === '/user/apps') {
+    //   this.props.history.replace('/user/apps/not')
+    // }
   }
 
   render() {
@@ -55,6 +56,7 @@ class Apps extends Component<IAppsProps> {
                 }}
               />
             </Route>
+            <Route path='/user/apps' component={AppManger} />
           </Switch>
         </div>
       </div>
