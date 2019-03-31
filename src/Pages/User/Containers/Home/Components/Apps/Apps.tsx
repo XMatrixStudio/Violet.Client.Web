@@ -54,6 +54,31 @@ class Apps extends Component<IAppsProps> {
                 next={isSubmit => {
                   this.props.history.goBack()
                 }}
+                type='developer'
+              />
+            </Route>
+            <Route path='/user/apps/more'>
+              <DeveloperForm
+                next={isSubmit => {
+                  this.props.history.goBack()
+                }}
+                type='more'
+              />
+            </Route>
+            <Route path='/user/apps/admin'>
+              <DeveloperForm
+                next={isSubmit => {
+                  this.props.history.goBack()
+                }}
+                type='admin'
+              />
+            </Route>
+            <Route path='/user/apps/edit'>
+              <DeveloperForm
+                next={isSubmit => {
+                  this.props.history.goBack()
+                }}
+                type='edit'
               />
             </Route>
             <Route path='/user/apps' component={AppManger} />

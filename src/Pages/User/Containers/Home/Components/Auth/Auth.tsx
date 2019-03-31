@@ -38,7 +38,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
             placement='top'
             content={
               <div>
-                Violet认证: <strong>XMatrix Studio 出品</strong>
+                <strong>XMatrix Studio 出品</strong>
               </div>
             }
           >
