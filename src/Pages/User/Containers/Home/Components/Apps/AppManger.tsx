@@ -6,6 +6,7 @@ import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
+import NewOrganization from './NewOrganization'
 
 @observer
 class AppManger extends Component<RouteComponentProps<any>> {
@@ -57,7 +58,7 @@ class AppManger extends Component<RouteComponentProps<any>> {
             }
             key='3'
           >
-            2
+            <NewOrganization />
           </Tabs.TabPane>
         </Tabs>
       </div>

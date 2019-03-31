@@ -2,22 +2,70 @@ import React, { Component } from 'react'
 import './Apps.less'
 import { Icon, Button } from 'antd'
 import DeveloperForm from './DeveloperForm'
-import { observer } from 'mobx-react'
-import { observable } from 'mobx'
-import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { Route, RouteComponentProps, Switch, Link } from 'react-router-dom'
 import AppManger from './AppManger'
 import NewAppForm from './NewAppForm'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
+import { Action, Location } from 'history'
 
 interface IAppsProps extends RouteComponentProps<any> {}
 
 @observer
 class Apps extends Component<IAppsProps> {
-  @observable showForm = false
+  lastPathName: string
+  @observable title: string
+  @observable subTitle: string
+
+  constructor(props: IAppsProps) {
+    super(props)
+    this.updateTitle(this.props.location.pathname)
+  }
+
+  updateTitle = (pathName: string) => {
+    switch (pathName) {
+      case '/user/apps/not':
+        this.title = ''
+        this.subTitle = '成为开发者即可创建你的应用'
+        break
+      case '/user/apps/up/developer':
+        this.title = ' > 开发者申请'
+        this.subTitle = '请填写您的联系方式(内部使用), 方便我们与您进行联系'
+        break
+      case '/user/apps/up/admin':
+        this.title = ' > 管理员申请'
+        this.subTitle = '系统管理员仅允许内部人员申请'
+        break
+      case '/user/apps/up/more':
+        this.title = ' > 应用数申请'
+        this.subTitle = '请填写您的应用需求, 便于管理员审核'
+        break
+      case '/user/apps/up/edit':
+        this.title = ' > 修改信息'
+        this.subTitle = '请填写新的联系方式(内部使用), 方便我们与您进行联系'
+        break
+      case '/user/apps/new':
+        this.title = ' > 新建应用'
+        this.subTitle = '创建新的应用'
+        break
+      default:
+        this.title = ''
+        this.subTitle = '创建并管理你的应用'
+    }
+  }
+
   componentDidMount() {
     document.title = '应用管理 | Violet'
     // if (this.props.location.pathname === '/user/apps') {
     //   this.props.history.replace('/user/apps/not')
     // }
+    this.props.history.listen((location: Location, action: Action) => {
+      if (this.lastPathName !== location.pathname) {
+        this.lastPathName = location.pathname
+        this.updateTitle(this.lastPathName)
+      }
+    })
   }
 
   render() {
@@ -25,47 +73,65 @@ class Apps extends Component<IAppsProps> {
       <div className='apps-layout'>
         <div className='top-layout'>
           <div className='top-text'>
-            <p className='title'>应用管理</p>
-            <p className='sub-title'>创建并管理你的应用</p>
+            <p className='title'>
+              <Link className='home-link' to='/user/apps'>
+                应用管理
+              </Link>{' '}
+              {this.title}
+            </p>
+            <p className='sub-title'>{this.subTitle}</p>
           </div>
           <div className='right-text'>
             我的应用: <strong>0/0</strong>
           </div>
         </div>
         <div className='apps-manger'>
-          <Switch>
-            <Route path='/user/apps/not'>
-              <div className='not-dev'>
-                <p className='oops-icon'>
-                  <Icon type='frown' theme='twoTone' twoToneColor='#7ce0de' />
-                </p>
-                <p>你当前还不是开发者，快点申请成为开发者吧</p>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    this.props.history.push('/user/apps/developer')
-                  }}
-                >
-                  成为一名开发者
-                </Button>
-              </div>
-            </Route>
-            <Route path='/user/apps/up/:type'>
-              <DeveloperForm
-                next={isSubmit => {
-                  this.props.history.goBack()
-                }}
-              />
-            </Route>
-            <Route path='/user/apps/new'>
-              <NewAppForm
-                next={isSubmit => {
-                  this.props.history.goBack()
-                }}
-              />
-            </Route>
-            <Route path='/user/apps' component={AppManger} />
-          </Switch>
+          <TransitionGroup style={{ height: '100vh' }}>
+            <CSSTransition
+              key={this.props.location.pathname.replace('/user/apps', '')}
+              classNames='fade'
+              exit={false}
+              timeout={300}
+            >
+              <Switch>
+                <Route path='/user/apps/not'>
+                  <div className='not-dev'>
+                    <p className='oops-icon'>
+                      <Icon
+                        type='frown'
+                        theme='twoTone'
+                        twoToneColor='#7ce0de'
+                      />
+                    </p>
+                    <p>你当前还不是开发者，快点申请成为开发者吧</p>
+                    <Button
+                      type='primary'
+                      onClick={() => {
+                        this.props.history.push('/user/apps/up/developer')
+                      }}
+                    >
+                      成为一名开发者
+                    </Button>
+                  </div>
+                </Route>
+                <Route path='/user/apps/up/:type'>
+                  <DeveloperForm
+                    next={isSubmit => {
+                      this.props.history.goBack()
+                    }}
+                  />
+                </Route>
+                <Route path='/user/apps/new'>
+                  <NewAppForm
+                    next={isSubmit => {
+                      this.props.history.goBack()
+                    }}
+                  />
+                </Route>
+                <Route path='/user/apps' component={AppManger} />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     )

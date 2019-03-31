@@ -180,7 +180,14 @@ class Home extends React.Component<IHomeProps, any> {
           <Content className='content-layout'>
             <TransitionGroup style={{ height: '100vh' }}>
               <CSSTransition
-                key={this.props.location.pathname}
+                key={
+                  this.props.location.pathname.indexOf('/', 7) === -1
+                    ? this.props.location.pathname
+                    : this.props.location.pathname.substr(
+                        0,
+                        this.props.location.pathname.indexOf('/', 7)
+                      )
+                }
                 classNames='fade'
                 exit={false}
                 timeout={300}

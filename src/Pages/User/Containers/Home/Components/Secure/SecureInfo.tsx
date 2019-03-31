@@ -89,7 +89,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           />
           <div className='text-box'>
             <p className='title-text'>最近登陆</p>
-            <p className='content-text'>
+            <div className='content-text'>
               <Timeline>
                 <Timeline.Item>
                   2019/2/25 14:32 广东 广州 (125.23.42.1)
@@ -101,7 +101,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
                   2019/1/12 9:32 广东 湛江 (145.64.142.12)
                 </Timeline.Item>
               </Timeline>
-            </p>
+            </div>
           </div>
           <Divider />
         </div>
