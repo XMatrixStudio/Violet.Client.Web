@@ -31,7 +31,6 @@ class NewAppForm extends Component<INewAppFormProps> {
     const { getFieldDecorator } = this.props.form
     return (
       <div className='app-form'>
-        <p className='app-form-title'>新建应用</p>
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item label='创建于(创建后不可更改)'>
             {getFieldDecorator('appFrom', {

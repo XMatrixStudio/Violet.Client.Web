@@ -20,6 +20,17 @@ class AppDetail extends Component {
           <Tabs.TabPane
             tab={
               <span>
+                <Icon type='message' />
+                消息管理
+              </span>
+            }
+            key='message'
+          >
+            d
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={
+              <span>
                 <Icon type='line-chart' />
                 统计信息
               </span>
