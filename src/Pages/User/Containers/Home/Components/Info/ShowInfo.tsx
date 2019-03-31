@@ -22,7 +22,7 @@ class ShowInfo extends Component<IShowInfoProps, any> {
   render() {
     const { info } = this.props.userInfo
     return (
-      <div>
+      <div className='show-info'>
         <div className='top-info'>
           <img className='user-avatar' src={info.avatar} />
           <Tooltip placement='bottom' title='修改头像'>
@@ -47,6 +47,9 @@ class ShowInfo extends Component<IShowInfoProps, any> {
           </div>
         </div>
         <div className='more-info'>
+          <Button style={{ float: 'right' }} onClick={this.props.onClickEdit}>
+            编辑个人信息
+          </Button>
           <div className='info-box'>
             <p className='info-title'>性别</p>
             <UserGender gender={info.gender} />
@@ -75,7 +78,6 @@ class ShowInfo extends Component<IShowInfoProps, any> {
                 : '很久很久之前'}
             </p>
           </div>
-          <Button onClick={this.props.onClickEdit}>编辑个人信息</Button>
           <p className='info-help-text'>
             * 使用 Violet 服务的其他用户可能会看到部分信息。
           </p>

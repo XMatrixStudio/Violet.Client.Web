@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom'
 import { Form, Input, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from 'src/Pages/Account/Components/Util/NewPassword'
@@ -55,7 +55,12 @@ class EditPassword extends Component<IEditPasswordProps, any> {
       <div className='form-layout'>
         <div className='top-layout'>
           <div className='top-text'>
-            <p className='title'>修改密码</p>
+            <p className='title'>
+              <Link to='/user/secure' className='home-link'>
+                账户安全
+              </Link>{' '}
+              > 修改密码
+            </p>
             <p className='sub-title'>定期修改密码使得你的账号更安全</p>
           </div>
           <div className='right-text'>

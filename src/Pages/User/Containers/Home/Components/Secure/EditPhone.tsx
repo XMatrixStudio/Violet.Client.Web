@@ -6,6 +6,7 @@ import ValidCaptcha from 'src/Pages/Account/Components/Util/ValidCaptcha'
 import { Button, message } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import { Link } from 'react-router-dom'
 
 interface IEditPhoneProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -50,7 +51,12 @@ class EditPhone extends Component<IEditPhoneProps, any> {
       <div className='form-layout'>
         <div className='top-layout'>
           <div className='top-text'>
-            <p className='title'>绑定手机号</p>
+            <p className='title'>
+              <Link to='/user/secure' className='home-link'>
+                账户安全
+              </Link>{' '}
+              > 绑定手机号
+            </p>
             <p className='sub-title'>绑定手机号可以帮助你通过短信找回密码</p>
           </div>
           {/* <div className='right-text'>

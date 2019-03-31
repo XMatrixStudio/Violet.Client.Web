@@ -6,6 +6,7 @@ import ValidCaptcha from 'src/Pages/Account/Components/Util/ValidCaptcha'
 import { Button, message } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import { Link } from 'react-router-dom'
 
 interface IEditEmailProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -50,7 +51,12 @@ class EditEmail extends Component<IEditEmailProps, any> {
       <div className='form-layout'>
         <div className='top-layout'>
           <div className='top-text'>
-            <p className='title'>绑定邮箱</p>
+            <p className='title'>
+              <Link to='/user/secure' className='home-link'>
+                账户安全
+              </Link>{' '}
+              > 绑定邮箱
+            </p>
             <p className='sub-title'>
               绑定邮箱可以帮助你找回密码以及接收重要通知
             </p>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import EditForm from './EditForm'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 interface IEditInfo extends RouteComponentProps<any> {
   updateData: () => void
   userInfo: User.GET.ResponseBody
@@ -33,7 +34,12 @@ class EditInfo extends Component<IEditInfo, any> {
       <div className='edit-layout'>
         <div className='top-layout'>
           <div className='top-text'>
-            <p className='title'>编辑个人信息</p>
+            <p className='title'>
+              <Link to='/user/info' className='home-link'>
+                个人信息
+              </Link>{' '}
+              > 编辑个人信息
+            </p>
             <p className='sub-title'>完善的个人信息可以帮助更多人找到你</p>
           </div>
           <div className='right-text'>
