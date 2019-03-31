@@ -46,7 +46,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
             </Tooltip>
           </div>
           <div className='info-item'>
-            应用上限：10
+            我的应用：3/10
             <Tooltip placement='right' title='增加'>
               <Icon
                 className='up-icon'

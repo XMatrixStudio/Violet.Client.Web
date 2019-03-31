@@ -21,8 +21,15 @@ class AppOrganization extends Component<IAppOrganizationProps> {
             <span className='level-text'>我的权限：</span>
             <UserLevel level={10} />
           </div>
-          <div className='info-item'>组织应用: 3/10</div>
-          <Button type='primary' block={true} className='bnt-org'>
+          <div className='info-item'>组织应用: 1/10</div>
+          <Button
+            type='primary'
+            block={true}
+            className='bnt-org'
+            onClick={() => {
+              this.props.history.push('/user/apps/org/matrix')
+            }}
+          >
             组织设置
           </Button>
         </div>

@@ -10,11 +10,13 @@ import NewOrganization from './NewOrganization'
 
 @observer
 class AppManger extends Component<RouteComponentProps<any>> {
-  @observable tabKey = '1'
+  @observable tabKey = 'personal'
 
   componentDidMount() {
     if (this.props.location.search.indexOf('?t=') !== -1) {
       this.tabKey = this.props.location.search.replace('?t=', '')
+    } else {
+      this.tabKey = 'personal'
     }
   }
 
@@ -34,7 +36,7 @@ class AppManger extends Component<RouteComponentProps<any>> {
                 个人应用
               </span>
             }
-            key='1'
+            key='personal'
           >
             <AppPersonal />
           </Tabs.TabPane>
@@ -45,7 +47,7 @@ class AppManger extends Component<RouteComponentProps<any>> {
                 XMatrix
               </span>
             }
-            key='2'
+            key='matrix'
           >
             <AppOrganization />
           </Tabs.TabPane>

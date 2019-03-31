@@ -9,21 +9,31 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { Action, Location } from 'history'
+import OrganizationSetting from './OrganizationSetting'
+import AppDetail from './AppDetail'
 
 interface IAppsProps extends RouteComponentProps<any> {}
 
 @observer
 class Apps extends Component<IAppsProps> {
   lastPathName: string
+  lastSearch: string
   @observable title: string
   @observable subTitle: string
 
   constructor(props: IAppsProps) {
     super(props)
     this.updateTitle(this.props.location.pathname)
+    this.lastSearch = ''
   }
 
   updateTitle = (pathName: string) => {
+    if (pathName.indexOf('/user/apps/org') !== -1) {
+      pathName = '/user/apps/org'
+    }
+    if (pathName.indexOf('/user/apps/detail') !== -1) {
+      pathName = '/user/apps/detail'
+    }
     switch (pathName) {
       case '/user/apps/not':
         this.title = ''
@@ -49,14 +59,26 @@ class Apps extends Component<IAppsProps> {
         this.title = ' > 新建应用'
         this.subTitle = '创建新的应用'
         break
+      case '/user/apps/org':
+        this.title = ' > 组织'
+        this.subTitle = '管理你的组织'
+        break
+      case '/user/apps/detail':
+        this.title = ' > 详情'
+        this.subTitle = '管理你的应用'
+        break
+
       default:
         this.title = ''
         this.subTitle = '创建并管理你的应用'
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.title = '应用管理 | Violet'
+  }
+
+  componentDidMount() {
     // if (this.props.location.pathname === '/user/apps') {
     //   this.props.history.replace('/user/apps/not')
     // }
@@ -64,6 +86,9 @@ class Apps extends Component<IAppsProps> {
       if (this.lastPathName !== location.pathname) {
         this.lastPathName = location.pathname
         this.updateTitle(this.lastPathName)
+      }
+      if (location.pathname === '/user/apps' && location.search !== '') {
+        this.lastSearch = location.search
       }
     })
   }
@@ -74,16 +99,32 @@ class Apps extends Component<IAppsProps> {
         <div className='top-layout'>
           <div className='top-text'>
             <p className='title'>
-              <Link className='home-link' to='/user/apps'>
+              <a
+                className='home-link'
+                onClick={() => {
+                  const pathName = this.props.location.pathname
+                  console.log(this.props.history)
+                  if (pathName !== '/user/apps') {
+                    if (this.lastSearch !== '') {
+                      this.props.history.replace('/user/apps' + this.lastSearch)
+                    } else if (pathName.indexOf('/user/apps/org') !== -1) {
+                      this.props.history.replace(
+                        '/user/apps?t=' +
+                          pathName.substr('/user/apps/org'.length + 1)
+                      )
+                    } else {
+                      this.props.history.replace('/user/apps')
+                    }
+                  }
+                }}
+              >
                 应用管理
-              </Link>{' '}
+              </a>{' '}
               {this.title}
             </p>
             <p className='sub-title'>{this.subTitle}</p>
           </div>
-          <div className='right-text'>
-            我的应用: <strong>0/0</strong>
-          </div>
+          <div className='right-text' />
         </div>
         <div className='apps-manger'>
           <TransitionGroup style={{ height: '100vh' }}>
@@ -128,6 +169,11 @@ class Apps extends Component<IAppsProps> {
                     }}
                   />
                 </Route>
+                <Route path='/user/apps/detail/:id' component={AppDetail} />
+                <Route
+                  path='/user/apps/org/:id'
+                  component={OrganizationSetting}
+                />
                 <Route path='/user/apps' component={AppManger} />
               </Switch>
             </CSSTransition>

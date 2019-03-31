@@ -55,7 +55,13 @@ class AppCard extends Component<IAppCardProps> {
         <div className='app-status'>
           {this.statusTag(this.props.app.status)}
         </div>
-        <Button type='primary' block={true}>
+        <Button
+          type='primary'
+          block={true}
+          onClick={() => {
+            this.props.history.push('/user/apps/detail/' + this.props.app.name)
+          }}
+        >
           应用详情
         </Button>
       </div>

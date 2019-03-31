@@ -57,7 +57,6 @@ class NewOrganization extends Component<INewOrganizationProps> {
           <Button type='primary' htmlType='submit'>
             提交信息
           </Button>
-          <Button className='back-btn'>取消</Button>
         </Form>
       </div>
     )

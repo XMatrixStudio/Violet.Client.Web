@@ -1,34 +1,19 @@
 import React, { Component } from 'react'
+import './AppDetail.less'
 import { Tabs, Icon } from 'antd'
-
-class OrganizationSetting extends Component {
-  componentWillMount() {
-    document.title = '应用管理 - 组织 | Violet'
-  }
-
+class AppDetail extends Component {
   render() {
     return (
-      <div className='org-setting'>
+      <div className='app-detail'>
         <Tabs>
           <Tabs.TabPane
             tab={
               <span>
                 <Icon type='info' />
-                组织信息
+                应用信息
               </span>
             }
             key='info'
-          >
-            d
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={
-              <span>
-                <Icon type='team' />
-                成员管理
-              </span>
-            }
-            key='member'
           >
             d
           </Tabs.TabPane>
@@ -47,7 +32,7 @@ class OrganizationSetting extends Component {
             tab={
               <span>
                 <Icon type='setting' />
-                组织设置
+                应用设置
               </span>
             }
             key='setting'
@@ -60,4 +45,4 @@ class OrganizationSetting extends Component {
   }
 }
 
-export default OrganizationSetting
+export default AppDetail
