@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import UserLevel from '../Utils/UserLevel'
-import { Icon, Tooltip, Button } from 'antd'
+import { Icon, Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Utils/AppCard'
 import UserCard from '../Utils/UserCard'
@@ -35,7 +35,12 @@ class AppOrganization extends Component<IAppOrganizationProps> {
             status: 'running'
           }}
         />
-        <div className='card-box more-card'>
+        <div
+          className='card-box more-card'
+          onClick={() => {
+            this.props.history.push('/user/apps/new')
+          }}
+        >
           <div className='more-box'>
             <Icon type='plus-circle' theme='twoTone' twoToneColor='#6adcda' />
             <p>新建应用</p>

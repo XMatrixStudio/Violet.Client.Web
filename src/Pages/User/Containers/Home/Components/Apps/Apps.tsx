@@ -6,6 +6,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import AppManger from './AppManger'
+import NewAppForm from './NewAppForm'
 
 interface IAppsProps extends RouteComponentProps<any> {}
 
@@ -49,36 +50,18 @@ class Apps extends Component<IAppsProps> {
                 </Button>
               </div>
             </Route>
-            <Route path='/user/apps/developer'>
+            <Route path='/user/apps/up/:type'>
               <DeveloperForm
                 next={isSubmit => {
                   this.props.history.goBack()
                 }}
-                type='developer'
               />
             </Route>
-            <Route path='/user/apps/more'>
-              <DeveloperForm
+            <Route path='/user/apps/new'>
+              <NewAppForm
                 next={isSubmit => {
                   this.props.history.goBack()
                 }}
-                type='more'
-              />
-            </Route>
-            <Route path='/user/apps/admin'>
-              <DeveloperForm
-                next={isSubmit => {
-                  this.props.history.goBack()
-                }}
-                type='admin'
-              />
-            </Route>
-            <Route path='/user/apps/edit'>
-              <DeveloperForm
-                next={isSubmit => {
-                  this.props.history.goBack()
-                }}
-                type='edit'
               />
             </Route>
             <Route path='/user/apps' component={AppManger} />

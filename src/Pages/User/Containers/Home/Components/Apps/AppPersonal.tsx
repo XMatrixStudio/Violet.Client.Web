@@ -24,7 +24,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 theme='twoTone'
                 twoToneColor='#6adcda'
                 onClick={() => {
-                  this.props.history.push('/user/apps/edit')
+                  this.props.history.push('/user/apps/up/edit')
                 }}
               />
             </Tooltip>
@@ -40,7 +40,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 theme='twoTone'
                 twoToneColor='#6adcda'
                 onClick={() => {
-                  this.props.history.push('/user/apps/admin')
+                  this.props.history.push('/user/apps/up/admin')
                 }}
               />
             </Tooltip>
@@ -54,7 +54,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 theme='twoTone'
                 twoToneColor='#6adcda'
                 onClick={() => {
-                  this.props.history.push('/user/apps/more')
+                  this.props.history.push('/user/apps/up/more')
                 }}
               />
             </Tooltip>
@@ -94,7 +94,12 @@ class AppPersonal extends Component<IAppPersonalProps> {
             status: 'new'
           }}
         />
-        <div className='card-box more-card'>
+        <div
+          className='card-box more-card'
+          onClick={() => {
+            this.props.history.push('/user/apps/new')
+          }}
+        >
           <div className='more-box'>
             <Icon type='plus-circle' theme='twoTone' twoToneColor='#6adcda' />
             <p>新建应用</p>

@@ -8,7 +8,6 @@ import TextArea from 'antd/lib/input/TextArea'
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   next: (isSubmit: boolean) => void
-  type: 'developer' | 'admin' | 'edit' | 'more'
 }
 
 class DeveloperForm extends Component<IDeveloperFormProps> {
@@ -27,8 +26,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
 
     let title = '成为一名应用开发者'
     let subTitle = '请填写您的联系方式(仅内部使用), 方便我们和你进行联系'
-
-    switch (this.props.type) {
+    const formType = this.props.match.params.type
+    console.log(formType)
+    console.log(this.props.match)
+    switch (formType) {
       case 'admin':
         title = '成为系统管理员'
         subTitle = '系统管理员仅允许内部人员申请'
@@ -48,7 +49,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
         <p className='developer-title'>{title}</p>
         <p className='developer-sub-title'>{subTitle}</p>
         <Form className='my-form' onSubmit={this.handleSubmit}>
-          {this.props.type !== 'more' && this.props.type !== 'admin' && (
+          {formType !== 'more' && formType !== 'admin' && (
             <>
               <Form.Item label='联系名称'>
                 {getFieldDecorator('developerName', {
@@ -72,12 +73,12 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
               </Form.Item>
             </>
           )}
-          {this.props.type !== 'edit' && (
+          {formType !== 'edit' && (
             <Form.Item label='备注'>
               {getFieldDecorator('developerNote', {
                 rules: [
                   {
-                    required: this.props.type === 'more',
+                    required: formType === 'more',
                     message: '请输入备注'
                   }
                 ]
