@@ -7,8 +7,6 @@ import {
   Button,
   Icon,
   Popconfirm,
-  Popover,
-  Tag,
   Modal,
   Tooltip,
   Form,
@@ -16,7 +14,6 @@ import {
 } from 'antd'
 
 import IcytownIcon from '@/Assets/icytown.png'
-import UserAvatar from '@/Assets/avatar.jpg'
 import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'

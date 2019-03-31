@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './NewOrganization.less'
 import { Form, Input, Button } from 'antd'
-import TextArea from 'antd/lib/input/TextArea'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 
 interface INewOrganizationProps {
