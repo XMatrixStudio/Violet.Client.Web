@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 import { Icon, Button, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import UserLevel from './Components/UserLevel'
-import UserGender from './Components/UserGender'
+import UserLevel from '../Utils/UserLevel'
+import UserGender from '../Utils/UserGender'
 import moment from 'moment'
 
 interface IShowInfoProps extends RouteComponentProps<any> {

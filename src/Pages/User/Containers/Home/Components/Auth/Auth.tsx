@@ -20,6 +20,7 @@ import UserAvatar from '@/Assets/avatar.jpg'
 import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
+import UserCard from '../Utils/UserCard'
 
 @observer
 class Auth extends Component<{ form: WrappedFormUtils }, any> {
@@ -34,7 +35,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
         <>
           <img className='app-icon' src={IcytownIcon} />
           <strong className='app-name'>{text}</strong>
-          <Popover
+          {/* <Popover
             placement='top'
             content={
               <div>
@@ -48,7 +49,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
               theme='twoTone'
               twoToneColor='#73c731'
             />
-          </Popover>
+          </Popover> */}
         </>
       )
     },
@@ -217,27 +218,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
               <div>
                 <p>
                   <strong>创建者: </strong>
-                  <Popover
-                    placement='rightTop'
-                    content={
-                      <div className='own-info'>
-                        <img className='user-avatar' src={UserAvatar} />
-                        <p className='user-name'>
-                          {record.own}
-                          <Icon type='man' className='gender-man gender-icon' />
-                        </p>
-                        <Tag className='user-tag' color='green'>
-                          管理员
-                        </Tag>
-                        <p>地区: 广州</p>
-                        <p>联系邮箱: zhenlychen@foxmail.com</p>
-                        <p>联系电话: 18823456789</p>
-                        <Button icon='message'>联系</Button>
-                      </div>
-                    }
-                  >
-                    <span className='own-name'>{record.own}</span>
-                  </Popover>
+                  <UserCard info={{ name: record.own, level: 10 }} />
                 </p>
                 <p>
                   <strong>授权时间:</strong>{' '}

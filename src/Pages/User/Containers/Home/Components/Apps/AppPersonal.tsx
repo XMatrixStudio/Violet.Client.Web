@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import './AppPersonal.less'
-import UserLevel from '../Info/Components/UserLevel'
+import UserLevel from '../Utils/UserLevel'
 import { Icon, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import AppCard from './Components/AppCard'
+import AppCard from '../Utils/AppCard'
 
 interface IAppPersonalProps extends RouteComponentProps<any> {}
 
@@ -31,7 +30,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
             </Tooltip>
           </div>
           <div style={{ marginBottom: '8px' }}>
-            <span className='level-text'>账号类型：</span>
+            <span className='level-text'>账号类型: </span>
             <UserLevel level={10} />
             <Tooltip placement='right' title='升级'>
               <Icon
