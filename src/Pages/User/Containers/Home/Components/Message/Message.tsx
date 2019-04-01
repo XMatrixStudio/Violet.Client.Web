@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import './Message.less'
 import { Icon, Badge, Divider, Input, Button, Tooltip } from 'antd'
 import AppAvatar from '@/Assets/icytown.png'
 import UserAvatar from '@/Assets/avatar.jpg'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import dateFormat from 'dateformat'
+import './Message.less'
 
 interface IMessageContent {
   time: Date
@@ -227,22 +227,11 @@ class Message extends Component {
       )
 
     return (
-      <div className='message-layout'>
-        <div className='top-layout'>
-          <div className='top-text'>
-            <p className='title'>通知信息</p>
-            <p className='sub-title'>查看通知或者收发信息</p>
-          </div>
-          <div className='right-text'>
-            未读信息: <strong>7</strong>
-          </div>
+      <div className='message-main'>
+        <div className='table-left'>
+          <div className='message-list'>{messageList}</div>
         </div>
-        <div className='message-main'>
-          <div className='table-left'>
-            <div className='message-list'>{messageList}</div>
-          </div>
-          <div className='table-right'>{contentBox}</div>
-        </div>
+        <div className='table-right'>{contentBox}</div>
       </div>
     )
   }

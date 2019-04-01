@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import './AppDetail.less'
 import { Tabs, Icon } from 'antd'
 import AppInfo from './AppDetailComp/AppInfo'
+import AppChart from './AppDetailComp/AppChart'
+import Message from '../Message/Message'
+import AppSetting from './AppDetailComp/AppSetting'
 class AppDetail extends Component {
   render() {
     return (
@@ -27,7 +30,7 @@ class AppDetail extends Component {
             }
             key='message'
           >
-            d
+            <Message />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -38,7 +41,7 @@ class AppDetail extends Component {
             }
             key='chart'
           >
-            d
+            <AppChart />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -49,7 +52,7 @@ class AppDetail extends Component {
             }
             key='setting'
           >
-            d
+            <AppSetting />
           </Tabs.TabPane>
         </Tabs>
       </div>

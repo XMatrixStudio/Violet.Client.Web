@@ -43,6 +43,7 @@ class AppInfo extends Component<IAppInfo> {
   onChangeInfo(type: string) {
     return (value: string) => {
       this.appInfo[type] = value
+      message.success('修改成功')
       if (type === 'name') {
         this.props.UIStore!.setTitle(
           '> ' + this.appInfo.name,
