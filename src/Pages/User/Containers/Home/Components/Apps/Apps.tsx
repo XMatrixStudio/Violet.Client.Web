@@ -6,20 +6,24 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import AppManger from './AppManger'
 import NewAppForm from './Form/NewAppForm'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 import { Action, Location } from 'history'
 import OrganizationSetting from './OrganizationSetting'
 import AppDetail from './AppDetail'
+import UIStore from 'src/Store/UIStore'
 
-interface IAppsProps extends RouteComponentProps<any> {}
+interface IAppsProps extends RouteComponentProps<any> {
+  UIStore?: UIStore
+}
 
+@inject('UIStore')
 @observer
 class Apps extends Component<IAppsProps> {
   lastPathName: string
   lastSearch: string
-  @observable title: string
-  @observable subTitle: string
+  title: string
+  subTitle: string
 
   constructor(props: IAppsProps) {
     super(props)
@@ -67,18 +71,15 @@ class Apps extends Component<IAppsProps> {
         this.title = ' > 详情'
         this.subTitle = '管理你的应用'
         break
-
       default:
         this.title = ''
         this.subTitle = '创建并管理你的应用'
     }
-  }
-
-  componentWillMount() {
-    document.title = '应用管理 | Violet'
+    this.props.UIStore!.setTitle(this.title, this.subTitle)
   }
 
   componentDidMount() {
+    document.title = '应用管理 | Violet'
     // if (this.props.location.pathname === '/user/apps') {
     //   this.props.history.replace('/user/apps/not')
     // }
@@ -120,9 +121,9 @@ class Apps extends Component<IAppsProps> {
               >
                 应用管理
               </a>{' '}
-              {this.title}
+              {this.props.UIStore!.state.extTitle}
             </p>
-            <p className='sub-title'>{this.subTitle}</p>
+            <p className='sub-title'>{this.props.UIStore!.state.subTitle}</p>
           </div>
           <div className='right-text' />
         </div>

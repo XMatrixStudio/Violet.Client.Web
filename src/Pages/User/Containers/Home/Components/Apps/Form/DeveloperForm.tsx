@@ -4,12 +4,16 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import './DeveloperForm.less'
 import TextArea from 'antd/lib/input/TextArea'
+import { inject } from 'mobx-react'
+import UIStore from 'src/Store/UIStore'
 
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   next: (isSubmit: boolean) => void
+  UIStore?: UIStore
 }
 
+@inject('UIStore')
 class DeveloperForm extends Component<IDeveloperFormProps> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
