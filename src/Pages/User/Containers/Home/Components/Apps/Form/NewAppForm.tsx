@@ -4,6 +4,7 @@ import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import './NewAppForm.less'
 import { Input, Button, Select, message } from 'antd'
 import AvatarSelect from '../../Utils/AvatarSelect'
+import AddImage from '@/Assets/add.png'
 
 interface INewAppFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -56,9 +57,11 @@ class NewAppForm extends Component<INewAppFormProps> {
           </Form.Item>
           <Form.Item label='应用图标'>
             <AvatarSelect
+              imageURL={AddImage}
               setImage={file => {
                 this.appIcon = file
               }}
+              title='点击或拖动选择应用图标'
             />
           </Form.Item>
           <Form.Item label='应用名称'>
