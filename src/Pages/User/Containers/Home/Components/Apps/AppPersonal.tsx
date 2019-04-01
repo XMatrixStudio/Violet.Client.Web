@@ -73,7 +73,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
         <AppCard
           app={{
             name: 'Coffee',
-            detail: '这是一个描述文字',
+            detail: '这是一个描述文字这是一个描述文字这是一个描述文字',
             icon: 'test.png',
             status: 'running'
           }}

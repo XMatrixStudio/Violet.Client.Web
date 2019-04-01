@@ -47,9 +47,16 @@ class ShowInfo extends Component<IShowInfoProps, any> {
           </div>
         </div>
         <div className='more-info'>
-          <Button style={{ float: 'right' }} onClick={this.props.onClickEdit}>
-            编辑个人信息
-          </Button>
+          <Tooltip title='修改个人信息'>
+            <Button
+              type='primary'
+              shape='circle'
+              icon='edit'
+              size='large'
+              style={{ float: 'right' }}
+              onClick={this.props.onClickEdit}
+            />
+          </Tooltip>
           <div className='info-box'>
             <p className='info-title'>性别</p>
             <UserGender gender={info.gender} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './AppDetail.less'
 import { Tabs, Icon } from 'antd'
+import AppInfo from './AppDetailComp/AppInfo'
 class AppDetail extends Component {
   render() {
     return (
@@ -15,7 +16,7 @@ class AppDetail extends Component {
             }
             key='info'
           >
-            d
+            <AppInfo />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={

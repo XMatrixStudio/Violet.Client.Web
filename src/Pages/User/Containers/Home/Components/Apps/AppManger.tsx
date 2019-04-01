@@ -6,7 +6,7 @@ import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
-import NewOrganization from './NewOrganization'
+import NewOrganization from './Form/NewOrganization'
 
 @observer
 class AppManger extends Component<RouteComponentProps<any>> {
