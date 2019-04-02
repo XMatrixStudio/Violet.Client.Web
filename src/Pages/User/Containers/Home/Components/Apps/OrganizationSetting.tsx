@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import { Tabs, Icon } from 'antd'
+import OrgInfo from './OrganizationComp/OrgInfo'
+import OrgMember from './OrganizationComp/OrgMember'
+import OrgChart from './OrganizationComp/OrgChart'
+import OrgSetting from './OrganizationComp/OrgSetting'
 
 class OrganizationSetting extends Component {
   componentWillMount() {
@@ -19,7 +23,7 @@ class OrganizationSetting extends Component {
             }
             key='info'
           >
-            d
+            <OrgInfo />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -30,7 +34,7 @@ class OrganizationSetting extends Component {
             }
             key='member'
           >
-            d
+            <OrgMember />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -41,7 +45,7 @@ class OrganizationSetting extends Component {
             }
             key='chart'
           >
-            d
+            <OrgChart />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -52,7 +56,7 @@ class OrganizationSetting extends Component {
             }
             key='setting'
           >
-            d
+            <OrgSetting />
           </Tabs.TabPane>
         </Tabs>
       </div>

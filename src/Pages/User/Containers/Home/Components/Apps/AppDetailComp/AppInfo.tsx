@@ -32,7 +32,11 @@ class AppInfo extends Component<IAppInfo> {
   }
 
   componentWillMount() {
-    this.props.UIStore!.setTitle('> ' + this.appInfo.name, '在这里管理你的应用')
+    this.props.UIStore!.setTitle(
+      '应用管理',
+      '> ' + this.appInfo.name,
+      '在这里管理你的应用'
+    )
   }
 
   changeKey = () => {
@@ -47,6 +51,7 @@ class AppInfo extends Component<IAppInfo> {
       message.success('修改成功')
       if (type === 'name') {
         this.props.UIStore!.setTitle(
+          '应用管理',
           '> ' + this.appInfo.name,
           '在这里管理你的应用'
         )

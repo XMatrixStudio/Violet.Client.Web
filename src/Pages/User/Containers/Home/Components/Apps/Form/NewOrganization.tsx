@@ -32,6 +32,16 @@ class NewOrganization extends Component<INewOrganizationProps> {
               ]
             })(<Input />)}
           </Form.Item>
+          <Form.Item label='组织简介'>
+            {getFieldDecorator('orgBrief ', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入组织简介'
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
           <Form.Item label='联系人'>
             {getFieldDecorator('developerName', {
               rules: [

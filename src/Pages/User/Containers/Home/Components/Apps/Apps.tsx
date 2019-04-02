@@ -74,7 +74,7 @@ class Apps extends Component<IAppsProps> {
         this.title = ''
         this.subTitle = '创建并管理你的应用'
     }
-    this.props.UIStore!.setTitle(this.title, this.subTitle)
+    this.props.UIStore!.setTitle('应用管理', this.title, this.subTitle)
   }
 
   componentDidMount() {
@@ -118,7 +118,7 @@ class Apps extends Component<IAppsProps> {
                   }
                 }}
               >
-                应用管理
+                {this.props.UIStore!.state.title}
               </a>{' '}
               {this.props.UIStore!.state.extTitle}
             </p>
