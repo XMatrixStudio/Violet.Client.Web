@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './SecureInfo.less'
 import SafeImage from '@/Assets/User/safe.png'
-import { Icon, Button, Rate, Divider, Timeline, message } from 'antd'
+import { Icon, Button, Rate, Divider, Timeline, Modal, Input } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
@@ -41,8 +41,54 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
   }
 
   deleteAccount = () => {
-    message.destroy()
-    message.warning('当前账号已锁定，不允许删除')
+    let confirmTime = 5
+    const model = Modal.confirm({
+      title: '是否彻底删除当前用户',
+      content: (
+        <div>
+          <div>你的所有个人信息都会被删除，所关联的站点将不能登陆</div>
+          <div>5s后可以进行删除操作</div>
+        </div>
+      ),
+      okText: '删除',
+      okType: 'danger',
+      okButtonProps: {
+        disabled: true
+      },
+      cancelText: '取消',
+      onOk() {
+        console.log('OK')
+      },
+      onCancel() {
+        console.log('Cancel')
+      }
+    })
+    const timer = setInterval(() => {
+      confirmTime -= 1
+      model.update({
+        content: (
+          <div>
+            <div>你的所有个人信息都会被删除，所关联的站点将不能登陆</div>
+            <div>{confirmTime}s后可以进行删除操作</div>
+          </div>
+        )
+      })
+    }, 1000)
+    setTimeout(() => {
+      clearInterval(timer)
+      model.update({
+        content: (
+          <div>
+            <div>你的所有个人信息都会被删除，所关联的站点将不能登陆</div>
+            <div>删除之后将无法恢复，验证你的密码后将进行删除</div>
+            <Input.Password className='password-valid' placeholder='密码' />
+          </div>
+        ),
+        okButtonProps: {
+          disabled: false
+        }
+      })
+    }, confirmTime * 1000)
   }
 
   render() {

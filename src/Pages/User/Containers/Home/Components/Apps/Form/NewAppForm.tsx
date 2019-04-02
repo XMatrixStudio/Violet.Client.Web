@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import './NewAppForm.less'
-import { Input, Button, Select, message } from 'antd'
+import { Input, Button, Select, message, Icon, Tooltip } from 'antd'
 import AvatarSelect from '../../Utils/AvatarSelect'
 import AddImage from '@/Assets/add.png'
 
@@ -33,7 +33,21 @@ class NewAppForm extends Component<INewAppFormProps> {
     return (
       <div className='app-form'>
         <Form className='my-form' onSubmit={this.handleSubmit}>
-          <Form.Item label='创建于(创建后不可更改)'>
+          <Form.Item
+            label={
+              <span>
+                应用类型
+                <Tooltip title='决定应用属于个人或是组织, 创建后不可更改, 同时也是出现在平台应用中心的应用提供方信息。'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
             {getFieldDecorator('appFrom', {
               initialValue: 'personal',
               rules: [
@@ -55,7 +69,22 @@ class NewAppForm extends Component<INewAppFormProps> {
               </Select>
             )}
           </Form.Item>
-          <Form.Item label='应用图标'>
+          <Form.Item
+            className='item-app-icon'
+            label={
+              <span>
+                应用图标
+                <Tooltip title='应用图标将会在授权时候展示'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
             <AvatarSelect
               imageURL={AddImage}
               setImage={file => {
@@ -64,7 +93,53 @@ class NewAppForm extends Component<INewAppFormProps> {
               title='点击或拖动选择应用图标'
             />
           </Form.Item>
-          <Form.Item label='应用名称'>
+          <Form.Item
+            label={
+              <span>
+                应用分类
+                <Tooltip title='应用分类信息决定应用会出现在平台应用中心哪个类别的列表中，并在各处展示中出现。'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
+            {getFieldDecorator('appClass', {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择应用分类'
+                }
+              ]
+            })(
+              <Select style={{ maxWidth: '300px' }}>
+                <Select.Option value='game'>游戏</Select.Option>
+                <Select.Option value='tool'>工具</Select.Option>
+                <Select.Option value='entertainment'>娱乐</Select.Option>
+                <Select.Option value='live'>生活</Select.Option>
+                <Select.Option value='social '>社交</Select.Option>
+              </Select>
+            )}
+          </Form.Item>
+          <Form.Item
+            label={
+              <span>
+                应用名称
+                <Tooltip title='应用名称是应用在平台唯一标识，请慎重填写。'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
             {getFieldDecorator('appName', {
               rules: [
                 {
@@ -72,7 +147,7 @@ class NewAppForm extends Component<INewAppFormProps> {
                   message: '请输入应用名称'
                 }
               ]
-            })(<Input placeholder='应用名称将在授权时展示' />)}
+            })(<Input placeholder='应用名称' />)}
           </Form.Item>
           <Form.Item label='应用描述'>
             {getFieldDecorator('appDetail', {
@@ -84,7 +159,21 @@ class NewAppForm extends Component<INewAppFormProps> {
               ]
             })(<Input placeholder='简短地描述你的应用' />)}
           </Form.Item>
-          <Form.Item label='应用主页'>
+          <Form.Item
+            label={
+              <span>
+                应用主页
+                <Tooltip title='应用主页会在各处展示中出现'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
             {getFieldDecorator('appHome', {
               rules: [
                 {
@@ -94,7 +183,21 @@ class NewAppForm extends Component<INewAppFormProps> {
               ]
             })(<Input placeholder='https://example.com' />)}
           </Form.Item>
-          <Form.Item label='回调地址'>
+          <Form.Item
+            label={
+              <span>
+                应用回调域
+                <Tooltip title='调用API时, 回调地址必须属于应用回调域'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+            }
+          >
             {getFieldDecorator('appCallBack', {
               rules: [
                 {
@@ -106,7 +209,7 @@ class NewAppForm extends Component<INewAppFormProps> {
           </Form.Item>
 
           <Button type='primary' htmlType='submit'>
-            新建应用
+            提交信息
           </Button>
           <Button
             className='back-btn'
