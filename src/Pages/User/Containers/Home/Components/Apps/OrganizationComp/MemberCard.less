@@ -1,0 +1,60 @@
+.member-box {
+  display: flex;
+  .user-info-more {
+    margin-top: 12px;
+    margin-right: 12px;
+
+    .more-btn {
+      font-size: 14px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+  }
+  .user-info-avatar {
+    .user-avatar {
+      height: 48px;
+      width: 48px;
+    }
+  }
+  .user-info-text {
+    cursor: pointer;
+    flex-grow: 1;
+    margin-left: 20px;
+    font-weight: bold;
+    margin-top: 12px;
+  }
+  .user-control {
+    text-align: right;
+    margin-top: 12px;
+    .delete-icon {
+      &:hover {
+        color: red;
+      }
+    }
+    .change-icon {
+      &:hover {
+        color: blueviolet;
+      }
+    }
+    .message-icon {
+      &:hover {
+        color: green;
+      }
+    }
+    .control-icon {
+      margin-left: 22px;
+      transition: all 0.3s;
+      font-size: 22px;
+      cursor: pointer;
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+.base-card-box {
+  .more-info {
+    margin: 20px;
+  }
+}
