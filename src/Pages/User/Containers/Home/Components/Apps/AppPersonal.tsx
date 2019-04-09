@@ -10,7 +10,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
   render() {
     return (
       <div className='app-flex-box'>
-        <div className='card-box info-card'>
+        <div className='base-card-box info-card'>
           <div className='title'>我的信息</div>
           <div className='info-item'>
             联系信息：
@@ -95,14 +95,14 @@ class AppPersonal extends Component<IAppPersonalProps> {
           }}
         />
         <div
-          className='card-box more-card'
+          className='base-card-box more-card'
           onClick={() => {
             this.props.history.push('/user/apps/new')
           }}
         >
           <div className='more-box'>
             <Icon type='plus-circle' theme='twoTone' twoToneColor='#6adcda' />
-            <p>新建应用</p>
+            <p className='title'>新建应用</p>
           </div>
         </div>
       </div>

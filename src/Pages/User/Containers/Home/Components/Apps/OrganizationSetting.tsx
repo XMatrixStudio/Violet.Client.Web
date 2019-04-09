@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Tabs, Icon } from 'antd'
 import OrgInfo from './OrganizationComp/OrgInfo'
 import OrgMember from './OrganizationComp/OrgMember'
-import OrgChart from './OrganizationComp/OrgChart'
 import OrgSetting from './OrganizationComp/OrgSetting'
 
 class OrganizationSetting extends Component {
@@ -35,17 +34,6 @@ class OrganizationSetting extends Component {
             key='member'
           >
             <OrgMember />
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={
-              <span>
-                <Icon type='line-chart' />
-                统计信息
-              </span>
-            }
-            key='chart'
-          >
-            <OrgChart />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={

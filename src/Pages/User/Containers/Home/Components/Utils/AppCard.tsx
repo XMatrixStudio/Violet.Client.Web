@@ -49,7 +49,7 @@ class AppCard extends Component<IAppCardProps> {
 
   render() {
     return (
-      <div className='card-box app-card'>
+      <div className='base-card-box app-card'>
         <img src={DefaultAppIcon} className='app-icon' />
         <div className='title'>{this.props.app.name}</div>
         <Ellipsis lines={1} className='sub-title' tooltip={true}>

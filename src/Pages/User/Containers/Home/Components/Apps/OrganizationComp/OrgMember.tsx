@@ -12,6 +12,7 @@ type ListStatus = 'load' | 'nothing' | 'init' | 'show'
 class OrgMember extends Component {
   @observable showInvite: boolean
   @observable listStatus: ListStatus
+  @observable searchValue: string
 
   searchResult = (
     <>
@@ -184,6 +185,7 @@ class OrgMember extends Component {
           <Button
             onClick={() => {
               this.showInvite = true
+              this.listStatus = 'init'
             }}
             size='large'
             type='primary'
@@ -195,10 +197,13 @@ class OrgMember extends Component {
             visible={this.showInvite}
             onOk={() => {
               this.showInvite = false
+              this.listStatus = 'init'
             }}
             onCancel={() => {
               this.showInvite = false
+              this.listStatus = 'init'
             }}
+            destroyOnClose={true}
             className='model-invite'
             title='邀请加入XMatrix'
             okText='完成'

@@ -11,7 +11,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
   render() {
     return (
       <div className='app-flex-box'>
-        <div className='card-box info-card'>
+        <div className='base-card-box info-card'>
           <div className='title'>组织信息</div>
           <div className='info-item'>
             创始人：
@@ -43,7 +43,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
           }}
         />
         <div
-          className='card-box more-card'
+          className='base-card-box more-card'
           onClick={() => {
             this.props.history.push('/user/apps/new')
           }}

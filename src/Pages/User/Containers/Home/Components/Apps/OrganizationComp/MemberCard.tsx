@@ -24,7 +24,10 @@ class MemberCard extends Component<IMemberCardProps> {
 
   render() {
     return (
-      <div className='base-card-box'>
+      <div
+        className='base-card-box'
+        style={{ maxHeight: this.showMore ? '200px' : '90px' }}
+      >
         <div className='member-box'>
           <div className='user-info-avatar'>
             <img className='user-avatar' src={this.props.data.avatar} />
@@ -101,12 +104,18 @@ class MemberCard extends Component<IMemberCardProps> {
             )}
           </div>
         </div>
-        {this.showMore && (
-          <div className='more-info'>
+        {
+          <div
+            className='more-info'
+            style={{
+              opacity: this.showMore ? 1 : 0,
+              userSelect: this.showMore ? 'auto' : 'none'
+            }}
+          >
             <p>联系邮箱: zhenlychen@foxmail.com</p>
             <p>联系电话: 18823456789</p>
           </div>
-        )}
+        }
       </div>
     )
   }
