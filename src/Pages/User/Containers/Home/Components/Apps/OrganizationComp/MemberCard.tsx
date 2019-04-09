@@ -112,8 +112,12 @@ class MemberCard extends Component<IMemberCardProps> {
               userSelect: this.showMore ? 'auto' : 'none'
             }}
           >
-            <p>联系邮箱: zhenlychen@foxmail.com</p>
-            <p>联系电话: 18823456789</p>
+            <p>
+              <span className='title'>联系邮箱:</span> zhenlychen@foxmail.com
+            </p>
+            <p>
+              <span className='title'>联系电话:</span> 18823456789
+            </p>
           </div>
         }
       </div>

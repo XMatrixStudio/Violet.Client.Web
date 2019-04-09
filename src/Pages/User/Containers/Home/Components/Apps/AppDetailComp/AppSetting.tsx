@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './AppSetting.less'
 import '../../Utils/Setting.less'
-import { Switch, Button, Select, Modal, Input } from 'antd'
+import { Switch, Button, Select, Modal, Input, message } from 'antd'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 
@@ -60,6 +60,11 @@ class AppSetting extends Component {
     }, confirmTime * 1000)
   }
 
+  changeKey = () => {
+    message.destroy()
+    message.success('更改Key成功，请重新部署服务')
+  }
+
   render() {
     return (
       <div className='app-setting setting-form'>
@@ -116,6 +121,19 @@ class AppSetting extends Component {
               </div>
             </div>
           )}
+          <div className='setting-item'>
+            <div className='item-info'>
+              <div className='item-title'>更改应用 Key</div>
+              <div className='item-more'>
+                该操作导致当前 Key 立刻失效，当 Key 泄漏时请尽快更改
+              </div>
+            </div>
+            <div className='item-control'>
+              <Button type='danger' onClick={this.changeKey}>
+                更改
+              </Button>
+            </div>
+          </div>
           <div className='setting-item'>
             <div className='item-info'>
               <div className='item-title'>删除应用</div>
