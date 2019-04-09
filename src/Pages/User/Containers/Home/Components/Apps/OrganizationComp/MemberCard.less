@@ -12,6 +12,7 @@
   }
   .user-info-avatar {
     .user-avatar {
+      border-radius: 50%;
       height: 48px;
       width: 48px;
     }
@@ -20,8 +21,14 @@
     cursor: pointer;
     flex-grow: 1;
     margin-left: 20px;
-    font-weight: bold;
-    margin-top: 12px;
+    .user-nick {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .account-name {
+      font-size: 14px;
+    }
+    margin-top: 4px;
   }
   .user-control {
     text-align: right;
@@ -36,9 +43,19 @@
         color: blueviolet;
       }
     }
+    .add-icon {
+      &:hover {
+        color: green;
+      }
+    }
     .message-icon {
       &:hover {
         color: green;
+      }
+    }
+    .disconnect-icon {
+      &:hover {
+        color: orange;
       }
     }
     .control-icon {
