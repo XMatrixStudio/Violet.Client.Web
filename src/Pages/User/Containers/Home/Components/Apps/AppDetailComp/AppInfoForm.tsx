@@ -31,6 +31,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
     const initData = this.props.initData
     return (
       <div className='app-info-form'>
+        <div className='form-title'>修改应用信息</div>
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item
             label={
