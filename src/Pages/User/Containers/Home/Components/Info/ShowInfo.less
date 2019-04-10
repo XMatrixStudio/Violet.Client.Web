@@ -1,54 +1,32 @@
-.show-info {
-  margin: auto;
-  max-width: 1080px;
-  .right-text {
-    margin: 10px;
-  }
-
-  .user-avatar {
-    transition: all 0.5s;
-    display: inline-block;
-  }
-  .top-info {
-    margin: 4px 0 0 10px;
-  }
-  .user-base-info {
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: middle;
-    p {
-      margin-bottom: 0;
+.more-info {
+  padding: 40px;
+  .info-box {
+    .info-title {
+      padding-left: 4px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 4px;
     }
-    .user-name {
-      font-size: 24px;
+    .info-text {
+      margin-left: 10px;
       color: rgba(0, 0, 0, 0.7);
-    }
-    .user-bio {
-      color: rgba(0, 0, 0, 0.5);
+      font-size: 16px;
+      font-weight: bold;
     }
   }
 
-  .more-info {
-    padding: 40px 10px;
-    .info-box {
-      .info-title {
-        padding-left: 4px;
-        color: rgba(0, 0, 0, 0.5);
-        margin-bottom: 4px;
-      }
-      .info-text {
-        margin-left: 10px;
-        color: rgba(0, 0, 0, 0.7);
-        font-size: 16px;
-        font-weight: bold;
-      }
+  .edit-btn {
+    float: right;
+    font-size: 24px;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-top: 10px;
+    &:hover {
+      color: #6adcda;
+      transform: translateY(-3px);
     }
-    button {
-      margin-top: 12px;
-    }
-    .info-help-text {
-      margin: 10px 0 0 0;
-      color: rgba(0, 0, 0, 0.5);
-    }
+  }
+  .info-help-text {
+    margin: 10px 0 0 0;
+    color: rgba(0, 0, 0, 0.5);
   }
 }
