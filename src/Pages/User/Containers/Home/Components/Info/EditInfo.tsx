@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import './EditInfo.less'
-import { Form, Icon, Input, Radio, DatePicker, Button, message } from 'antd'
+import {
+  Form,
+  Icon,
+  Input,
+  Radio,
+  DatePicker,
+  Button,
+  message,
+  Tooltip
+} from 'antd'
 import moment from 'moment'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import UserService from 'src/Services/UserService'
@@ -74,13 +83,15 @@ class EditInfo extends Component<IEditInfo, any> {
       <div className='edit-layout base-card-box'>
         <div className='form-title'>
           修改个人信息
-          <Icon
-            type='rollback'
-            className='btn-back'
-            onClick={() => {
-              this.props.next(false)
-            }}
-          />
+          <Tooltip title='返回'>
+            <Icon
+              type='rollback'
+              className='btn-back'
+              onClick={() => {
+                this.props.next(false)
+              }}
+            />
+          </Tooltip>
         </div>
 
         <Form className='edit-form' onSubmit={this.handleSubmit}>

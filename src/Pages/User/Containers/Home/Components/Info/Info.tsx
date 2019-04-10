@@ -40,7 +40,7 @@ class Info extends Component<IInfoProps, any> {
             <div className='box-3' />
           </div>
           <div className='content-box'>
-            <div className='base-card-box'>
+            <div className='base-card-box top-card'>
               <div className='user-avatar'>
                 <AvatarSelect
                   imageURL={data.info.avatar}
