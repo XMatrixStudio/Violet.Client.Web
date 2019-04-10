@@ -65,6 +65,11 @@ class AppSetting extends Component {
     message.success('更改Key成功，请重新部署服务')
   }
 
+  transferApp = () => {
+    message.destroy()
+    message.info('当前功能未开放')
+  }
+
   render() {
     return (
       <div className='app-setting setting-form'>
@@ -131,6 +136,17 @@ class AppSetting extends Component {
             <div className='item-control'>
               <Button type='danger' onClick={this.changeKey}>
                 更改
+              </Button>
+            </div>
+          </div>
+          <div className='setting-item'>
+            <div className='item-info'>
+              <div className='item-title'>应用所有权转移</div>
+              <div className='item-more'>转移后你将失去应用的控制权</div>
+            </div>
+            <div className='item-control'>
+              <Button type='danger' onClick={this.transferApp}>
+                转移
               </Button>
             </div>
           </div>

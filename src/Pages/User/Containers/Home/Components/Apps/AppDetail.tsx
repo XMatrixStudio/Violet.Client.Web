@@ -3,8 +3,9 @@ import './AppDetail.less'
 import { Tabs, Icon } from 'antd'
 import AppInfo from './AppDetailComp/AppInfo'
 import AppChart from './AppDetailComp/AppChart'
-import Message from '../Message/Message'
 import AppSetting from './AppDetailComp/AppSetting'
+import AppMessage from './AppDetailComp/AppMessage'
+
 class AppDetail extends Component {
   render() {
     return (
@@ -30,7 +31,7 @@ class AppDetail extends Component {
             }
             key='message'
           >
-            <Message />
+            <AppMessage />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={

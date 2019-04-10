@@ -28,7 +28,8 @@ class AppInfo extends Component<IAppInfo> {
     super(props)
     this.appInfo = {
       name: 'Violet',
-      describe: '描述',
+      describe:
+        '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述',
       home: 'https://xmatrix.studio',
       callback: 'https://xmatrix.stduio/hello',
       category: 'tool'
@@ -117,6 +118,10 @@ class AppInfo extends Component<IAppInfo> {
           <div className='info-label'>主页：</div>
           <div className='info-box'>{this.appInfo.home}</div>
         </div>
+        <div className='info-item'>
+          <div className='info-label'>回调地址：</div>
+          <div className='info-box'>{this.appInfo.callback}</div>
+        </div>
         <Button
           className='btn-edit'
           icon='edit'
@@ -126,16 +131,15 @@ class AppInfo extends Component<IAppInfo> {
         >
           修改信息
         </Button>
-        <div className='info-item'>
-          <div className='info-label'>回调地址：</div>
-          <div className='info-box'>{this.appInfo.callback}</div>
-        </div>
       </>
     )
 
     return (
       <div className='app-info'>
-        <div className='base-card-box'>
+        <div
+          className='base-card-box'
+          style={{ minHeight: this.isEdit ? '590px' : '400px' }}
+        >
           {this.isEdit ? (
             <AppInfoForm
               initData={{

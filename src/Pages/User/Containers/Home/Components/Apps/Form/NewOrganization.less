@@ -1,8 +1,31 @@
 .new-org {
-  padding: 10px 30px;
-  max-width: 600px;
+  .base-card-box {
+    padding: 30px;
+  }
+  .org-help {
+    color: rgba(0, 0, 0, 0.5);
+    span {
+      color: #72ced3;
+      font-size: 20px;
+      margin: auto 6px;
+    }
+  }
   .my-form {
     margin-top: 10px;
+    .item-app-icon {
+      .ant-form-item-control-wrapper {
+        display: inline-block;
+      }
+      &:before {
+        display: inline-block;
+        margin-right: 4px;
+        color: #f5222d;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+      }
+    }
   }
   .back-btn {
     margin-left: 20px;

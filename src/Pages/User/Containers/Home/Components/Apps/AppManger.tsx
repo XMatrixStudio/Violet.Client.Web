@@ -58,7 +58,7 @@ class AppManger extends Component<RouteComponentProps<any>> {
                 新建组织
               </span>
             }
-            key='3'
+            key='new'
           >
             <NewOrganization />
           </Tabs.TabPane>
