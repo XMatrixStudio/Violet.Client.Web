@@ -200,7 +200,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
             已授权应用数: <strong>2</strong>
           </div>
         </div>
-        <div className='auth-card'>
+        <div className='auth-card base-card-box'>
           <div>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}
             <Button type='danger' onClick={this.start} disabled={!hasSelected}>
@@ -214,12 +214,15 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
             expandedRowRender={record => (
               <div>
                 <p>
-                  <strong>创建者: </strong>
+                  <strong>开发方: </strong>
                   <UserCard info={{ name: record.own, level: 10 }} />
                 </p>
                 <p>
                   <strong>授权时间:</strong>{' '}
                   {dateFormat(record.authTime, 'yyyy/mm/dd h:MM:ss')}
+                </p>
+                <p>
+                  <strong>有效时间:</strong> 14天
                 </p>
                 <p>
                   <strong>权限:</strong>

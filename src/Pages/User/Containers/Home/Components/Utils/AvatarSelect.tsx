@@ -25,7 +25,7 @@ class AvatarSelect extends Component<IAvatarSelect> {
   constructor(props: IAvatarSelect) {
     super(props)
     this.resetImage()
-    this.imageURL = props.imageURL
+    this.imageURL = undefined
     this.showModel = false
   }
 
@@ -61,7 +61,7 @@ class AvatarSelect extends Component<IAvatarSelect> {
         <div className='view'>
           <img
             className='image-view'
-            src={this.imageURL}
+            src={this.imageURL || this.props.imageURL}
             style={{ borderRadius: '100px' }}
             onClick={() => {
               this.avatarFile = undefined

@@ -5,6 +5,8 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import UserLevel from '../Utils/UserLevel'
 import UserGender from '../Utils/UserGender'
 import moment from 'moment'
+import './ShowInfo.less'
+import AvatarSelect from '../Utils/AvatarSelect'
 
 interface IShowInfoProps extends RouteComponentProps<any> {
   onClickEdit: () => void
@@ -12,6 +14,7 @@ interface IShowInfoProps extends RouteComponentProps<any> {
 }
 
 class ShowInfo extends Component<IShowInfoProps, any> {
+  userAvatar?: File
   constructor(props: IShowInfoProps) {
     super(props)
   }
@@ -24,12 +27,15 @@ class ShowInfo extends Component<IShowInfoProps, any> {
     return (
       <div className='show-info'>
         <div className='top-info'>
-          <img className='user-avatar' src={info.avatar} />
-          <Tooltip placement='bottom' title='修改头像'>
-            <div className='edit-div'>
-              <Icon type='edit' />
-            </div>
-          </Tooltip>
+          {/* <div className='user-avatar'>
+            <AvatarSelect
+              imageURL={info.avatar}
+              setImage={file => {
+                this.userAvatar = file
+              }}
+              title='点击或拖动选择头像'
+            />
+          </div> */}
           <div className='user-base-info'>
             <div>
               <span className='user-name'>{info.nickname}</span>
@@ -47,16 +53,6 @@ class ShowInfo extends Component<IShowInfoProps, any> {
           </div>
         </div>
         <div className='more-info'>
-          <Tooltip title='修改个人信息'>
-            <Button
-              type='primary'
-              shape='circle'
-              icon='edit'
-              size='large'
-              style={{ float: 'right' }}
-              onClick={this.props.onClickEdit}
-            />
-          </Tooltip>
           <div className='info-box'>
             <p className='info-title'>性别</p>
             <UserGender gender={info.gender} />
