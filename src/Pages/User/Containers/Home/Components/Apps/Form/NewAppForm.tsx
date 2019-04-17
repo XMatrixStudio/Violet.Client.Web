@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import './NewAppForm.less'
 import { Input, Button, Select, message, Icon, Tooltip } from 'antd'
-import AvatarSelect from '../../Utils/AvatarSelect'
+import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
 
 interface INewAppFormProps extends RouteComponentProps<any> {

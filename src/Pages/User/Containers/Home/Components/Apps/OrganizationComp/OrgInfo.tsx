@@ -3,8 +3,8 @@ import './OrgInfo.less'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import { observable } from 'mobx'
-import { message, Typography, Button } from 'antd'
-import AvatarSelect from '../../Utils/AvatarSelect'
+import { message, Button } from 'antd'
+import AvatarSelect from '../../Common/AvatarSelect'
 import OrgInfoForm from './OrgInfoForm'
 
 interface IOrgInfoProps {

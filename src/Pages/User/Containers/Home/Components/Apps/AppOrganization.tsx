@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import UserLevel from '../Utils/UserLevel'
+import UserLevel from '../Common/UserLevel'
 import { Icon, Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import AppCard from '../Utils/AppCard'
-import UserCard from '../Utils/UserCard'
+import AppCard from '../Common/AppCard'
+import UserCard from '../Common/UserCard'
 
 interface IAppOrganizationProps extends RouteComponentProps<any> {}
 

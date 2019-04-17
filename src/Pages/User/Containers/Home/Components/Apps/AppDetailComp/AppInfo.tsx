@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './AppInfo.less'
 import { Tag, message, Tooltip, Button } from 'antd'
-import AvatarSelect from '../../Utils/AvatarSelect'
+import AvatarSelect from '../../Common/AvatarSelect'
 import { observable } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'

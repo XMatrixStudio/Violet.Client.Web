@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Icon, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import UserGender from '../Utils/UserGender'
+import UserGender from '../Common/UserGender'
 import moment from 'moment'
 import './ShowInfo.less'
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import UserLevel from '../Utils/UserLevel'
+import UserLevel from '../Common/UserLevel'
 import { Icon, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import AppCard from '../Utils/AppCard'
+import AppCard from '../Common/AppCard'
 
 interface IAppPersonalProps extends RouteComponentProps<any> {}
 

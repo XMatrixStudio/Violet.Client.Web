@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './NewOrganization.less'
 import { Form, Input, Button, Tooltip, Icon } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import AvatarSelect from '../../Utils/AvatarSelect'
+import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
 
 interface INewOrganizationProps {

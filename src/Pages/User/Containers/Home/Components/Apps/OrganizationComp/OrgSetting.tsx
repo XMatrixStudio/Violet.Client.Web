@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Button, Select, Modal } from 'antd'
 
 import './OrgSetting.less'
-import '../../Utils/Setting.less'
+import '../../Common/Setting.less'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 

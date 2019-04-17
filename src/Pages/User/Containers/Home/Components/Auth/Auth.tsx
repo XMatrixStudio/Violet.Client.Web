@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 import {
   Table,
@@ -17,10 +17,18 @@ import IcytownIcon from '@/Assets/icytown.png'
 import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
-import UserCard from '../Utils/UserCard'
+import UserCard from '../Common/UserCard'
+import TopBanner from '../Common/TopBanner'
+import UIStore from 'src/Store/UIStore'
 
+interface IAuthProps {
+  form: WrappedFormUtils
+  UIStore?: UIStore
+}
+
+@inject('UIStore')
 @observer
-class Auth extends Component<{ form: WrappedFormUtils }, any> {
+class Auth extends Component<IAuthProps> {
   @observable selectedRowKeys: number[]
   @observable visibleReport: boolean
 
@@ -127,6 +135,11 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
 
   componentDidMount() {
     document.title = '授权管理 | Violet'
+    this.props.UIStore!.setTitle(
+      '授权管理',
+      '已授权应用数：2',
+      '以下应用可以访问你的信息'
+    )
   }
 
   start = () => {
@@ -156,6 +169,7 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
     const hasSelected = this.selectedRowKeys.length > 0
     return (
       <div className='auth-layout'>
+        <TopBanner />
         <Modal
           visible={this.visibleReport}
           okText='举报'
@@ -190,16 +204,6 @@ class Auth extends Component<{ form: WrappedFormUtils }, any> {
             </Form.Item>
           </Form>
         </Modal>
-
-        <div className='top-layout'>
-          <div className='top-text'>
-            <p className='title'>授权管理</p>
-            <p className='sub-title'>管理你授权过的应用</p>
-          </div>
-          <div className='right-text'>
-            已授权应用数: <strong>2</strong>
-          </div>
-        </div>
         <div className='auth-card base-card-box'>
           <div>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}

@@ -24,6 +24,8 @@ import Auth from './Components/Auth/Auth'
 import MessageIndex from './Components/Message/Index'
 import Apps from './Components/Apps/Apps'
 import UserStore from 'src/Store/UserStore'
+import Setting from './Components/Setting/Setting'
+import Help from './Components/Help/Help'
 
 interface IHomeProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -50,6 +52,10 @@ class Home extends React.Component<IHomeProps, any> {
       this.defaultMenuKey = 'message'
     } else if (pathname.includes('/user/apps')) {
       this.defaultMenuKey = 'apps'
+    } else if (pathname.includes('/user/setting')) {
+      this.defaultMenuKey = 'setting'
+    } else if (pathname.includes('/user/help')) {
+      this.defaultMenuKey = 'help'
     } else {
       this.defaultMenuKey = ''
     }
@@ -71,6 +77,12 @@ class Home extends React.Component<IHomeProps, any> {
         break
       case 'apps':
         this.props.history.push('/user/apps')
+        break
+      case 'setting':
+        this.props.history.push('/user/setting')
+        break
+      case 'help':
+        this.props.history.push('/user/help')
         break
       default:
         this.props.history.push('/user')
@@ -198,6 +210,8 @@ class Home extends React.Component<IHomeProps, any> {
                   <Route path='/user/info' component={Info} />
                   <Route path='/user/secure' component={Secure} />
                   <Route path='/user/auth' component={Auth} />
+                  <Route path='/user/setting' component={Setting} />
+                  <Route path='/user/help' component={Help} />
                   <Route component={Nothing} />
                 </Switch>
               </CSSTransition>

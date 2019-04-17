@@ -95,10 +95,6 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
     const userInfo = this.props.UserStore!.state.info
     return (
       <div className='secure-layout'>
-        {/* <p className='top-title'>
-          <Icon type='safety' />
-          <span>账户安全</span>
-        </p> */}
         <div className='top-div'>
           <img className='safe-logo' src={SafeImage} />
           <div className='top-title'>

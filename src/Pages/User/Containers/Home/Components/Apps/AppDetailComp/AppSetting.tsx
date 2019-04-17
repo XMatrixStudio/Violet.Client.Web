@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './AppSetting.less'
-import '../../Utils/Setting.less'
+import '../../Common/Setting.less'
 import { Switch, Button, Select, Modal, Input, message } from 'antd'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
