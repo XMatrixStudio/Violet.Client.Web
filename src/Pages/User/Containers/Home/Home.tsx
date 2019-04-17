@@ -26,6 +26,7 @@ import Apps from './Components/Apps/Apps'
 import UserStore from 'src/Store/UserStore'
 import Setting from './Components/Setting/Setting'
 import Help from './Components/Help/Help'
+import TopBanner from './Components/Common/TopBanner'
 
 interface IHomeProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -35,7 +36,8 @@ interface IHomeProps extends RouteComponentProps<any> {
 @inject('router')
 @observer
 class Home extends React.Component<IHomeProps, any> {
-  @observable collapsed: boolean
+  @observable collapsed = true
+  @observable extend = false
   defaultMenuKey: string
 
   constructor(props: IHomeProps) {
@@ -188,9 +190,20 @@ class Home extends React.Component<IHomeProps, any> {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout>
-          <Content className='content-layout'>
-            <TransitionGroup style={{ height: '100vh' }}>
+        <Layout
+          style={{
+            transition: 'all 0.2s',
+            marginTop: this.extend ? '200px' : '60px'
+          }}
+        >
+          <TopBanner
+            extend={this.extend}
+            change={() => {
+              this.extend = !this.extend
+            }}
+          />
+          <Content className='home-content'>
+            <TransitionGroup>
               <CSSTransition
                 key={
                   this.props.location.pathname.indexOf('/', 7) === -1

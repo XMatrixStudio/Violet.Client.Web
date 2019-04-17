@@ -1,5 +1,5 @@
 .message-main {
-  width: 100%;
+  margin: auto;
   display: flex;
   .table-left {
     width: 300px;
@@ -11,7 +11,7 @@
   }
 
   .message-list {
-    margin-top: 30px;
+    margin-top: 10px;
 
     .item-card {
       background: rgba(255, 255, 255, 0.75);
@@ -62,7 +62,7 @@
     .item-card-select {
       background: #ffffff;
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
-      border-left: 6px solid #71cdd2;
+      border-left: 6px solid #06afda;
     }
   }
 
@@ -83,6 +83,10 @@
         .control-icon {
           cursor: pointer;
           margin-left: 10px;
+          transition: all 0.3s;
+          &:hover {
+            transform: translateY(-2px);
+          }
         }
       }
     }
@@ -97,7 +101,8 @@
       font-size: 12px;
     }
     .chat-notice {
-      margin: 10px;
+      max-width: 400px;
+      margin: 10px auto;
       border-radius: 14px;
       padding: 10px;
       text-align: center;
@@ -157,5 +162,9 @@
   .nothing-box {
     min-height: 400px;
     font-size: 30px;
+  }
+
+  .content-box {
+    margin: 10px 20px;
   }
 }

@@ -125,7 +125,7 @@ class Message extends Component {
               className='avatar'
               type='message'
               theme='twoTone'
-              twoToneColor='#6adcda'
+              twoToneColor='#06afda'
             />
             <div className='item-text'>
               <span className='text-title'>{value.name}</span>
@@ -186,7 +186,7 @@ class Message extends Component {
 
     const contentBox =
       this.selectIndex !== -1 ? (
-        <div className='message-box'>
+        <div className='message-box content-box'>
           <p className='text-title'>
             {this.selectIndex !== -1
               ? this.messageData[this.selectIndex].name
@@ -221,7 +221,7 @@ class Message extends Component {
           </div>
         </div>
       ) : (
-        <div className='nothing-box'>
+        <div className='nothing-box content-box'>
           <Icon type='mail' theme='twoTone' twoToneColor='#71cdd2' />
         </div>
       )

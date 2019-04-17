@@ -10,7 +10,6 @@ import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
 import UserLevel from '../Common/UserLevel'
 import { Tooltip, Icon } from 'antd'
-import TopBanner from '../Common/TopBanner'
 import UIStore from 'src/Store/UIStore'
 import { observable, autorun } from 'mobx'
 
@@ -30,7 +29,8 @@ class Info extends Component<IInfoProps, any> {
       this.props.UIStore!.setTitle(
         'Hi, ' + this.props.UserStore!.state.info.info.nickname,
         '',
-        this.tip()
+        this.tip(),
+        '个人信息'
       )
     })
   }
@@ -66,7 +66,6 @@ class Info extends Component<IInfoProps, any> {
     const data = this.props.UserStore!.state.info
     return (
       <div className='info-content'>
-        <TopBanner />
         <div className='content-box'>
           <div className='base-card-box top-card'>
             <div className='user-avatar'>
@@ -87,7 +86,7 @@ class Info extends Component<IInfoProps, any> {
                     style={{ fontSize: '18px', cursor: 'pointer' }}
                     type='question-circle'
                     theme='twoTone'
-                    twoToneColor='#71cdd2'
+                    twoToneColor='#06afda'
                   />
                 </Tooltip>
               </div>

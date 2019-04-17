@@ -22,7 +22,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 className='up-icon'
                 type='edit'
                 theme='twoTone'
-                twoToneColor='#6adcda'
+                twoToneColor='#06afda'
                 onClick={() => {
                   this.props.history.push('/user/apps/up/edit')
                 }}
@@ -38,7 +38,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 style={{ verticalAlign: 'unset' }}
                 type='up-square'
                 theme='twoTone'
-                twoToneColor='#6adcda'
+                twoToneColor='#06afda'
                 onClick={() => {
                   this.props.history.push('/user/apps/up/admin')
                 }}
@@ -52,7 +52,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
                 className='up-icon'
                 type='plus-circle'
                 theme='twoTone'
-                twoToneColor='#6adcda'
+                twoToneColor='#06afda'
                 onClick={() => {
                   this.props.history.push('/user/apps/up/more')
                 }}
@@ -64,7 +64,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
             <Icon
               type='check-circle'
               theme='twoTone'
-              twoToneColor='#6adcda'
+              twoToneColor='#06afda'
               style={{ float: 'right', fontSize: '18px' }}
             />
           </div>
@@ -101,7 +101,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
           }}
         >
           <div className='more-box'>
-            <Icon type='plus-circle' theme='twoTone' twoToneColor='#6adcda' />
+            <Icon type='plus-circle' theme='twoTone' twoToneColor='#06afda' />
             <p className='title'>新建应用</p>
           </div>
         </div>

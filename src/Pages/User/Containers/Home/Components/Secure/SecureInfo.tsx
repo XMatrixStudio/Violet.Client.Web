@@ -1,21 +1,31 @@
 import React, { Component } from 'react'
 import './SecureInfo.less'
-import SafeImage from '@/Assets/User/safe.png'
 import { Icon, Button, Rate, Divider, Timeline, Modal, Input } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import moment from 'moment'
+import UIStore from 'src/Store/UIStore'
 
 interface ISecureInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
+  UIStore?: UIStore
 }
 
-@inject('UserStore')
+@inject('UserStore', 'UIStore')
 @observer
 class SecureInfo extends Component<ISecureInfoProps, any> {
   componentDidMount() {
     document.title = '安全中心 | Violet'
+    this.props.UIStore!.setTitle('账户安全')
+    this.props.UIStore!.setSubElement(
+      <>
+        <span key='title' className='middle-text'>
+          安全等级：
+        </span>
+        <Rate key='rate' disabled={true} defaultValue={4} />
+      </>
+    )
   }
 
   statusIcon(ok: boolean) {
@@ -94,22 +104,13 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
   render() {
     const userInfo = this.props.UserStore!.state.info
     return (
-      <div className='secure-layout'>
-        <div className='top-div'>
-          <img className='safe-logo' src={SafeImage} />
-          <div className='top-title'>
-            <p className='secure-middle'>
-              账户安全系数：<strong>80</strong>
-            </p>
-            <Rate disabled={true} defaultValue={4} />
-          </div>
-        </div>
+      <div className='secure-layout base-card-box'>
         <div className='secure-content'>
           <Icon
             className='status-icon'
             type='safety-certificate'
             theme='twoTone'
-            twoToneColor='#71cdd2'
+            twoToneColor='#06afda'
           />
           <div className='text-box'>
             <p>
@@ -127,7 +128,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
             className='status-icon'
             type='safety-certificate'
             theme='twoTone'
-            twoToneColor='#71cdd2'
+            twoToneColor='#06afda'
           />
           <div className='text-box'>
             <p className='title-text'>最近登陆</p>

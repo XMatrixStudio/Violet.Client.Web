@@ -4,6 +4,8 @@ export interface IUIState {
   title: string
   extTitle: string
   subTitle: string
+  shrinkTitle: string
+  subElement?: React.ReactNode
 }
 
 class UIStore {
@@ -12,14 +14,42 @@ class UIStore {
     this.state = {
       title: '',
       extTitle: '',
-      subTitle: ''
+      subTitle: '',
+      shrinkTitle: ''
     }
   }
 
-  @action setTitle(title: string, extTitle: string, subTitle: string) {
+  @action setTitle(
+    title: string,
+    extTitle?: string,
+    subTitle?: string,
+    shrinkTitle?: string
+  ) {
     this.state.title = title
-    this.state.extTitle = extTitle
-    this.state.subTitle = subTitle
+    if (extTitle !== undefined) {
+      this.state.extTitle = extTitle
+    }
+    if (subTitle !== undefined) {
+      this.state.subTitle = subTitle
+      this.state.subElement = undefined
+    }
+    if (shrinkTitle !== undefined) {
+      this.state.shrinkTitle = shrinkTitle
+    } else {
+      this.state.shrinkTitle = title
+    }
+  }
+
+  @action setShrinkTitle(title: string) {
+    this.state.shrinkTitle = title
+  }
+
+  @action setSubTitle(title: string) {
+    this.state.subTitle = title
+  }
+
+  @action setSubElement(element: React.ReactNode) {
+    this.state.subElement = element
   }
 }
 

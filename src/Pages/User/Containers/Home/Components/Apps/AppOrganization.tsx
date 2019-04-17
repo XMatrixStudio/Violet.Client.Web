@@ -49,7 +49,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
           }}
         >
           <div className='more-box'>
-            <Icon type='plus-circle' theme='twoTone' twoToneColor='#6adcda' />
+            <Icon type='plus-circle' theme='twoTone' twoToneColor='#06afda' />
             <p>新建应用</p>
           </div>
         </div>

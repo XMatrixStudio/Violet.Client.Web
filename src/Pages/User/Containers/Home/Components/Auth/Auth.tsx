@@ -138,7 +138,7 @@ class Auth extends Component<IAuthProps> {
     this.props.UIStore!.setTitle(
       '授权管理',
       '已授权应用数：2',
-      '以下应用可以访问你的信息'
+      '当前2个应用可以访问你的信息'
     )
   }
 
@@ -169,7 +169,6 @@ class Auth extends Component<IAuthProps> {
     const hasSelected = this.selectedRowKeys.length > 0
     return (
       <div className='auth-layout'>
-        <TopBanner />
         <Modal
           visible={this.visibleReport}
           okText='举报'

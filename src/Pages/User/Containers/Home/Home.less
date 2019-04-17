@@ -3,14 +3,14 @@
 }
 
 .home {
-  .content-layout {
+  .home-content {
     background: #f3f3f6;
   }
   .ant-layout-sider {
     background: #fefefe;
   }
   .ant-layout-sider-trigger {
-    background: #72ced3;
+    background: #06afda;
   }
   .ant-menu-inline,
   .ant-menu-vertical {
@@ -39,12 +39,14 @@
   }
 
   .home-side {
+    z-index: 2000;
     border-right: none;
     box-shadow: 4px 0 6px 0 hsla(0, 0%, 0%, 0.07);
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: 100hv;
     .home-menu {
-      margin-bottom: 30px;
+      margin-bottom: 60px;
     }
 
     .logout-btn {
@@ -52,7 +54,7 @@
       transition: all 0.3s;
       cursor: pointer;
       &:hover {
-        color: #71cdd2;
+        color: #06afda;
       }
     }
   }
@@ -111,7 +113,7 @@
   .top-layout {
     margin-left: 10px;
     .top-text {
-      border-left: 4px solid #71cdd2;
+      border-left: 4px solid #06afda;
       padding-left: 10px;
       display: inline-block;
       p {
