@@ -6,8 +6,6 @@ import { Icon } from 'antd'
 
 interface ITopBannerProps {
   UIStore?: UIStore
-  extend: boolean
-  change: () => void
 }
 
 @inject('UIStore')
@@ -15,14 +13,16 @@ interface ITopBannerProps {
 class TopBanner extends Component<ITopBannerProps> {
   render() {
     const state = this.props.UIStore!.state
-    const extend = this.props.extend
+    const ui = this.props.UIStore!.ui
     return (
       <div
-        className={'top-banner' + (extend ? ' extend-banner' : ' small-banner')}
+        className={
+          'top-banner' + (ui.topBanner ? ' extend-banner' : ' small-banner')
+        }
       >
         <div className='top-title'>
           <div className='big-title'>
-            {extend ? state.title : state.shrinkTitle}
+            {ui.topBanner ? state.title : state.shrinkTitle}
           </div>
           <div className='sub-title'>{state.subElement || state.subTitle}</div>
         </div>
@@ -31,10 +31,10 @@ class TopBanner extends Component<ITopBannerProps> {
         <div className='box-3' />
         <Icon
           onClick={() => {
-            this.props.change()
+            this.props.UIStore!.setTopBanner(!ui.topBanner)
           }}
           className='icon-extend'
-          type={extend ? 'caret-up' : 'caret-down'}
+          type={ui.topBanner ? 'caret-up' : 'caret-down'}
         />
       </div>
     )

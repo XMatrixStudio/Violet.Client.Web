@@ -5,14 +5,29 @@ import './NewAppForm.less'
 import { Input, Button, Select, message, Icon, Tooltip } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
+import { inject, observer } from 'mobx-react'
+import UIStore from 'src/Store/UIStore'
+import { Link } from 'react-router-dom'
 
 interface INewAppFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   next: (isEdit: boolean) => void
+  UIStore?: UIStore
 }
 
+@inject('UIStore')
+@observer
 class NewAppForm extends Component<INewAppFormProps> {
   appIcon?: File
+
+  componentWillMount() {
+    this.props.UIStore!.setTitle(
+      <>
+        <Link to='/user/apps'>应用管理</Link> > 新建应用
+      </>,
+      '创建新的应用'
+    )
+  }
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,7 +48,6 @@ class NewAppForm extends Component<INewAppFormProps> {
     return (
       <div className='app-form'>
         <div className='base-card-box'>
-          <div className='form-title'>完善应用信息</div>
           <Form className='my-form' onSubmit={this.handleSubmit}>
             <Form.Item
               label={

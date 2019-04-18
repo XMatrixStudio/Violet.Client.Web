@@ -1,15 +1,22 @@
-import { observable, action } from 'mobx'
+import { observable, action, IReactionDisposer, autorun } from 'mobx'
 
 export interface IUIState {
-  title: string
-  extTitle: string
-  subTitle: string
-  shrinkTitle: string
-  subElement?: React.ReactNode
+  title: React.ReactNode
+  extTitle: React.ReactNode
+  subTitle: React.ReactNode
+  shrinkTitle: React.ReactNode
+}
+
+export interface IUI {
+  sideMenu: boolean
+  topBanner: boolean
 }
 
 class UIStore {
   @observable state: IUIState
+  @observable ui: IUI
+  autoSave: IReactionDisposer
+
   constructor() {
     this.state = {
       title: '',
@@ -17,21 +24,41 @@ class UIStore {
       subTitle: '',
       shrinkTitle: ''
     }
+    const ui = localStorage.getItem('ui_state')
+    if (ui && ui !== undefined && ui !== 'undefined') {
+      try {
+        this.ui = JSON.parse(ui)
+      } catch (error) {
+        console.log('非法本地存储', error)
+      }
+    } else {
+      this.ui = {
+        sideMenu: false,
+        topBanner: true
+      }
+    }
+
+    this.autoSave = autorun(() => {
+      localStorage.setItem('ui_state', JSON.stringify(this.ui))
+    })
+  }
+
+  @action setSideMenu(extend: boolean) {
+    this.ui.sideMenu = extend
+  }
+
+  @action setTopBanner(extend: boolean) {
+    this.ui.topBanner = extend
   }
 
   @action setTitle(
-    title: string,
-    extTitle?: string,
-    subTitle?: string,
-    shrinkTitle?: string
+    title: React.ReactNode,
+    subTitle?: React.ReactNode,
+    shrinkTitle?: React.ReactNode
   ) {
     this.state.title = title
-    if (extTitle !== undefined) {
-      this.state.extTitle = extTitle
-    }
     if (subTitle !== undefined) {
       this.state.subTitle = subTitle
-      this.state.subElement = undefined
     }
     if (shrinkTitle !== undefined) {
       this.state.shrinkTitle = shrinkTitle
@@ -40,16 +67,12 @@ class UIStore {
     }
   }
 
-  @action setShrinkTitle(title: string) {
-    this.state.shrinkTitle = title
+  @action setSubTitle(element: React.ReactNode) {
+    this.state.subTitle = element
   }
 
-  @action setSubTitle(title: string) {
-    this.state.subTitle = title
-  }
-
-  @action setSubElement(element: React.ReactNode) {
-    this.state.subElement = element
+  @action setShrinkTitle(element: React.ReactNode) {
+    this.state.shrinkTitle = element
   }
 }
 

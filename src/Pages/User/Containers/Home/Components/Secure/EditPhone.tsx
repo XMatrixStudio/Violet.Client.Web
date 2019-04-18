@@ -7,15 +7,31 @@ import { Button, message } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import { Link } from 'react-router-dom'
+import UserStore from 'src/Store/UserStore'
+import { inject, observer } from 'mobx-react'
+import UIStore from 'src/Store/UIStore'
 
 interface IEditPhoneProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   finish: (isEdit: boolean) => void
+  UserStore?: UserStore
+  UIStore?: UIStore
 }
 
+@inject('UserStore', 'UIStore')
+@observer
 class EditPhone extends Component<IEditPhoneProps, any> {
-  componentDidMount() {
+  componentWillMount() {
     document.title = '绑定手机号 | Violet'
+    this.props.UIStore!.setTitle(
+      <>
+        <Link to='/user/secure' className='home-link'>
+          账户安全
+        </Link>{' '}
+        > 绑定手机号
+      </>,
+      '绑定手机号可以帮助你通过短信找回密码'
+    )
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,22 +65,13 @@ class EditPhone extends Component<IEditPhoneProps, any> {
     const { getFieldDecorator } = this.props.form
     return (
       <div className='form-layout'>
-        <div className='top-layout'>
-          <div className='top-text'>
-            <p className='title'>
-              <Link to='/user/secure' className='home-link'>
-                账户安全
-              </Link>{' '}
-              > 绑定手机号
-            </p>
-            <p className='sub-title'>绑定手机号可以帮助你通过短信找回密码</p>
-          </div>
-          {/* <div className='right-text'>
-            上次修改密码: <strong>3个月前</strong>
-          </div> */}
-        </div>
-
         <Form className='my-form' onSubmit={this.handleSubmit}>
+          <Form.Item className='hits-text'>
+            当前手机号:{' '}
+            <strong>
+              {this.props.UserStore!.state.info.phone || '未绑定'}
+            </strong>
+          </Form.Item>
           <Form.Item label='绑定手机号'>
             {getFieldDecorator('account', {
               rules: [

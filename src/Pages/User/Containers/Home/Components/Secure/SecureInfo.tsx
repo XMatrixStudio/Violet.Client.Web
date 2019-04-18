@@ -15,10 +15,10 @@ interface ISecureInfoProps extends RouteComponentProps<any> {
 @inject('UserStore', 'UIStore')
 @observer
 class SecureInfo extends Component<ISecureInfoProps, any> {
-  componentDidMount() {
+  componentWillMount() {
     document.title = '安全中心 | Violet'
-    this.props.UIStore!.setTitle('账户安全')
-    this.props.UIStore!.setSubElement(
+    this.props.UIStore!.setTitle(
+      '账户安全',
       <>
         <span key='title' className='middle-text'>
           安全等级：

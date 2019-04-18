@@ -6,6 +6,7 @@ import { observable } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import AppInfoForm from './AppInfoForm'
+import { Link } from 'react-router-dom'
 
 interface IAppInfo {
   UIStore?: UIStore
@@ -39,8 +40,12 @@ class AppInfo extends Component<IAppInfo> {
 
   componentWillMount() {
     this.props.UIStore!.setTitle(
-      '应用管理',
-      '> ' + this.appInfo.name,
+      <>
+        <Link key='link' to='/user/apps'>
+          应用管理
+        </Link>
+        <span key='name'> > {this.appInfo.name}</span>
+      </>,
       '在这里管理你的应用'
     )
   }

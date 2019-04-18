@@ -136,14 +136,16 @@
     }
   }
 
-  // 表单样式
+  // 统一表单样式
   .form-layout {
-    padding: 60px 60px 30px 60px;
+    padding: 10px;
     max-width: 700px;
     margin: auto;
     .my-form {
-      margin: 60px auto 20px auto;
-      max-width: 500px;
+      padding: 0 10px;
+      margin: 20px auto;
+      max-width: 600px;
+      min-width: 400px;
     }
     .back-btn {
       margin-left: 20px;
@@ -151,14 +153,13 @@
     button {
       margin-top: 20px;
     }
-  }
-
-  .home-link {
-    color: rgba(0, 0, 0, 0.65);
-    text-decoration: none;
-    &:hover,
-    &:focus {
-      color: #70ccd1;
+    .hits-text {
+      font-size: 16px;
+      margin: auto;
+      strong {
+        font-size: 22px;
+        color: rgba(14, 85, 90, 0.699);
+      }
     }
   }
 }

@@ -85,10 +85,6 @@ class Message extends Component {
     ]
   }
 
-  componentDidMount() {
-    document.title = '通知信息 | Violet'
-  }
-
   formatTime = (date: Date) => {
     const diffDay = new Date().getDay() - date.getDay()
     const diffYear = new Date().getFullYear() - date.getFullYear()

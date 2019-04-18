@@ -5,15 +5,26 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from 'src/Pages/Account/Components/Util/NewPassword'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import { inject, observer } from 'mobx-react'
+import UIStore from 'src/Store/UIStore'
 
 interface IEditPasswordProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   finish: (isEdit: boolean) => void
+  UIStore?: UIStore
 }
 
+@inject('UIStore')
+@observer
 class EditPassword extends Component<IEditPasswordProps, any> {
-  componentDidMount() {
+  componentWillMount() {
     document.title = '修改密码 | Violet'
+    this.props.UIStore!.setTitle(
+      <>
+        <Link to='/user/secure'>账户安全</Link> > 修改密码
+      </>,
+      '定期修改密码使得你的账号更安全'
+    )
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,21 +64,10 @@ class EditPassword extends Component<IEditPasswordProps, any> {
     const { getFieldDecorator } = this.props.form
     return (
       <div className='form-layout'>
-        <div className='top-layout'>
-          <div className='top-text'>
-            <p className='title'>
-              <Link to='/user/secure' className='home-link'>
-                账户安全
-              </Link>{' '}
-              > 修改密码
-            </p>
-            <p className='sub-title'>定期修改密码使得你的账号更安全</p>
-          </div>
-          <div className='right-text'>
-            上次修改密码: <strong>3个月前</strong>
-          </div>
-        </div>
         <Form className='my-form' onSubmit={this.handleSubmit}>
+          <Form.Item className='hits-text'>
+            上次修改密码： <strong>3个月前</strong>
+          </Form.Item>
           <Form.Item label='旧密码'>
             {getFieldDecorator('oldPassword', {
               rules: [

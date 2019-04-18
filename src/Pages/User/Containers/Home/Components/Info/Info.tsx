@@ -28,7 +28,6 @@ class Info extends Component<IInfoProps, any> {
     autorun(() => {
       this.props.UIStore!.setTitle(
         'Hi, ' + this.props.UserStore!.state.info.info.nickname,
-        '',
         this.tip(),
         '个人信息'
       )

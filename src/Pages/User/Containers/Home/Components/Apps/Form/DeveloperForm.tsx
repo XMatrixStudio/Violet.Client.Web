@@ -6,6 +6,7 @@ import './DeveloperForm.less'
 import TextArea from 'antd/lib/input/TextArea'
 import { inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
+import { Link } from 'react-router-dom'
 
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -15,6 +16,44 @@ interface IDeveloperFormProps extends RouteComponentProps<any> {
 
 @inject('UIStore')
 class DeveloperForm extends Component<IDeveloperFormProps> {
+  componentWillMount() {
+    const formType = this.props.match.params.type
+    switch (formType) {
+      case 'edit':
+        this.props.UIStore!.setTitle(
+          <>
+            <Link to='/user/apps'>应用管理</Link> > 开发者信息
+          </>,
+          '请填写新的联系方式(内部使用), 方便我们与您进行联系'
+        )
+        break
+      case 'developer':
+        this.props.UIStore!.setTitle(
+          <>
+            <Link to='/user/apps'>应用管理</Link> > 开发者申请
+          </>,
+          '请填写您的联系方式(内部使用), 成为一名开发者'
+        )
+        break
+      case 'admin':
+        this.props.UIStore!.setTitle(
+          <>
+            <Link to='/user/apps'>应用管理</Link> > 管理员申请
+          </>,
+          '系统管理员仅允许内部人员申请'
+        )
+        break
+      case 'more':
+        this.props.UIStore!.setTitle(
+          <>
+            <Link to='/user/apps'>应用管理</Link> > 应用申请
+          </>,
+          '请填写您得应用需求，便于我们进行审核'
+        )
+        break
+    }
+  }
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {

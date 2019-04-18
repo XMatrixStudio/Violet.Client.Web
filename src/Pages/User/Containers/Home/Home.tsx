@@ -27,22 +27,20 @@ import UserStore from 'src/Store/UserStore'
 import Setting from './Components/Setting/Setting'
 import Help from './Components/Help/Help'
 import TopBanner from './Components/Common/TopBanner'
+import UIStore from 'src/Store/UIStore'
 
 interface IHomeProps extends RouteComponentProps<any> {
   UserStore?: UserStore
+  UIStore?: UIStore
 }
 
-@inject('UserStore')
-@inject('router')
+@inject('UserStore', 'router', 'UIStore')
 @observer
 class Home extends React.Component<IHomeProps, any> {
-  @observable collapsed = true
-  @observable extend = false
   defaultMenuKey: string
 
   constructor(props: IHomeProps) {
     super(props)
-    this.collapsed = true
     const pathname = this.props.location.pathname
     if (pathname.includes('/user/info')) {
       this.defaultMenuKey = 'info'
@@ -59,7 +57,8 @@ class Home extends React.Component<IHomeProps, any> {
     } else if (pathname.includes('/user/help')) {
       this.defaultMenuKey = 'help'
     } else {
-      this.defaultMenuKey = ''
+      this.props.history.replace('/user/info')
+      this.defaultMenuKey = 'info'
     }
   }
 
@@ -121,26 +120,27 @@ class Home extends React.Component<IHomeProps, any> {
   }
 
   public render() {
+    const { sideMenu } = this.props.UIStore!.ui
     return (
       <Layout className='home'>
         <Sider
           className='home-side'
           collapsible={true}
-          collapsed={this.collapsed}
+          collapsed={sideMenu}
           onCollapse={(collapsed: boolean) => {
-            this.collapsed = collapsed
+            this.props.UIStore!.setSideMenu(collapsed)
           }}
         >
           <div
             className='logo'
-            style={{ marginLeft: this.collapsed ? '18px' : '10px' }}
+            style={{ marginLeft: sideMenu ? '18px' : '10px' }}
           >
             <img src={Logo} />
-            <span style={{ display: this.collapsed ? 'none' : 'inline' }}>
+            <span style={{ display: sideMenu ? 'none' : 'inline' }}>
               Violet
             </span>
           </div>
-          <div className={this.collapsed ? 'user-info-small' : 'user-info'}>
+          <div className={sideMenu ? 'user-info-small' : 'user-info'}>
             <img src={Avatar} className='user-avatar' />
             <p className='user-name'>
               ZhenlyChen
@@ -193,15 +193,10 @@ class Home extends React.Component<IHomeProps, any> {
         <Layout
           style={{
             transition: 'all 0.2s',
-            marginTop: this.extend ? '200px' : '60px'
+            marginTop: this.props.UIStore!.ui.topBanner ? '200px' : '60px'
           }}
         >
-          <TopBanner
-            extend={this.extend}
-            change={() => {
-              this.extend = !this.extend
-            }}
-          />
+          <TopBanner />
           <Content className='home-content'>
             <TransitionGroup>
               <CSSTransition

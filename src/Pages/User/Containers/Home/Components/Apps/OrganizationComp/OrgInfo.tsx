@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import './OrgInfo.less'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
-import { observable } from 'mobx'
+import { observable, autorun } from 'mobx'
 import { message, Button } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
 import OrgInfoForm from './OrgInfoForm'
+import { Link } from 'react-router-dom'
 
 interface IOrgInfoProps {
   UIStore?: UIStore
@@ -34,14 +35,14 @@ class OrgInfo extends Component<IOrgInfoProps> {
       email: 'megashow@outlook.com'
     }
     this.isEdit = false
-  }
-
-  componentWillMount() {
-    this.props.UIStore!.setTitle(
-      '组织管理',
-      '> ' + this.orgInfo.name,
-      '在这里管理你的组织'
-    )
+    autorun(() => {
+      this.props.UIStore!.setTitle(
+        <>
+          <Link to='/user/apps'>应用管理</Link> > {this.orgInfo.name}
+        </>,
+        '在这里管理你的组织'
+      )
+    })
   }
 
   onChangeInfo = (type: string) => {
@@ -51,8 +52,9 @@ class OrgInfo extends Component<IOrgInfoProps> {
       this.orgInfo[type] = value
       if (type === 'name') {
         this.props.UIStore!.setTitle(
-          '组织管理',
-          '> ' + value,
+          <>
+            <Link to='/user/apps'>应用管理</Link> > {value}
+          </>,
           '在这里管理你的组织'
         )
       }

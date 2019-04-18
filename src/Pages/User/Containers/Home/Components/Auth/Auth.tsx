@@ -18,7 +18,6 @@ import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
 import UserCard from '../Common/UserCard'
-import TopBanner from '../Common/TopBanner'
 import UIStore from 'src/Store/UIStore'
 
 interface IAuthProps {
@@ -133,13 +132,9 @@ class Auth extends Component<IAuthProps> {
     this.selectedRowKeys = []
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.title = '授权管理 | Violet'
-    this.props.UIStore!.setTitle(
-      '授权管理',
-      '已授权应用数：2',
-      '当前2个应用可以访问你的信息'
-    )
+    this.props.UIStore!.setTitle('授权管理', '当前2个应用可以访问你的信息')
   }
 
   start = () => {

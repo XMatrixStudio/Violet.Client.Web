@@ -4,13 +4,24 @@ import { Icon, Tabs } from 'antd'
 import AppPersonal from './AppPersonal'
 import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
+import UIStore from 'src/Store/UIStore'
 
+interface IAppMangerProps extends RouteComponentProps<any> {
+  UIStore?: UIStore
+}
+
+@inject('UIStore')
 @observer
-class AppManger extends Component<RouteComponentProps<any>> {
+class AppManger extends Component<IAppMangerProps> {
   @observable tabKey = 'personal'
+
+  componentWillMount() {
+    document.title = '应用管理 | Violet'
+    this.props.UIStore!.setTitle('应用管理', '在这里创建并管理你的应用')
+  }
 
   componentDidMount() {
     if (this.props.location.search.indexOf('?t=') !== -1) {

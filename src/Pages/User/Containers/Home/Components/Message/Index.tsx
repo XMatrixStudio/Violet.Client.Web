@@ -11,8 +11,9 @@ interface IMessageIndex {
 @inject('UIStore')
 @observer
 class MessageIndex extends Component<IMessageIndex> {
-  componentDidMount() {
-    this.props.UIStore!.setTitle('通知消息', '', '你有7条未读消息')
+  componentWillMount() {
+    document.title = '通知消息 | Violet'
+    this.props.UIStore!.setTitle('通知消息', '你有7条未读消息')
   }
 
   render() {

@@ -7,15 +7,29 @@ import { Button, message } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import { Link } from 'react-router-dom'
+import UIStore from 'src/Store/UIStore'
+import { inject, observer } from 'mobx-react'
+import UserStore from 'src/Store/UserStore'
 
 interface IEditEmailProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   finish: (isEdit: boolean) => void
+  UIStore?: UIStore
+  UserStore?: UserStore
 }
 
+@inject('UIStore', 'UserStore')
+@observer
 class EditEmail extends Component<IEditEmailProps, any> {
-  componentDidMount() {
+  componentWillMount() {
     document.title = '绑定邮箱 | Violet'
+    this.props.UIStore!.setTitle(
+      <div>
+        <Link to='/user/secure'>账户安全</Link>
+        {' > '}绑定邮箱
+      </div>,
+      '绑定邮箱可以帮助你找回密码以及接收重要通知'
+    )
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,24 +63,13 @@ class EditEmail extends Component<IEditEmailProps, any> {
     const { getFieldDecorator } = this.props.form
     return (
       <div className='form-layout'>
-        <div className='top-layout'>
-          <div className='top-text'>
-            <p className='title'>
-              <Link to='/user/secure' className='home-link'>
-                账户安全
-              </Link>{' '}
-              > 绑定邮箱
-            </p>
-            <p className='sub-title'>
-              绑定邮箱可以帮助你找回密码以及接收重要通知
-            </p>
-          </div>
-          {/* <div className='right-text'>
-            上次修改密码: <strong>3个月前</strong>
-          </div> */}
-        </div>
-
         <Form className='my-form' onSubmit={this.handleSubmit}>
+          <Form.Item className='hits-text'>
+            当前邮箱:{' '}
+            <strong>
+              {this.props.UserStore!.state.info.email || '未绑定'}
+            </strong>
+          </Form.Item>
           <Form.Item label='绑定邮箱'>
             {getFieldDecorator('account', {
               rules: [
