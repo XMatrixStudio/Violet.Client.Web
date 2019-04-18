@@ -17,6 +17,10 @@ interface IEditPasswordProps extends RouteComponentProps<any> {
 @inject('UIStore')
 @observer
 class EditPassword extends Component<IEditPasswordProps, any> {
+  constructor(props: IEditPasswordProps) {
+    super(props)
+  }
+
   componentWillMount() {
     document.title = '修改密码 | Violet'
     this.props.UIStore!.setTitle(
@@ -29,6 +33,7 @@ class EditPassword extends Component<IEditPasswordProps, any> {
       '定期修改密码使得你的账号更安全'
     )
   }
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
@@ -53,6 +58,8 @@ class EditPassword extends Component<IEditPasswordProps, any> {
                   break
                 case 'error_password':
                   message.error('旧密码错误')
+                  this.props.form.resetFields(['oldPassword'])
+                  this.props.form.validateFieldsAndScroll(['oldPassword'])
                   break
                 default:
                   message.error('发生错误' + msg)
@@ -69,7 +76,7 @@ class EditPassword extends Component<IEditPasswordProps, any> {
       <div className='form-layout'>
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item className='hits-text'>
-            上次修改密码： <strong>3个月前</strong>
+            上次修改密码： <strong>无数据</strong>
           </Form.Item>
           <Form.Item label='旧密码'>
             {getFieldDecorator('oldPassword', {

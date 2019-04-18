@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import ShowInfo from './ShowInfo'
 import { RouteComponentProps, Route, Switch } from 'react-router-dom'
 import EditInfo from './EditInfo'
-import Nothing from '../Nothing/Nothing'
 import { observer, inject } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
@@ -86,6 +85,9 @@ class Info extends Component<IInfoProps, any> {
                     type='question-circle'
                     theme='twoTone'
                     twoToneColor='#06afda'
+                    onClick={() => {
+                      this.props.history.push('/user/help')
+                    }}
                   />
                 </Tooltip>
               </div>
@@ -105,10 +107,9 @@ class Info extends Component<IInfoProps, any> {
                 userInfo={data}
               />
             </Route>
-            <Route exact={true} path='/user/info'>
+            <Route>
               <ShowInfo userInfo={data} />
             </Route>
-            <Route component={Nothing} />
           </Switch>
         </div>
       </div>

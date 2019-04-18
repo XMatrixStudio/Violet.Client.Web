@@ -10,19 +10,34 @@ import OrganizationSetting from './OrganizationSetting'
 import AppDetail from './AppDetail'
 import UIStore from 'src/Store/UIStore'
 import AppInit from './AppInit'
+import UserStore from 'src/Store/UserStore'
 
 interface IAppsProps extends RouteComponentProps<any> {
   UIStore?: UIStore
+  UserStore?: UserStore
 }
 
-@inject('UIStore')
+@inject('UIStore', 'UserStore')
 @observer
 class Apps extends Component<IAppsProps> {
   title: string
   subTitle: string
 
-  constructor(props: IAppsProps) {
-    super(props)
+  checkLevel = (pathname: string) => {
+    if (
+      this.props.UserStore!.state.info.level < 1 &&
+      pathname !== '/user/apps/up/developer' &&
+      pathname !== '/user/apps/not'
+    ) {
+      this.props.history.replace('/user/apps/not')
+    }
+  }
+
+  componentWillMount() {
+    this.checkLevel(this.props.history.location.pathname)
+    this.props.history.listen((location, action) => {
+      this.checkLevel(location.pathname)
+    })
   }
 
   render() {

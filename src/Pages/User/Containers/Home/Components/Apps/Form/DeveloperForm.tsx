@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import './DeveloperForm.less'
@@ -7,6 +7,8 @@ import TextArea from 'antd/lib/input/TextArea'
 import { inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import { Link } from 'react-router-dom'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -33,7 +35,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
       case 'developer':
         this.props.UIStore!.setTitle(
           <>
-            <Link key='link' to='/user/apps'>
+            <Link key='link' to='/user/apps/not'>
               应用管理
             </Link>
             <span key='more'> > 开发者申请</span>
@@ -71,7 +73,27 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log(values)
-        this.props.next(true)
+        const formType = this.props.match.params.type
+        if (formType === 'developer') {
+          UserService.UpdateLevel({
+            level: 1,
+            name: values.developerName,
+            email: values.developerEmail,
+            phone: values.developerPhone,
+            remark: values.developerRemark
+          })
+            .then(_ => {
+              message.success('开发者信息已提交')
+              this.props.next(true)
+              this.props.history.replace('/user/apps/not')
+            })
+            .catch(error => {
+              ServiceTool.errorHandler(error, msg => {
+                message.error('发生错误: ' + msg)
+              })
+            })
+        }
+        // this.props.next(true)
       }
     })
   }
@@ -102,6 +124,20 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                     {
                       required: true,
                       message: '请输入联系邮箱'
+                    },
+                    {
+                      type: 'email',
+                      message: '邮箱格式不正确'
+                    }
+                  ]
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label='联系手机'>
+                {getFieldDecorator('developerPhone', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入联系手机'
                     }
                   ]
                 })(<Input />)}
@@ -110,7 +146,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           )}
           {formType !== 'edit' && (
             <Form.Item label='备注'>
-              {getFieldDecorator('developerNote', {
+              {getFieldDecorator('developerRemark', {
                 rules: [
                   {
                     required: formType === 'more',

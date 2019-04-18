@@ -12,7 +12,7 @@ class UserStore {
       info: {
         name: '',
         level: 0,
-        createTime: new Date(),
+        createTime: new Date(0),
         info: {
           avatar: '',
           nickname: ''

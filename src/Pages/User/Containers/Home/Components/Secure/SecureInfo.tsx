@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './SecureInfo.less'
-import { Icon, Button, Rate, Divider, Timeline, Modal, Input } from 'antd'
+import { Icon, Button, Rate, Divider, Modal, Input, message } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
@@ -51,6 +51,8 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
   }
 
   deleteAccount = () => {
+    message.info('该功能开发中...')
+    return
     let confirmTime = 5
     const model = Modal.confirm({
       title: '是否彻底删除当前用户',
@@ -133,7 +135,8 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           <div className='text-box'>
             <p className='title-text'>最近登陆</p>
             <div className='content-text'>
-              <Timeline>
+              暂无记录
+              {/* <Timeline>
                 <Timeline.Item>
                   2019/2/25 14:32 广东 广州 (125.23.42.1)
                 </Timeline.Item>
@@ -143,7 +146,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
                 <Timeline.Item>
                   2019/1/12 9:32 广东 湛江 (145.64.142.12)
                 </Timeline.Item>
-              </Timeline>
+              </Timeline> */}
             </div>
           </div>
           <Divider />
@@ -152,7 +155,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           {this.statusIcon(true)}
           <div className='text-box'>
             <p className='title-text'>密码:</p>
-            <p className='content-text'>于2018/2/22修改</p>
+            <p className='content-text'>上次修改时间：无数据</p>
           </div>
           <Button
             type='default'

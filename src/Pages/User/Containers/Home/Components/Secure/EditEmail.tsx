@@ -56,6 +56,8 @@ class EditEmail extends Component<IEditEmailProps, any> {
                 default:
                   message.error('发生错误' + msg)
               }
+              this.props.form.resetFields(['captcha'])
+              this.props.form.validateFields(['captcha'])
             })
           })
       }

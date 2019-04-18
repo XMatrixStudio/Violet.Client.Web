@@ -12,10 +12,24 @@ declare namespace User {
         bio?: string
         birthday?: Date
         email?: string
+        phone?: string
         gender?: number
         location?: string
-        phone?: string
         url?: string
+      }
+      dev?: {
+        name?: string
+        email?: string
+        phone?: string
+        app: {
+          limit?: number
+          own: number
+        }
+        org: {
+          limit?: number
+          own: number
+          join: number
+        }
       }
     }
   }
@@ -63,6 +77,54 @@ declare namespace User.Email {
       operator: 'register' | 'reset' | 'update'
       code: string
       password?: string
+    }
+  }
+}
+
+declare namespace User.Level {
+  namespace POST {
+    interface RequestBody {
+      level: 1 | 50 | 99
+      name: string
+      email: string
+      phone: string
+      remark: string
+    }
+  }
+}
+
+declare namespace User.Level.App {
+  namespace POST {
+    interface RequestBody {
+      remark: string
+    }
+  }
+}
+
+declare namespace User.Level.Org {
+  namespace POST {
+    interface RequestBody {
+      remark: string
+    }
+  }
+}
+
+declare namespace User.Orgs {
+  interface IOrg {
+    name: string
+    avatar: string
+    create_time: Date
+    description: string
+  }
+
+  namespace GET {
+    interface ResponseBody {
+      pagination: {
+        page: number
+        limit: number
+        total: number
+      }
+      data: IOrg[]
     }
   }
 }

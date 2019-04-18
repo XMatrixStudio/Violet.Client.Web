@@ -48,7 +48,7 @@ class EditPhone extends Component<IEditPhoneProps, any> {
               switch (msg) {
                 case 'not_exist_code':
                 case 'error_code':
-                  message.error('验证码错误')
+                  message.error('验证码错误, 请重新发送')
                   break
                 case 'timeout_code':
                   message.error('验证码已超时，请重新发送')
@@ -56,6 +56,8 @@ class EditPhone extends Component<IEditPhoneProps, any> {
                 default:
                   message.error('发生错误' + msg)
               }
+              this.props.form.resetFields(['captcha'])
+              this.props.form.validateFields(['captcha'])
             })
           })
       }

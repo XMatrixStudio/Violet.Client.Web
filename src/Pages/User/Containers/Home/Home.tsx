@@ -28,6 +28,7 @@ import Setting from './Components/Setting/Setting'
 import Help from './Components/Help/Help'
 import TopBanner from './Components/Common/TopBanner'
 import UIStore from 'src/Store/UIStore'
+import { Location, Action } from 'history'
 
 interface IHomeProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -37,32 +38,31 @@ interface IHomeProps extends RouteComponentProps<any> {
 @inject('UserStore', 'router', 'UIStore')
 @observer
 class Home extends React.Component<IHomeProps, any> {
-  defaultMenuKey: string
+  @observable menuKey: string
 
-  constructor(props: IHomeProps) {
-    super(props)
-    const pathname = this.props.location.pathname
+  updateMenuKey = (pathname: string) => {
     if (pathname.includes('/user/info')) {
-      this.defaultMenuKey = 'info'
+      this.menuKey = 'info'
     } else if (pathname.includes('/user/secure')) {
-      this.defaultMenuKey = 'secure'
+      this.menuKey = 'secure'
     } else if (pathname.includes('/user/auth')) {
-      this.defaultMenuKey = 'auth'
+      this.menuKey = 'auth'
     } else if (pathname.includes('/user/message')) {
-      this.defaultMenuKey = 'message'
+      this.menuKey = 'message'
     } else if (pathname.includes('/user/apps')) {
-      this.defaultMenuKey = 'apps'
+      this.menuKey = 'apps'
     } else if (pathname.includes('/user/setting')) {
-      this.defaultMenuKey = 'setting'
+      this.menuKey = 'setting'
     } else if (pathname.includes('/user/help')) {
-      this.defaultMenuKey = 'help'
+      this.menuKey = 'help'
     } else {
       this.props.history.replace('/user/info')
-      this.defaultMenuKey = 'info'
+      this.menuKey = 'info'
     }
   }
 
   onClickMenu = (p: ClickParam) => {
+    this.menuKey = p.key
     switch (p.key) {
       case 'info':
         this.props.history.push('/user/info')
@@ -107,16 +107,17 @@ class Home extends React.Component<IHomeProps, any> {
 
   componentWillMount() {
     document.title = '用户中心 | Violet'
+    this.updateMenuKey(this.props.location.pathname)
+    this.updateInfo()
+    this.props.history.listen((location: Location, action: Action) => {
+      this.updateMenuKey(location.pathname)
+    })
   }
 
   updateInfo = () => {
     this.props.UserStore!.updateInfo(() => {
       window.location.href = '/account'
     })
-  }
-
-  componentDidMount() {
-    this.updateInfo()
   }
 
   public render() {
@@ -156,8 +157,8 @@ class Home extends React.Component<IHomeProps, any> {
           <Menu
             className='home-menu'
             onClick={this.onClickMenu}
+            selectedKeys={[this.menuKey]}
             mode='inline'
-            defaultSelectedKeys={[this.defaultMenuKey]}
           >
             <Menu.Item key='info'>
               <Icon type='idcard' />
