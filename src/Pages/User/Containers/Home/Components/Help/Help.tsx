@@ -11,10 +11,10 @@ interface IUIStoreProps {
 @observer
 class Help extends Component<IUIStoreProps> {
   componentDidMount() {
-    this.props.UIStore!.setTitle('帮助', '', '')
+    this.props.UIStore!.setTitle('帮助', 'Coming soon!')
   }
   render() {
-    return <div>Help</div>
+    return <div />
   }
 }
 

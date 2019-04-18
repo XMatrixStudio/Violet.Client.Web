@@ -11,10 +11,10 @@ interface ISettingProps {
 @observer
 class Setting extends Component<ISettingProps> {
   componentDidMount() {
-    this.props.UIStore!.setTitle('系统设置', '', '')
+    this.props.UIStore!.setTitle('系统设置', 'Coming soon!')
   }
   render() {
-    return <div>设置</div>
+    return <div />
   }
 }
 

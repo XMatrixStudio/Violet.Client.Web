@@ -22,7 +22,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
       case 'edit':
         this.props.UIStore!.setTitle(
           <>
-            <Link to='/user/apps'>应用管理</Link> > 开发者信息
+            <Link key='link' to='/user/apps'>
+              应用管理
+            </Link>
+            <span key='more'> > 开发者信息</span>
           </>,
           '请填写新的联系方式(内部使用), 方便我们与您进行联系'
         )
@@ -30,7 +33,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
       case 'developer':
         this.props.UIStore!.setTitle(
           <>
-            <Link to='/user/apps'>应用管理</Link> > 开发者申请
+            <Link key='link' to='/user/apps'>
+              应用管理
+            </Link>
+            <span key='more'> > 开发者申请</span>
           </>,
           '请填写您的联系方式(内部使用), 成为一名开发者'
         )
@@ -38,7 +44,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
       case 'admin':
         this.props.UIStore!.setTitle(
           <>
-            <Link to='/user/apps'>应用管理</Link> > 管理员申请
+            <Link key='link' to='/user/apps'>
+              应用管理
+            </Link>
+            <span key='more'> > 管理员申请</span>
           </>,
           '系统管理员仅允许内部人员申请'
         )
@@ -46,7 +55,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
       case 'more':
         this.props.UIStore!.setTitle(
           <>
-            <Link to='/user/apps'>应用管理</Link> > 应用申请
+            <Link key='link' to='/user/apps'>
+              应用管理
+            </Link>
+            <span key='more'> > 应用申请</span>
           </>,
           '请填写您得应用需求，便于我们进行审核'
         )

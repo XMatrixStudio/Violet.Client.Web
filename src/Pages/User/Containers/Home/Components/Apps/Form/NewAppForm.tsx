@@ -23,7 +23,8 @@ class NewAppForm extends Component<INewAppFormProps> {
   componentWillMount() {
     this.props.UIStore!.setTitle(
       <>
-        <Link to='/user/apps'>应用管理</Link> > 新建应用
+        <Link key='link' to='/user/apps'>应用管理</Link>
+        <span key='more'> > 新建应用</span>
       </>,
       '创建新的应用'
     )

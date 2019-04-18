@@ -25,8 +25,10 @@ class EditEmail extends Component<IEditEmailProps, any> {
     document.title = '绑定邮箱 | Violet'
     this.props.UIStore!.setTitle(
       <div>
-        <Link to='/user/secure'>账户安全</Link>
-        {' > '}绑定邮箱
+        <Link key='link' to='/user/secure'>
+          账户安全
+        </Link>
+        <span key='more'> > 绑定邮箱</span>
       </div>,
       '绑定邮箱可以帮助你找回密码以及接收重要通知'
     )

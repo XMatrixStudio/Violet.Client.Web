@@ -21,7 +21,10 @@ class EditPassword extends Component<IEditPasswordProps, any> {
     document.title = '修改密码 | Violet'
     this.props.UIStore!.setTitle(
       <>
-        <Link to='/user/secure'>账户安全</Link> > 修改密码
+        <Link key='link' to='/user/secure'>
+          账户安全
+        </Link>
+        <span key='more'> > 修改密码</span>
       </>,
       '定期修改密码使得你的账号更安全'
     )

@@ -25,10 +25,10 @@ class EditPhone extends Component<IEditPhoneProps, any> {
     document.title = '绑定手机号 | Violet'
     this.props.UIStore!.setTitle(
       <>
-        <Link to='/user/secure' className='home-link'>
+        <Link key='link' to='/user/secure' className='home-link'>
           账户安全
-        </Link>{' '}
-        > 绑定手机号
+        </Link>
+        <span key='more'> > 绑定手机号</span>
       </>,
       '绑定手机号可以帮助你通过短信找回密码'
     )

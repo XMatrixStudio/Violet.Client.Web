@@ -24,7 +24,7 @@ class TopBanner extends Component<ITopBannerProps> {
           <div className='big-title'>
             {ui.topBanner ? state.title : state.shrinkTitle}
           </div>
-          <div className='sub-title'>{state.subElement || state.subTitle}</div>
+          <div className='sub-title'>{state.subTitle}</div>
         </div>
         <div className='box-1' />
         <div className='box-2' />

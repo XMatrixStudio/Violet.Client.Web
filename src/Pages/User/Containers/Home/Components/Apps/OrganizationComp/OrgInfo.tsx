@@ -3,7 +3,7 @@ import './OrgInfo.less'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import { observable, autorun } from 'mobx'
-import { message, Button } from 'antd'
+import { Button } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
 import OrgInfoForm from './OrgInfoForm'
 import { Link } from 'react-router-dom'
@@ -38,27 +38,14 @@ class OrgInfo extends Component<IOrgInfoProps> {
     autorun(() => {
       this.props.UIStore!.setTitle(
         <>
-          <Link to='/user/apps'>应用管理</Link> > {this.orgInfo.name}
+          <Link key='link' to='/user/apps'>
+            应用管理
+          </Link>
+          <span key='more'> > {this.orgInfo.name}</span>
         </>,
         '在这里管理你的组织'
       )
     })
-  }
-
-  onChangeInfo = (type: string) => {
-    return (value: string) => {
-      message.destroy()
-      message.success('修改成功')
-      this.orgInfo[type] = value
-      if (type === 'name') {
-        this.props.UIStore!.setTitle(
-          <>
-            <Link to='/user/apps'>应用管理</Link> > {value}
-          </>,
-          '在这里管理你的组织'
-        )
-      }
-    }
   }
 
   render() {
