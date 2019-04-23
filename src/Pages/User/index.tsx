@@ -14,7 +14,7 @@ import UserStore from 'src/Store/UserStore'
 import UIStore from 'src/Store/UIStore'
 
 import { Root } from '../../Components/Root'
-import Home from './Containers/Home/Home'
+import Home from './Home/Home'
 
 const browserHistory = createBrowserHistory()
 const routerStore = new RouterStore()

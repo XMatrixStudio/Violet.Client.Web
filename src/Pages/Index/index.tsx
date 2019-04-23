@@ -12,9 +12,9 @@ import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 import AuthStore from '../../Store/AuthStore'
 
 import { Root } from '../../Components/Root'
-import Home from './Containers/Home/Home'
-import About from './Containers/About/About'
-import NavBar from './Components/NavBar/NavBar'
+import Home from './Home/Home'
+import About from './About/About'
+import NavBar from './Components/NavBar'
 
 const browserHistory = createBrowserHistory()
 const routerStore = new RouterStore()
