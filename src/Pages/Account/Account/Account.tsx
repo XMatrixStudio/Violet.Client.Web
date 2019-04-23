@@ -10,6 +10,20 @@ import { Route, Switch, RouteComponentProps, withRouter } from 'react-router'
 interface IAccountProps extends RouteComponentProps<any> {}
 
 class Account extends Component<IAccountProps> {
+  colorfulTop = (pathname: string) => {
+    console.log(pathname)
+    if (pathname === '/account') {
+      return 'login-card'
+    } else if (pathname.includes('/account/register')) {
+      return 'register-card'
+    } else if (pathname.includes('/account/reset')) {
+      return 'reset-card'
+    } else if (pathname.includes('/account/auth')) {
+      return 'auth-card'
+    }
+    return ''
+  }
+
   render() {
     return (
       <div className='account-div'>
@@ -21,21 +35,34 @@ class Account extends Component<IAccountProps> {
         >
           Violet
         </p>
-        <TransitionGroup>
-          <CSSTransition
-            key={this.props.location.pathname}
-            classNames='fade'
-            exit={false}
-            timeout={300}
-          >
-            <Switch>
-              <Route exact={true} path='/account' component={Login} />
-              <Route path='/account/register' component={Register} />
-              <Route path='/account/auth' component={Auth} />
-              <Route path='/account/reset' component={Reset} />
-            </Switch>
-          </CSSTransition>
-        </TransitionGroup>
+        <div
+          className={
+            'base-card-box ' + this.colorfulTop(this.props.location.pathname)
+          }
+        >
+          <TransitionGroup>
+            <CSSTransition
+              key={this.props.location.pathname}
+              classNames={{
+                appear: 'animated fadeIn',
+                appearActive: 'animated fadeIn',
+                appearDone: 'animated fadeIn',
+                enter: 'animated fadeIn',
+                enterActive: 'animated fadeIn',
+                enterDone: 'animated fadeIn'
+              }}
+              exit={false}
+              timeout={300}
+            >
+              <Switch>
+                <Route exact={true} path='/account' component={Login} />
+                <Route path='/account/register' component={Register} />
+                <Route path='/account/auth' component={Auth} />
+                <Route path='/account/reset' component={Reset} />
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
+        </div>
       </div>
     )
   }

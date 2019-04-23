@@ -90,25 +90,23 @@ class Reset extends Component<IResetProps, any> {
   public render() {
     return (
       <div className='comp-reset'>
-        <div className='base-card-box account-card'>
-          <this.BackIcon />
-          <div className='card-title'>
-            <p className='title-to'>找回密码</p>
-            <div className='line' />
-          </div>
-          <CSSTransition
-            in={this.showAnim}
-            classNames={{
-              enterActive: 'animated fadeIn faster'
-            }}
-            timeout={500}
-            onEntered={() => {
-              this.showAnim = false
-            }}
-          >
-            <this.UserForm />
-          </CSSTransition>
+        <this.BackIcon />
+        <div className='card-title'>
+          <p className='title-to'>找回密码</p>
+          <div className='line' />
         </div>
+        <CSSTransition
+          in={this.showAnim}
+          classNames={{
+            enterActive: 'animated fadeIn faster'
+          }}
+          timeout={500}
+          onEntered={() => {
+            this.showAnim = false
+          }}
+        >
+          <this.UserForm />
+        </CSSTransition>
       </div>
     )
   }

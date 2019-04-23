@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Input, Icon, Button, message } from 'antd'
-import ValidCaptcha from '../../../../../../Components/ValidCaptcha'
+import ValidCaptcha from 'src/Components/ValidCaptcha'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import AuthStore from 'src/Store/AuthStore'

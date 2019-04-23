@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Checkbox, Button } from 'antd'
+import { Form, Checkbox, Button, Select } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import RouterUtil from '../../Util/RouterUtil'
+import RouterUtil from '../Util/RouterUtil'
 import { inject, observer } from 'mobx-react'
 import AuthStore from 'src/Store/AuthStore'
 import UserService from 'src/Services/UserService'
@@ -28,12 +28,12 @@ class AuthForm extends Component<IAuthFormProps> {
   render() {
     const { getFieldDecorator } = this.props.form
     return (
-      <Form onSubmit={this.handleSubmit} style={{ marginTop: '24px' }}>
+      <Form onSubmit={this.handleSubmit} className='auth-form'>
         <Form.Item>
           {getFieldDecorator('authList', {
             initialValue: ['base', 'info', 'message']
           })(
-            <Checkbox.Group style={{ textAlign: 'left' }}>
+            <Checkbox.Group className='checkbox-group'>
               <Checkbox
                 style={{
                   width: '100%',
@@ -55,6 +55,19 @@ class AuthForm extends Component<IAuthFormProps> {
                 向您发送通知
               </Checkbox>
             </Checkbox.Group>
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('authTime', {
+            initialValue: 'long'
+          })(
+            <Select defaultValue='long'>
+              <Select.Option value='single'>仅单次授权</Select.Option>
+              <Select.Option value='short'>7天内自动授权</Select.Option>
+              <Select.Option value='long'>15天内自动授权</Select.Option>
+              <Select.Option value='month'>30天内自动授权</Select.Option>
+              <Select.Option value='season'>3个月内自动授权</Select.Option>
+            </Select>
           )}
         </Form.Item>
         <Button

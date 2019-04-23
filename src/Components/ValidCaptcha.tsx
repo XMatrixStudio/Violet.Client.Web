@@ -6,7 +6,7 @@ import ImageCaptcha from '../Pages/Account/Account/Components/Util/ImageCaptcha'
 import ServiceTool from 'src/Services/ServiceTool'
 import { inject, observer } from 'mobx-react'
 import AuthStore from 'src/Store/AuthStore'
-import CountDownButton from '../Pages/Account/Account/Components/Util/CountDownButton'
+import CountDownButton from './CountDownButton'
 import { observable } from 'mobx'
 
 interface IValidCaptchaProps {

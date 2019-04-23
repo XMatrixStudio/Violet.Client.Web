@@ -7,7 +7,6 @@ import InfoForm from './Components/InfoForm'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import Title from './Components/Title'
-import { CSSTransition } from 'react-transition-group'
 import RouterUtil from '../Util/RouterUtil'
 
 interface IRouterProps extends RouteComponentProps<any> {}
@@ -89,24 +88,11 @@ class Register extends Component<IRouterProps> {
     const currentStep = this.currentStep
     return (
       <div className='comp-register'>
-        <div className='base-card-box account-card'>
-          <this.BackIcon />
-          <div className='card-title'>
-            <Title currentStep={currentStep} />
-            <div className='line' />
-            <CSSTransition
-              in={this.showAnim}
-              classNames={{
-                enterActive: 'animated fadeIn faster'
-              }}
-              timeout={500}
-              onEntered={() => {
-                this.showAnim = false
-              }}
-            >
-              <this.UserForm />
-            </CSSTransition>
-          </div>
+        <this.BackIcon />
+        <div className='card-title'>
+          <Title currentStep={currentStep} />
+          <div className='line' />
+          <this.UserForm />
         </div>
       </div>
     )

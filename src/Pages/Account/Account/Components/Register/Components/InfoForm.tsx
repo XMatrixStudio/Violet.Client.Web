@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Icon, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import NewPassword from '../../../../../../Components/NewPassword'
+import NewPassword from 'src/Components/NewPassword'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 

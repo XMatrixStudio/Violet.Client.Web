@@ -1,4 +1,3 @@
-
 .account-div {
   padding-bottom: 20px;
   .ant-input-affix-wrapper .ant-input:not(:first-child) {
@@ -62,6 +61,52 @@
   .last-item {
     margin-bottom: 0;
   }
+
+  .login-card {
+    @card-color: rgba(10, 172, 212, 0.774);
+    @card-color-hover: rgb(10, 172, 212);
+    border-top: 5px solid @card-color;
+    &:hover {
+      border-top: 5px solid @card-color-hover !important;
+    }
+    min-height: 420px;
+    height: 423px;
+    max-height: 430px;
+  }
+
+  .register-card {
+    @card-color: rgba(69, 209, 151, 0.774);
+    @card-color-hover: rgb(69, 209, 151);
+    border-top: 5px solid @card-color;
+    &:hover {
+      border-top: 5px solid @card-color-hover !important;
+    }
+    min-height: 300px;
+    max-height: 500px;
+  }
+
+  .auth-card {
+    @card-color: rgba(76, 194, 200, 0.774);
+    @card-color-hover: rgb(76, 194, 200);
+    border-top: 4px solid @card-color;
+    &:hover {
+      border-top: 4px solid @card-color-hover !important;
+    }
+    margin-top: 110px;
+    min-height: 300px;
+    max-height: 600px;
+  }
+
+  .reset-card {
+    @card-color: rgba(233, 132, 16, 0.685);
+    @card-color-hover: rgba(233, 132, 16, 0.863);
+    border-top: 5px solid @card-color;
+    &:hover {
+      border-top: 5px solid @card-color-hover !important;
+    }
+    min-height: 500px;
+    max-height: 600px;
+  }
 }
 
 .base-card-box {
@@ -70,12 +115,11 @@
   max-width: 400px;
   min-width: 360px;
   margin: 16px auto;
-  padding: 30px;
   background: rgba(255, 255, 255, 0.9);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.3s;
+  transition: all 0.5s;
 
   &:hover {
     background: #ffffff;

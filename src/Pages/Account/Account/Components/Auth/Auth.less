@@ -1,28 +1,18 @@
 .comp-auth {
-  @card-color: rgba(76, 194, 200, 0.774);
-  @card-color-hover: rgb(76, 194, 200);
+  @card-color: rgba(10, 172, 212, 0.774);
+  @card-color-hover: rgb(10, 172, 212);
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 400px;
+  min-width: 360px;
 
   .my-line {
     position: relative;
     top: -30px;
     width: 100px;
     margin: auto;
-    z-index: -1;
-    border-bottom: 2px dashed rgba(184, 196, 199, 0.26);
-  }
-
-  .banner {
-    img {
-      width: 50px;
-      height: 50px;
-    }
-
-    .icon-check {
-      font-size: 22px;
-      color: rgb(51, 168, 73);
-      vertical-align: top;
-      margin: 10px 40px;
-    }
+    z-index: 10;
+    border-bottom: 2px dashed rgba(101, 107, 109, 0.26);
   }
 
   .help-text {
@@ -30,41 +20,87 @@
     font-size: 18px;
   }
 
-  .auth-card {
-    border-top: 3px solid @card-color;
-    &:hover {
-      border-top: 3px solid @card-color !important;
-    }
-    margin: 40px auto 0 auto;
-    max-width: 400px;
-    min-width: 360px;
-    padding: 20px;
-    .info {
-      transform: translateY(-80px);
-      font-size: 20px;
-      .avatar {
-        height: 70px;
-        width: 70px;
-        border-radius: 50%;
-        border: 3px solid rgba(0, 132, 255, 0.425);
+  .info {
+    top: -40px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    // transform: translateY(-80px);
+    font-size: 20px;
+    @keyframes rainbow {
+      0% {
+        transform: translateY(0);
       }
-      p {
-        margin-top: 10px;
+      50% {
+        transform: translateY(-3px);
+      }
+      100% {
+        transform: translateY(0);
       }
     }
-    .client {
-      margin-top: -90px;
-      font-size: 17px;
-      .ivu-checkbox-group-item {
-        text-align: left;
-        display: block;
-        font-size: 15px;
-        margin: 20px 50px;
+    .avatar {
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      border: 3px solid rgba(0, 132, 255, 0.425);
+      transition: all 0.3s;
+      animation: rainbow 1s infinite;
+    }
+  }
+
+  .banner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -110px;
+    img {
+      margin: 10px;
+      width: 40px;
+      height: 40px;
+      transition: all 0.3s;
+      &:hover {
+        transform: scale(1.1);
       }
     }
+
+    .icon-check {
+      z-index: 20;
+      font-size: 22px;
+      color: rgb(51, 168, 73);
+      vertical-align: top;
+      margin: 20px 40px;
+    }
+  }
+
+  .client {
+    margin-top: 48px;
+    font-size: 17px;
+    .ivu-checkbox-group-item {
+      text-align: left;
+      display: block;
+      font-size: 15px;
+      margin: 20px 50px;
+    }
+    strong {
+      cursor: pointer;
+    }
+  }
+  .auth-form {
+    margin-top: 20px;
+    .ant-form-item {
+      margin: 10px 36px;
+    }
+    .checkbox-group {
+      text-align: left;
+    }
+
     .auth-second-btn {
       width: 80%;
       font-size: 15px;
+      &:hover,
+      &:focus {
+        width: 84%;
+      }
     }
 
     .auth-btn {
@@ -75,6 +111,7 @@
       border-color: @card-color;
       &:hover,
       &:focus {
+        width: 84%;
         background: @card-color-hover;
         border-color: @card-color-hover;
       }

@@ -9,13 +9,11 @@ class Login extends Component {
   public render() {
     return (
       <div className='comp-login'>
-        <div className='base-card-box account-card'>
-          <div className='card-title'>
-            <p className='title-to'>登 陆</p>
-            <div className='line' />
-          </div>
-          <LoginForm />
+        <div className='card-title'>
+          <p className='title-to'>登 陆</p>
+          <div className='line' />
         </div>
+        <LoginForm />
       </div>
     )
   }
