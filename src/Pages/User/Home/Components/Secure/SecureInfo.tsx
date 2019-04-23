@@ -48,19 +48,13 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
       </>
     )
 
-    reaction(
-      () => this.props.UserStore!.state.info.log,
-      log => {
-        if (log && log.login) {
-          this.loginLog = log.login
-          log.login.forEach(async (value, index) => {
-            this.loginLog[index].location = await UtilService.getIPAddress(
-              value.ip
-            )
-          })
-        }
-      }
-    )
+    // const log = this.props.UserStore!.state.info.log
+    // if (log) {
+    //   this.loginLog = log.login
+    //   this.loginLog.forEach(async (value, index) => {
+    //     this.loginLog[index].location = await UtilService.getIPAddress(value.ip)
+    //   })
+    // }
   }
 
   statusIcon(ok: boolean) {
@@ -140,15 +134,13 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
 
   render() {
     const userInfo = this.props.UserStore!.state.info
-
     const loginLog = (
       <Timeline>
-        {this.loginLog &&
-          this.loginLog.map((data, index) => {
+        {userInfo.log &&
+          userInfo.log.login.map((data, index) => {
             return (
               <Timeline.Item key={index}>
-                {moment(data.time).format('YYYY/M/DD hh:mm:ss')} {data.location}{' '}
-                ({data.ip})
+                {moment(data.time).format('YYYY/M/DD hh:mm:ss')} ({data.ip})
               </Timeline.Item>
             )
           })}
