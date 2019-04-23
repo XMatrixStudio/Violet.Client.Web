@@ -1,11 +1,22 @@
 import React, { Component } from 'react'
 import './SecureInfo.less'
-import { Icon, Button, Rate, Divider, Modal, Input, message } from 'antd'
+import {
+  Icon,
+  Button,
+  Rate,
+  Divider,
+  Modal,
+  Input,
+  message,
+  Timeline
+} from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import moment from 'moment'
 import UIStore from 'src/Store/UIStore'
+import UtilService from 'src/Services/UtilService'
+import { observable, autorun, computed, reaction } from 'mobx'
 
 interface ISecureInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -15,6 +26,16 @@ interface ISecureInfoProps extends RouteComponentProps<any> {
 @inject('UserStore', 'UIStore')
 @observer
 class SecureInfo extends Component<ISecureInfoProps, any> {
+  @observable loginLog: Array<{
+    time: Date
+    ip: string
+    location?: string
+  }>
+
+  constructor(props: ISecureInfoProps) {
+    super(props)
+  }
+
   componentWillMount() {
     document.title = '安全中心 | Violet'
     this.props.UIStore!.setTitle(
@@ -25,6 +46,20 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
         </span>
         <Rate key='rate' disabled={true} defaultValue={4} />
       </>
+    )
+
+    reaction(
+      () => this.props.UserStore!.state.info.log,
+      log => {
+        if (log && log.login) {
+          this.loginLog = log.login
+          log.login.forEach(async (value, index) => {
+            this.loginLog[index].location = await UtilService.getIPAddress(
+              value.ip
+            )
+          })
+        }
+      }
     )
   }
 
@@ -105,6 +140,21 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
 
   render() {
     const userInfo = this.props.UserStore!.state.info
+
+    const loginLog = (
+      <Timeline>
+        {this.loginLog &&
+          this.loginLog.map((data, index) => {
+            return (
+              <Timeline.Item key={index}>
+                {moment(data.time).format('YYYY/M/DD hh:mm:ss')} {data.location}{' '}
+                ({data.ip})
+              </Timeline.Item>
+            )
+          })}
+      </Timeline>
+    )
+
     return (
       <div className='secure-layout base-card-box'>
         <div className='secure-content'>
@@ -135,7 +185,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           <div className='text-box'>
             <p className='title-text'>最近登陆</p>
             <div className='content-text'>
-              暂无记录
+              {loginLog}
               {/* <Timeline>
                 <Timeline.Item>
                   2019/2/25 14:32 广东 广州 (125.23.42.1)

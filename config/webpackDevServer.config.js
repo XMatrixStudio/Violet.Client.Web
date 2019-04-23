@@ -92,6 +92,13 @@ module.exports = function(proxy, allowedHost) {
         pathRewrite: {
           '^/api': ''
         }
+      },
+      '/ip': {
+        target: 'https://www.36ip.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ip': ''
+        }
       }
     },
     before(app, server) {
