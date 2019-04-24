@@ -11,6 +11,7 @@ import AppDetail from './AppDetail'
 import UIStore from 'src/Store/UIStore'
 import AppInit from './AppInit'
 import UserStore from 'src/Store/UserStore'
+import { observe } from 'mobx'
 
 interface IAppsProps extends RouteComponentProps<any> {
   UIStore?: UIStore
@@ -25,18 +26,29 @@ class Apps extends Component<IAppsProps> {
 
   checkLevel = (pathname: string) => {
     if (
-      this.props.UserStore!.state.info.level < 1 &&
-      pathname !== '/user/apps/up/developer' &&
-      pathname !== '/user/apps/not'
+      this.props.UserStore!.state.init === false ||
+      !pathname.includes('/user/apps')
     ) {
+      return
+    }
+    const level = this.props.UserStore!.state.info.level
+    console.log(level, pathname)
+    if (level < 1 && pathname !== '/user/apps/not') {
       this.props.history.replace('/user/apps/not')
+    } else if (
+      level > 0 &&
+      (pathname === '/user/apps/up/developer' || pathname === '/user/apps/not')
+    ) {
+      this.props.history.replace('/user/apps')
     }
   }
 
   componentWillMount() {
-    this.checkLevel(this.props.history.location.pathname)
     this.props.history.listen((location, action) => {
       this.checkLevel(location.pathname)
+    })
+    observe(this.props.UserStore!.state, () => {
+      this.checkLevel(this.props.history.location.pathname)
     })
   }
 

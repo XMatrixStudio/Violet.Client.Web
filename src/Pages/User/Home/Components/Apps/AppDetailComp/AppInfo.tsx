@@ -103,7 +103,7 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#fcc85d'
             >
-              fcc85dfcc85dfcc85dfcc85dfcc85dfcc85d
+              **************************
             </Tag>
           </Tooltip>
         </div>

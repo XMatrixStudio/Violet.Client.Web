@@ -15,8 +15,6 @@ import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import moment from 'moment'
 import UIStore from 'src/Store/UIStore'
-import UtilService from 'src/Services/UtilService'
-import { observable, autorun, computed, reaction } from 'mobx'
 
 interface ISecureInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -26,12 +24,6 @@ interface ISecureInfoProps extends RouteComponentProps<any> {
 @inject('UserStore', 'UIStore')
 @observer
 class SecureInfo extends Component<ISecureInfoProps, any> {
-  @observable loginLog: Array<{
-    time: Date
-    ip: string
-    location?: string
-  }>
-
   constructor(props: ISecureInfoProps) {
     super(props)
   }
@@ -47,14 +39,6 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
         <Rate key='rate' disabled={true} defaultValue={4} />
       </>
     )
-
-    // const log = this.props.UserStore!.state.info.log
-    // if (log) {
-    //   this.loginLog = log.login
-    //   this.loginLog.forEach(async (value, index) => {
-    //     this.loginLog[index].location = await UtilService.getIPAddress(value.ip)
-    //   })
-    // }
   }
 
   statusIcon(ok: boolean) {
@@ -134,16 +118,17 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
 
   render() {
     const userInfo = this.props.UserStore!.state.info
+    const logLogin = this.props.UserStore!.state.loginLog
     const loginLog = (
       <Timeline>
-        {userInfo.log &&
-          userInfo.log.login.map((data, index) => {
-            return (
-              <Timeline.Item key={index}>
-                {moment(data.time).format('YYYY/M/DD hh:mm:ss')} ({data.ip})
-              </Timeline.Item>
-            )
-          })}
+        {logLogin.map((data, index) => {
+          return (
+            <Timeline.Item key={index}>
+              {moment(data.time).format('YYYY/M/DD hh:mm:ss')} {data.location} (
+              {data.ip})
+            </Timeline.Item>
+          )
+        })}
       </Timeline>
     )
 
