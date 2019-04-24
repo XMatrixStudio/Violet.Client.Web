@@ -15,7 +15,7 @@ interface IAppInfo {
 @inject('UIStore')
 @observer
 class AppInfo extends Component<IAppInfo> {
-  appIcon?: File
+  appIcon?: string
   @observable appInfo: {
     name: string
     describe: string

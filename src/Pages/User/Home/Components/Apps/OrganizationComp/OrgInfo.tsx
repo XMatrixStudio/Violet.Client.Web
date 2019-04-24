@@ -23,7 +23,7 @@ class OrgInfo extends Component<IOrgInfoProps> {
     email: string
   }
   @observable isEdit: boolean
-  orgIcon?: File
+  orgIcon?: string
 
   constructor(props: IOrgInfoProps) {
     super(props)

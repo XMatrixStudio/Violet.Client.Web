@@ -7,7 +7,6 @@ import { observable } from 'mobx'
 const confirm = Modal.confirm
 
 import Logo from '@/Assets/logo.svg'
-import Avatar from '@/Assets/avatar.jpg'
 import {
   RouteComponentProps,
   withRouter,
@@ -122,6 +121,15 @@ class Home extends React.Component<IHomeProps, any> {
 
   public render() {
     const { sideMenu } = this.props.UIStore!.ui
+
+    const key =
+      this.props.location.pathname.indexOf('/', 7) === -1
+        ? this.props.location.pathname
+        : this.props.location.pathname.substr(
+            0,
+            this.props.location.pathname.indexOf('/', 7)
+          )
+
     return (
       <Layout className='home'>
         <Sider
@@ -142,7 +150,10 @@ class Home extends React.Component<IHomeProps, any> {
             </span>
           </div>
           <div className={sideMenu ? 'user-info-small' : 'user-info'}>
-            <img src={Avatar} className='user-avatar' />
+            <img
+              src={this.props.UserStore!.state.info.info.avatar}
+              className='user-avatar'
+            />
             <p className='user-name'>
               ZhenlyChen
               <Tooltip placement='right' title='退出登陆'>
@@ -201,19 +212,12 @@ class Home extends React.Component<IHomeProps, any> {
           <Content className='home-content'>
             <TransitionGroup>
               <CSSTransition
-                key={
-                  this.props.location.pathname.indexOf('/', 7) === -1
-                    ? this.props.location.pathname
-                    : this.props.location.pathname.substr(
-                        0,
-                        this.props.location.pathname.indexOf('/', 7)
-                      )
-                }
+                key={key}
                 classNames='fade'
                 exit={false}
                 timeout={300}
               >
-                <Switch>
+                <Switch location={this.props.location}>
                   <Route path='/user/apps' component={Apps} />
                   <Route path='/user/message' component={MessageIndex} />
                   <Route path='/user/info' component={Info} />

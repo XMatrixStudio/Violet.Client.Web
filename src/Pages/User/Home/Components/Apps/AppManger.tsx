@@ -8,16 +8,20 @@ import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
 import UIStore from 'src/Store/UIStore'
-import DefaultAppIcon from '@/Assets/icytown.png'
+import UserStore from 'src/Store/UserStore'
+import DevService from 'src/Services/DevService'
 
 interface IAppMangerProps extends RouteComponentProps<any> {
   UIStore?: UIStore
+  UserStore?: UserStore
 }
 
-@inject('UIStore')
+@inject('UIStore', 'UserStore')
 @observer
 class AppManger extends Component<IAppMangerProps> {
   @observable tabKey = 'personal'
+  currentOrgsPage = 1
+  batchSize = 100
 
   componentWillMount() {
     document.title = '应用管理 | Violet'
@@ -30,6 +34,17 @@ class AppManger extends Component<IAppMangerProps> {
     } else {
       this.tabKey = 'personal'
     }
+    this.freshOrgs()
+  }
+
+  freshOrgs = () => {
+    DevService.getDevOrgs(this.currentOrgsPage, this.batchSize).then(res => {
+      if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
+        this.currentOrgsPage++
+        this.freshOrgs()
+      }
+      this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
+    })
   }
 
   onClickTab = (key: string) => {
@@ -38,6 +53,22 @@ class AppManger extends Component<IAppMangerProps> {
   }
 
   render() {
+    const orgTabs = this.props.UserStore!.orgs.map(value => {
+      return (
+        <Tabs.TabPane
+          tab={
+            <span>
+              <img src={value.avatar} className='org-icon' />
+              {value.name}
+            </span>
+          }
+          key='matrix'
+        >
+          <AppOrganization />
+        </Tabs.TabPane>
+      )
+    })
+
     return (
       <div className='app-manger-box'>
         <Tabs activeKey={this.tabKey} onTabClick={this.onClickTab}>
@@ -52,18 +83,7 @@ class AppManger extends Component<IAppMangerProps> {
           >
             <AppPersonal />
           </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={
-              <span>
-                {/* <Icon type='copyright' /> */}
-                <img src={DefaultAppIcon} className='org-icon' />
-                XMatrix
-              </span>
-            }
-            key='matrix'
-          >
-            <AppOrganization />
-          </Tabs.TabPane>
+          {orgTabs}
           <Tabs.TabPane
             tab={
               <span>

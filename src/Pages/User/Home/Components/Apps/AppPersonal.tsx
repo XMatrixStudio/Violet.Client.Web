@@ -109,7 +109,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
         <div
           className='base-card-box more-card'
           onClick={() => {
-            this.props.history.push('/user/apps/new')
+            this.props.history.push('/user/apps/new/me')
           }}
         >
           <div className='more-box'>

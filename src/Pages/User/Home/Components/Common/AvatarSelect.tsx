@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AvatarEditor from 'react-avatar-editor'
-import { Slider, Upload, Icon, Modal } from 'antd'
+import { Slider, Upload, Icon, Modal, message } from 'antd'
 import './AvatarSelect.less'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
@@ -8,7 +8,7 @@ import { UploadChangeParam } from 'antd/lib/upload/interface'
 
 interface IAvatarSelect {
   imageURL?: string
-  setImage: (file?: File) => void
+  setImage: (base64?: string) => void
   title: string
 }
 
@@ -41,9 +41,19 @@ class AvatarSelect extends Component<IAvatarSelect> {
     fetch(canvas)
       .then(res => res.blob())
       .then(blob => {
-        this.imageURL = window.URL.createObjectURL(blob)
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onload = async () => {
+          const base64 = '' + reader.result
+          this.props.setImage(base64)
+        }
+        reader.onerror = error => {
+          console.log(error)
+          message.error('图片解析失败...')
+        }
+
+        // this.imageURL = window.URL.createObjectURL(blob)
       })
-    this.props.setImage(this.avatarFile)
     this.showModel = false
   }
 
@@ -81,6 +91,7 @@ class AvatarSelect extends Component<IAvatarSelect> {
         >
           {this.avatarFile === undefined ? (
             <Upload.Dragger
+              accept='image/*'
               // tslint:disable-next-line:no-empty
               customRequest={(option: any) => {}}
               showUploadList={false}

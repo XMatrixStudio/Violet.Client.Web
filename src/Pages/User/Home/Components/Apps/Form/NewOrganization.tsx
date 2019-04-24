@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import './NewOrganization.less'
-import { Form, Input, Button, Tooltip, Icon } from 'antd'
+import { Form, Input, Button, Tooltip, Icon, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
+import { observable } from 'mobx'
 
 interface INewOrganizationProps {
   form: WrappedFormUtils
@@ -15,12 +16,16 @@ interface INewOrganizationProps {
 @inject('UserStore')
 @observer
 class NewOrganization extends Component<INewOrganizationProps> {
-  selectIcon?: File
+  @observable selectIcon?: string
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
+        if (this.selectIcon === undefined) {
+          message.error('请选择组织图标')
+        } else {
+          console.log(values)
+        }
       }
     })
   }
@@ -66,7 +71,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
               label={
                 <span>
                   组织名
-                  <Tooltip title='组织名将会在授权时候展示, 同时也是组织的唯一标识, 请慎重选择'>
+                  <Tooltip title='组织名是组织的唯一标识, 请慎重选择'>
                     <Icon
                       className='tip-icon'
                       type='question-circle'
@@ -82,6 +87,30 @@ class NewOrganization extends Component<INewOrganizationProps> {
                   {
                     required: true,
                     message: '请输入组织名'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item
+              label={
+                <span>
+                  组织显示名称
+                  <Tooltip title='展示名将会在授权时候展示'>
+                    <Icon
+                      className='tip-icon'
+                      type='question-circle'
+                      theme='twoTone'
+                      twoToneColor='#b3b3b3'
+                    />
+                  </Tooltip>
+                </span>
+              }
+            >
+              {getFieldDecorator('orgDisplayName', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入组织显示名称'
                   }
                 ]
               })(<Input />)}
@@ -130,6 +159,10 @@ class NewOrganization extends Component<INewOrganizationProps> {
                   {
                     required: true,
                     message: '请输入联系邮箱'
+                  },
+                  {
+                    type: 'email',
+                    message: '请输入合法的邮箱'
                   }
                 ]
               })(<Input />)}

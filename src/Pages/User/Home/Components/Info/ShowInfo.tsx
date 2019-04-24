@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { Icon, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
-import UserGender from '../Common/UserGender'
 import moment from 'moment'
 import './ShowInfo.less'
 
@@ -32,10 +31,6 @@ class ShowInfo extends Component<IShowInfoProps, any> {
             }}
           />
         </Tooltip>
-        <div className='info-box'>
-          <p className='info-title'>性别</p>
-          <UserGender gender={info.gender} />
-        </div>
         <div className='info-box'>
           <p className='info-title'>联系邮箱</p>
           <p className='info-text'>{info.email || '空'}</p>

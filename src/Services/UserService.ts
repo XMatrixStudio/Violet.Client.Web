@@ -25,6 +25,7 @@ export default {
   },
   // 修改信息
   UpdateInfo: async (req: PatchUsers.ReqBody) => {
+    // 处理密码加密
     if (req.secure) {
       req.secure.oldPassword = createHash('sha512')
         .update(req.secure.oldPassword)
@@ -32,6 +33,11 @@ export default {
       req.secure.newPassword = createHash('sha512')
         .update(req.secure.newPassword)
         .digest('hex')
+    }
+    // 处理头像Base64前缀
+    if (req.info && req.info.avatar) {
+      const dataBegin = req.info.avatar.indexOf('base64,')
+      req.info.avatar = req.info.avatar.substr(dataBegin + 7)
     }
     const res = await axios.patch('/api/i/users', req)
     return res

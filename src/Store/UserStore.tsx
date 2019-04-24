@@ -14,6 +14,7 @@ export interface IUser {
 
 class UserStore {
   @observable state: IUser
+  @observable orgs: User.Orgs.IOrg[]
   constructor() {
     this.state = {
       init: false,
@@ -28,10 +29,14 @@ class UserStore {
       },
       loginLog: []
     }
+    this.orgs = []
   }
 
-  updateInfo(failed: () => void) {
+  updateInfo(failed?: () => void, newAvatar?: boolean) {
     UserService.GetInfo(data => {
+      if (newAvatar === true) {
+        data.info.avatar = data.info.avatar + '?t=' + new Date().getTime()
+      }
       this.setInfo(data)
     }, failed)
   }
@@ -47,6 +52,14 @@ class UserStore {
           value.ip
         )
       })
+    }
+  }
+
+  @action addOrgs(orgs: User.Orgs.IOrg[], first: boolean) {
+    if (first) {
+      this.orgs = orgs
+    } else {
+      this.orgs.concat(orgs)
     }
   }
 }

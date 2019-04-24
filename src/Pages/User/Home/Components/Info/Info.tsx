@@ -8,9 +8,12 @@ import { observer, inject } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
 import UserLevel from '../Common/UserLevel'
-import { Tooltip, Icon } from 'antd'
+import { Tooltip, Icon, message } from 'antd'
 import UIStore from 'src/Store/UIStore'
 import { observable, autorun } from 'mobx'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import UserService from 'src/Services/UserService'
+import UserGender from '../Common/UserGender'
 
 interface IInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -21,7 +24,6 @@ interface IInfoProps extends RouteComponentProps<any> {
 @observer
 class Info extends Component<IInfoProps, any> {
   @observable nickname: string
-  userAvatar?: File
 
   componentDidMount() {
     autorun(() => {
@@ -60,6 +62,18 @@ class Info extends Component<IInfoProps, any> {
     }
   }
 
+  uploadAvatar = async (base64: string) => {
+    const hide = message.loading('头像上传中....', 0)
+    await UserService.UpdateInfo({
+      info: {
+        avatar: base64
+      }
+    })
+    hide()
+    message.success('上传成功!')
+    this.props.UserStore!.updateInfo(undefined, true)
+  }
+
   render() {
     const data = this.props.UserStore!.state.info
     return (
@@ -69,15 +83,14 @@ class Info extends Component<IInfoProps, any> {
             <div className='user-avatar'>
               <AvatarSelect
                 imageURL={data.info.avatar}
-                setImage={file => {
-                  this.userAvatar = file
-                }}
+                setImage={this.uploadAvatar}
                 title='点击或拖动选择头像'
               />
             </div>
             <div className='user-base-info'>
               <div>
                 <span className='user-name'>{data.info.nickname}</span>
+                <UserGender gender={data.info.gender} />
                 <UserLevel level={data.level} />
                 <Tooltip title='这是什么？'>
                   <Icon
@@ -95,22 +108,31 @@ class Info extends Component<IInfoProps, any> {
             </div>
           </div>
 
-          <Switch>
-            <Route exact={true} path='/user/info/edit'>
-              <EditInfo
-                next={isEdit => {
-                  if (isEdit) {
-                    this.updateInfo()
-                  }
-                  this.props.history.replace('/user/info')
-                }}
-                userInfo={data}
-              />
-            </Route>
-            <Route>
-              <ShowInfo userInfo={data} />
-            </Route>
-          </Switch>
+          <TransitionGroup>
+            <CSSTransition
+              key={this.props.location.pathname}
+              classNames='fade'
+              exit={false}
+              timeout={300}
+            >
+              <Switch location={this.props.location}>
+                <Route exact={true} path='/user/info/edit'>
+                  <EditInfo
+                    next={isEdit => {
+                      if (isEdit) {
+                        this.updateInfo()
+                      }
+                      this.props.history.replace('/user/info')
+                    }}
+                    userInfo={data}
+                  />
+                </Route>
+                <Route>
+                  <ShowInfo userInfo={data} />
+                </Route>
+              </Switch>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     )

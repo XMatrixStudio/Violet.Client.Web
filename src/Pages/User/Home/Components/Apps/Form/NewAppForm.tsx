@@ -8,17 +8,20 @@ import AddImage from '@/Assets/add.png'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import { Link } from 'react-router-dom'
+import UserStore from 'src/Store/UserStore'
+import { observable } from 'mobx'
 
 interface INewAppFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   next: (isEdit: boolean) => void
   UIStore?: UIStore
+  UserStore?: UserStore
 }
 
-@inject('UIStore')
+@inject('UIStore', 'UserStore')
 @observer
 class NewAppForm extends Component<INewAppFormProps> {
-  appIcon?: File
+  @observable appIcon?: string
 
   componentWillMount() {
     this.props.UIStore!.setTitle(
@@ -41,7 +44,7 @@ class NewAppForm extends Component<INewAppFormProps> {
           message.error('请选择应用图标')
         } else {
           console.log(values)
-          this.props.next(true)
+          // this.props.next(true)
         }
       }
     })
@@ -49,46 +52,39 @@ class NewAppForm extends Component<INewAppFormProps> {
 
   render() {
     const { getFieldDecorator } = this.props.form
+
+    const UserInfo = this.props.UserStore!.state.info
+
+    if (!UserInfo.dev) {
+      return null
+    }
+
+    const ByName = this.props.match.params.by
+
     return (
       <div className='app-form'>
         <div className='base-card-box'>
           <Form className='my-form' onSubmit={this.handleSubmit}>
-            <Form.Item
-              label={
+            <div className='app-by'>
+              <span>
+                应用所有者
+                <Tooltip title='决定应用属于个人或是组织'>
+                  <Icon
+                    className='tip-icon'
+                    type='question-circle'
+                    theme='twoTone'
+                    twoToneColor='#b3b3b3'
+                  />
+                </Tooltip>
+              </span>
+              {' : '}
+              {ByName === 'me' ? (
                 <span>
-                  应用归属
-                  <Tooltip title='决定应用属于个人或是组织'>
-                    <Icon
-                      className='tip-icon'
-                      type='question-circle'
-                      theme='twoTone'
-                      twoToneColor='#b3b3b3'
-                    />
-                  </Tooltip>
+                  {UserInfo.info.nickname} ({UserInfo.dev.app.own}/
+                  {UserInfo.dev.app.limit})
                 </span>
-              }
-            >
-              {getFieldDecorator('appFrom', {
-                initialValue: 'personal',
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择创建位置'
-                  }
-                ]
-              })(
-                <Select style={{ maxWidth: '300px' }}>
-                  <Select.OptGroup label='个人'>
-                    <Select.Option value='personal'>
-                      ZhenlyChen (3/10)
-                    </Select.Option>
-                  </Select.OptGroup>
-                  <Select.OptGroup label='组织'>
-                    <Select.Option value='org'>XMatrix (1/10)</Select.Option>
-                  </Select.OptGroup>
-                </Select>
-              )}
-            </Form.Item>
+              ) : null}
+            </div>
             <Form.Item
               className='item-app-icon'
               label={
@@ -106,9 +102,9 @@ class NewAppForm extends Component<INewAppFormProps> {
               }
             >
               <AvatarSelect
-                imageURL={AddImage}
-                setImage={file => {
-                  this.appIcon = file
+                imageURL={this.appIcon || AddImage}
+                setImage={base64 => {
+                  this.appIcon = base64
                 }}
                 title='点击或拖动选择应用图标'
               />
@@ -137,11 +133,11 @@ class NewAppForm extends Component<INewAppFormProps> {
                 ]
               })(
                 <Select style={{ maxWidth: '300px' }}>
-                  <Select.Option value='game'>游戏</Select.Option>
-                  <Select.Option value='tool'>工具</Select.Option>
-                  <Select.Option value='entertainment'>娱乐</Select.Option>
-                  <Select.Option value='live'>生活</Select.Option>
-                  <Select.Option value='social '>社交</Select.Option>
+                  <Select.Option value='1'>游戏</Select.Option>
+                  <Select.Option value='2'>工具</Select.Option>
+                  <Select.Option value='3'>娱乐</Select.Option>
+                  <Select.Option value='4'>生活</Select.Option>
+                  <Select.Option value='5'>社交</Select.Option>
                 </Select>
               )}
             </Form.Item>
