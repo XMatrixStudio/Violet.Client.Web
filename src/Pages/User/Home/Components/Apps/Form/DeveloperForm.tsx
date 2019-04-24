@@ -27,7 +27,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             <Link key='link' to='/user/apps'>
               应用管理
             </Link>
-            <span key='more'> > 开发者信息</span>
+            <span key='more'> - 开发者信息</span>
           </>,
           '请填写新的联系方式(内部使用), 方便我们与您进行联系'
         )
@@ -38,7 +38,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             <Link key='link' to='/user/apps/not'>
               应用管理
             </Link>
-            <span key='more'> > 开发者申请</span>
+            <span key='more'> - 开发者申请</span>
           </>,
           '请填写您的联系方式(内部使用), 成为一名开发者'
         )
@@ -49,7 +49,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             <Link key='link' to='/user/apps'>
               应用管理
             </Link>
-            <span key='more'> > 管理员申请</span>
+            <span key='more'> - 管理员申请</span>
           </>,
           '系统管理员仅允许内部人员申请'
         )
@@ -60,11 +60,16 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             <Link key='link' to='/user/apps'>
               应用管理
             </Link>
-            <span key='more'> > 应用申请</span>
+            <span key='more'> - 应用申请</span>
           </>,
           '请填写您得应用需求，便于我们进行审核'
         )
         break
+    }
+    if (formType === 'developer') {
+      this.props.UIStore!.setBack('/user/apps/not')
+    } else {
+      this.props.UIStore!.setBack('/user/apps')
     }
   }
 

@@ -23,11 +23,14 @@ class NewAppForm extends Component<INewAppFormProps> {
   componentWillMount() {
     this.props.UIStore!.setTitle(
       <>
-        <Link key='link' to='/user/apps'>应用管理</Link>
-        <span key='more'> > 新建应用</span>
+        <Link key='link' to='/user/apps'>
+          应用管理
+        </Link>
+        <span key='more'> - 新建应用</span>
       </>,
       '创建新的应用'
     )
+    this.props.UIStore!.setBack('/user/apps')
   }
 
   handleSubmit = (e: React.FormEvent) => {

@@ -3,6 +3,7 @@ import './TopBanner.less'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import { Icon } from 'antd'
+import { Link } from 'react-router-dom'
 
 interface ITopBannerProps {
   UIStore?: UIStore
@@ -21,10 +22,32 @@ class TopBanner extends Component<ITopBannerProps> {
         }
       >
         <div className='top-title'>
-          <div className='big-title'>
+          {state.back !== undefined &&
+            (typeof state.back === 'string' ? (
+              <div className='back-icon'>
+                <Link to={state.back}>
+                  <Icon type='left' />
+                </Link>
+              </div>
+            ) : (
+              <div className='back-icon'>
+                <Icon type='left' onClick={state.back} />
+              </div>
+            ))}
+          <div
+            className={
+              'big-title ' + (state.back !== undefined ? 'with-back' : '')
+            }
+          >
             {ui.topBanner ? state.title : state.shrinkTitle}
           </div>
-          <div className='sub-title'>{state.subTitle}</div>
+          <div
+            className={
+              'sub-title ' + (state.back !== undefined ? 'with-back' : '')
+            }
+          >
+            {state.subTitle}
+          </div>
         </div>
         <div className='box-1' />
         <div className='box-2' />

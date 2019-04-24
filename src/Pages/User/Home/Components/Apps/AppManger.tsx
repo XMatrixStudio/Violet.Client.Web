@@ -8,6 +8,7 @@ import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
 import UIStore from 'src/Store/UIStore'
+import DefaultAppIcon from '@/Assets/icytown.png'
 
 interface IAppMangerProps extends RouteComponentProps<any> {
   UIStore?: UIStore
@@ -54,7 +55,8 @@ class AppManger extends Component<IAppMangerProps> {
           <Tabs.TabPane
             tab={
               <span>
-                <Icon type='copyright' />
+                {/* <Icon type='copyright' /> */}
+                <img src={DefaultAppIcon} className='org-icon' />
                 XMatrix
               </span>
             }

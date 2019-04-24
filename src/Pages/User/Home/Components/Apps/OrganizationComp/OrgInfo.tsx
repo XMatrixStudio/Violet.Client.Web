@@ -41,10 +41,11 @@ class OrgInfo extends Component<IOrgInfoProps> {
           <Link key='link' to='/user/apps'>
             应用管理
           </Link>
-          <span key='more'> > {this.orgInfo.name}</span>
+          <span key='more'> - {this.orgInfo.name}</span>
         </>,
         '在这里管理你的组织'
       )
+      this.props.UIStore!.setBack('/user/apps')
     })
   }
 

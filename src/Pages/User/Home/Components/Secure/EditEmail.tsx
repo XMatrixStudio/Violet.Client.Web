@@ -28,10 +28,11 @@ class EditEmail extends Component<IEditEmailProps, any> {
         <Link key='link' to='/user/secure'>
           账户安全
         </Link>
-        <span key='more'> > 绑定邮箱</span>
+        <span key='more'> - 绑定邮箱</span>
       </div>,
       '绑定邮箱可以帮助你找回密码以及接收重要通知'
     )
+    this.props.UIStore!.setBack('/user/secure')
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

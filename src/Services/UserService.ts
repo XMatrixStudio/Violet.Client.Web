@@ -24,13 +24,13 @@ export default {
     }
   },
   // 修改信息
-  UpdateInfo: async (req: User.PATCH.RequestBody) => {
+  UpdateInfo: async (req: PatchUsers.ReqBody) => {
     if (req.secure) {
-      req.secure.old_password = createHash('sha512')
-        .update(req.secure.old_password)
+      req.secure.oldPassword = createHash('sha512')
+        .update(req.secure.oldPassword)
         .digest('hex')
-      req.secure.new_password = createHash('sha512')
-        .update(req.secure.new_password)
+      req.secure.newPassword = createHash('sha512')
+        .update(req.secure.newPassword)
         .digest('hex')
     }
     const res = await axios.patch('/api/i/users', req)

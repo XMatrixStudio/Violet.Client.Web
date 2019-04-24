@@ -4,11 +4,16 @@ import { Form, Input, Button, Tooltip, Icon } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
+import { inject, observer } from 'mobx-react'
+import UserStore from 'src/Store/UserStore'
 
 interface INewOrganizationProps {
   form: WrappedFormUtils
+  UserStore?: UserStore
 }
 
+@inject('UserStore')
+@observer
 class NewOrganization extends Component<INewOrganizationProps> {
   selectIcon?: File
   handleSubmit = (e: React.FormEvent) => {
@@ -21,11 +26,16 @@ class NewOrganization extends Component<INewOrganizationProps> {
   }
   render() {
     const { getFieldDecorator } = this.props.form
+    const devInfo = this.props.UserStore!.state.info.dev
+    if (!devInfo) {
+      return null
+    }
     return (
       <div className='new-org'>
         <div className='base-card-box'>
           <div className='org-help'>
-            组织可以帮助你协作管理应用, 你还可以创建 <span>3</span> 个组织
+            组织可以帮助你协作管理应用, 你还可以创建{' '}
+            <span>{devInfo.org.limit! - devInfo.org.own}</span> 个组织
           </div>
           <Form className='my-form' onSubmit={this.handleSubmit}>
             <Form.Item

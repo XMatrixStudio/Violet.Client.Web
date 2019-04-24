@@ -5,6 +5,7 @@ export interface IUIState {
   extTitle: React.ReactNode
   subTitle: React.ReactNode
   shrinkTitle: React.ReactNode
+  back?: (() => void) | string
 }
 
 export interface IUI {
@@ -65,6 +66,11 @@ class UIStore {
     } else {
       this.state.shrinkTitle = title
     }
+    this.state.back = undefined
+  }
+
+  @action setBack(back: (() => void) | string) {
+    this.state.back = back
   }
 
   @action setSubTitle(element: React.ReactNode) {

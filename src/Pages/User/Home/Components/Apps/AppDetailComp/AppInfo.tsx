@@ -44,25 +44,11 @@ class AppInfo extends Component<IAppInfo> {
         <Link key='link' to='/user/apps'>
           应用管理
         </Link>
-        <span key='name'> > {this.appInfo.name}</span>
+        <span key='name'> - {this.appInfo.name}</span>
       </>,
       '在这里管理你的应用'
     )
-  }
-
-  onChangeInfo(type: string) {
-    return (value: string) => {
-      this.appInfo[type] = value
-      message.destroy()
-      message.success('修改成功')
-      if (type === 'name') {
-        this.props.UIStore!.setTitle(
-          '应用管理',
-          '> ' + this.appInfo.name,
-          '在这里管理你的应用'
-        )
-      }
-    }
+    this.props.UIStore!.setBack('/user/apps')
   }
 
   render() {
@@ -103,7 +89,7 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#fcc85d'
             >
-              **************************
+              87d06887dabc06887d068
             </Tag>
           </Tooltip>
         </div>
@@ -124,7 +110,7 @@ class AppInfo extends Component<IAppInfo> {
           <div className='info-box'>{this.appInfo.home}</div>
         </div>
         <div className='info-item'>
-          <div className='info-label'>回调地址：</div>
+          <div className='info-label'>回调域：</div>
           <div className='info-box'>{this.appInfo.callback}</div>
         </div>
         <Button

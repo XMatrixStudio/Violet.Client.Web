@@ -28,10 +28,11 @@ class EditPassword extends Component<IEditPasswordProps, any> {
         <Link key='link' to='/user/secure'>
           账户安全
         </Link>
-        <span key='more'> > 修改密码</span>
+        <span key='more'> - 修改密码</span>
       </>,
       '定期修改密码使得你的账号更安全'
     )
+    this.props.UIStore!.setBack('/user/secure')
   }
 
   handleSubmit = (e: React.FormEvent) => {
@@ -41,8 +42,8 @@ class EditPassword extends Component<IEditPasswordProps, any> {
         console.log(values)
         UserService.UpdateInfo({
           secure: {
-            old_password: values.oldPassword,
-            new_password: values.password
+            oldPassword: values.oldPassword,
+            newPassword: values.password
           }
         })
           .then(_ => {

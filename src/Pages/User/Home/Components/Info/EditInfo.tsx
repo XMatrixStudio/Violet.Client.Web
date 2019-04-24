@@ -48,7 +48,7 @@ class EditInfo extends Component<IEditInfo, any> {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const newInfo: User.PATCH.RequestBody = {
+        const newInfo: PatchUsers.ReqBody = {
           info: {
             nickname: values.nickName,
             email: values.email,

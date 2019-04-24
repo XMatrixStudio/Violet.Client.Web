@@ -121,14 +121,16 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
     const logLogin = this.props.UserStore!.state.loginLog
     const loginLog = (
       <Timeline>
-        {logLogin.map((data, index) => {
-          return (
-            <Timeline.Item key={index}>
-              {moment(data.time).format('YYYY/M/DD hh:mm:ss')} {data.location} (
-              {data.ip})
-            </Timeline.Item>
-          )
-        })}
+        {logLogin
+          .map((data, index) => {
+            return (
+              <Timeline.Item key={index}>
+                {moment(data.time).format('YYYY/M/DD HH:mm:ss')} {data.location}{' '}
+                ({data.ip})
+              </Timeline.Item>
+            )
+          })
+          .reverse()}
       </Timeline>
     )
 
