@@ -44,7 +44,8 @@ class AppOrganization extends Component<IAppOrganizationProps> {
         <AppCard
           key={value.name}
           app={{
-            name: value.displayName,
+            name: value.name,
+            displayName: value.displayName,
             detail: value.description,
             icon: value.avatar,
             status: value.state

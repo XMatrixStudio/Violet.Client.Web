@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import './AppCard.less'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { Button, Tag, Badge } from 'antd'
+import { Button, Tag } from 'antd'
 import Ellipsis from 'ant-design-pro/lib/Ellipsis'
 import DefaultAppIcon from '@/Assets/icytown.png'
 
 interface IAppCardProps extends RouteComponentProps<any> {
   app: {
     name: string
+    displayName: string
     status: number
     detail: string
     icon: string

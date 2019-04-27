@@ -119,6 +119,23 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                 }
               })
             })
+        } else if (formType === 'admin') {
+          UserService.UpdateLevel({ level: 50, remark: values.developerRemark })
+            .then(_ => {
+              message.success('申请已提交')
+              this.props.history.push('/user/apps')
+            })
+            .catch(error => {
+              ServiceTool.errorHandler(error, msg => {
+                switch (msg) {
+                  case 'repeat_request':
+                    message.error('你已经申请过啦')
+                    break
+                  default:
+                    message.error('发生错误: ' + msg)
+                }
+              })
+            })
         }
         // this.props.next(true)
       }
@@ -178,6 +195,10 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                   {
                     required: formType === 'more',
                     message: '请输入备注'
+                  },
+                  {
+                    max: 256,
+                    message: '备注不能超过256个字符'
                   }
                 ]
               })(<TextArea rows={4} />)}

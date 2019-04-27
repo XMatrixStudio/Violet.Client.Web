@@ -6,7 +6,8 @@ import AppCard from '../Common/AppCard'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import DevService from 'src/Services/DevService'
-import { observable } from 'mobx'
+import { observable, transaction, action, runInAction } from 'mobx'
+import { AxiosResponse } from 'axios'
 
 interface IAppPersonalProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -15,31 +16,31 @@ interface IAppPersonalProps extends RouteComponentProps<any> {
 @inject('UserStore')
 @observer
 class AppPersonal extends Component<IAppPersonalProps> {
-  currentPage: number
+  currentPage: number = 0
   @observable myApps: Type.UserAppInfoData[]
   @observable hasMore: boolean
 
   constructor(props: IAppPersonalProps) {
     super(props)
-    this.currentPage = 0
-    this.hasMore = false
-    this.myApps = []
+    this.loadApps(true)
   }
 
-  componentWillMount() {
-    this.loadApps()
-  }
-
-  loadApps = () => {
+  @action
+  loadApps = async (init?: boolean) => {
+    if (init) {
+      this.myApps = []
+      this.hasMore = false
+    }
     this.currentPage++
-    DevService.getUserApps(this.currentPage, 10).then(res => {
+    const res = await DevService.getUserApps(this.currentPage, 10)
+    runInAction('UpdateApps', () => {
       this.myApps = res.data.data
       this.hasMore = res.data.pagination.total > 10 * this.currentPage
     })
   }
 
   render() {
-    const userInfo = this.props.UserStore!.state.info
+    const { level } = this.props.UserStore!.state.info
     const devInfo = this.props.UserStore!.state.info.dev
     if (!devInfo) {
       return null
@@ -50,7 +51,8 @@ class AppPersonal extends Component<IAppPersonalProps> {
         <AppCard
           key={value.name}
           app={{
-            name: value.displayName,
+            name: value.name,
+            displayName: value.displayName,
             detail: value.description,
             icon: value.avatar,
             status: value.state
@@ -82,7 +84,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
           </div>
           <div style={{ marginBottom: '8px' }}>
             <span className='level-text'>账号类型: </span>
-            <UserLevel level={userInfo.level} />
+            <UserLevel level={level} />
             <Tooltip placement='right' title='升级'>
               <Icon
                 className='up-icon'

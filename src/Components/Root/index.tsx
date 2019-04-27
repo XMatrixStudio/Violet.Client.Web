@@ -11,7 +11,7 @@ export class Root extends React.Component<{}, {}> {
   }
 
   private renderDevTool() {
-    if (false) {
+    if (true) {
       const DevTools = require('mobx-react-devtools').default
       return <DevTools />
     }

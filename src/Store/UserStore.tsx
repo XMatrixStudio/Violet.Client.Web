@@ -1,20 +1,20 @@
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import UserService from 'src/Services/UserService'
 import UtilService from 'src/Services/UtilService'
 
 export interface IUser {
   init: boolean
   info: GetUsersByName.ResBody
-  loginLog: Array<{
-    time: Date
-    ip: string
-    location?: string
-  }>
 }
 
 class UserStore {
   @observable state: IUser
   @observable orgs: GetUsersByNameOrgs.IOrg[]
+  @observable loginLog: Array<{
+    time: Date
+    ip: string
+    location?: string
+  }>
   constructor() {
     this.state = {
       init: false,
@@ -26,9 +26,9 @@ class UserStore {
           avatar: '',
           nickname: ''
         }
-      },
-      loginLog: []
+      }
     }
+    this.loginLog = []
     this.orgs = []
   }
 
@@ -47,17 +47,18 @@ class UserStore {
     const log = info.log
     // 按需解析 IP 地址
     if (log) {
-      if (this.state.loginLog.length !== log.login.length) {
-        this.state.loginLog = log.login
+      if (this.loginLog.length !== log.login.length) {
+        this.loginLog = log.login
       }
       log.login.forEach(async (value, index) => {
         if (
-          this.state.loginLog[index].location === undefined ||
-          this.state.loginLog[index].ip !== value.ip
+          this.loginLog[index].location === undefined ||
+          this.loginLog[index].ip !== value.ip
         ) {
-          this.state.loginLog[index].location = await UtilService.getIPAddress(
-            value.ip
-          )
+          const res = await UtilService.getIPAddress(value.ip)
+          runInAction('updateLocation', () => {
+            this.loginLog[index].location = res
+          })
         }
       })
     }

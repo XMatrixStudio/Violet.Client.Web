@@ -118,7 +118,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
 
   render() {
     const userInfo = this.props.UserStore!.state.info
-    const logLogin = this.props.UserStore!.state.loginLog
+    const logLogin = this.props.UserStore!.loginLog
     const loginLog = (
       <Timeline>
         {logLogin

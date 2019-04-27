@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import './AppManger.less'
-import { Icon, Tabs } from 'antd'
+import { Icon, Tabs, Skeleton } from 'antd'
 import AppPersonal from './AppPersonal'
 import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observer, inject } from 'mobx-react'
-import { observable } from 'mobx'
+import { observable, transaction, action, runInAction } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
 import UIStore from 'src/Store/UIStore'
 import UserStore from 'src/Store/UserStore'
@@ -20,33 +20,38 @@ interface IAppMangerProps extends RouteComponentProps<any> {
 @observer
 class AppManger extends Component<IAppMangerProps> {
   @observable tabKey = 'personal'
-  currentOrgsPage = 1
-  batchSize = 100
+  @observable loading: boolean
+  currentOrgsPage: number
+  batchSize: number
 
-  componentWillMount() {
+  constructor(props: IAppMangerProps) {
+    super(props)
     document.title = '应用管理 | Violet'
     this.props.UIStore!.setTitle('应用管理', '在这里创建并管理你的应用')
-  }
-
-  componentDidMount() {
     this.currentOrgsPage = 1
+    this.batchSize = 100
     this.refreshOrgs()
   }
 
+  @action
   refreshOrgs = () => {
-    DevService.getDevOrgs(this.currentOrgsPage, this.batchSize).then(res => {
-      if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
-        this.currentOrgsPage++
-        this.refreshOrgs()
-      } else {
-        if (this.props.location.search.indexOf('?t=') !== -1) {
-          this.tabKey = this.props.location.search.replace('?t=', '')
+    this.loading = true
+    DevService.getDevOrgs(this.currentOrgsPage, this.batchSize).then(res =>
+      runInAction('updateOrgs', () => {
+        if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
+          this.currentOrgsPage++
+          this.refreshOrgs()
         } else {
-          this.tabKey = 'personal'
+          if (this.props.location.search.indexOf('?t=') !== -1) {
+            this.tabKey = this.props.location.search.replace('?t=', '')
+          } else {
+            this.tabKey = 'personal'
+          }
+          this.loading = false
         }
-      }
-      this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
-    })
+        this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
+      })
+    )
   }
 
   onClickTab = (key: string) => {
@@ -55,6 +60,10 @@ class AppManger extends Component<IAppMangerProps> {
   }
 
   render() {
+    if (this.loading) {
+      return <Skeleton active={true} />
+    }
+
     const orgTabs = this.props.UserStore!.orgs.map(value => {
       return (
         <Tabs.TabPane
