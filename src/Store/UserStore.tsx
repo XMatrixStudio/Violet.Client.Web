@@ -4,7 +4,7 @@ import UtilService from 'src/Services/UtilService'
 
 export interface IUser {
   init: boolean
-  info: User.GET.ResponseBody
+  info: GetUsersByName.ResBody
   loginLog: Array<{
     time: Date
     ip: string
@@ -14,7 +14,7 @@ export interface IUser {
 
 class UserStore {
   @observable state: IUser
-  @observable orgs: User.Orgs.IOrg[]
+  @observable orgs: GetUsersByNameOrgs.IOrg[]
   constructor() {
     this.state = {
       init: false,
@@ -41,21 +41,29 @@ class UserStore {
     }, failed)
   }
 
-  @action setInfo(info: User.GET.ResponseBody) {
+  @action setInfo(info: GetUsersByName.ResBody) {
     this.state.info = info
     this.state.init = true
     const log = info.log
+    // 按需解析 IP 地址
     if (log) {
-      this.state.loginLog = log.login
-      this.state.loginLog.forEach(async (value, index) => {
-        this.state.loginLog[index].location = await UtilService.getIPAddress(
-          value.ip
-        )
+      if (this.state.loginLog.length !== log.login.length) {
+        this.state.loginLog = log.login
+      }
+      log.login.forEach(async (value, index) => {
+        if (
+          this.state.loginLog[index].location === undefined ||
+          this.state.loginLog[index].ip !== value.ip
+        ) {
+          this.state.loginLog[index].location = await UtilService.getIPAddress(
+            value.ip
+          )
+        }
       })
     }
   }
 
-  @action addOrgs(orgs: User.Orgs.IOrg[], first: boolean) {
+  @action addOrgs(orgs: GetUsersByNameOrgs.IOrg[], first: boolean) {
     if (first) {
       this.orgs = orgs
     } else {

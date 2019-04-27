@@ -52,7 +52,7 @@ class AppCard extends Component<IAppCardProps> {
       <div className='base-card-box app-card'>
         <img src={DefaultAppIcon} className='app-icon' />
         <div className='title'>{this.props.app.name}</div>
-        <Ellipsis lines={1} className='sub-title' tooltip={true}>
+        <Ellipsis lines={1} className='sub-title'>
           {this.props.app.detail}
         </Ellipsis>
         <div className='app-status'>

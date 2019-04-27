@@ -34,14 +34,15 @@ class AppManger extends Component<IAppMangerProps> {
     } else {
       this.tabKey = 'personal'
     }
-    this.freshOrgs()
+    this.currentOrgsPage = 1
+    this.refreshOrgs()
   }
 
-  freshOrgs = () => {
+  refreshOrgs = () => {
     DevService.getDevOrgs(this.currentOrgsPage, this.batchSize).then(res => {
       if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
         this.currentOrgsPage++
-        this.freshOrgs()
+        this.refreshOrgs()
       }
       this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
     })
@@ -64,7 +65,7 @@ class AppManger extends Component<IAppMangerProps> {
           }
           key='matrix'
         >
-          <AppOrganization />
+          <AppOrganization data={value} />
         </Tabs.TabPane>
       )
     })
@@ -93,7 +94,14 @@ class AppManger extends Component<IAppMangerProps> {
             }
             key='new'
           >
-            <NewOrganization />
+            <NewOrganization
+              next={refresh => {
+                if (refresh) {
+                  this.currentOrgsPage = 1
+                  this.refreshOrgs()
+                }
+              }}
+            />
           </Tabs.TabPane>
         </Tabs>
       </div>

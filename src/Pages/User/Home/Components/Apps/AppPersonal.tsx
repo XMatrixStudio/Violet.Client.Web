@@ -109,6 +109,17 @@ class AppPersonal extends Component<IAppPersonalProps> {
         <div
           className='base-card-box more-card'
           onClick={() => {
+            console.log('load more')
+          }}
+        >
+          <div className='more-box'>
+            <Icon type='ellipsis' style={{ color: '#06afda' }} />
+            <p className='title'>加载更多</p>
+          </div>
+        </div>
+        <div
+          className='base-card-box more-card'
+          onClick={() => {
             this.props.history.push('/user/apps/new/me')
           }}
         >

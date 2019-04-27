@@ -65,11 +65,7 @@ class Apps extends Component<IAppsProps> {
               <Switch location={this.props.location}>
                 <Route path='/user/apps/not' component={AppInit} />
                 <Route path='/user/apps/up/:type'>
-                  <DeveloperForm
-                    next={isSubmit => {
-                      this.props.history.goBack()
-                    }}
-                  />
+                  <DeveloperForm />
                 </Route>
                 <Route path='/user/apps/new/:by'>
                   <NewAppForm

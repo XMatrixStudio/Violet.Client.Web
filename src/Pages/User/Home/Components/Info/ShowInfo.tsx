@@ -6,7 +6,7 @@ import moment from 'moment'
 import './ShowInfo.less'
 
 interface IShowInfoProps extends RouteComponentProps<any> {
-  userInfo: User.GET.ResponseBody
+  userInfo: GetUsersByName.ResBody
 }
 
 class ShowInfo extends Component<IShowInfoProps, any> {

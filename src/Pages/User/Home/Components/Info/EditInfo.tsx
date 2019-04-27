@@ -18,7 +18,7 @@ import ServiceTool from 'src/Services/ServiceTool'
 
 interface IEditInfo extends RouteComponentProps<any> {
   next: (isEdit: boolean) => void
-  userInfo: User.GET.ResponseBody
+  userInfo: GetUsersByName.ResBody
   form: WrappedFormUtils
 }
 

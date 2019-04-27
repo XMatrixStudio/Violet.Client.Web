@@ -3,17 +3,17 @@ import { createHash } from 'crypto'
 
 export default {
   // 更改用户等级
-  UpdateLevel: async (req: User.Level.POST.RequestBody) => {
+  UpdateLevel: async (req: PostUsersLevels.ReqBody) => {
     const res = await axios.post('/api/i/users/levels', req)
     return res
   },
   // 获取信息
   GetInfo: async (
-    success: (info: User.GET.ResponseBody) => void,
+    success: (info: GetUsersByName.ResBody) => void,
     failed?: () => void
   ) => {
     try {
-      const res = await axios.get<User.GET.ResponseBody>('/api/i/users/me')
+      const res = await axios.get<GetUsersByName.ResBody>('/api/i/users/me')
       if (res && res.data) {
         success(res.data)
       } else {
@@ -34,17 +34,12 @@ export default {
         .update(req.secure.newPassword)
         .digest('hex')
     }
-    // 处理头像Base64前缀
-    if (req.info && req.info.avatar) {
-      const dataBegin = req.info.avatar.indexOf('base64,')
-      req.info.avatar = req.info.avatar.substr(dataBegin + 7)
-    }
     const res = await axios.patch('/api/i/users', req)
     return res
   },
   // 登陆
   Login: async (account: string, password: string, remember: boolean) => {
-    const req: User.Session.POST.RequestBody = {
+    const req: PostUsersSession.ReqBody = {
       user: account,
       password: createHash('sha512')
         .update(password)
@@ -56,7 +51,7 @@ export default {
   },
   // 注册
   Register: async (userName: string, nickname: string, password: string) => {
-    const req: User.POST.RequestBody = {
+    const req: PostUsers.ReqBody = {
       name: userName,
       nickname: nickname,
       password: createHash('sha512')
@@ -71,7 +66,7 @@ export default {
     const url = account.includes('@')
       ? '/api/i/users/email'
       : '/api/i/users/phone'
-    const req: User.Email.PUT.RequestBody | User.Phone.PUT.RequestBody = {
+    const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
       operator: 'register',
       code: captcha
     }
@@ -83,7 +78,7 @@ export default {
     const url = account.includes('@')
       ? '/api/i/users/email'
       : '/api/i/users/phone'
-    const req: User.Email.PUT.RequestBody | User.Phone.PUT.RequestBody = {
+    const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
       operator: 'reset',
       code: captcha,
       password: createHash('sha512')
@@ -98,7 +93,7 @@ export default {
     const url = account.includes('@')
       ? '/api/i/users/email'
       : '/api/i/users/phone'
-    const req: User.Email.PUT.RequestBody | User.Phone.PUT.RequestBody = {
+    const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
       operator: 'update',
       code: captcha
     }
@@ -113,9 +108,7 @@ export default {
   ) => {
     const isEmail = account.includes('@')
     const url = isEmail ? '/api/i/users/email' : '/api/i/users/phone'
-    const req:
-      | User.Email.POST.RequestBody
-      | User.Phone.POST.RequestBody = isEmail
+    const req: PostUsersEmail.ReqBody | PostUsersPhone.ReqBody = isEmail
       ? {
           operator: type,
           email: account,

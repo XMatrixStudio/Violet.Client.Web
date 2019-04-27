@@ -203,6 +203,7 @@ class Home extends React.Component<IHomeProps, any> {
           </Menu>
         </Sider>
         <Layout
+          id='content-layout-box'
           style={{
             transition: 'all 0.2s',
             marginTop: this.props.UIStore!.ui.topBanner ? '200px' : '60px'

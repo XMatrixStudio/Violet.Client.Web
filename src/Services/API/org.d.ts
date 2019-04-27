@@ -20,6 +20,7 @@ declare namespace GetOrgsByNameApps {
   interface IApp {
     id: string
     name: string
+    displayName: string
     state: number
     avatar: string
     description: string
@@ -28,5 +29,15 @@ declare namespace GetOrgsByNameApps {
   interface ResBody {
     pagination: PageRes
     data: IApp[]
+  }
+}
+
+/**
+ * @method POST
+ * @resource `/i/orgs/:name/members`
+ */
+declare namespace PostOrgsByNameMembers {
+  interface ReqBody {
+    user: string
   }
 }

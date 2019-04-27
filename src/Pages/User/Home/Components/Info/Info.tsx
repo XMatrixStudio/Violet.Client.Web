@@ -80,13 +80,15 @@ class Info extends Component<IInfoProps, any> {
       <div className='info-content'>
         <div className='content-box'>
           <div className='base-card-box top-card'>
-            <div className='user-avatar'>
-              <AvatarSelect
-                imageURL={data.info.avatar}
-                setImage={this.uploadAvatar}
-                title='点击或拖动选择头像'
-              />
-            </div>
+            <Tooltip title='修改头像'>
+              <div className='user-avatar'>
+                <AvatarSelect
+                  imageURL={data.info.avatar}
+                  setImage={this.uploadAvatar}
+                  title='点击或拖动选择头像'
+                />
+              </div>
+            </Tooltip>
             <div className='user-base-info'>
               <div>
                 <span className='user-name'>{data.info.nickname}</span>

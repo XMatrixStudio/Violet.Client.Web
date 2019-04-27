@@ -9,10 +9,10 @@ import UIStore from 'src/Store/UIStore'
 import { Link } from 'react-router-dom'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import DevService from 'src/Services/DevService'
 
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
-  next: (isSubmit: boolean) => void
   UIStore?: UIStore
 }
 
@@ -62,7 +62,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             </Link>
             <span key='more'> - 应用申请</span>
           </>,
-          '请填写您得应用需求，便于我们进行审核'
+          '请填写您的应用需求，便于我们进行审核'
         )
         break
     }
@@ -89,12 +89,34 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           })
             .then(_ => {
               message.success('开发者信息已提交')
-              this.props.next(true)
               this.props.history.replace('/user/apps/not')
             })
             .catch(error => {
               ServiceTool.errorHandler(error, msg => {
-                message.error('发生错误: ' + msg)
+                switch (msg) {
+                  case 'repeat_request':
+                    message.error('你已经申请过啦')
+                    break
+                  default:
+                    message.error('发生错误: ' + msg)
+                }
+              })
+            })
+        } else if (formType === 'more') {
+          DevService.improveAppCount({ remark: values.developerRemark })
+            .then(_ => {
+              message.success('申请已提交')
+              this.props.history.push('/user/apps')
+            })
+            .catch(error => {
+              ServiceTool.errorHandler(error, msg => {
+                switch (msg) {
+                  case 'repeat_request':
+                    message.error('你已经申请过啦')
+                    break
+                  default:
+                    message.error('发生错误: ' + msg)
+                }
               })
             })
         }
@@ -168,7 +190,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           <Button
             className='back-btn'
             onClick={() => {
-              this.props.next(false)
+              this.props.history.push('/user/apps')
             }}
           >
             取消
