@@ -24,53 +24,45 @@ class NewOrganization extends Component<INewOrganizationProps> {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        if (this.selectIcon === undefined) {
-          message.error('请选择组织图标')
-          const contentBox = document.getElementById('content-layout-box')
-          if (contentBox) {
-            contentBox.scrollTo(0, 0)
-          }
-        } else {
-          if (this.selectIcon.length > 102400) {
-            message.error('组织图标过大')
-            return
-          }
-          const finish = message.loading('组织信息上传中...')
-          DevService.newOrg({
-            // avatar: this.selectIcon,
-            description: values.orgDescription,
-            // displayName: values.orgDisplayName,
-            name: values.orgName,
-            contact: values.developerName,
-            email: values.developerEmail,
-            phone: values.developerPhone
-          })
-            .then(_ => {
-              finish()
-              message.success('创建组织成功')
-              this.props.UserStore!.updateInfo()
-              this.props.next(true)
-            })
-            .catch(error => {
-              finish()
-              ServiceTool.errorHandler(error, msg => {
-                // exist_name - 组织已存在
-                // limit_orgs - 组织数量达到上限
-                // reserved_name - 用户 / 组织保留
-                switch (msg) {
-                  case 'exist_name':
-                  case 'reserved_name':
-                    message.error('应用名已存在')
-                    break
-                  case 'limit_orgs':
-                    message.error('当前用户组织数量已达上限')
-                    break
-                  default:
-                    message.error('发生错误' + msg)
-                }
-              })
-            })
+        if (this.selectIcon && this.selectIcon.length > 102400) {
+          message.error('组织图标过大')
+          return
         }
+        const finish = message.loading('组织信息上传中...')
+        DevService.newOrg({
+          // avatar: this.selectIcon,
+          description: values.orgDescription,
+          // displayName: values.orgDisplayName,
+          name: values.orgName,
+          contact: values.developerName,
+          email: values.developerEmail,
+          phone: values.developerPhone
+        })
+          .then(_ => {
+            finish()
+            message.success('创建组织成功')
+            this.props.UserStore!.updateInfo()
+            this.props.next(true)
+          })
+          .catch(error => {
+            finish()
+            ServiceTool.errorHandler(error, msg => {
+              // exist_name - 组织已存在
+              // limit_orgs - 组织数量达到上限
+              // reserved_name - 用户 / 组织保留
+              switch (msg) {
+                case 'exist_name':
+                case 'reserved_name':
+                  message.error('应用名已存在')
+                  break
+                case 'limit_orgs':
+                  message.error('当前用户组织数量已达上限')
+                  break
+                default:
+                  message.error('发生错误' + msg)
+              }
+            })
+          })
       }
     })
   }

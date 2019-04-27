@@ -8,36 +8,36 @@ import DefaultAppIcon from '@/Assets/icytown.png'
 interface IAppCardProps extends RouteComponentProps<any> {
   app: {
     name: string
-    status: string
+    status: number
     detail: string
     icon: string
   }
 }
 
 class AppCard extends Component<IAppCardProps> {
-  statusTag = (status: string) => {
+  statusTag = (status: number) => {
     switch (status) {
-      case 'running':
+      case 0:
         return (
           <Tag className='status-tag' color='green'>
             运行中
           </Tag>
         )
-      case 'stop':
+      case 1:
         return (
           <Tag className='status-tag' color='red'>
             已暂停
           </Tag>
         )
-      case 'new':
-        return (
-          <>
-            <Tag className='status-tag' color='green'>
-              运行中
-            </Tag>{' '}
-            <Badge count={25} />
-          </>
-        )
+      // case 'new':
+      //   return (
+      //     <>
+      //       <Tag className='status-tag' color='green'>
+      //         运行中
+      //       </Tag>{' '}
+      //       <Badge count={25} />
+      //     </>
+      //   )
       default:
         return (
           <Tag className='status-tag' color='grey'>

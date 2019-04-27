@@ -23,6 +23,20 @@ export default {
     const res = await Axios.post('/api/i/orgs', data)
     return res
   },
+  // 获取组织应用
+  getOrgApps: async (page: number, limit: number, name: string) => {
+    const params: GetUsersByNameOrgs.Query = {
+      limit: limit,
+      page: page
+    }
+    const res = await Axios.get<GetOrgsByNameApps.ResBody>(
+      '/api/i/orgs/' + name + '/apps',
+      {
+        params: params
+      }
+    )
+    return res
+  },
   // 提高开发者应用上限
   // repeat_request - 重复申请
   improveAppCount: async (data: PostUsersLevelsApps.ReqBody) => {
@@ -79,7 +93,7 @@ export default {
       page: page
     }
     const res = await Axios.get<GetUsersByNameApps.ResBody>(
-      '/api/i/' + user + '/apps',
+      '/api/i/users/' + user + '/apps',
       { params: params }
     )
     return res

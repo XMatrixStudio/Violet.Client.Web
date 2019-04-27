@@ -2,10 +2,10 @@
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
-  min-width: 800px;
+  min-width: 600px;
   .info-item {
     margin-bottom: 12px;
-    strong {
+    .big-value {
       font-size: 20px;
       color: rgb(6, 72, 134);
       margin: auto 4px;
@@ -66,8 +66,12 @@
       transform: translate3d(0, -3px, 0);
     }
   }
-  .btn-org {
-    margin-top: 4px;
+  .org-info-card {
+    position: relative;
+    .btn-org {
+      position: relative;
+      top: 36px;
+    }
   }
 }
 

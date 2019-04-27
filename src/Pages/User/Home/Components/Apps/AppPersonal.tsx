@@ -5,6 +5,8 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Common/AppCard'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
+import DevService from 'src/Services/DevService'
+import { observable } from 'mobx'
 
 interface IAppPersonalProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -13,12 +15,49 @@ interface IAppPersonalProps extends RouteComponentProps<any> {
 @inject('UserStore')
 @observer
 class AppPersonal extends Component<IAppPersonalProps> {
+  currentPage: number
+  @observable myApps: Type.UserAppInfoData[]
+  @observable hasMore: boolean
+
+  constructor(props: IAppPersonalProps) {
+    super(props)
+    this.currentPage = 0
+    this.hasMore = false
+    this.myApps = []
+  }
+
+  componentWillMount() {
+    this.loadApps()
+  }
+
+  loadApps = () => {
+    this.currentPage++
+    DevService.getUserApps(this.currentPage, 10).then(res => {
+      this.myApps = res.data.data
+      this.hasMore = res.data.pagination.total > 10 * this.currentPage
+    })
+  }
+
   render() {
     const userInfo = this.props.UserStore!.state.info
     const devInfo = this.props.UserStore!.state.info.dev
     if (!devInfo) {
       return null
     }
+
+    const AppCards = this.myApps.map(value => {
+      return (
+        <AppCard
+          key={value.name}
+          app={{
+            name: value.displayName,
+            detail: value.description,
+            icon: value.avatar,
+            status: value.state
+          }}
+        />
+      )
+    })
 
     return (
       <div className='app-flex-box'>
@@ -82,41 +121,17 @@ class AppPersonal extends Component<IAppPersonalProps> {
           </div>
         </div>
 
-        <AppCard
-          app={{
-            name: 'Coffee',
-            detail: '这是一个描述文字这是一个描述文字这是一个描述文字',
-            icon: 'test.png',
-            status: 'running'
-          }}
-        />
-        <AppCard
-          app={{
-            name: 'Icytowm',
-            detail: '博客系统？',
-            icon: 'test.png',
-            status: 'stop'
-          }}
-        />
-        <AppCard
-          app={{
-            name: 'Violet',
-            detail: '中央授权系统',
-            icon: 'test.png',
-            status: 'new'
-          }}
-        />
-        <div
-          className='base-card-box more-card'
-          onClick={() => {
-            console.log('load more')
-          }}
-        >
-          <div className='more-box'>
-            <Icon type='ellipsis' style={{ color: '#06afda' }} />
-            <p className='title'>加载更多</p>
+        {AppCards}
+
+        {this.hasMore && (
+          <div className='base-card-box more-card' onClick={this.loadApps}>
+            <div className='more-box'>
+              <Icon type='ellipsis' style={{ color: '#06afda' }} />
+              <p className='title'>加载更多</p>
+            </div>
           </div>
-        </div>
+        )}
+
         <div
           className='base-card-box more-card'
           onClick={() => {

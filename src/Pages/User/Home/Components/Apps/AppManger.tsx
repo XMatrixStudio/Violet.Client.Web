@@ -29,11 +29,6 @@ class AppManger extends Component<IAppMangerProps> {
   }
 
   componentDidMount() {
-    if (this.props.location.search.indexOf('?t=') !== -1) {
-      this.tabKey = this.props.location.search.replace('?t=', '')
-    } else {
-      this.tabKey = 'personal'
-    }
     this.currentOrgsPage = 1
     this.refreshOrgs()
   }
@@ -43,6 +38,12 @@ class AppManger extends Component<IAppMangerProps> {
       if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
         this.currentOrgsPage++
         this.refreshOrgs()
+      } else {
+        if (this.props.location.search.indexOf('?t=') !== -1) {
+          this.tabKey = this.props.location.search.replace('?t=', '')
+        } else {
+          this.tabKey = 'personal'
+        }
       }
       this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
     })
@@ -72,7 +73,11 @@ class AppManger extends Component<IAppMangerProps> {
 
     return (
       <div className='app-manger-box'>
-        <Tabs activeKey={this.tabKey} onTabClick={this.onClickTab}>
+        <Tabs
+          activeKey={this.tabKey}
+          onTabClick={this.onClickTab}
+          animated={false}
+        >
           <Tabs.TabPane
             tab={
               <span>

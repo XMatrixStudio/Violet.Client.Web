@@ -43,72 +43,64 @@ class NewAppForm extends Component<INewAppFormProps> {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        if (this.appIcon === undefined) {
-          message.error('请选择应用图标')
-          const contentBox = document.getElementById('content-layout-box')
-          if (contentBox) {
-            contentBox.scrollTo(0, 0)
-          }
-        } else {
-          // appClass: "2"
-          // appDetail: "123"
-          // appDisplayName: "123"
-          // appHome: "123"
-          // appName: "1221"
-          // callback: (2)["12", "12412"]
-          // keys: (2)["0", "1"]
-          if (this.appIcon.length > 102400) {
-            message.error('应用图标过大')
-            return
-          }
-          const finish = message.loading('应用信息上传中...')
-
-          const callbacks: string[] = []
-          for (const k of values.keys) {
-            callbacks.push(values.callback[k])
-          }
-          const ByName = this.props.match.params.by
-          DevService.newApp({
-            avatar: this.appIcon,
-            callbackHosts: callbacks,
-            description: values.appDetail,
-            displayName: values.appDisplayName,
-            name: values.appName,
-            type: parseInt(values.appClass, 10),
-            url: values.appHome,
-            owner:
-              ByName === 'me' ? this.props.UserStore!.state.info.name : ByName
-          })
-            .then(_ => {
-              finish()
-              message.success('创建应用成功')
-              this.props.UserStore!.updateInfo()
-              this.props.next(true)
-            })
-            .catch(error => {
-              finish()
-              ServiceTool.errorHandler(error, msg => {
-                // exist_name - 应用已存在
-                // limit_apps - 应用数量达到上限
-                // not_exist_owner - 用户 / 组织不存在
-                // reserved_name - 应用保留
-                switch (msg) {
-                  case 'exist_name':
-                  case 'reserved_name':
-                    message.error('应用名已存在')
-                    break
-                  case 'limit_apps':
-                    message.error('应用数量达到上限')
-                    break
-                  case 'not_exist_owner':
-                    message.error('用户 / 组织不存在')
-                    break
-                  default:
-                    message.error('发生错误' + msg)
-                }
-              })
-            })
+        // appClass: "2"
+        // appDetail: "123"
+        // appDisplayName: "123"
+        // appHome: "123"
+        // appName: "1221"
+        // callback: (2)["12", "12412"]
+        // keys: (2)["0", "1"]
+        if (this.appIcon && this.appIcon.length > 102400) {
+          message.error('应用图标过大')
+          return
         }
+        const finish = message.loading('应用信息上传中...')
+
+        const callbacks: string[] = []
+        for (const k of values.keys) {
+          callbacks.push(values.callback[k])
+        }
+        const ByName = this.props.match.params.by
+        DevService.newApp({
+          avatar: this.appIcon,
+          callbackHosts: callbacks,
+          description: values.appDetail,
+          displayName: values.appDisplayName,
+          name: values.appName,
+          type: parseInt(values.appClass, 10),
+          url: values.appHome,
+          owner:
+            ByName === 'me' ? this.props.UserStore!.state.info.name : ByName
+        })
+          .then(_ => {
+            finish()
+            message.success('创建应用成功')
+            this.props.UserStore!.updateInfo()
+            this.props.next(true)
+          })
+          .catch(error => {
+            finish()
+            ServiceTool.errorHandler(error, msg => {
+              // exist_name - 应用已存在
+              // limit_apps - 应用数量达到上限
+              // not_exist_owner - 用户 / 组织不存在
+              // reserved_name - 应用保留
+              switch (msg) {
+                case 'exist_name':
+                case 'reserved_name':
+                  message.error('应用名已存在')
+                  break
+                case 'limit_apps':
+                  message.error('应用数量达到上限')
+                  break
+                case 'not_exist_owner':
+                  message.error('用户 / 组织不存在')
+                  break
+                default:
+                  message.error('发生错误' + msg)
+              }
+            })
+          })
       }
     })
   }
@@ -203,7 +195,7 @@ class NewAppForm extends Component<INewAppFormProps> {
         <div className='base-card-box'>
           <Form className='my-form' onSubmit={this.handleSubmit}>
             <div className='app-by'>
-              <span>
+              <span style={{ marginLeft: '10px' }}>
                 应用所有者
                 <Tooltip title='决定应用属于个人或是组织'>
                   <Icon
@@ -216,9 +208,11 @@ class NewAppForm extends Component<INewAppFormProps> {
               </span>
               {' : '}
               {ByName === 'me' ? (
-                <span>
-                  {UserInfo.info.nickname} ({UserInfo.dev.app.own}/
-                  {UserInfo.dev.app.limit})
+                <span style={{ marginLeft: '12px' }}>
+                  <strong style={{ marginRight: '6px' }}>
+                    {UserInfo.info.nickname}
+                  </strong>
+                  (自己 - {UserInfo.dev.app.own}/{UserInfo.dev.app.limit})
                 </span>
               ) : (
                 <span>{ByName}(组织)</span>
