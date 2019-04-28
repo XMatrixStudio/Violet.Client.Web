@@ -89,13 +89,16 @@ export default {
     return res
   },
   // 验证手机/邮箱 - 更改绑定
-  UpdateAccount: async (account: string, captcha: string) => {
+  UpdateAccount: async (account: string, captcha: string, password: string) => {
     const url = account.includes('@')
       ? '/api/i/users/email'
       : '/api/i/users/phone'
     const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
       operator: 'update',
-      code: captcha
+      code: captcha,
+      password: createHash('sha512')
+        .update(password)
+        .digest('hex')
     }
     const res = await axios.put(url, req)
     return res

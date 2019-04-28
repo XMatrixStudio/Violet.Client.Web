@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import Input from 'antd/lib/input/Input'
 import ValidCaptcha from 'src/Components/ValidCaptcha'
-import { Button, message } from 'antd'
+import { Button, message, Input } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import { Link } from 'react-router-dom'
@@ -36,33 +35,43 @@ class EditEmail extends Component<IEditEmailProps, any> {
   }
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    this.props.form.validateFields(['account', 'captcha'], (err, values) => {
-      if (!err) {
-        UserService.UpdateAccount(values.account, values.captcha)
-          .then(_ => {
-            message.success('绑定成功')
-            this.props.finish(true)
-            this.props.history.goBack()
-          })
-          .catch(error => {
-            ServiceTool.errorHandler(error, msg => {
-              switch (msg) {
-                case 'error_code':
-                case 'not_exist_code':
-                  message.error('验证码错误')
-                  break
-                case 'timeout_code':
-                  message.error('验证码已超时，请重新发送')
-                  break
-                default:
-                  message.error('发生错误' + msg)
-              }
-              this.props.form.resetFields(['captcha'])
-              this.props.form.validateFields(['captcha'])
+    this.props.form.validateFields(
+      ['account', 'captcha', 'password'],
+      (err, values) => {
+        if (!err) {
+          UserService.UpdateAccount(
+            values.account,
+            values.captcha,
+            values.password
+          )
+            .then(_ => {
+              message.success('绑定成功')
+              this.props.finish(true)
+              this.props.history.goBack()
             })
-          })
+            .catch(error => {
+              ServiceTool.errorHandler(error, msg => {
+                switch (msg) {
+                  case 'error_code':
+                  case 'not_exist_code':
+                    message.error('验证码错误')
+                    break
+                  case 'timeout_code':
+                    message.error('验证码已超时，请重新发送')
+                    break
+                  case 'error_password':
+                    message.error('密码错误')
+                    break
+                  default:
+                    message.error('发生错误' + msg)
+                }
+                this.props.form.resetFields(['captcha'])
+                this.props.form.validateFields(['captcha'])
+              })
+            })
+        }
       }
-    })
+    )
   }
   render() {
     const { getFieldDecorator } = this.props.form
@@ -84,6 +93,16 @@ class EditEmail extends Component<IEditEmailProps, any> {
                 }
               ]
             })(<Input />)}
+          </Form.Item>
+          <Form.Item label='密码'>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入密码验证你的身份'
+                }
+              ]
+            })(<Input.Password />)}
           </Form.Item>
           <ValidCaptcha form={this.props.form} type='update' label={true} />
           <Button type='primary' htmlType='submit'>
