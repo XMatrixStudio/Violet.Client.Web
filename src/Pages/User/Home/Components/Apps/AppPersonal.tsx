@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import UserLevel from '../Common/UserLevel'
-import { Icon, Tooltip } from 'antd'
+import { Icon, Tooltip, Skeleton, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Common/AppCard'
 import { inject, observer } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import DevService from 'src/Services/DevService'
-import { observable, transaction, action, runInAction } from 'mobx'
-import { AxiosResponse } from 'axios'
+import { observable, action, runInAction } from 'mobx'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppPersonalProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -19,6 +19,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
   currentPage: number = 0
   @observable myApps: Type.UserAppInfoData[]
   @observable hasMore: boolean
+  @observable loading: boolean = true
 
   constructor(props: IAppPersonalProps) {
     super(props)
@@ -32,14 +33,25 @@ class AppPersonal extends Component<IAppPersonalProps> {
       this.hasMore = false
     }
     this.currentPage++
-    const res = await DevService.getUserApps(this.currentPage, 10)
-    runInAction('UpdateApps', () => {
-      this.myApps = res.data.data
-      this.hasMore = res.data.pagination.total > 10 * this.currentPage
-    })
+    await DevService.getUserApps(this.currentPage, 10)
+      .then(res => {
+        runInAction('UpdateApps', () => {
+          this.myApps = res.data.data
+          this.hasMore = res.data.pagination.total > 10 * this.currentPage
+          this.loading = false
+        })
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('无法加载应用列表，' + msg)
+        })
+      })
   }
 
   render() {
+    if (this.loading) {
+      return <Skeleton active={true} />
+    }
     const { level } = this.props.UserStore!.state.info
     const devInfo = this.props.UserStore!.state.info.dev
     if (!devInfo) {
@@ -126,7 +138,12 @@ class AppPersonal extends Component<IAppPersonalProps> {
         {AppCards}
 
         {this.hasMore && (
-          <div className='base-card-box more-card' onClick={this.loadApps}>
+          <div
+            className='base-card-box more-card'
+            onClick={() => {
+              this.loadApps()
+            }}
+          >
             <div className='more-box'>
               <Icon type='ellipsis' style={{ color: '#06afda' }} />
               <p className='title'>加载更多</p>

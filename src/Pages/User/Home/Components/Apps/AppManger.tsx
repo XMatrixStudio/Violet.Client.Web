@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import './AppManger.less'
-import { Icon, Tabs, Skeleton } from 'antd'
+import { Icon, Tabs, Skeleton, message } from 'antd'
 import AppPersonal from './AppPersonal'
 import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observer, inject } from 'mobx-react'
-import { observable, transaction, action, runInAction } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
 import UIStore from 'src/Store/UIStore'
 import UserStore from 'src/Store/UserStore'
 import DevService from 'src/Services/DevService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppMangerProps extends RouteComponentProps<any> {
   UIStore?: UIStore
@@ -36,22 +37,34 @@ class AppManger extends Component<IAppMangerProps> {
   @action
   refreshOrgs = () => {
     this.loading = true
-    DevService.getDevOrgs(this.currentOrgsPage, this.batchSize).then(res =>
-      runInAction('updateOrgs', () => {
-        if (res.data.pagination.total > this.currentOrgsPage * this.batchSize) {
-          this.currentOrgsPage++
-          this.refreshOrgs()
-        } else {
-          if (this.props.location.search.indexOf('?t=') !== -1) {
-            this.tabKey = this.props.location.search.replace('?t=', '')
+    DevService.getDevOrgs(this.currentOrgsPage, this.batchSize)
+      .then(res =>
+        runInAction('updateOrgs', () => {
+          this.props.UserStore!.addOrgs(
+            res.data.data,
+            this.currentOrgsPage === 1
+          )
+          if (
+            res.data.pagination.total >
+            this.currentOrgsPage * this.batchSize
+          ) {
+            this.currentOrgsPage++
+            this.refreshOrgs()
           } else {
-            this.tabKey = 'personal'
+            if (this.props.location.search.indexOf('?t=') !== -1) {
+              this.tabKey = this.props.location.search.replace('?t=', '')
+            } else {
+              this.tabKey = 'personal'
+            }
+            this.loading = false
           }
-          this.loading = false
-        }
-        this.props.UserStore!.addOrgs(res.data.data, this.currentOrgsPage === 1)
+        })
+      )
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('无法加载组织列表: ' + msg)
+        })
       })
-    )
   }
 
   onClickTab = (key: string) => {
@@ -73,7 +86,7 @@ class AppManger extends Component<IAppMangerProps> {
               {value.name}
             </span>
           }
-          key='matrix'
+          key={value.name}
         >
           <AppOrganization data={value} />
         </Tabs.TabPane>
@@ -82,11 +95,7 @@ class AppManger extends Component<IAppMangerProps> {
 
     return (
       <div className='app-manger-box'>
-        <Tabs
-          activeKey={this.tabKey}
-          onTabClick={this.onClickTab}
-          animated={false}
-        >
+        <Tabs activeKey={this.tabKey} onTabClick={this.onClickTab}>
           <Tabs.TabPane
             tab={
               <span>

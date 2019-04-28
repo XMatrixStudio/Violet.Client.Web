@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import UserLevel from '../Common/UserLevel'
-import { Icon, Button } from 'antd'
+import { Icon, Button, Skeleton, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Common/AppCard'
-import { observable } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import DevService from 'src/Services/DevService'
 import { observer } from 'mobx-react'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppOrganizationProps extends RouteComponentProps<any> {
   data: Type.OrgInfoData
@@ -13,32 +14,37 @@ interface IAppOrganizationProps extends RouteComponentProps<any> {
 
 @observer
 class AppOrganization extends Component<IAppOrganizationProps> {
-  currentPage: number
-  @observable OrgApps: Type.OrgAppInfoData[]
-  @observable hasMore: boolean
-
-  constructor(props: IAppOrganizationProps) {
-    super(props)
-    this.currentPage = 0
-    this.OrgApps = []
-    this.hasMore = false
-  }
+  currentPage: number = 0
+  @observable OrgApps: Type.OrgAppInfoData[] = []
+  @observable hasMore: boolean = false
+  @observable loading = true
 
   componentDidMount() {
     this.loadApps()
   }
 
-  loadApps = () => {
+  @action
+  loadApps = async () => {
     this.currentPage++
-    DevService.getOrgApps(this.currentPage, 10, this.props.data.name).then(
-      res => {
-        this.OrgApps = res.data.data
-        this.hasMore = res.data.pagination.total > 10 * this.currentPage
-      }
-    )
+    DevService.getOrgApps(this.currentPage, 10, this.props.data.name)
+      .then(res => {
+        runInAction(() => {
+          this.OrgApps = res.data.data
+          this.hasMore = res.data.pagination.total > 10 * this.currentPage
+          this.loading = false
+        })
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('无法加载组织应用列表，' + msg)
+        })
+      })
   }
 
   render() {
+    if (this.loading) {
+      return <Skeleton active={true} />
+    }
     const AppCards = this.OrgApps.map(value => {
       return (
         <AppCard

@@ -30,9 +30,9 @@ class NewOrganization extends Component<INewOrganizationProps> {
         }
         const finish = message.loading('组织信息上传中...')
         DevService.newOrg({
-          // avatar: this.selectIcon,
+          avatar: this.selectIcon,
           description: values.orgDescription,
-          // displayName: values.orgDisplayName,
+          displayName: values.orgDisplayName,
           name: values.orgName,
           contact: values.developerName,
           email: values.developerEmail,
