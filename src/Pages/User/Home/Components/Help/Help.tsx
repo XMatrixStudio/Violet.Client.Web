@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Help.less'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
+import Nothing from '../Nothing/Nothing'
 
 interface IUIStoreProps {
   UIStore?: UIStore
@@ -14,7 +15,7 @@ class Help extends Component<IUIStoreProps> {
     this.props.UIStore!.setTitle('帮助', 'Coming soon!')
   }
   render() {
-    return <div />
+    return <Nothing />
   }
 }
 

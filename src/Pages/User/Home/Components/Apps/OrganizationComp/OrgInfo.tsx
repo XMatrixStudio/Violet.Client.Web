@@ -6,9 +6,9 @@ import { observable, autorun } from 'mobx'
 import { Button } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
 import OrgInfoForm from './OrgInfoForm'
-import { Link } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 
-interface IOrgInfoProps {
+interface IOrgInfoProps extends RouteComponentProps<any> {
   UIStore?: UIStore
 }
 
@@ -23,10 +23,12 @@ class OrgInfo extends Component<IOrgInfoProps> {
     email: string
   }
   @observable isEdit: boolean
+  orgName: string
   orgIcon?: string
 
   constructor(props: IOrgInfoProps) {
     super(props)
+    this.orgName = this.props.match.params.id
     this.orgInfo = {
       name: 'XMatrix',
       describe: '呵呵呵呵呵呵呵呵',
@@ -38,14 +40,14 @@ class OrgInfo extends Component<IOrgInfoProps> {
     autorun(() => {
       this.props.UIStore!.setTitle(
         <>
-          <Link key='link' to='/user/apps'>
+          <Link key='link' to={'/user/apps?t=' + this.orgName}>
             应用管理
           </Link>
           <span key='more'> - {this.orgInfo.name}</span>
         </>,
         '在这里管理你的组织'
       )
-      this.props.UIStore!.setBack('/user/apps')
+      this.props.UIStore!.setBack('/user/apps?t=' + this.orgName)
     })
   }
 
@@ -121,4 +123,4 @@ class OrgInfo extends Component<IOrgInfoProps> {
   }
 }
 
-export default OrgInfo
+export default withRouter(OrgInfo)

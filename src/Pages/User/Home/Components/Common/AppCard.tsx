@@ -3,7 +3,6 @@ import './AppCard.less'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Button, Tag } from 'antd'
 import Ellipsis from 'ant-design-pro/lib/Ellipsis'
-import DefaultAppIcon from '@/Assets/icytown.png'
 
 interface IAppCardProps extends RouteComponentProps<any> {
   app: {
@@ -51,8 +50,8 @@ class AppCard extends Component<IAppCardProps> {
   render() {
     return (
       <div className='base-card-box app-card'>
-        <img src={DefaultAppIcon} className='app-icon' />
-        <div className='title'>{this.props.app.name}</div>
+        <img src={this.props.app.icon} className='app-icon' />
+        <div className='title'>{this.props.app.displayName}</div>
         <Ellipsis lines={1} className='sub-title'>
           {this.props.app.detail}
         </Ellipsis>

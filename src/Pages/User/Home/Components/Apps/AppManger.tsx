@@ -5,7 +5,7 @@ import AppPersonal from './AppPersonal'
 import AppOrganization from './AppOrganization'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observer, inject } from 'mobx-react'
-import { observable, action, runInAction } from 'mobx'
+import { observable, action, runInAction, transaction } from 'mobx'
 import NewOrganization from './Form/NewOrganization'
 import UIStore from 'src/Store/UIStore'
 import UserStore from 'src/Store/UserStore'
@@ -25,13 +25,27 @@ class AppManger extends Component<IAppMangerProps> {
   currentOrgsPage: number
   batchSize: number
 
-  constructor(props: IAppMangerProps) {
-    super(props)
+  componentWillMount() {
     document.title = '应用管理 | Violet'
-    this.props.UIStore!.setTitle('应用管理', '在这里创建并管理你的应用')
-    this.currentOrgsPage = 1
-    this.batchSize = 100
-    this.refreshOrgs()
+    transaction(() => {
+      this.props.UIStore!.setTitle('应用管理', '在这里创建并管理你的应用')
+      this.currentOrgsPage = 1
+      this.batchSize = 100
+    })
+    if (this.props.UserStore!.orgs.length === 0) {
+      this.refreshOrgs()
+    } else {
+      this.updateTabView()
+    }
+  }
+
+  @action
+  updateTabView = () => {
+    if (this.props.location.search.indexOf('?t=') !== -1) {
+      this.tabKey = this.props.location.search.replace('?t=', '')
+    } else {
+      this.tabKey = 'personal'
+    }
   }
 
   @action
@@ -51,11 +65,7 @@ class AppManger extends Component<IAppMangerProps> {
             this.currentOrgsPage++
             this.refreshOrgs()
           } else {
-            if (this.props.location.search.indexOf('?t=') !== -1) {
-              this.tabKey = this.props.location.search.replace('?t=', '')
-            } else {
-              this.tabKey = 'personal'
-            }
+            this.updateTabView()
             this.loading = false
           }
         })

@@ -69,16 +69,21 @@ class AppOrganization extends Component<IAppOrganizationProps> {
             <UserLevel level={10} />
           </div>
           <div className='info-item'>
-            <strong className='big-value'>{this.props.data.members}</strong>
-            位成员管理着
-            <strong className='big-value'>{this.props.data.apps}</strong>个应用
+            组织成员：
+            <strong className='big-value'>
+              {this.props.data.members} / 99
+            </strong>
+          </div>
+          <div className='info-item'>
+            组织应用：
+            <strong className='big-value'>{this.props.data.apps} / 99</strong>
           </div>
           <Button
             type='primary'
             block={true}
             className='btn-org'
             onClick={() => {
-              this.props.history.push('/user/apps/org/matrix')
+              this.props.history.push('/user/apps/org/' + this.props.data.name)
             }}
           >
             组织设置

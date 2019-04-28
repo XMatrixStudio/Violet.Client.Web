@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import './AppInfo.less'
-import { Tag, message, Tooltip, Button } from 'antd'
+import { Tag, message, Tooltip, Button, Skeleton } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import AppInfoForm from './AppInfoForm'
-import { Link } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import DevService from 'src/Services/DevService'
 
-interface IAppInfo {
+interface IAppInfo extends RouteComponentProps<any> {
   UIStore?: UIStore
 }
 
@@ -16,48 +17,62 @@ interface IAppInfo {
 @observer
 class AppInfo extends Component<IAppInfo> {
   appIcon?: string
-  @observable appInfo: {
-    name: string
-    describe: string
-    home: string
-    callback: string
-    category: string
-  }
+  appName: string
+  @observable appInfo?: Type.AppInfoData
   @observable isEdit: boolean
 
-  constructor(props: any) {
-    super(props)
-    this.appInfo = {
-      name: 'Violet',
-      describe:
-        '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述',
-      home: 'https://xmatrix.studio',
-      callback: 'https://xmatrix.stduio/hello',
-      category: 'tool'
-    }
-    this.isEdit = false
-  }
-
+  @action
   componentWillMount() {
+    this.appName = this.props.match.params.id
+    this.isEdit = false
+    this.appInfo = undefined
     this.props.UIStore!.setTitle(
       <>
-        <Link key='link' to='/user/apps'>
+        <a key='link' onClick={this.goBack}>
           应用管理
-        </Link>
-        <span key='name'> - {this.appInfo.name}</span>
+        </a>
+        <span key='name'> - {this.appName}</span>
       </>,
       '在这里管理你的应用'
     )
-    this.props.UIStore!.setBack('/user/apps')
+    this.props.UIStore!.setBack(this.goBack)
+    DevService.getAppInfoByName(this.appName, true).then(res => {
+      this.appInfo = res.data
+    })
+  }
+
+  goBack = () => {
+    if (this.appInfo && this.appInfo.owner.type === 'org') {
+      this.props.history.push('/user/apps?t=' + this.appInfo.owner.name)
+    } else {
+      this.props.history.push('/user/apps')
+    }
+  }
+
+  componentDidMount() {
+    document.title = '应用详情 - ' + this.appName + ' | Violet'
   }
 
   render() {
+    if (this.appInfo === undefined) {
+      return (
+        <div className='app-info'>
+          <div
+            className='base-card-box'
+            style={{ minHeight: this.isEdit ? '590px' : '400px' }}
+          >
+            <Skeleton active={true} />
+          </div>
+        </div>
+      )
+    }
+
     const InfoShow = (
       <>
         <div className='avatar-item'>
           <AvatarSelect
             title='点击或拖动选择应用图标'
-            imageURL='https://violet-1252808268.cos.ap-guangzhou.myqcloud.com/0.png'
+            imageURL={this.appInfo.info.avatar}
             setImage={file => {
               this.appIcon = file
             }}
@@ -74,7 +89,7 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#87d068'
             >
-              87d06887d06887d068
+              {this.appInfo.id}
             </Tag>
           </Tooltip>
         </div>
@@ -89,29 +104,29 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#fcc85d'
             >
-              87d06887dabc06887d068
+              {this.appInfo.id}
             </Tag>
           </Tooltip>
         </div>
         <div className='info-item'>
-          <div className='info-label'>名称：</div>
-          <div className='info-box'>{this.appInfo.name}</div>
+          <div className='info-label'>显示名：</div>
+          <div className='info-box'>{this.appInfo.info.displayName}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>分类：</div>
-          <div className='info-box'>工具</div>
+          <div className='info-box'>{this.appInfo.type}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>描述：</div>
-          <div className='info-box'>{this.appInfo.describe}</div>
+          <div className='info-box'>{this.appInfo.info.description}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>主页：</div>
-          <div className='info-box'>{this.appInfo.home}</div>
+          <div className='info-box'>{this.appInfo.info.url}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>回调域：</div>
-          <div className='info-box'>{this.appInfo.callback}</div>
+          <div className='info-box'>{this.appInfo.createTime}</div>
         </div>
         <Button
           className='btn-edit'
@@ -133,13 +148,7 @@ class AppInfo extends Component<IAppInfo> {
         >
           {this.isEdit ? (
             <AppInfoForm
-              initData={{
-                name: this.appInfo.name,
-                describe: this.appInfo.describe,
-                home: this.appInfo.home,
-                callback: this.appInfo.callback,
-                category: this.appInfo.category
-              }}
+              initData={this.appInfo}
               next={isEdit => {
                 this.isEdit = false
               }}
@@ -153,4 +162,4 @@ class AppInfo extends Component<IAppInfo> {
   }
 }
 
-export default AppInfo
+export default withRouter(AppInfo)

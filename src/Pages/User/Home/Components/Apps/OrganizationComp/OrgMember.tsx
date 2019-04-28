@@ -133,17 +133,15 @@ class OrgMember extends Component {
   render() {
     return (
       <div className='org-member'>
-        <div className='item-title'>创建者</div>
+        <div className='item-title'>管理员</div>
         <MemberCard
           data={{
-            name: 'ZhenlyChen',
+            name: 'ZhenlyChen (创建者)',
             avatar: TestAvatar,
             isMe: true,
             type: 'admin'
           }}
         />
-        <div className='item-title'>管理员</div>
-
         <MemberCard
           data={{
             name: 'MegaShow',

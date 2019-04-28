@@ -6,4 +6,6 @@ declare namespace Type {
   interface OrgAppInfoData extends GetOrgsByNameApps.IApp {}
 
   interface UserAppInfoData extends GetUsersByNameApps.IApp {}
+
+  interface AppInfoData extends GetAppsByNameOrId.ResBody {}
 }

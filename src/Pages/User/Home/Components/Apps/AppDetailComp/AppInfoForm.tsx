@@ -5,13 +5,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 
 interface IAppInfoFormProps {
   form: WrappedFormUtils
-  initData: {
-    name: string
-    category: string
-    describe: string
-    home: string
-    callback: string
-  }
+  initData: Type.AppInfoData
   next: (isEdit: boolean) => void
 }
 
@@ -55,14 +49,14 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请选择应用分类'
                 }
               ],
-              initialValue: initData.category
+              initialValue: initData.type
             })(
               <Select style={{ maxWidth: '300px' }}>
-                <Select.Option value='game'>游戏</Select.Option>
-                <Select.Option value='tool'>工具</Select.Option>
-                <Select.Option value='entertainment'>娱乐</Select.Option>
-                <Select.Option value='live'>生活</Select.Option>
-                <Select.Option value='social '>社交</Select.Option>
+                <Select.Option value='0'>游戏</Select.Option>
+                <Select.Option value='1'>工具</Select.Option>
+                <Select.Option value='2'>娱乐</Select.Option>
+                <Select.Option value='3'>生活</Select.Option>
+                <Select.Option value='4 '>社交</Select.Option>
               </Select>
             )}
           </Form.Item>
@@ -88,7 +82,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请输入应用名'
                 }
               ],
-              initialValue: initData.name
+              initialValue: initData.info.displayName
             })(<Input placeholder='应用名称' />)}
           </Form.Item>
           <Form.Item label='应用简介'>
@@ -99,7 +93,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请输入应用简介'
                 }
               ],
-              initialValue: initData.describe
+              initialValue: initData.info.description
             })(<Input placeholder='简短地描述你的应用' />)}
           </Form.Item>
           <Form.Item
@@ -124,7 +118,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请输入应用主页'
                 }
               ],
-              initialValue: initData.home
+              initialValue: initData.info.url
             })(<Input placeholder='https://example.com' />)}
           </Form.Item>
           <Form.Item
@@ -149,7 +143,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请输入应用回调域'
                 }
               ],
-              initialValue: initData.callback
+              initialValue: initData.info.url
             })(<Input placeholder='https://example.com/verify' />)}
           </Form.Item>
           <Button htmlType='submit' type='primary'>
