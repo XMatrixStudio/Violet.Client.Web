@@ -235,7 +235,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
               label={
                 <span>
                   组织联系人
-                  <Tooltip title='该信息仅供系统内部联系'>
+                  <Tooltip title='该信息将向所有人展示'>
                     <Icon
                       className='tip-icon'
                       type='question-circle'
@@ -263,7 +263,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
               label={
                 <span>
                   联系邮箱
-                  <Tooltip title='该信息仅供系统内部联系'>
+                  <Tooltip title='该信息将向所有人展示'>
                     <Icon
                       className='tip-icon'
                       type='question-circle'
@@ -295,7 +295,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
               label={
                 <span>
                   联系电话
-                  <Tooltip title='该信息仅供系统内部联系'>
+                  <Tooltip title='该信息将向所有人展示'>
                     <Icon
                       className='tip-icon'
                       type='question-circle'
