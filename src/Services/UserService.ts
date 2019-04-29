@@ -2,6 +2,13 @@ import axios from 'axios'
 import { createHash } from 'crypto'
 
 export default {
+  // 获取待申请列表
+  GetRequests: async () => {
+    const res = await axios.get<GetUsersRequests.ResBody>(
+      '/api/i/users/requests'
+    )
+    return res
+  },
   // 授权
   Auth: async (req: PostUsersAuths.ReqBody) => {
     const res = await axios.post('/api/i/users/auths', req)

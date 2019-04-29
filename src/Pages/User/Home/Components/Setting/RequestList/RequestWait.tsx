@@ -67,7 +67,7 @@ class RequestWaitList extends Component<IRequestWaitListProps> {
               <span className='g-request-card-user-name'>{value.name}</span>
             </UserCard>
             提交
-            <span className='user-action'>{this.stateText[value.state]}</span>
+            <span className='user-action'>{this.stateText[value.type]}</span>
           </div>
           <div className='control-box'>
             <Tooltip title='通过申请'>

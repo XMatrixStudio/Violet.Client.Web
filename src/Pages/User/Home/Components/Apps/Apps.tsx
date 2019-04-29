@@ -49,6 +49,7 @@ class Apps extends Component<IAppsProps> {
     observe(this.props.UserStore!.state, () => {
       this.checkLevel(this.props.history.location.pathname)
     })
+    this.props.UserStore!.updateRequests()
   }
 
   render() {
@@ -68,11 +69,7 @@ class Apps extends Component<IAppsProps> {
                   <DeveloperForm />
                 </Route>
                 <Route path='/user/apps/new/:by'>
-                  <NewAppForm
-                    next={isSubmit => {
-                      this.props.history.goBack()
-                    }}
-                  />
+                  <NewAppForm />
                 </Route>
                 <Route path='/user/apps/detail/:id' component={AppDetail} />
                 <Route

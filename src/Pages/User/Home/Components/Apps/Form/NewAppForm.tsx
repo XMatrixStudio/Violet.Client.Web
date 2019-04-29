@@ -7,7 +7,6 @@ import AvatarSelect from '../../Common/AvatarSelect'
 import AddImage from '@/Assets/add.png'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
-import { Link } from 'react-router-dom'
 import UserStore from 'src/Store/UserStore'
 import { observable } from 'mobx'
 import ServiceTool from 'src/Services/ServiceTool'
@@ -15,7 +14,6 @@ import DevService from 'src/Services/DevService'
 
 interface INewAppFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
-  next: (isEdit: boolean) => void
   UIStore?: UIStore
   UserStore?: UserStore
 }
@@ -25,18 +23,33 @@ interface INewAppFormProps extends RouteComponentProps<any> {
 class NewAppForm extends Component<INewAppFormProps> {
   @observable appIcon?: string
   id = 1
+  ByName: string
 
   componentWillMount() {
+    this.ByName = this.props.match.params.by
     this.props.UIStore!.setTitle(
       <>
-        <Link key='link' to='/user/apps'>
+        <a
+          key='link'
+          onClick={() => {
+            this.goBack(this.ByName, false)
+          }}
+        >
           应用管理
-        </Link>
+        </a>
         <span key='more'> - 新建应用</span>
       </>,
       '创建新的应用'
     )
-    this.props.UIStore!.setBack('/user/apps')
+    this.props.UIStore!.setBack(() => {
+      this.goBack(this.ByName, false)
+    })
+  }
+
+  goBack = (byName: string, finished: boolean) => {
+    this.props.history.push(
+      '/user/apps' + (byName === 'me' ? '' : '?t=' + byName)
+    )
   }
 
   handleSubmit = (e: React.FormEvent) => {
@@ -76,7 +89,7 @@ class NewAppForm extends Component<INewAppFormProps> {
             finish()
             message.success('创建应用成功')
             this.props.UserStore!.updateInfo()
-            this.props.next(true)
+            this.goBack(ByName, true)
           })
           .catch(error => {
             finish()
@@ -383,7 +396,7 @@ class NewAppForm extends Component<INewAppFormProps> {
             <Button
               className='back-btn'
               onClick={() => {
-                this.props.next(false)
+                this.goBack(ByName, false)
               }}
             >
               取消

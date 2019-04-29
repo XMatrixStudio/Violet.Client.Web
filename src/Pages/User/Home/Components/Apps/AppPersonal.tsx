@@ -73,6 +73,13 @@ class AppPersonal extends Component<IAppPersonalProps> {
       )
     })
 
+    let userRequesting = false
+    for (const r of this.props.UserStore!.requests) {
+      if (r.type === 1) {
+        userRequesting = true
+      }
+    }
+
     return (
       <div className='app-flex-box'>
         <div className='base-card-box info-card'>
@@ -97,18 +104,20 @@ class AppPersonal extends Component<IAppPersonalProps> {
           <div style={{ marginBottom: '8px' }}>
             <span className='level-text'>账号类型: </span>
             <UserLevel level={level} />
-            <Tooltip placement='right' title='升级'>
-              <Icon
-                className='up-icon'
-                style={{ verticalAlign: 'unset' }}
-                type='up-square'
-                theme='twoTone'
-                twoToneColor='#06afda'
-                onClick={() => {
-                  this.props.history.push('/user/apps/up/admin')
-                }}
-              />
-            </Tooltip>
+            {level < 50 && (
+              <Tooltip placement='right' title='升级'>
+                <Icon
+                  className='up-icon'
+                  style={{ verticalAlign: 'unset' }}
+                  type='up-square'
+                  theme='twoTone'
+                  twoToneColor='#06afda'
+                  onClick={() => {
+                    this.props.history.push('/user/apps/up/admin')
+                  }}
+                />
+              </Tooltip>
+            )}
           </div>
           <div className='info-item'>
             我的应用：{devInfo.app.own}/{devInfo.app.limit}
@@ -125,13 +134,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
             </Tooltip>
           </div>
           <div className='info-item'>
-            账号状态：已审核
-            <Icon
-              type='check-circle'
-              theme='twoTone'
-              twoToneColor='#06afda'
-              style={{ float: 'right', fontSize: '18px' }}
-            />
+            账号状态：{userRequesting === true ? '申请审核中' : '已审核'}
           </div>
         </div>
 

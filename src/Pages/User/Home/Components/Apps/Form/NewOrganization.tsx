@@ -9,8 +9,9 @@ import UserStore from 'src/Store/UserStore'
 import { observable } from 'mobx'
 import DevService from 'src/Services/DevService'
 import ServiceTool from 'src/Services/ServiceTool'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-interface INewOrganizationProps {
+interface INewOrganizationProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   UserStore?: UserStore
   next: (refresh: boolean) => void
@@ -77,7 +78,23 @@ class NewOrganization extends Component<INewOrganizationProps> {
         <div className='base-card-box'>
           <div className='org-help'>
             组织可以帮助你协作管理应用, 你还可以创建{' '}
-            <span>{devInfo.org.limit! - devInfo.org.own}</span> 个组织
+            <span className='org-number'>
+              {devInfo.org.limit! - devInfo.org.own}
+            </span>{' '}
+            个组织{' '}
+            <span>
+              <Tooltip placement='right' title='增加组织上限'>
+                <Icon
+                  className='up-icon'
+                  type='plus-circle'
+                  theme='twoTone'
+                  twoToneColor='#06afda'
+                  onClick={() => {
+                    this.props.history.push('/user/apps/up/moreOrg')
+                  }}
+                />
+              </Tooltip>
+            </span>
           </div>
           <Form className='my-form' onSubmit={this.handleSubmit}>
             <Form.Item
@@ -295,4 +312,4 @@ class NewOrganization extends Component<INewOrganizationProps> {
   }
 }
 
-export default Form.create()(NewOrganization)
+export default withRouter(Form.create()(NewOrganization))

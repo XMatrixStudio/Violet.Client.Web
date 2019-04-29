@@ -15,6 +15,7 @@ class UserStore {
     ip: string
     location?: string
   }>
+  @observable requests: GetUsersRequests.IRequest[]
   constructor() {
     this.state = {
       init: false,
@@ -30,6 +31,16 @@ class UserStore {
     }
     this.loginLog = []
     this.orgs = []
+    this.requests = []
+  }
+
+  @action
+  updateRequests() {
+    UserService.GetRequests().then(res => {
+      runInAction(() => {
+        this.requests = res.data
+      })
+    })
   }
 
   updateInfo(failed?: () => void, newAvatar?: boolean) {
