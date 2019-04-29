@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import UserLevel from '../Common/UserLevel'
-import { Icon, Tooltip, Skeleton, message } from 'antd'
+import { Icon, Tooltip, Skeleton, message, Button } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Common/AppCard'
 import { inject, observer } from 'mobx-react'
@@ -74,9 +74,12 @@ class AppPersonal extends Component<IAppPersonalProps> {
     })
 
     let userRequesting = false
+    let appRequesting = false
     for (const r of this.props.UserStore!.requests) {
       if (r.type === 1) {
         userRequesting = true
+      } else if (r.type === 10) {
+        appRequesting = true
       }
     }
 
@@ -84,58 +87,86 @@ class AppPersonal extends Component<IAppPersonalProps> {
       <div className='app-flex-box'>
         <div className='base-card-box info-card'>
           <div className='title'>我的信息</div>
+          <div style={{ marginBottom: '8px' }}>
+            <span className='level-text'>账号类型: </span>
+            <UserLevel level={level} />
+            {level < 50 &&
+              (userRequesting ? (
+                <Tooltip placement='right' title='申请审核中'>
+                  <Icon
+                    className='not-up-icon'
+                    type='hourglass'
+                    theme='twoTone'
+                    twoToneColor='#06afda'
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip placement='right' title='升级'>
+                  <Icon
+                    className='up-icon'
+                    style={{ verticalAlign: 'unset' }}
+                    type='up-square'
+                    theme='twoTone'
+                    twoToneColor='#06afda'
+                    onClick={() => {
+                      this.props.history.push('/user/apps/up/admin')
+                    }}
+                  />
+                </Tooltip>
+              ))}
+          </div>
           <div className='info-item'>
             联系信息：
             <Tooltip placement='top' title={devInfo.email}>
               <span style={{ cursor: 'default' }}>{devInfo.name}</span>
             </Tooltip>
-            <Tooltip placement='right' title='编辑'>
+            <Tooltip placement='right' title='开发者信息仅内部使用'>
               <Icon
-                className='up-icon'
-                type='edit'
+                className='not-up-icon'
+                type='question-circle'
                 theme='twoTone'
                 twoToneColor='#06afda'
-                onClick={() => {
-                  this.props.history.push('/user/apps/up/edit')
-                }}
               />
             </Tooltip>
           </div>
-          <div style={{ marginBottom: '8px' }}>
-            <span className='level-text'>账号类型: </span>
-            <UserLevel level={level} />
-            {level < 50 && (
-              <Tooltip placement='right' title='升级'>
+          <div className='info-item'>
+            我的应用：
+            <strong className='big-value'>
+              {devInfo.app.own}/{devInfo.app.limit}
+            </strong>
+            {appRequesting ? (
+              <Tooltip placement='right' title='申请审核中'>
                 <Icon
-                  className='up-icon'
-                  style={{ verticalAlign: 'unset' }}
-                  type='up-square'
+                  className='not-up-icon'
+                  type='hourglass'
+                  theme='twoTone'
+                  twoToneColor='#06afda'
+                />
+              </Tooltip>
+            ) : (
+              <Tooltip placement='right' title='提高上限'>
+                <Icon
+                  className='up-icon add-app'
+                  type='plus-circle'
                   theme='twoTone'
                   twoToneColor='#06afda'
                   onClick={() => {
-                    this.props.history.push('/user/apps/up/admin')
+                    this.props.history.push('/user/apps/up/more')
                   }}
                 />
               </Tooltip>
             )}
           </div>
-          <div className='info-item'>
-            我的应用：{devInfo.app.own}/{devInfo.app.limit}
-            <Tooltip placement='right' title='增加'>
-              <Icon
-                className='up-icon'
-                type='plus-circle'
-                theme='twoTone'
-                twoToneColor='#06afda'
-                onClick={() => {
-                  this.props.history.push('/user/apps/up/more')
-                }}
-              />
-            </Tooltip>
-          </div>
-          <div className='info-item'>
-            账号状态：{userRequesting === true ? '申请审核中' : '已审核'}
-          </div>
+          <Button
+            type='primary'
+            block={true}
+            className='btn-personal'
+            onClick={() => {
+              this.props.history.push('/user/apps/up/edit')
+            }}
+          >
+            修改开发者信息
+          </Button>
         </div>
 
         {AppCards}

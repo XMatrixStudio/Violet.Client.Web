@@ -73,6 +73,13 @@ class NewOrganization extends Component<INewOrganizationProps> {
     if (!devInfo) {
       return null
     }
+
+    let orgRequesting = false
+    for (const r of this.props.UserStore!.requests) {
+      if (r.type === 11) {
+        orgRequesting = true
+      }
+    }
     return (
       <div className='new-org'>
         <div className='base-card-box'>
@@ -83,17 +90,28 @@ class NewOrganization extends Component<INewOrganizationProps> {
             </span>{' '}
             个组织{' '}
             <span>
-              <Tooltip placement='right' title='增加组织上限'>
-                <Icon
-                  className='up-icon'
-                  type='plus-circle'
-                  theme='twoTone'
-                  twoToneColor='#06afda'
-                  onClick={() => {
-                    this.props.history.push('/user/apps/up/moreOrg')
-                  }}
-                />
-              </Tooltip>
+              {orgRequesting ? (
+                <Tooltip placement='right' title='申请审核中'>
+                  <Icon
+                    className='not-up-icon'
+                    type='hourglass'
+                    theme='twoTone'
+                    twoToneColor='#06afda'
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip placement='right' title='增加组织上限'>
+                  <Icon
+                    className='up-icon'
+                    type='plus-circle'
+                    theme='twoTone'
+                    twoToneColor='#06afda'
+                    onClick={() => {
+                      this.props.history.push('/user/apps/up/moreOrg')
+                    }}
+                  />
+                </Tooltip>
+              )}
             </span>
           </div>
           <Form className='my-form' onSubmit={this.handleSubmit}>

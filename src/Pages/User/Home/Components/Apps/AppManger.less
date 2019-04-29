@@ -4,9 +4,9 @@
   align-content: flex-start;
   min-width: 600px;
   .info-item {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     .big-value {
-      font-size: 20px;
+      font-size: 18px;
       color: rgb(6, 72, 134);
       margin: auto 4px;
     }
@@ -26,8 +26,16 @@
       cursor: pointer;
       transition: all 0.3s;
       &:hover {
-        transform: translateY(-2px);
+        transform: scale(1.2);
+        // transform: translateY(-2px);
       }
+    }
+    .not-up-icon {
+      float: right;
+      font-size: 18px;
+    }
+    .add-app {
+      margin-top: 6px;
     }
     .title {
       font-size: 16px;
@@ -70,8 +78,11 @@
     position: relative;
     .btn-org {
       position: relative;
-      top: 2px;
+      top: 4px;
     }
+  }
+  .btn-personal {
+    margin-top: 10px;
   }
 }
 

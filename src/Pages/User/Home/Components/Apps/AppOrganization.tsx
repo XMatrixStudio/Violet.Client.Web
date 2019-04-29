@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import UserLevel from '../Common/UserLevel'
-import { Icon, Button, Skeleton, message } from 'antd'
+import { Icon, Button, Skeleton, message, Tooltip } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import AppCard from '../Common/AppCard'
 import { observable, action, runInAction } from 'mobx'
@@ -73,10 +73,29 @@ class AppOrganization extends Component<IAppOrganizationProps> {
             <strong className='big-value'>
               {this.props.data.members} / 99
             </strong>
+            <Tooltip placement='right' title='充钱才会使你变得更强'>
+              <Icon
+                className='not-up-icon add-app'
+                type='question-circle'
+                theme='twoTone'
+                twoToneColor='#06afda'
+              />
+            </Tooltip>
           </div>
           <div className='info-item'>
             组织应用：
             <strong className='big-value'>{this.props.data.apps} / 99</strong>
+            <Tooltip placement='right' title='提高上限'>
+              <Icon
+                className='up-icon add-app'
+                type='plus-circle'
+                theme='twoTone'
+                twoToneColor='#06afda'
+                onClick={() => {
+                  this.props.history.push('/user/apps/up/moreOrgApp')
+                }}
+              />
+            </Tooltip>
           </div>
           <Button
             type='primary'
