@@ -6,6 +6,7 @@ import { observable, action } from 'mobx'
 import { Tabs, Icon } from 'antd'
 import './RequestList.less'
 import RequestWaitList from './RequestWait'
+import RequestOldList from './RequestOld'
 
 interface IRequestListProps {
   UIStore?: UIStore
@@ -55,12 +56,12 @@ class RequestList extends Component<IRequestListProps> {
             tab={
               <span>
                 <Icon type='schedule' />
-                已通过申请
+                已处理申请
               </span>
             }
             key='old'
           >
-            b
+            <RequestOldList />
           </Tabs.TabPane>
         </Tabs>
       </div>

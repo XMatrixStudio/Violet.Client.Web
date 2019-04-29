@@ -1,3 +1,48 @@
 .request-list {
   margin: 10px 20px;
+  .request-card {
+    .card-title {
+      display: inline-block;
+
+      .user-action {
+        margin: auto 10px;
+        font-weight: bold;
+        font-size: 18px;
+      }
+    }
+    .card-time {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    .control-box {
+      float: right;
+      font-size: 20px;
+      i {
+        transition: all 0.3s;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+      .control-btn {
+        padding: 6px;
+        margin: auto 6px;
+      }
+      .check-btn {
+        color: rgb(8, 110, 47);
+      }
+      .close-btn {
+        color: rgb(224, 42, 42);
+      }
+    }
+  }
+  .request-remark {
+    margin-top: 6px;
+  }
+}
+.g-request-card-user-name {
+  margin-right: 10px;
+  font-weight: bold;
+  color: rgb(27, 100, 209);
+  font-size: 18px;
 }

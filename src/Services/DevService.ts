@@ -39,14 +39,14 @@ export default {
   },
   // 提高开发者应用上限
   // repeat_request - 重复申请
-  improveAppCount: async (data: PostUsersLevelsApps.ReqBody) => {
-    const res = await Axios.post('/api/i/users/levels/apps', data)
+  improveAppCount: async (data: PostUsersRequestsApps.ReqBody) => {
+    const res = await Axios.post('/api/i/users/requests/apps', data)
     return res
   },
   // 提高开发者组织上限
   // repeat_request - 重复申请
-  improveOrgCount: async (data: PostUsersLevelsOrgs.ReqBody) => {
-    const res = await Axios.post('/api/i/users/levels/orgs', data)
+  improveOrgCount: async (data: PostUsersRequestsOrgs.ReqBody) => {
+    const res = await Axios.post('/api/i/users/requests/orgs', data)
     return res
   },
   // 新建应用

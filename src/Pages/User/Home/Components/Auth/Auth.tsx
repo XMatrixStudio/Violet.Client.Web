@@ -213,7 +213,7 @@ class Auth extends Component<IAuthProps> {
               <div>
                 <p>
                   <strong>开发方: </strong>
-                  <UserCard info={{ name: record.own, level: 10 }} />
+                  <UserCard name={record.own} />
                 </p>
                 <p>
                   <strong>授权时间:</strong>{' '}

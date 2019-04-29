@@ -192,10 +192,12 @@ class Home extends React.Component<IHomeProps, any> {
               <Icon type='code' />
               <span>应用管理</span>
             </Menu.Item>
-            <Menu.Item key='setting'>
-              <Icon type='setting' />
-              <span>系统设置</span>
-            </Menu.Item>
+            {this.props.UserStore!.state.info.level >= 50 && (
+              <Menu.Item key='setting'>
+                <Icon type='setting' />
+                <span>系统设置</span>
+              </Menu.Item>
+            )}
             <Menu.Item key='help'>
               <Icon type='question' />
               <span>反馈帮助</span>
