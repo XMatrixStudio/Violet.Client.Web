@@ -30,10 +30,7 @@ ReactDOM.render(
       <Router history={history}>
         <div>
           <NavBar />
-          <Switch>
-            <Route path='/about' component={About} />
-            <Route path='/' component={Home} />
-          </Switch>
+          <Home />
         </div>
       </Router>
     </Root>

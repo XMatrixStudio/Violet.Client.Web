@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'antd'
-import { NavLink, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import './NavBar.less'
 
@@ -29,22 +29,6 @@ class NavBar extends Component<any, any> {
             <img src={logo} className='logo-img' /> Violet
           </div>
           <div className='right-box'>
-            <NavLink
-              to='/'
-              exact={true}
-              className='nav-item'
-              activeClassName='nav-selected'
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to='/about'
-              exact={true}
-              className='nav-item'
-              activeClassName='nav-selected'
-            >
-              About
-            </NavLink>
             <Button className='login-btn' type='primary'>
               <a href='/account'>Login</a>
             </Button>
