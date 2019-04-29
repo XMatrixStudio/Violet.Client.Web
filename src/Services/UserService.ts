@@ -2,6 +2,11 @@ import axios from 'axios'
 import { createHash } from 'crypto'
 
 export default {
+  // 授权
+  Auth: async (req: PostUsersAuths.ReqBody) => {
+    const res = await axios.post('/api/i/users/auths', req)
+    return res
+  },
   // 更改用户等级
   UpdateLevel: async (req: PostUsersLevels.ReqBody) => {
     const res = await axios.post('/api/i/users/levels', req)
