@@ -155,7 +155,7 @@ class Home extends React.Component<IHomeProps, any> {
               className='user-avatar'
             />
             <p className='user-name'>
-              ZhenlyChen
+              {this.props.UserStore!.state.info.info.nickname}
               <Tooltip placement='right' title='退出登陆'>
                 <Icon
                   className='logout-btn'

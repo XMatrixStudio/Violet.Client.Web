@@ -2,7 +2,19 @@ import axios from 'axios'
 import { createHash } from 'crypto'
 
 export default {
-  // 获取待申请列表
+  // 搜索用户
+  SearchUser: async (key: string, page = 1, limit = 10) => {
+    const req: GetUsers.Query = {
+      page: page,
+      limit: limit,
+      name: key
+    }
+    const res = await axios.get<GetUsers.ResBody>('/api/i/users', {
+      params: req
+    })
+    return res
+  },
+  // 获取用户待申请列表
   GetRequests: async () => {
     const res = await axios.get<GetUsersRequests.ResBody>(
       '/api/i/users/requests'

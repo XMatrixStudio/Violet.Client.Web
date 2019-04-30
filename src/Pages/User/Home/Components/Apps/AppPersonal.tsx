@@ -132,11 +132,12 @@ class AppPersonal extends Component<IAppPersonalProps> {
           <div className='info-item'>
             我的应用：
             <strong className='big-value'>
-              {devInfo.appOwn}/{devInfo.appLimit}
+              {devInfo.appOwn} / {devInfo.appLimit}
             </strong>
             {appRequesting ? (
               <Tooltip placement='right' title='申请审核中'>
                 <Icon
+                  style={{ marginTop: '6px' }}
                   className='not-up-icon'
                   type='hourglass'
                   theme='twoTone'

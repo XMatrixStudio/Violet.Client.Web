@@ -9,7 +9,7 @@ export interface IUser {
 
 class UserStore {
   @observable state: IUser
-  @observable orgs: Type.OrgInfoData[]
+  @observable orgs: Type.UserOrgInfoData[]
   @observable loginLog: Array<{
     time: Date
     ip: string
@@ -76,7 +76,7 @@ class UserStore {
     }
   }
 
-  @action addOrgs(orgs: Type.OrgInfoData[], first: boolean) {
+  @action addOrgs(orgs: Type.UserOrgInfoData[], first: boolean) {
     if (first) {
       this.orgs = orgs
     } else {

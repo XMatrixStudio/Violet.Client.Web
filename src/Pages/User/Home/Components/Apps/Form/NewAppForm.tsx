@@ -225,7 +225,7 @@ class NewAppForm extends Component<INewAppFormProps> {
                   <strong style={{ marginRight: '6px' }}>
                     {UserInfo.info.nickname}
                   </strong>
-                  (自己 - {UserInfo.dev.app.own}/{UserInfo.dev.app.limit})
+                  (自己 - {UserInfo.dev.appOwn}/{UserInfo.dev.appLimit})
                 </span>
               ) : (
                 <span>{ByName}(组织)</span>

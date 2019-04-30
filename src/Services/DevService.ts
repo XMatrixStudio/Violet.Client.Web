@@ -1,9 +1,26 @@
 import Axios from 'axios'
 
+const BASE_ORG = '/api/i/orgs'
+const BASE_USER = '/api/i/users'
+const BASE_APP = '/api/i/apps'
+
 export default {
+  // 组织相关
   // 新建组织
   newOrg: async (data: PostOrgs.ReqBody) => {
-    const res = await Axios.post('/api/i/orgs', data)
+    const res = await Axios.post(BASE_ORG, data)
+    return res
+  },
+  getOrgInfoByID: async (id: string, all = false) => {
+    const res = await Axios.get<GetOrgsByExtId.ResBody>(BASE_ORG + '/+' + id, {
+      params: { all: all }
+    })
+    return res
+  },
+  getOrgInfoByName: async (name: string, all = false) => {
+    const res = await Axios.get<GetOrgsByExtId.ResBody>(BASE_ORG + '/' + name, {
+      params: { all: all }
+    })
     return res
   },
   // 获取组织应用
@@ -13,25 +30,93 @@ export default {
       page: page
     }
     const res = await Axios.get<GetOrgsByIdApps.ResBody>(
-      '/api/i/orgs/' + id + '/apps',
+      BASE_ORG + '/' + id + '/apps',
       {
         params: params
       }
     )
     return res
   },
+  // 获取组织成员信息
+  getOrgMembers: async (id: string, page = 1, limit = 10) => {
+    const params: GetOrgsByIdMembers.Query = {
+      limit: limit,
+      page: page
+    }
+    const res = await Axios.get<GetOrgsByIdMembers.ResBody>(
+      BASE_ORG + '/' + id + '/members',
+      {
+        params: params
+      }
+    )
+    return res
+  },
+  // 增加组织成员
+  addOrgMember: async (orgID: string, userID: string) => {
+    const req: PostOrgsByIdMembers.ReqBody = {
+      userId: userID
+    }
+    const res = await Axios.post(BASE_ORG + '/' + orgID + '/members', req)
+    return res
+  },
+  // 删除组织成员
+  removeOrgMember: async (orgID: string, userID: string) => {
+    const res = await Axios.delete(
+      BASE_ORG + '/' + orgID + '/members/' + userID
+    )
+    return res
+  },
+  // 修改组织成员等级
+  editOrgMember: async (orgID: string, userID: string, role: 0 | 1) => {
+    const req: PutOrgsByIdMembers.ReqBody = {
+      userId: userID,
+      role: role
+    }
+    const res = await Axios.put(BASE_ORG + '/' + orgID + '/members', req)
+    return res
+  },
+
+  // 开发者相关
   // 提高开发者应用上限
   // repeat_request - 重复申请
   improveAppCount: async (data: PostUsersRequestsApps.ReqBody) => {
-    const res = await Axios.post('/api/i/users/requests/apps', data)
+    const res = await Axios.post(BASE_USER + '/requests/apps', data)
     return res
   },
   // 提高开发者组织上限
   // repeat_request - 重复申请
   improveOrgCount: async (data: PostUsersRequestsOrgs.ReqBody) => {
-    const res = await Axios.post('/api/i/users/requests/orgs', data)
+    const res = await Axios.post(BASE_USER + '/requests/orgs', data)
     return res
   },
+  // 获取开发者个人应用信息
+  getDevApps: async (page: number, limit: number, user = 'me') => {
+    const params: GetUsersByUidApps.Query = {
+      limit: limit,
+      page: page
+    }
+    const res = await Axios.get<GetUsersByUidApps.ResBody>(
+      BASE_USER + '/' + user + '/apps',
+      { params: params }
+    )
+    return res
+  },
+  // 获取开发者组织
+  getDevOrgs: async (page: number, limit: number, user = 'me') => {
+    const params: GetUsersByUidOrgs.Query = {
+      limit: limit,
+      page: page
+    }
+    const res = await Axios.get<GetUsersByUidOrgs.ResBody>(
+      BASE_USER + '/' + user + '/orgs',
+      {
+        params: params
+      }
+    )
+    return res
+  },
+
+  // 应用相关
   // 新建应用
   // res.data.msg:
   // exist_name - 应用已存在
@@ -39,12 +124,12 @@ export default {
   // not_exist_owner - 用户 / 组织不存在
   // reserved_name - 应用保留
   newApp: async (req: PostApps.ReqBody) => {
-    const res = await Axios.post('/api/i/apps', req)
+    const res = await Axios.post(BASE_APP, req)
     return res
   },
   // 通过 ID 获取应用信息
   getAppInfoById: async (id: string, all?: boolean) => {
-    const res = await Axios.get<GetAppsByExtId.ResBody>('/api/i/apps/+' + id, {
+    const res = await Axios.get<GetAppsByExtId.ResBody>(BASE_APP + '/+' + id, {
       params: {
         all: all
       }
@@ -53,43 +138,11 @@ export default {
   },
   // 通过名称获取应用信息
   getAppInfoByName: async (name: string, all?: boolean) => {
-    const res = await Axios.get<GetAppsByExtId.ResBody>('/api/i/apps/' + name, {
+    const res = await Axios.get<GetAppsByExtId.ResBody>(BASE_APP + '/' + name, {
       params: {
         all: all
       }
     })
-    return res
-  },
-  // 获取开发者个人应用信息
-  getDevApps: async (page: number, limit: number, user?: string) => {
-    if (user === undefined) {
-      user = 'me'
-    }
-    const params: GetUsersByUidApps.Query = {
-      limit: limit,
-      page: page
-    }
-    const res = await Axios.get<GetUsersByUidApps.ResBody>(
-      '/api/i/users/' + user + '/apps',
-      { params: params }
-    )
-    return res
-  },
-  // 获取开发者组织
-  getDevOrgs: async (page: number, limit: number, user?: string) => {
-    if (user === undefined) {
-      user = 'me'
-    }
-    const params: GetUsersByUidOrgs.Query = {
-      limit: limit,
-      page: page
-    }
-    const res = await Axios.get<GetUsersByUidOrgs.ResBody>(
-      '/api/i/users/' + user + '/orgs',
-      {
-        params: params
-      }
-    )
     return res
   }
 }
