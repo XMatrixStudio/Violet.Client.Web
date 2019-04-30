@@ -4,7 +4,7 @@ import './index.less'
 import * as serviceWorker from '../../serviceWorker'
 
 // router
-import { Route, Router, Switch } from 'react-router'
+import { Router } from 'react-router'
 import { createBrowserHistory } from 'history'
 import { Provider } from 'mobx-react'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
@@ -13,7 +13,6 @@ import AuthStore from '../../Store/AuthStore'
 
 import { Root } from '../../Components/Root'
 import Home from './Home/Home'
-import About from './About/About'
 import NavBar from './Components/NavBar'
 
 const browserHistory = createBrowserHistory()

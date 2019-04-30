@@ -16,9 +16,40 @@ declare namespace PostOrgs {
 
 /**
  * @method GET
- * @resource `/i/orgs/:name/apps`
+ * @resource `/i/orgs/:extId`
  */
-declare namespace GetOrgsByNameApps {
+declare namespace GetOrgsByExtId {
+  interface Query {
+    all: boolean | string
+  }
+  interface ResBody {
+    id: string
+    name: string
+    createTime: Date
+    dev: {
+      appLimit?: number
+      appOwn: number
+      memberLimit?: number
+      memberOwn: number
+    }
+    info: {
+      avatar: string
+      contact: string
+      description: string
+      displayName: string
+      email: string
+      location: string
+      phone: string
+      url: string
+    }
+  }
+}
+
+/**
+ * @method GET
+ * @resource `/i/orgs/:id/apps`
+ */
+declare namespace GetOrgsByIdApps {
   interface IApp {
     id: string
     name: string
@@ -35,11 +66,41 @@ declare namespace GetOrgsByNameApps {
 }
 
 /**
- * @method POST
- * @resource `/i/orgs/:name/members`
+ * @method GET
+ * @resource `/i/orgs/:id/members`
  */
-declare namespace PostOrgsByNameMembers {
+declare namespace GetOrgsByIdMembers {
+  interface IUser {
+    id: string
+    name: string
+    nickname: string
+    avatar: string
+    role: number
+  }
+  interface Query extends PageQuery {}
+  interface ResBody {
+    pagination: PageRes
+    data: IUser[]
+  }
+}
+
+/**
+ * @method POST
+ * @resource `/i/orgs/:id/members`
+ */
+declare namespace PostOrgsByIdMembers {
   interface ReqBody {
-    user: string
+    userId: string
+  }
+}
+
+/**
+ * @method PUT
+ * @resource `/i/orgs/:id/members`
+ */
+declare namespace PutOrgsByIdMembers {
+  interface ReqBody {
+    userId: string
+    role: 0 | 1
   }
 }

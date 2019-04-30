@@ -1,11 +1,11 @@
 declare namespace Type {
-  interface UserInfoData extends GetUsersByName.ResBody {}
+  interface UserInfoData extends GetUsersByExtUid.ResBody {}
 
-  interface OrgInfoData extends GetUsersByNameOrgs.IOrg {}
+  interface OrgInfoData extends GetUsersByUidOrgs.IOrg {}
 
-  interface OrgAppInfoData extends GetOrgsByNameApps.IApp {}
+  interface OrgAppInfoData extends GetOrgsByIdApps.IApp {}
 
-  interface UserAppInfoData extends GetUsersByNameApps.IApp {}
+  interface UserAppInfoData extends GetUsersByUidApps.IApp {}
 
-  interface AppInfoData extends GetAppsByNameOrId.ResBody {}
+  interface AppInfoData extends GetAppsByExtId.ResBody {}
 }

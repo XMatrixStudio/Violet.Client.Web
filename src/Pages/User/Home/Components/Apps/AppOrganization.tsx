@@ -26,7 +26,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
   @action
   loadApps = async () => {
     this.currentPage++
-    DevService.getOrgApps(this.currentPage, 10, this.props.data.name)
+    DevService.getOrgApps(this.currentPage, 10, this.props.data.id)
       .then(res => {
         runInAction(() => {
           this.OrgApps = res.data.data
@@ -70,9 +70,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
           </div>
           <div className='info-item'>
             组织成员：
-            <strong className='big-value'>
-              {this.props.data.members} / 99
-            </strong>
+            <strong className='big-value'>o / 99</strong>
             <Tooltip placement='right' title='充钱才会使你变得更强'>
               <Icon
                 className='not-up-icon add-app'
@@ -84,7 +82,7 @@ class AppOrganization extends Component<IAppOrganizationProps> {
           </div>
           <div className='info-item'>
             组织应用：
-            <strong className='big-value'>{this.props.data.apps} / 99</strong>
+            <strong className='big-value'>o / 99</strong>
             <Tooltip placement='right' title='提高上限'>
               <Icon
                 className='up-icon add-app'

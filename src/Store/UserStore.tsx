@@ -4,12 +4,12 @@ import UtilService from 'src/Services/UtilService'
 
 export interface IUser {
   init: boolean
-  info: GetUsersByName.ResBody
+  info: Type.UserInfoData
 }
 
 class UserStore {
   @observable state: IUser
-  @observable orgs: GetUsersByNameOrgs.IOrg[]
+  @observable orgs: Type.OrgInfoData[]
   @observable loginLog: Array<{
     time: Date
     ip: string
@@ -20,6 +20,7 @@ class UserStore {
     this.state = {
       init: false,
       info: {
+        id: '',
         name: '',
         level: 0,
         createTime: new Date(0),
@@ -52,7 +53,7 @@ class UserStore {
     }, failed)
   }
 
-  @action setInfo(info: GetUsersByName.ResBody) {
+  @action setInfo(info: Type.UserInfoData) {
     this.state.info = info
     this.state.init = true
     const log = info.log
@@ -75,7 +76,7 @@ class UserStore {
     }
   }
 
-  @action addOrgs(orgs: GetUsersByNameOrgs.IOrg[], first: boolean) {
+  @action addOrgs(orgs: Type.OrgInfoData[], first: boolean) {
     if (first) {
       this.orgs = orgs
     } else {

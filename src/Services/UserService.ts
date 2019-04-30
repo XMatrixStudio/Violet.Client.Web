@@ -19,17 +19,25 @@ export default {
     const res = await axios.post('/api/i/users/requests/levels', req)
     return res
   },
+  // 获取指定用户信息
   GetUserInfo: async (name: string) => {
-    const res = await axios.get<GetUsersByName.ResBody>('/api/i/users/' + name)
+    const res = await axios.get<GetUsersByExtUid.ResBody>(
+      '/api/i/users/' + name
+    )
+    return res
+  },
+  // 获取指定 ID 用户信息
+  GetUserInfoByID: async (id: string) => {
+    const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/+' + id)
     return res
   },
   // 获取信息
   GetInfo: async (
-    success: (info: GetUsersByName.ResBody) => void,
+    success: (info: GetUsersByExtUid.ResBody) => void,
     failed?: () => void
   ) => {
     try {
-      const res = await axios.get<GetUsersByName.ResBody>('/api/i/users/me')
+      const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/me')
       if (res && res.data) {
         success(res.data)
       } else {

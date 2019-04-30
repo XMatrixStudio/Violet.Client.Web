@@ -32,7 +32,10 @@ class Apps extends Component<IAppsProps> {
       return
     }
     const level = this.props.UserStore!.state.info.level
-    if (level < 1 && pathname !== '/user/apps/not') {
+    if (
+      level < 1 &&
+      (pathname !== '/user/apps/not' && pathname !== '/user/apps/up/developer')
+    ) {
       this.props.history.replace('/user/apps/not')
     } else if (
       level > 0 &&

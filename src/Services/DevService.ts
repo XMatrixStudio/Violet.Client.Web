@@ -1,36 +1,19 @@
 import Axios from 'axios'
 
 export default {
-  // 获取开发者组织
-  getDevOrgs: async (page: number, limit: number, user?: string) => {
-    if (user === undefined) {
-      user = 'me'
-    }
-    const params: GetUsersByNameOrgs.Query = {
-      limit: limit,
-      page: page
-    }
-    const res = await Axios.get<GetUsersByNameOrgs.ResBody>(
-      '/api/i/users/' + user + '/orgs',
-      {
-        params: params
-      }
-    )
-    return res
-  },
   // 新建组织
   newOrg: async (data: PostOrgs.ReqBody) => {
     const res = await Axios.post('/api/i/orgs', data)
     return res
   },
   // 获取组织应用
-  getOrgApps: async (page: number, limit: number, name: string) => {
-    const params: GetUsersByNameOrgs.Query = {
+  getOrgApps: async (page: number, limit: number, id: string) => {
+    const params: GetOrgsByIdApps.Query = {
       limit: limit,
       page: page
     }
-    const res = await Axios.get<GetOrgsByNameApps.ResBody>(
-      '/api/i/orgs/' + name + '/apps',
+    const res = await Axios.get<GetOrgsByIdApps.ResBody>(
+      '/api/i/orgs/' + id + '/apps',
       {
         params: params
       }
@@ -61,40 +44,51 @@ export default {
   },
   // 通过 ID 获取应用信息
   getAppInfoById: async (id: string, all?: boolean) => {
-    const res = await Axios.get<GetAppsByNameOrId.ResBody>(
-      '/api/i/apps/+' + id,
-      {
-        params: {
-          all: all
-        }
+    const res = await Axios.get<GetAppsByExtId.ResBody>('/api/i/apps/+' + id, {
+      params: {
+        all: all
       }
-    )
+    })
     return res
   },
   // 通过名称获取应用信息
   getAppInfoByName: async (name: string, all?: boolean) => {
-    const res = await Axios.get<GetAppsByNameOrId.ResBody>(
-      '/api/i/apps/' + name,
-      {
-        params: {
-          all: all
-        }
+    const res = await Axios.get<GetAppsByExtId.ResBody>('/api/i/apps/' + name, {
+      params: {
+        all: all
       }
-    )
+    })
     return res
   },
   // 获取开发者个人应用信息
-  getUserApps: async (page: number, limit: number, user?: string) => {
+  getDevApps: async (page: number, limit: number, user?: string) => {
     if (user === undefined) {
       user = 'me'
     }
-    const params: GetUsersByNameOrgs.Query = {
+    const params: GetUsersByUidApps.Query = {
       limit: limit,
       page: page
     }
-    const res = await Axios.get<GetUsersByNameApps.ResBody>(
+    const res = await Axios.get<GetUsersByUidApps.ResBody>(
       '/api/i/users/' + user + '/apps',
       { params: params }
+    )
+    return res
+  },
+  // 获取开发者组织
+  getDevOrgs: async (page: number, limit: number, user?: string) => {
+    if (user === undefined) {
+      user = 'me'
+    }
+    const params: GetUsersByUidOrgs.Query = {
+      limit: limit,
+      page: page
+    }
+    const res = await Axios.get<GetUsersByUidOrgs.ResBody>(
+      '/api/i/users/' + user + '/orgs',
+      {
+        params: params
+      }
     )
     return res
   }

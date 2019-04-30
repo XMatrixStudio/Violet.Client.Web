@@ -9,13 +9,15 @@ import UIStore from 'src/Store/UIStore'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import DevService from 'src/Services/DevService'
+import UserStore from 'src/Store/UserStore'
 
 interface IDeveloperFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   UIStore?: UIStore
+  UserStore?: UserStore
 }
 
-@inject('UIStore')
+@inject('UIStore', 'UserStore')
 class DeveloperForm extends Component<IDeveloperFormProps> {
   componentWillMount() {
     const formType = this.props.match.params.type
@@ -76,6 +78,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
         })
           .then(_ => {
             message.success('开发者信息已提交')
+            this.props.UserStore!.updateInfo()
             this.props.history.replace('/user/apps/not')
           })
           .catch(error => {
@@ -116,6 +119,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             await DevService.improveAppCount(req)
           } else if (formType === 'moreOrg') {
             await DevService.improveOrgCount(req)
+            this.props.UserStore!.updateRequests()
           }
           message.success('申请已提交')
           this.props.history.push('/user/apps')

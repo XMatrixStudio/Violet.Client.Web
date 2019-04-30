@@ -1,4 +1,24 @@
 /**
+ * @method GET
+ * @resource `/i/users`
+ */
+declare namespace GetUsers {
+  interface IUser {
+    id: string
+    name: string
+    nickname: string
+    avatar: string
+  }
+  interface Query extends PageQuery {
+    name: string
+  }
+  interface ResBody {
+    pagination: PageRes
+    data: IUser[]
+  }
+}
+
+/**
  * @method POST
  * @resource `/i/users`
  */
@@ -31,93 +51,6 @@ declare namespace PatchUsers {
       newPassword: string
       oldPassword: string
     }
-  }
-}
-
-/**
- * @method GET
- * @resource `/i/users/:name`
- */
-declare namespace GetUsersByName {
-  interface ResBody {
-    email?: string
-    phone?: string
-    name: string
-    level: number
-    createTime: Date
-    info: {
-      avatar: string
-      nickname: string
-      bio?: string
-      birthday?: Date
-      email?: string
-      phone?: string
-      gender?: number
-      location?: string
-      url?: string
-    }
-    dev?: {
-      name?: string
-      email?: string
-      phone?: string
-      app: {
-        limit?: number
-        own: number
-      }
-      org: {
-        limit?: number
-        own: number
-        join: number
-      }
-    }
-    log?: {
-      login: {
-        time: Date
-        ip: string
-      }[]
-      password?: Date
-    }
-  }
-}
-
-/**
- * @method GET
- * @resource `/i/users/:name/apps`
- */
-declare namespace GetUsersByNameApps {
-  interface IApp {
-    id: string
-    name: string
-    displayName: string
-    state: number
-    avatar: string
-    description: string
-  }
-  interface Query extends PageQuery {}
-  interface ResBody {
-    pagination: PageRes
-    data: IApp[]
-  }
-}
-
-/**
- * @method GET
- * @resource `/i/users/:name/orgs`
- */
-declare namespace GetUsersByNameOrgs {
-  interface IOrg {
-    name: string
-    members: number
-    apps: number
-    avatar: string
-    description: string
-    displayName: string
-    location: string
-  }
-  interface Query extends PageQuery {}
-  interface ResBody {
-    pagination: PageRes
-    data: IOrg[]
   }
 }
 
@@ -267,5 +200,86 @@ declare namespace PostUsersSession {
     user: string
     password: string
     remember?: boolean
+  }
+}
+
+/**
+ * @method GET
+ * @resource `/i/users/:extUid`
+ */
+declare namespace GetUsersByExtUid {
+  interface ResBody {
+    id: string
+    email?: string
+    phone?: string
+    name: string
+    level: number
+    createTime: Date
+    info: {
+      avatar: string
+      nickname: string
+      bio?: string
+      birthday?: Date
+      email?: string
+      phone?: string
+      gender?: number
+      location?: string
+      url?: string
+    }
+    dev?: {
+      name?: string
+      email?: string
+      phone?: string
+      appLimit?: number
+      appOwn: number
+      orgJoin: number
+      orgLimit?: number
+      orgOwn: number
+    }
+    log?: {
+      login: {
+        time: Date
+        ip: string
+      }[]
+      password?: Date
+    }
+  }
+}
+
+/**
+ * @method GET
+ * @resource `/i/users/:uid/apps`
+ */
+declare namespace GetUsersByUidApps {
+  interface IApp {
+    id: string
+    name: string
+    displayName: string
+    state: number
+    avatar: string
+    description: string
+  }
+  interface Query extends PageQuery {}
+  interface ResBody {
+    pagination: PageRes
+    data: IApp[]
+  }
+}
+
+/**
+ * @method GET
+ * @resource `/i/users/:uid/orgs`
+ */
+declare namespace GetUsersByUidOrgs {
+  interface IOrg {
+    id: string
+    name: string
+    avatar: string
+    displayName: string
+  }
+  interface Query extends PageQuery {}
+  interface ResBody {
+    pagination: PageRes
+    data: IOrg[]
   }
 }

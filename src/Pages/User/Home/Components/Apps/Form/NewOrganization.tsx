@@ -86,7 +86,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
           <div className='org-help'>
             组织可以帮助你协作管理应用, 你还可以创建{' '}
             <span className='org-number'>
-              {devInfo.org.limit! - devInfo.org.own}
+              {devInfo.orgLimit! - devInfo.orgOwn}
             </span>{' '}
             个组织{' '}
             <span>

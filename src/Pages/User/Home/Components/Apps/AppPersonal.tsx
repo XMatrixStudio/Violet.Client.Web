@@ -33,7 +33,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
       this.hasMore = false
     }
     this.currentPage++
-    await DevService.getUserApps(this.currentPage, 10)
+    await DevService.getDevApps(this.currentPage, 10)
       .then(res => {
         runInAction('UpdateApps', () => {
           this.myApps = res.data.data
@@ -132,7 +132,7 @@ class AppPersonal extends Component<IAppPersonalProps> {
           <div className='info-item'>
             我的应用：
             <strong className='big-value'>
-              {devInfo.app.own}/{devInfo.app.limit}
+              {devInfo.appOwn}/{devInfo.appLimit}
             </strong>
             {appRequesting ? (
               <Tooltip placement='right' title='申请审核中'>
