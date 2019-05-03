@@ -10,7 +10,7 @@ class SettingItem extends Component<ISettingItemProps> {
   render() {
     return (
       <div
-        className='setting-item'
+        className='system-setting-item'
         onClick={() => {
           this.props.history.push(this.props.path)
         }}
