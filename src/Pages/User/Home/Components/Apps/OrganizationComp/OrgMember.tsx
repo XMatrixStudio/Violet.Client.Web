@@ -1,89 +1,69 @@
 import React, { Component } from 'react'
 import './OrgMember.less'
-import TestAvatar from '@/Assets/avatar.jpg'
 import MemberCard from './MemberCard'
-import { Button, Modal, Input, Icon } from 'antd'
-import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { Button, Modal, Input, Icon, Skeleton, message } from 'antd'
+import { observer, inject } from 'mobx-react'
+import { observable, action, runInAction } from 'mobx'
+import UserStore from 'src/Store/UserStore'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 type ListStatus = 'load' | 'nothing' | 'init' | 'show'
 
+interface IOrgMemberProps {
+  members?: Type.OrgMemberInfoData[]
+  UserStore?: UserStore
+}
+
+@inject('UserStore')
 @observer
-class OrgMember extends Component {
+class OrgMember extends Component<IOrgMemberProps> {
   @observable showInvite: boolean
   @observable listStatus: ListStatus
-  @observable searchValue: string
-
-  searchResult = (
-    <>
-      <MemberCard
-        data={{
-          name: '我是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-      <MemberCard
-        data={{
-          name: '我也是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-      <MemberCard
-        data={{
-          name: '我也是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-      <MemberCard
-        data={{
-          name: '我也是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-      <MemberCard
-        data={{
-          name: '我也是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-      <MemberCard
-        data={{
-          name: '我也是秀秀',
-          avatar: TestAvatar,
-          type: 'add'
-        }}
-      />
-    </>
-  )
-
+  @observable searchResult: Type.SearchUserInfoData[]
   searchTimer: NodeJS.Timeout | null
 
-  constructor(props: any) {
-    super(props)
+  @action
+  componentWillMount() {
     this.showInvite = false
     this.listStatus = 'init'
     this.searchTimer = null
   }
 
+  @action
   onSearch = (value: string) => {
     if (this.listStatus !== 'show') {
       this.listStatus = 'load'
     }
     if (value === '') {
       this.listStatus = 'init'
-    } else if (value === 'xx') {
-      this.listStatus = 'nothing'
     } else {
+      if (this.props.members === undefined) {
+        return
+      }
+      // 过滤当前已加入用户
+      const currentMember = this.props.members.map(v => v.id)
+      UserService.SearchUser(value, 1, 10)
+        .then(res => {
+          runInAction(() => {
+            this.searchResult = []
+            for (const m of res.data.data) {
+              if (!currentMember.includes(m.id)) {
+                this.searchResult.push(m)
+              }
+            }
+            this.listStatus =
+              this.searchResult.length === 0 ? 'nothing' : 'show'
+          })
+        })
+        .catch(error => {
+          this.listStatus = 'nothing'
+        })
       // 发送请求
-      this.listStatus = 'show'
     }
   }
 
+  @action
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (this.listStatus !== 'show') {
       this.listStatus = 'load'
@@ -126,45 +106,82 @@ class OrgMember extends Component {
         )
 
       case 'show':
-        return this.searchResult
+        return this.searchResult.map(v => {
+          return (
+            <MemberCard
+              key={v.id}
+              data={{
+                nickname: v.nickname,
+                name: v.name,
+                avatar: v.avatar,
+                type: 'add',
+                email: '空',
+                phone: '空'
+              }}
+            />
+          )
+        })
     }
   }
 
   render() {
+    if (
+      this.props.UserStore!.state.init !== true ||
+      this.props.members === undefined
+    ) {
+      return <Skeleton active={true} />
+    }
+
+    const adminList: Type.OrgMemberInfoData[] = []
+    const devList: Type.OrgMemberInfoData[] = []
+    // const waitList: Type.OrgMemberInfoData[] = []
+    for (const m of this.props.members) {
+      if (m.role === 0) {
+        devList.push(m)
+      } else {
+        adminList.push(m)
+      }
+    }
+    const AdminMember = adminList.map(v => {
+      return (
+        <MemberCard
+          key={v.id}
+          data={{
+            name: v.name,
+            nickname: v.nickname + (v.role === 2 ? '（创建者）' : ''),
+            avatar: v.avatar,
+            type: v.role === 2 ? 'own' : 'admin',
+            isMe: v.id === this.props.UserStore!.state.info.id,
+            email: '空',
+            phone: '空'
+          }}
+        />
+      )
+    })
+    const DevMember = devList.map(v => {
+      return (
+        <MemberCard
+          key={v.id}
+          data={{
+            nickname: v.nickname,
+            name: v.name,
+            avatar: v.avatar,
+            type: 'dev',
+            isMe: v.id === this.props.UserStore!.state.info.id,
+            email: '空',
+            phone: '空'
+          }}
+        />
+      )
+    })
+
     return (
       <div className='org-member'>
-        <div className='item-title'>管理员</div>
-        <MemberCard
-          data={{
-            name: 'ZhenlyChen (创建者)',
-            avatar: TestAvatar,
-            isMe: true,
-            type: 'admin'
-          }}
-        />
-        <MemberCard
-          data={{
-            name: 'MegaShow',
-            avatar: TestAvatar,
-            type: 'admin'
-          }}
-        />
-        <div className='item-title'>开发者</div>
-        <MemberCard
-          data={{
-            name: 'AA',
-            avatar: TestAvatar,
-            type: 'dev'
-          }}
-        />
-        <MemberCard
-          data={{
-            name: 'BB',
-            avatar: TestAvatar,
-            type: 'dev'
-          }}
-        />
-        <div className='item-title'>待确认</div>
+        {AdminMember.length !== 0 && <div className='item-title'>管理员</div>}
+        {AdminMember}
+        {DevMember.length !== 0 && <div className='item-title'>开发者</div>}
+        {DevMember}
+        {/* <div className='item-title'>待确认</div>
         <MemberCard
           data={{
             name: '我好秀啊',
@@ -178,7 +195,7 @@ class OrgMember extends Component {
             avatar: TestAvatar,
             type: 'wait'
           }}
-        />
+        /> */}
         <div className='more-member'>
           <Button
             onClick={() => {

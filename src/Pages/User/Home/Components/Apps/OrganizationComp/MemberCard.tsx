@@ -7,8 +7,11 @@ import { observable } from 'mobx'
 interface IMemberCardProps {
   data: {
     name: string
+    nickname: string
     avatar: string
-    type: 'admin' | 'dev' | 'wait' | 'add'
+    type: 'admin' | 'dev' | 'wait' | 'add' | 'own'
+    email: string
+    phone: string
     isMe?: boolean
   }
 }
@@ -38,8 +41,8 @@ class MemberCard extends Component<IMemberCardProps> {
               this.showMore = !this.showMore
             }}
           >
-            <div className='user-nick'>{this.props.data.name}</div>
-            <div className='account-name'>helloWorld</div>
+            <div className='user-nick'>{this.props.data.nickname}</div>
+            <div className='account-name'>{this.props.data.name}</div>
           </div>
           <div
             className='user-control'
@@ -113,10 +116,10 @@ class MemberCard extends Component<IMemberCardProps> {
             }}
           >
             <p>
-              <span className='title'>联系邮箱:</span> zhenlychen@foxmail.com
+              <span className='title'>联系邮箱:</span> {this.props.data.email}
             </p>
             <p>
-              <span className='title'>联系电话:</span> 18823456789
+              <span className='title'>联系电话:</span> {this.props.data.phone}
             </p>
           </div>
         }

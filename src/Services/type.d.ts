@@ -1,4 +1,6 @@
 declare namespace Type {
+  // 搜索用户列表信息
+  interface SearchUserInfoData extends GetUsers.IUser {}
   // 用户信息
   interface UserInfoData extends GetUsersByExtUid.ResBody {}
   // 用户组织列表信息

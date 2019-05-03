@@ -7,8 +7,7 @@ import EditInfo from './EditInfo'
 import { observer, inject } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
-import UserLevel from '../Common/UserLevel'
-import { Tooltip, Icon, message } from 'antd'
+import { Tooltip, message } from 'antd'
 import UIStore from 'src/Store/UIStore'
 import { observable, autorun } from 'mobx'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -93,7 +92,7 @@ class Info extends Component<IInfoProps, any> {
               <div>
                 <span className='user-name'>{data.info.nickname}</span>
                 <UserGender gender={data.info.gender} />
-                <UserLevel level={data.level} />
+                {/* <UserLevel level={data.level} />
                 <Tooltip title='这是什么？'>
                   <Icon
                     style={{ fontSize: '18px', cursor: 'pointer' }}
@@ -104,7 +103,7 @@ class Info extends Component<IInfoProps, any> {
                       this.props.history.push('/user/help')
                     }}
                   />
-                </Tooltip>
+                </Tooltip> */}
               </div>
               <p className='user-bio'>{data.info.bio || '这里是个人简介'}</p>
             </div>

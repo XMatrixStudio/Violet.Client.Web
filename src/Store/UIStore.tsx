@@ -58,6 +58,7 @@ class UIStore {
     shrinkTitle?: React.ReactNode
   ) {
     this.state.title = title
+    console.log('set title' + title)
     if (subTitle !== undefined) {
       this.state.subTitle = subTitle
     }

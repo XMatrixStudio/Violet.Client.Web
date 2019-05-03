@@ -91,7 +91,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
             个组织{' '}
             <span>
               {orgRequesting ? (
-                <Tooltip placement='right' title='申请审核中'>
+                <Tooltip placement='right' title='增加上限申请审核中'>
                   <Icon
                     className='not-up-icon'
                     type='hourglass'
@@ -203,21 +203,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
                 ]
               })(<Input />)}
             </Form.Item>
-            <Form.Item
-              label={
-                <span>
-                  组织描述
-                  <Tooltip title='展示名将会在授权时候展示'>
-                    <Icon
-                      className='tip-icon'
-                      type='question-circle'
-                      theme='twoTone'
-                      twoToneColor='#b3b3b3'
-                    />
-                  </Tooltip>
-                </span>
-              }
-            >
+            <Form.Item label={<span>组织描述</span>}>
               {getFieldDecorator('orgDescription', {
                 rules: [
                   {

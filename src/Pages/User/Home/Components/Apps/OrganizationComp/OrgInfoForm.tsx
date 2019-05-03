@@ -5,13 +5,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 
 interface IPrgInfoFormProps {
   form: WrappedFormUtils
-  initData: {
-    name: string
-    describe: string
-    home: string
-    people: string
-    email: string
-  }
+  initData: Type.OrgInfoData
   next: (isEdit: boolean) => void
 }
 
@@ -59,12 +53,12 @@ class OrgInfoForm extends Component<IPrgInfoFormProps> {
           </Form.Item>
           <Form.Item label='组织简介'>
             {getFieldDecorator('orgDescribe', {
-              initialValue: initData.describe
+              initialValue: initData.info.description
             })(<Input placeholder='简短地描述你的组织' />)}
           </Form.Item>
           <Form.Item label='组织主页'>
             {getFieldDecorator('orgHome', {
-              initialValue: initData.home
+              initialValue: initData.info.url
             })(<Input placeholder='组织的主页' />)}
           </Form.Item>
           <Form.Item
@@ -89,7 +83,7 @@ class OrgInfoForm extends Component<IPrgInfoFormProps> {
                   message: '请输入组织联系人'
                 }
               ],
-              initialValue: initData.home
+              initialValue: initData.info.contact
             })(<Input />)}
           </Form.Item>
           <Form.Item
@@ -114,7 +108,7 @@ class OrgInfoForm extends Component<IPrgInfoFormProps> {
                   message: '请输入联系邮箱'
                 }
               ],
-              initialValue: initData.email
+              initialValue: initData.info.email
             })(<Input />)}
           </Form.Item>
           <Button htmlType='submit' type='primary'>
