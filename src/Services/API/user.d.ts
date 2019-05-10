@@ -8,6 +8,8 @@ declare namespace GetUsers {
     name: string
     nickname: string
     avatar: string
+    email: string
+    phone: string
   }
   interface Query extends PageQuery {
     name: string
@@ -73,6 +75,27 @@ declare namespace GetUsersAuths {
 }
 
 /**
+ * @method GET
+ * @resource `/i/users/auths`
+ */
+declare namespace GetUsersAuths {
+  interface IAuth {
+    appId: string
+    appName: string
+    appAvatar: string
+    appDisplayName: string
+    duration: number
+    scope: string[]
+    time: Date
+  }
+  interface Query extends PageQuery {}
+  interface ResBody {
+    pagination: PageRes
+    data: IAuth[]
+  }
+}
+
+/**
  * @method POST
  * @resource `/i/users/auths`
  */
@@ -81,6 +104,22 @@ declare namespace PostUsersAuths {
     appId: string
     duration: number
     scope: string[]
+  }
+}
+
+/**
+ * @method GET
+ * @resource `/i/users/auths/:appId`
+ */
+declare namespace GetUsersAuthsByAppId {
+  interface ResBody {
+    appId: string
+    appName: string
+    appAvatar: string
+    appDisplayName: string
+    duration: number
+    scope: string[]
+    time: Date
   }
 }
 

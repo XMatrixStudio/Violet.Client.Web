@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AvatarEditor from 'react-avatar-editor'
-import { Slider, Upload, Icon, Modal, message, Tooltip } from 'antd'
+import { Slider, Upload, Icon, Modal, message } from 'antd'
 import './AvatarSelect.less'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'

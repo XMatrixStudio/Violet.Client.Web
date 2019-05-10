@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import './AppInfo.less'
 import { Tag, message, Tooltip, Button, Skeleton } from 'antd'
 import AvatarSelect from '../../Common/AvatarSelect'
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import AppInfoForm from './AppInfoForm'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import DevService from 'src/Services/DevService'
+import StaticValues from 'src/Assets/StaticValues'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppInfo extends RouteComponentProps<any> {
   UIStore?: UIStore
@@ -36,9 +38,7 @@ class AppInfo extends Component<IAppInfo> {
       '在这里管理你的应用'
     )
     this.props.UIStore!.setBack(this.goBack)
-    DevService.getAppInfoByName(this.appName, true).then(res => {
-      this.appInfo = res.data
-    })
+    this.refreshAppData()
   }
 
   goBack = () => {
@@ -49,8 +49,41 @@ class AppInfo extends Component<IAppInfo> {
     }
   }
 
+  refreshAppData = (newAvatar?: boolean) => {
+    DevService.getAppInfoByName(this.appName, true).then(res => {
+      runInAction(() => {
+        this.appInfo = res.data
+        if (newAvatar === true) {
+          this.appInfo.info.avatar += '?t=' + new Date().getTime()
+        }
+      })
+    })
+  }
+
   componentDidMount() {
     document.title = '应用详情 - ' + this.appName + ' | Violet'
+  }
+
+  @action
+  uploadAvatar = async (base64: string) => {
+    const hide = message.loading('头像上传中....', 0)
+    DevService.updateApp(
+      {
+        avatar: base64
+      },
+      this.appInfo!.id
+    )
+      .then(_ => {
+        hide()
+        message.success('上传成功!')
+        // 刷新数据
+        this.refreshAppData(true)
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('上传失败, ' + msg)
+        })
+      })
   }
 
   render() {
@@ -73,9 +106,7 @@ class AppInfo extends Component<IAppInfo> {
           <AvatarSelect
             title='点击或拖动选择应用图标'
             imageURL={this.appInfo.info.avatar}
-            setImage={file => {
-              this.appIcon = file
-            }}
+            setImage={this.uploadAvatar}
           />
         </div>
         <div className='info-item'>
@@ -104,7 +135,7 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#fcc85d'
             >
-              {this.appInfo.id}
+              {this.appInfo.key}
             </Tag>
           </Tooltip>
         </div>
@@ -114,7 +145,9 @@ class AppInfo extends Component<IAppInfo> {
         </div>
         <div className='info-item'>
           <div className='info-label'>分类：</div>
-          <div className='info-box'>{this.appInfo.type}</div>
+          <div className='info-box'>
+            {StaticValues.AppTypes[this.appInfo.type]}
+          </div>
         </div>
         <div className='info-item'>
           <div className='info-label'>描述：</div>
@@ -124,10 +157,14 @@ class AppInfo extends Component<IAppInfo> {
           <div className='info-label'>主页：</div>
           <div className='info-box'>{this.appInfo.info.url}</div>
         </div>
-        <div className='info-item'>
-          <div className='info-label'>回调域：</div>
-          <div className='info-box'>{this.appInfo.createTime}</div>
-        </div>
+        {this.appInfo.callbackHosts!.map((v, i) => {
+          return (
+            <div key={v} className='info-item'>
+              <div className='info-label'> {i === 0 ? '回调域: ' : ''}</div>
+              <div className='callback-line info-box'>{v}</div>
+            </div>
+          )
+        })}
         <Button
           className='btn-edit'
           icon='edit'
@@ -150,6 +187,9 @@ class AppInfo extends Component<IAppInfo> {
             <AppInfoForm
               initData={this.appInfo}
               next={isEdit => {
+                if (isEdit) {
+                  this.refreshAppData()
+                }
                 this.isEdit = false
               }}
             />

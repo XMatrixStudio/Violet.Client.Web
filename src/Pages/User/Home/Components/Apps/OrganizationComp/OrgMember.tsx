@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import './OrgMember.less'
 import MemberCard from './MemberCard'
-import { Button, Modal, Input, Icon, Skeleton, message } from 'antd'
+import { Button, Modal, Input, Icon, Skeleton } from 'antd'
 import { observer, inject } from 'mobx-react'
 import { observable, action, runInAction } from 'mobx'
 import UserStore from 'src/Store/UserStore'
 import UserService from 'src/Services/UserService'
-import ServiceTool from 'src/Services/ServiceTool'
 
 type ListStatus = 'load' | 'nothing' | 'init' | 'show'
 

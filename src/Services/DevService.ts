@@ -127,6 +127,11 @@ export default {
     const res = await Axios.post(BASE_APP, req)
     return res
   },
+  // 更新应用信息
+  updateApp: async (req: PatchAppsById.ReqBody, id: string) => {
+    const res = await Axios.patch(BASE_APP + '/' + id, req)
+    return res
+  },
   // 通过 ID 获取应用信息
   getAppInfoById: async (id: string, all?: boolean) => {
     const res = await Axios.get<GetAppsByExtId.ResBody>(BASE_APP + '/+' + id, {

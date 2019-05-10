@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import './AppInfoForm.less'
-import { Form, Input, Button, Tooltip, Icon, Select } from 'antd'
+import { Form, Input, Button, Tooltip, Icon, Select, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import StaticValues from 'src/Assets/StaticValues'
+import { observable, action } from 'mobx'
+import { observer } from 'mobx-react'
+import DevService from 'src/Services/DevService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppInfoFormProps {
   form: WrappedFormUtils
@@ -9,20 +14,122 @@ interface IAppInfoFormProps {
   next: (isEdit: boolean) => void
 }
 
+@observer
 class AppInfoForm extends Component<IAppInfoFormProps> {
+  id = 1
+  @observable callbackKeys = ['0']
+
+  @action
+  componentWillMount() {
+    const initData = this.props.initData
+    if (initData && initData.callbackHosts!.length !== 0) {
+      initData.callbackHosts!.forEach((v, i) => {
+        if (i > 0) {
+          this.callbackKeys = this.callbackKeys.concat((this.id++).toString())
+        }
+      })
+    }
+  }
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values)
-        this.props.next(true)
+        // appClass: 4
+        // appDetail: "很好"
+        // appDisplayName: "测试"
+        // appHome: "https://baidu.com"
+        // callback_0: "https://baidu.com"
+        // callback_1: "https://localhost:30020/"
+        const callbackHosts = this.callbackKeys.map(v => {
+          return values['callback_' + v]
+        })
+        DevService.updateApp(
+          {
+            displayName: values.appDisplayName,
+            description: values.appDetail,
+            type: values.appClass,
+            url: values.appHome,
+            callbackHosts: callbackHosts
+          },
+          this.props.initData.id
+        )
+          .then(res => {
+            message.success('修改信息成功')
+            this.props.next(true)
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('修改失败,' + msg)
+            })
+          })
       }
     })
+  }
+
+  @action
+  remove = (k: string) => {
+    if (this.callbackKeys.length === 1) {
+      return
+    }
+    this.callbackKeys = this.callbackKeys.filter((key: string) => key !== k)
+  }
+
+  @action
+  add = () => {
+    this.callbackKeys = this.callbackKeys.concat((this.id++).toString())
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
     const initData = this.props.initData
+    const CallbackItems = this.callbackKeys.map((k, index) => (
+      <Form.Item
+        label={
+          index === 0 ? (
+            <span>
+              应用回调域
+              <Tooltip title='调用API时, 回调地址必须属于应用回调域，你可以添加多个回调域分别用于线上和测试'>
+                <Icon
+                  className='tip-icon'
+                  type='question-circle'
+                  theme='twoTone'
+                  twoToneColor='#b3b3b3'
+                />
+              </Tooltip>
+            </span>
+          ) : (
+            ''
+          )
+        }
+        required={true}
+        key={k}
+      >
+        {getFieldDecorator(`callback_${k}`, {
+          validateTrigger: ['onChange', 'onBlur'],
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '请输入应用回调域'
+            }
+          ],
+          initialValue: initData.callbackHosts ? initData.callbackHosts[k] : ''
+        })(
+          <Input placeholder='https://example.com/' style={{ width: '90%' }} />
+        )}
+        {index > 0 ? (
+          <Icon
+            className='dy-icons'
+            type='minus'
+            onClick={() => this.remove(k)}
+          />
+        ) : (
+          <Icon className='dy-icons' type='plus' onClick={() => this.add()} />
+        )}
+      </Form.Item>
+    ))
+
     return (
       <div className='app-info-form'>
         <div className='form-title'>修改应用信息</div>
@@ -52,19 +159,21 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
               initialValue: initData.type
             })(
               <Select style={{ maxWidth: '300px' }}>
-                <Select.Option value='0'>游戏</Select.Option>
-                <Select.Option value='1'>工具</Select.Option>
-                <Select.Option value='2'>娱乐</Select.Option>
-                <Select.Option value='3'>生活</Select.Option>
-                <Select.Option value='4 '>社交</Select.Option>
+                {StaticValues.AppTypes.map((v, i) => {
+                  return (
+                    <Select.Option key={v} value={i + 1}>
+                      {v}
+                    </Select.Option>
+                  )
+                })}
               </Select>
             )}
           </Form.Item>
           <Form.Item
             label={
               <span>
-                应用名称
-                <Tooltip title='应用名称是应用在平台唯一标识，请慎重填写。'>
+                应用显示名
+                <Tooltip title='应用显示名会在授权/市场等地方展示'>
                   <Icon
                     className='tip-icon'
                     type='question-circle'
@@ -75,22 +184,30 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
               </span>
             }
           >
-            {getFieldDecorator('appName', {
+            {getFieldDecorator('appDisplayName', {
               rules: [
                 {
                   required: true,
-                  message: '请输入应用名'
+                  message: '请输入应用显示名'
+                },
+                {
+                  max: 32,
+                  message: '应用显示名名长度不能超过32位'
                 }
               ],
               initialValue: initData.info.displayName
-            })(<Input placeholder='应用名称' />)}
+            })(<Input placeholder='应用显示名' />)}
           </Form.Item>
-          <Form.Item label='应用简介'>
-            {getFieldDecorator('appDescribe', {
+          <Form.Item label='应用描述'>
+            {getFieldDecorator('appDetail', {
               rules: [
                 {
                   required: true,
-                  message: '请输入应用简介'
+                  message: '请输入应用描述'
+                },
+                {
+                  max: 128,
+                  message: '应用描述长度不能超过128位'
                 }
               ],
               initialValue: initData.info.description
@@ -121,31 +238,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
               initialValue: initData.info.url
             })(<Input placeholder='https://example.com' />)}
           </Form.Item>
-          <Form.Item
-            label={
-              <span>
-                应用回调域
-                <Tooltip title='调用API时, 回调地址必须属于应用回调域'>
-                  <Icon
-                    className='tip-icon'
-                    type='question-circle'
-                    theme='twoTone'
-                    twoToneColor='#b3b3b3'
-                  />
-                </Tooltip>
-              </span>
-            }
-          >
-            {getFieldDecorator('appCallBack', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入应用回调域'
-                }
-              ],
-              initialValue: initData.info.url
-            })(<Input placeholder='https://example.com/verify' />)}
-          </Form.Item>
+          {CallbackItems}
           <Button htmlType='submit' type='primary'>
             保存
           </Button>

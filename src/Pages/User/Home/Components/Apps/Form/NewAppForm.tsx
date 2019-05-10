@@ -11,6 +11,7 @@ import UserStore from 'src/Store/UserStore'
 import { observable } from 'mobx'
 import ServiceTool from 'src/Services/ServiceTool'
 import DevService from 'src/Services/DevService'
+import StaticValues from 'src/Assets/StaticValues'
 
 interface INewAppFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
@@ -279,11 +280,13 @@ class NewAppForm extends Component<INewAppFormProps> {
                 ]
               })(
                 <Select style={{ maxWidth: '300px' }}>
-                  <Select.Option value='1'>游戏</Select.Option>
-                  <Select.Option value='2'>工具</Select.Option>
-                  <Select.Option value='3'>娱乐</Select.Option>
-                  <Select.Option value='4'>生活</Select.Option>
-                  <Select.Option value='5'>社交</Select.Option>
+                  {StaticValues.AppTypes.map((v, i) => {
+                    return (
+                      <Select.Option key={v} value={i + 1}>
+                        v
+                      </Select.Option>
+                    )
+                  })}
                 </Select>
               )}
             </Form.Item>

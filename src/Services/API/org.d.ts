@@ -42,6 +42,12 @@ declare namespace GetOrgsByExtId {
       phone: string
       url: string
     }
+    permission?: {
+      app: number
+      invite: number
+      member: number
+    }
+    myRole?: number
   }
 }
 
@@ -75,6 +81,8 @@ declare namespace GetOrgsByIdMembers {
     name: string
     nickname: string
     avatar: string
+    email: string
+    phone: string
     role: number
   }
   interface Query extends PageQuery {}
