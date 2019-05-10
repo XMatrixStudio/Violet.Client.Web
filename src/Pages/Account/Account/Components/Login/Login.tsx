@@ -1,10 +1,23 @@
 import React, { Component } from 'react'
 import './Login.less'
 import LoginForm from './LoginForm'
+import RouterUtil from '../Util/RouterUtil'
+import { RouteComponentProps } from 'react-router'
+import UserService from 'src/Services/UserService'
 
-class Login extends Component {
+interface ILoginProps extends RouteComponentProps<any> {}
+
+class Login extends Component<ILoginProps> {
   componentDidMount() {
     document.title = '登陆 | Violet'
+    const params = RouterUtil.getParams(this.props.location.search)
+    UserService.GetInfo(info => {
+      if (params.client_id === undefined) {
+        window.location.href = '/user/info'
+      } else {
+        this.props.history.push('/account/auth' + this.props.location.search)
+      }
+    })
   }
   public render() {
     return (

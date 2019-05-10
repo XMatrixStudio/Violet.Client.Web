@@ -1,47 +1,94 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { Icon, Popover, message } from 'antd'
+import { Icon, Popover, message, Skeleton, Button } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import AuthForm from './AuthForm'
 
 import ImgIcytown from '@/Assets/icytown.png'
 import ImgLogo from '@/Assets/logo.svg'
-import UserService from 'src/Services/UserService'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { RouteComponentProps } from 'react-router'
+import { observable, action } from 'mobx'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
+import RouterUtil from '../Util/RouterUtil'
 
-interface IAuth {
+interface IAuth extends RouteComponentProps<any> {
   form: WrappedFormUtils
 }
 
 @observer
 class Auth extends Component<IAuth> {
-  @observable userName: string
-  @observable userAvatar: string
+  @observable errorText?: string
+  @observable userInfo?: Type.UserInfoData
 
-  constructor(props: IAuth) {
-    super(props)
-    UserService.GetInfo(
-      data => {
-        this.userName = data.info.nickname
-        this.userAvatar = data.info.avatar
-      },
-      () => {
-        message.error('无法获取个人信息')
-      }
-    )
-  }
-
+  @action
   componentDidMount() {
     document.title = '授权 | Violet'
+    const params = RouterUtil.getParams(this.props.location.search)
+    if (
+      params.client_id === undefined ||
+      params.state === undefined ||
+      params.redirect_url === undefined
+    ) {
+      this.errorText = '授权链接无效'
+    } else {
+      UserService.GetInfo(
+        info => {
+          // 已登录
+          this.userInfo = info
+          this.getAuthInfo(params.client_id!)
+        },
+        () => {
+          // 未登录
+          this.props.history.push('/account' + this.props.location.search)
+        }
+      )
+    }
   }
 
-  public render() {
+  getAuthInfo = (id: string) => {
+    UserService.GetAuthByID(id)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('无法获取授权信息, ' + msg)
+        })
+      })
+  }
+
+  render() {
+    if (this.errorText !== undefined) {
+      return (
+        <div className='comp-auth'>
+          <div className='error-text'>{this.errorText}</div>
+          <Button
+            type='primary'
+            onClick={() => {
+              this.props.history.goBack()
+            }}
+          >
+            关闭
+          </Button>
+        </div>
+      )
+    }
+
+    if (this.userInfo === undefined) {
+      return (
+        <div className='comp-auth'>
+          <Skeleton active={true} />
+        </div>
+      )
+    }
+
     return (
       <div className='comp-auth'>
         <div className='info'>
-          <img className='avatar' src={this.userAvatar} />
-          <p>{this.userName}</p>
+          <img className='avatar' src={this.userInfo.info.avatar} />
+          <p>{this.userInfo.info.nickname}</p>
         </div>
         <div className='banner'>
           <img src={ImgIcytown} />

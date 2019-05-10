@@ -14,11 +14,13 @@ const routerStore = new RouterStore()
 const history = syncHistoryWithStore(browserHistory, routerStore)
 const rootStore = {
   router: routerStore,
-  AuthStore: new AuthStore()
+  AuthStore: new AuthStore(),
+  UserStore: new UserStore()
 }
 
 import { Root } from '../../Components/Root'
 import Account from './Account/Account'
+import UserStore from 'src/Store/UserStore'
 
 ReactDOM.render(
   <Provider {...rootStore}>

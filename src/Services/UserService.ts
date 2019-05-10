@@ -2,6 +2,34 @@ import axios from 'axios'
 import { createHash } from 'crypto'
 
 export default {
+  // 授权
+  Auth: async (req: PostUsersAuths.ReqBody) => {
+    const res = await axios.post('/api/i/users/auths', req)
+    return res
+  },
+  // 获取授权信息
+  GetAuthByID: async (id: string) => {
+    const res = await axios.get<GetUsersAuthsByAppId.ResBody>(
+      '/api/i/users/auths/' + id
+    )
+    return res
+  },
+  // 获取授权列表
+  GetAuths: async (page = 1, limit = 10) => {
+    const req: GetUsersAuths.Query = {
+      page: page,
+      limit: limit
+    }
+    const res = await axios.get<GetUsersAuths.ResBody>('/api/i/users/auths', {
+      params: req
+    })
+    return res
+  },
+  // 删除授权
+  RemoveAuth: async (id: string) => {
+    const res = await axios.delete('/api/i/users/auths/' + id)
+    return res
+  },
   // 搜索用户
   SearchUser: async (key: string, page = 1, limit = 10) => {
     const req: GetUsers.Query = {
@@ -19,11 +47,6 @@ export default {
     const res = await axios.get<GetUsersRequests.ResBody>(
       '/api/i/users/requests'
     )
-    return res
-  },
-  // 授权
-  Auth: async (req: PostUsersAuths.ReqBody) => {
-    const res = await axios.post('/api/i/users/auths', req)
     return res
   },
   // 更改用户等级
