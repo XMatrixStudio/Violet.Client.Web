@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './AppSetting.less'
 import '../../Common/Setting.less'
-import { Switch, Button, Select, Modal, Input, message } from 'antd'
+import { Button, Modal, Input, message } from 'antd'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import DevService from 'src/Services/DevService'
@@ -94,7 +94,7 @@ class AppSetting extends Component<IAppSettingProps> {
     return (
       <div className='app-setting setting-form'>
         <div className='base-card-box'>
-          <div className='setting-item'>
+          {/* <div className='setting-item'>
             <div className='item-info'>
               <div className='item-title'>应用状态</div>
               <div className='item-more'>你可以随时更改应用的工作状态</div>
@@ -145,7 +145,7 @@ class AppSetting extends Component<IAppSettingProps> {
                 </Select>
               </div>
             </div>
-          )}
+          )} */}
           <div className='setting-item'>
             <div className='item-info'>
               <div className='item-title'>更改应用 Key</div>
@@ -163,7 +163,7 @@ class AppSetting extends Component<IAppSettingProps> {
               </Button>
             </div>
           </div>
-          <div className='setting-item'>
+          {/* <div className='setting-item'>
             <div className='item-info'>
               <div className='item-title'>应用所有权转移</div>
               <div className='item-more'>转移后你将失去应用的控制权</div>
@@ -184,7 +184,7 @@ class AppSetting extends Component<IAppSettingProps> {
                 删除
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     )

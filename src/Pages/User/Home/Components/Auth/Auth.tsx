@@ -30,7 +30,7 @@ interface IAuthProps {
 @inject('UIStore')
 @observer
 class Auth extends Component<IAuthProps> {
-  @observable selectedRowKeys: number[]
+  @observable selectedRowKeys: string[]
   @observable visibleReport: boolean
   @observable data?: Type.UserAuthData[]
   @observable loading = true
@@ -127,22 +127,20 @@ class Auth extends Component<IAuthProps> {
     document.title = '授权管理 | Violet'
     this.props.UIStore!.setTitle('授权管理', '当前2个应用可以访问你的信息')
     this.getAuthList()
-    this.pagination.pageSize = 10
+    this.pagination.pageSize = 6
   }
 
   @action
-  getAuthList = (params = {}) => {
+  getAuthList = (params: PaginationConfig = {}) => {
     console.log(params)
-    UserService.GetAuths(1, 10).then(res => {
+    const currentPage = params.current || 1
+    const pageSize = params.pageSize || 6
+    this.loading = true
+    UserService.GetAuths(currentPage, pageSize).then(res => {
       runInAction(() => {
         this.data = res.data.data
-        for (let i = 0; i < 20; i++) {
-          const fakeData = res.data.data[0]
-          fakeData.appId = fakeData.appId + i
-          this.data.push(fakeData)
-        }
+        this.pagination.total = res.data.pagination.total
         this.loading = false
-        this.pagination.total = 200
       })
     })
   }
@@ -195,7 +193,7 @@ class Auth extends Component<IAuthProps> {
         this.selectedRowKeys = []
         let successCount = 0
         selected.forEach(async v => {
-          if (await this.removeAuth(this.data![v].appId, false)) {
+          if (await this.removeAuth(v, false)) {
             successCount++
             if (successCount === selected.length) {
               this.getAuthList()
@@ -207,8 +205,7 @@ class Auth extends Component<IAuthProps> {
     })
   }
 
-  onSelectChange = (selectedRowKeys: number[]) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+  onSelectChange = (selectedRowKeys: string[]) => {
     this.selectedRowKeys = selectedRowKeys
   }
 
@@ -268,19 +265,14 @@ class Auth extends Component<IAuthProps> {
             rowSelection={rowSelection}
             columns={this.columns}
             loading={this.loading}
+            pagination={this.pagination}
             onChange={(pagination, filters, sorter) => {
               const pager = { ...this.pagination }
               pager.current = pagination.current
               this.setState({
                 pagination: pager
               })
-              this.getAuthList({
-                results: pagination.pageSize,
-                page: pagination.current,
-                sortField: sorter.field,
-                sortOrder: sorter.order,
-                ...filters
-              })
+              this.getAuthList(pagination)
             }}
             rowKey={record => record.appId}
             expandedRowRender={(record: Type.UserAuthData) => (
