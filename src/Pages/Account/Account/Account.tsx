@@ -25,7 +25,7 @@ class Account extends Component<IAccountProps> {
   @action
   componentWillMount() {
     const params = RouterUtil.getParams(this.props.location.search)
-    if (params.client_id !== undefined) {
+    if (params.valid) {
       DevService.getAppInfoById(params.client_id)
         .then(res => {
           runInAction(() => {

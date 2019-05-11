@@ -21,7 +21,7 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
         UserService.Login(values.account, values.password, values.remember)
           .then(_ => {
             const params = RouterUtil.getParams(this.props.location.search)
-            if (params.client_id === undefined) {
+            if (!params.valid) {
               window.location.href = '/user/info'
             } else {
               this.props.history.push(

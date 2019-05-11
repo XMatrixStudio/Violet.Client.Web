@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Form, Checkbox, Button, Select, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import RouterUtil from '../Util/RouterUtil'
 import { observer } from 'mobx-react'
 import UserService from 'src/Services/UserService'
 import { observable, action } from 'mobx'
@@ -10,6 +9,8 @@ import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
+  next: (ok: boolean) => void
+  params: Type.IAuthParams
 }
 
 @observer
@@ -18,8 +19,7 @@ class AuthForm extends Component<IAuthFormProps> {
 
   @action
   componentWillMount() {
-    const params = RouterUtil.getParams(this.props.location.search)
-    params.scope.forEach(v => {
+    this.props.params.scope.forEach(v => {
       if (['info', 'message'].includes(v) && !this.authScopes.includes(v)) {
         this.authScopes.push(v)
       }
@@ -30,14 +30,13 @@ class AuthForm extends Component<IAuthFormProps> {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const params = RouterUtil.getParams(this.props.location.search)
         UserService.Auth({
-          appId: params.client_id,
+          appId: this.props.params.client_id,
           duration: parseInt(values.authTime, 10),
           scope: values.authList
         })
           .then(res => {
-            console.log(res)
+            this.props.next(true)
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {

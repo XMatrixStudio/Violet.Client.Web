@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Auth.less'
 import { observer, inject } from 'mobx-react'
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
 import {
   Table,
   Button,
@@ -10,15 +10,17 @@ import {
   Modal,
   Tooltip,
   Form,
-  Radio
+  Radio,
+  message
 } from 'antd'
 
 import IcytownIcon from '@/Assets/icytown.png'
 import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
-import UserCard from '../Common/UserCard'
 import UIStore from 'src/Store/UIStore'
+import UserService from 'src/Services/UserService'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAuthProps {
   form: WrappedFormUtils
@@ -30,12 +32,13 @@ interface IAuthProps {
 class Auth extends Component<IAuthProps> {
   @observable selectedRowKeys: number[]
   @observable visibleReport: boolean
+  @observable data: Type.UserAuthData[] = []
 
   columns = [
     {
       title: '应用',
-      dataIndex: 'name',
-      render: (text: any, record: any) => (
+      dataIndex: 'appDisplayName',
+      render: (text: string, record: Type.UserAuthData) => (
         <>
           <img className='app-icon' src={IcytownIcon} />
           <strong className='app-name'>{text}</strong>
@@ -59,12 +62,13 @@ class Auth extends Component<IAuthProps> {
     },
     {
       title: '上次登陆',
-      dataIndex: 'lastAuth'
+      dataIndex: 'time',
+      render: (text: string) => <span>{this.getTimeText(new Date(text))}</span>
     },
     {
       title: '操作',
       key: 'action',
-      render: () => (
+      render: (text: string, record: Type.UserAuthData) => (
         <>
           <Popconfirm
             title='该操作不可逆，是否取消授权？'
@@ -72,7 +76,7 @@ class Auth extends Component<IAuthProps> {
             okText='是'
             cancelText='否'
             onConfirm={() => {
-              console.log('del')
+              this.removeAuth(record.appId, true)
             }}
           >
             <Tooltip placement='bottom' title='取消授权'>
@@ -108,25 +112,6 @@ class Auth extends Component<IAuthProps> {
     }
   ]
 
-  data = [
-    {
-      key: 1,
-      name: 'Icytown',
-      own: 'MegaShow',
-      lastAuth: '3周前',
-      permission: ['base', 'info', 'message'],
-      authTime: new Date(new Date().getTime() - 1000000)
-    },
-    {
-      key: 2,
-      name: 'Coffee',
-      own: 'ZhenlyChen',
-      lastAuth: '昨天',
-      permission: ['base', 'info'],
-      authTime: new Date(new Date().getTime() - 1000000)
-    }
-  ]
-
   constructor(props: any) {
     super(props)
     this.selectedRowKeys = []
@@ -135,6 +120,50 @@ class Auth extends Component<IAuthProps> {
   componentWillMount() {
     document.title = '授权管理 | Violet'
     this.props.UIStore!.setTitle('授权管理', '当前2个应用可以访问你的信息')
+    this.getAuthList()
+  }
+
+  @action
+  getAuthList = () => {
+    UserService.GetAuths(1, 10).then(res => {
+      this.data = res.data.data
+      console.log(this.data)
+    })
+  }
+
+  getTimeText = (time: Date) => {
+    // n 小时前
+    const dur = Math.floor(
+      (new Date().getTime() - time.getTime()) / (1000 * 60 * 60)
+    )
+    if (dur < 1) {
+      return '刚刚'
+    } else if (dur < 24) {
+      return dur + '小时前'
+    } else if (dur < 24 * 30) {
+      return Math.floor(dur / 24) + '天前'
+    } else if (dur < 24 * 30 * 30) {
+      return Math.floor(dur / (24 * 30)) + '个月前'
+    } else {
+      return Math.floor(dur / (24 * 30 * 30)) + '年前'
+    }
+  }
+
+  removeAuth = async (id: string, refresh = false) => {
+    try {
+      await UserService.RemoveAuth(id)
+      if (refresh) {
+        message.success('删除成功')
+        this.getAuthList()
+      }
+      return true
+    } catch (error) {
+      ServiceTool.errorHandler(error, msg => {
+        message.error('删除失败,' + msg)
+        this.getAuthList()
+      })
+      return false
+    }
   }
 
   start = () => {
@@ -146,7 +175,18 @@ class Auth extends Component<IAuthProps> {
       cancelText: '放弃',
       centered: true,
       onOk: () => {
+        const selected = this.selectedRowKeys
         this.selectedRowKeys = []
+        let successCount = 0
+        selected.forEach(async v => {
+          if (await this.removeAuth(this.data[v].appId, false)) {
+            successCount++
+            if (successCount === selected.length) {
+              this.getAuthList()
+              message.success('已删除' + selected.length + '个应用的授权')
+            }
+          }
+        })
       }
     })
   }
@@ -200,6 +240,7 @@ class Auth extends Component<IAuthProps> {
         </Modal>
         <div className='auth-card base-card-box'>
           <div>
+            <span className='auth-title'>已授权应用</span>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}
             <Button type='danger' onClick={this.start} disabled={!hasSelected}>
               取消授权
@@ -209,28 +250,29 @@ class Auth extends Component<IAuthProps> {
             className='auth-table'
             rowSelection={rowSelection}
             columns={this.columns}
-            expandedRowRender={record => (
+            expandedRowRender={(record: Type.UserAuthData) => (
               <div>
-                <p>
+                {/* <p>
                   <strong>开发方: </strong>
                   <UserCard name={record.own} />
-                </p>
+                </p> */}
                 <p>
                   <strong>授权时间:</strong>{' '}
-                  {dateFormat(record.authTime, 'yyyy/mm/dd h:MM:ss')}
+                  {dateFormat(record.time, 'yyyy/mm/dd hh:MM:ss')}
                 </p>
                 <p>
-                  <strong>有效时间:</strong> 14天
+                  <strong>有效时间:</strong>
+                  {record.duration === 0 ? '单次' : record.duration + '天'}
                 </p>
                 <p>
                   <strong>权限:</strong>
                 </p>
                 <ul>
                   <li>获取您的昵称、头像</li>
-                  {record.permission.indexOf('info') === -1 ? null : (
+                  {!record.scope.includes('info') ? null : (
                     <li>获取您的个人信息</li>
                   )}
-                  {record.permission.indexOf('message') === -1 ? null : (
+                  {!record.scope.includes('message') ? null : (
                     <li>向您发送通知</li>
                   )}
                 </ul>

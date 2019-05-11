@@ -22,7 +22,8 @@ export default {
           handler(error.response.data.error)
       }
     } else {
-      message.error('发生错误')
+      // message.error('发生错误')
+      handler('')
     }
   }
 }
