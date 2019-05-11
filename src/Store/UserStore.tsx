@@ -76,6 +76,10 @@ class UserStore {
     }
   }
 
+  @action logout() {
+    this.state.init = false
+  }
+
   @action addOrgs(orgs: Type.UserOrgInfoData[], first: boolean) {
     if (first) {
       this.orgs = orgs

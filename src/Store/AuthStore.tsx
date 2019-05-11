@@ -1,7 +1,6 @@
 import { observable, action, autorun, IReactionDisposer } from 'mobx'
 
 export interface IUser {
-  isLogin: boolean
   registerValidTime: Date
   resetValidTime: Date
 }
@@ -19,8 +18,6 @@ class AuthStore {
       }
     } else {
       this.state = {
-        isLogin: false,
-        // info: {},
         registerValidTime: new Date(0),
         resetValidTime: new Date(0)
       }
@@ -45,15 +42,6 @@ class AuthStore {
 
   @action setResetValidTime() {
     this.state.resetValidTime = new Date()
-  }
-
-  @action login() {
-    this.state.isLogin = true
-  }
-
-  @action signOut() {
-    this.state.isLogin = false
-    // this.state.info = {}
   }
 }
 

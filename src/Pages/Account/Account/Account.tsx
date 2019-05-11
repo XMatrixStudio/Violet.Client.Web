@@ -6,12 +6,43 @@ import Register from './Components/Register/Register'
 import Auth from './Components/Auth/Auth'
 import Reset from './Components/Reset/Reset'
 import { Route, Switch, RouteComponentProps, withRouter } from 'react-router'
+import RouterUtil from './Components/Util/RouterUtil'
+import { observable, action, runInAction } from 'mobx'
+import { observer } from 'mobx-react'
+import DevService from 'src/Services/DevService'
+import ServiceTool from 'src/Services/ServiceTool'
+import { message } from 'antd'
+import AppInfoModal from './Components/Auth/AppInfoModal'
 
 interface IAccountProps extends RouteComponentProps<any> {}
 
+@observer
 class Account extends Component<IAccountProps> {
+  @observable title: string = 'Violet'
+  @observable appInfo?: Type.AppInfoData
+  @observable showInfoModal = false
+
+  @action
+  componentWillMount() {
+    const params = RouterUtil.getParams(this.props.location.search)
+    if (params.client_id !== undefined) {
+      DevService.getAppInfoById(params.client_id)
+        .then(res => {
+          runInAction(() => {
+            this.appInfo = res.data
+            this.title = '授权登陆到 ' + res.data.info.displayName
+          })
+        })
+        .catch(error => {
+          ServiceTool.errorHandler(error, msg => {
+            message.error('无效的应用, ' + msg)
+            this.props.history.push('/account/auth')
+          })
+        })
+    }
+  }
+
   colorfulTop = (pathname: string) => {
-    console.log(pathname)
     if (pathname === '/account') {
       return 'login-card'
     } else if (pathname.includes('/account/register')) {
@@ -27,13 +58,26 @@ class Account extends Component<IAccountProps> {
   render() {
     return (
       <div className='account-div'>
+        {this.appInfo && (
+          <AppInfoModal
+            visible={this.showInfoModal}
+            close={() => {
+              this.showInfoModal = false
+            }}
+            appInfo={this.appInfo}
+          />
+        )}
         <p
           className='account-title'
           onClick={() => {
-            window.location.href = '/' // 返回主页
+            if (this.title === 'Violet') {
+              window.location.href = '/' // 返回主页
+            } else {
+              this.showInfoModal = true
+            }
           }}
         >
-          Violet
+          {this.title}
         </p>
         <div
           className={
@@ -57,7 +101,9 @@ class Account extends Component<IAccountProps> {
               <Switch>
                 <Route exact={true} path='/account' component={Login} />
                 <Route path='/account/register' component={Register} />
-                <Route path='/account/auth' component={Auth} />
+                <Route path='/account/auth'>
+                  <Auth appInfo={this.appInfo} />
+                </Route>
                 <Route path='/account/reset' component={Reset} />
               </Switch>
             </CSSTransition>

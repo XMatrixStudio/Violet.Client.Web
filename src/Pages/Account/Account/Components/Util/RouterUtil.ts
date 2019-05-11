@@ -1,10 +1,11 @@
 import { History, Location } from 'history'
 
 interface IAuthParams {
-  client_id?: string
-  quick_mode?: string
-  redirect_url?: string
-  state?: string
+  client_id: string
+  quick_mode: boolean
+  redirect_url: string
+  state: string
+  scope: string[]
 }
 
 export default {
@@ -17,12 +18,19 @@ export default {
   },
   getParams(url: string) {
     const search = url.substring(url.lastIndexOf('?') + 1)
-    const obj: IAuthParams = {}
+    const obj: { [propName: string]: string } = {}
     const reg = /([^?&=]+)=([^?&=]*)/g
     search.replace(reg, (rs, $1, $2) => {
       obj[decodeURIComponent($1)] = String(decodeURIComponent($2))
       return rs
     })
-    return obj
+    const res: IAuthParams = {
+      client_id: obj.client_id,
+      quick_mode: obj.quick_mode === 'true',
+      redirect_url: obj.redirect_url,
+      state: obj.state,
+      scope: obj.scope ? obj.scope.split(',') : ['base']
+    }
+    return res
   }
 }

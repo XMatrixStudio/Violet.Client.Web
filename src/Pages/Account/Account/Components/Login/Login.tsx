@@ -12,6 +12,7 @@ class Login extends Component<ILoginProps> {
     document.title = '登陆 | Violet'
     const params = RouterUtil.getParams(this.props.location.search)
     UserService.GetInfo(info => {
+      console.log(params.client_id)
       if (params.client_id === undefined) {
         window.location.href = '/user/info'
       } else {

@@ -1,26 +1,49 @@
 import React, { Component } from 'react'
-import { Form, Checkbox, Button, Select } from 'antd'
+import { Form, Checkbox, Button, Select, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import RouterUtil from '../Util/RouterUtil'
-import { inject, observer } from 'mobx-react'
-import AuthStore from 'src/Store/AuthStore'
+import { observer } from 'mobx-react'
 import UserService from 'src/Services/UserService'
+import { observable, action } from 'mobx'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
-  AuthStore?: AuthStore
 }
 
-@inject('AuthStore')
 @observer
 class AuthForm extends Component<IAuthFormProps> {
+  @observable authScopes: string[] = ['base']
+
+  @action
+  componentWillMount() {
+    const params = RouterUtil.getParams(this.props.location.search)
+    params.scope.forEach(v => {
+      if (['info', 'message'].includes(v) && !this.authScopes.includes(v)) {
+        this.authScopes.push(v)
+      }
+    })
+  }
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        window.location.href = '/user'
-        console.log('Received values of form: ', values)
+        const params = RouterUtil.getParams(this.props.location.search)
+        UserService.Auth({
+          appId: params.client_id,
+          duration: parseInt(values.authTime, 10),
+          scope: values.authList
+        })
+          .then(res => {
+            console.log(res)
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('授权失败, ' + msg)
+            })
+          })
       }
     })
   }
@@ -31,7 +54,7 @@ class AuthForm extends Component<IAuthFormProps> {
       <Form onSubmit={this.handleSubmit} className='auth-form'>
         <Form.Item>
           {getFieldDecorator('authList', {
-            initialValue: ['base', 'info', 'message']
+            initialValue: this.authScopes
           })(
             <Checkbox.Group className='checkbox-group'>
               <Checkbox
@@ -45,28 +68,32 @@ class AuthForm extends Component<IAuthFormProps> {
               >
                 获取您的昵称、头像、性别
               </Checkbox>
-              <Checkbox
-                style={{ width: '100%', marginBottom: '8px' }}
-                value='info'
-              >
-                获取您的公开个人信息
-              </Checkbox>
-              <Checkbox style={{ width: '100%' }} value='message'>
-                向您发送通知
-              </Checkbox>
+              {this.authScopes.includes('info') && (
+                <Checkbox
+                  style={{ width: '100%', marginBottom: '8px' }}
+                  value='info'
+                >
+                  获取您的公开个人信息
+                </Checkbox>
+              )}
+              {this.authScopes.includes('message') && (
+                <Checkbox style={{ width: '100%' }} value='message'>
+                  向您发送通知
+                </Checkbox>
+              )}
             </Checkbox.Group>
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('authTime', {
-            initialValue: 'long'
+            initialValue: '15'
           })(
-            <Select defaultValue='long'>
-              <Select.Option value='single'>仅单次授权</Select.Option>
-              <Select.Option value='short'>7天内自动授权</Select.Option>
-              <Select.Option value='long'>15天内自动授权</Select.Option>
-              <Select.Option value='month'>30天内自动授权</Select.Option>
-              <Select.Option value='season'>3个月内自动授权</Select.Option>
+            <Select>
+              <Select.Option value='0'>仅单次授权</Select.Option>
+              <Select.Option value='7'>7天内自动授权</Select.Option>
+              <Select.Option value='15'>15天内自动授权</Select.Option>
+              <Select.Option value='30'>30天内自动授权</Select.Option>
+              <Select.Option value='90'>3个月内自动授权</Select.Option>
             </Select>
           )}
         </Form.Item>
@@ -75,9 +102,6 @@ class AuthForm extends Component<IAuthFormProps> {
           type='primary'
           block={true}
           htmlType='submit'
-          onClick={() => {
-            window.location.href = '/user'
-          }}
         >
           授权
         </Button>
@@ -86,9 +110,8 @@ class AuthForm extends Component<IAuthFormProps> {
           type='dashed'
           block={true}
           onClick={() => {
-            this.props.AuthStore!.signOut()
             UserService.Logout()
-            RouterUtil.GoBackAccount(this.props.history, this.props.location)
+            this.props.history.push('/account' + this.props.location.search)
           }}
         >
           切换账号

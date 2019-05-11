@@ -10,7 +10,9 @@ import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 
 interface IUserCard {
-  name: string
+  name?: string
+  id?: string
+  showName?: string
 }
 
 @observer
@@ -23,19 +25,37 @@ class UserCard extends Component<IUserCard> {
   onVisibleChange = (visible: boolean) => {
     if (visible && !this.loading && this.userInfo === undefined) {
       this.loading = true
-      UserService.GetUserInfo(this.props.name)
-        .then(res => {
-          runInAction(() => {
-            this.userInfo = res.data
-            this.loading = false
+      if (this.props.name) {
+        UserService.GetUserInfo(this.props.name)
+          .then(res => {
+            runInAction(() => {
+              this.userInfo = res.data
+              this.loading = false
+            })
           })
-        })
-        .catch(error => {
-          ServiceTool.errorHandler(error, msg => {
-            message.error('用户不存在')
-            this.error = true
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('用户不存在')
+              this.error = true
+            })
           })
-        })
+      } else if (this.props.id) {
+        UserService.GetUserInfoByID(this.props.id)
+          .then(res => {
+            runInAction(() => {
+              this.userInfo = res.data
+              this.loading = false
+            })
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('用户不存在')
+              this.error = true
+            })
+          })
+      } else {
+        this.error = true
+      }
     }
   }
 
@@ -63,7 +83,14 @@ class UserCard extends Component<IUserCard> {
           {this.userInfo.info.phone && (
             <p>联系电话: {this.userInfo.info.phone}</p>
           )}
-          <Button icon='message'>联系</Button>
+          <Button
+            icon='message'
+            onClick={() => {
+              message.info('暂未开放')
+            }}
+          >
+            联系
+          </Button>
         </div>
       )
 
@@ -74,7 +101,10 @@ class UserCard extends Component<IUserCard> {
         onVisibleChange={this.onVisibleChange}
       >
         <span className='own-name'>
-          {this.props.children || this.props.name}
+          {this.props.children ||
+            this.props.showName ||
+            this.props.name ||
+            '用户详情'}
         </span>
       </Popover>
     )

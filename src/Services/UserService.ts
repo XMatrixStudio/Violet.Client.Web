@@ -76,10 +76,14 @@ export default {
       if (res && res.data) {
         success(res.data)
       } else {
-        failed!()
+        if (failed) {
+          failed()
+        }
       }
     } catch (_) {
-      failed!()
+      if (failed) {
+        failed()
+      }
     }
   },
   // 修改信息

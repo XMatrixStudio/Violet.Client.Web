@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { Icon, Popover, message, Skeleton, Button } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { Icon, Skeleton, Button } from 'antd'
 import AuthForm from './AuthForm'
 
 import ImgIcytown from '@/Assets/icytown.png'
 import ImgLogo from '@/Assets/logo.svg'
 import { observer } from 'mobx-react'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { observable, action } from 'mobx'
 import UserService from 'src/Services/UserService'
-import ServiceTool from 'src/Services/ServiceTool'
 import RouterUtil from '../Util/RouterUtil'
+import AppInfoModal from './AppInfoModal'
 
 interface IAuth extends RouteComponentProps<any> {
-  form: WrappedFormUtils
+  appInfo?: Type.AppInfoData
 }
 
 @observer
 class Auth extends Component<IAuth> {
   @observable errorText?: string
   @observable userInfo?: Type.UserInfoData
+  @observable showInfoModal = false
 
   @action
   componentDidMount() {
@@ -53,9 +53,7 @@ class Auth extends Component<IAuth> {
         console.log(res)
       })
       .catch(error => {
-        ServiceTool.errorHandler(error, msg => {
-          message.error('无法获取授权信息, ' + msg)
-        })
+        // 未授权
       })
   }
 
@@ -76,7 +74,7 @@ class Auth extends Component<IAuth> {
       )
     }
 
-    if (this.userInfo === undefined) {
+    if (this.userInfo === undefined || this.props.appInfo === undefined) {
       return (
         <div className='comp-auth'>
           <Skeleton active={true} />
@@ -97,29 +95,22 @@ class Auth extends Component<IAuth> {
           <div className='my-line' />
         </div>
         <div className='client'>
+          <AppInfoModal
+            visible={this.showInfoModal}
+            close={() => {
+              this.showInfoModal = false
+            }}
+            appInfo={this.props.appInfo}
+          />
           <p>
             您将授予{' '}
-            <Popover
-              content={
-                <div>
-                  <p>Icytown博客评论系统</p>
-                  <p>
-                    By{' '}
-                    <a href='github.com/MegaShow' target='_blank'>
-                      {' '}
-                      MegaShow
-                    </a>
-                  </p>
-                  <a href='https://icytown.com' target='_blank'>
-                    https://icytown.com
-                  </a>
-                </div>
-              }
-              title='Icytown'
-              placement='bottom'
+            <strong
+              onClick={() => {
+                this.showInfoModal = true
+              }}
             >
-              <strong>Icytown</strong>
-            </Popover>{' '}
+              {this.props.appInfo.info.displayName}
+            </strong>{' '}
             以下权限：
           </p>
         </div>
@@ -129,4 +120,4 @@ class Auth extends Component<IAuth> {
   }
 }
 
-export default Auth
+export default withRouter(Auth)

@@ -4,15 +4,13 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
-import { inject, observer } from 'mobx-react'
-import AuthStore from 'src/Store/AuthStore'
+import { observer } from 'mobx-react'
+import RouterUtil from '../Util/RouterUtil'
 
 interface ILoginFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
-  AuthStore?: AuthStore
 }
 
-@inject('AuthStore')
 @observer
 class NormalLoginForm extends React.Component<ILoginFormProps, any> {
   handleSubmit = (e: React.FormEvent) => {
@@ -22,8 +20,14 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
         // {account: "zhenly", password: "123456", remember: true}
         UserService.Login(values.account, values.password, values.remember)
           .then(_ => {
-            this.props.AuthStore!.login()
-            this.props.history.push('/account/auth')
+            const params = RouterUtil.getParams(this.props.location.search)
+            if (params.client_id === undefined) {
+              window.location.href = '/user/info'
+            } else {
+              this.props.history.push(
+                '/account/auth' + this.props.location.search
+              )
+            }
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
