@@ -1,5 +1,7 @@
-import axios from 'axios'
+import Axios from 'axios'
 import { createHash } from 'crypto'
+
+const axios = Axios.create()
 
 export default {
   // 授权

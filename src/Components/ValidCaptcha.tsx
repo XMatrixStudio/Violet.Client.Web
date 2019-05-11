@@ -20,12 +20,7 @@ interface IValidCaptchaProps {
 @observer
 class ValidCaptcha extends Component<IValidCaptchaProps> {
   imageCaptcha: ImageCaptcha | null
-  @observable showImage: boolean
-
-  constructor(props: IValidCaptchaProps) {
-    super(props)
-    this.showImage = true
-  }
+  @observable showImageCaptcha = true
 
   refreshCaptcha = () => {
     if (this.imageCaptcha) {
@@ -42,10 +37,10 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
 
   hideImageCaptcha = () => {
     if (this.remainTime() < 0) {
-      this.showImage = true
+      this.showImageCaptcha = true
       return
     }
-    this.showImage = false
+    this.showImageCaptcha = false
     setTimeout(this.hideImageCaptcha, 1000)
   }
 
@@ -73,8 +68,8 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                 case 'timeout_captcha':
                   message.error('验证码已超时')
                   break
-                case 'not_exist_user':
-                  message.error('用户不存在')
+                case 'exist_user':
+                  message.error('该账户已存在')
                   break
                 case 'invalid_email':
                   message.error('无效的邮箱地址')
@@ -112,7 +107,7 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
     const { getFieldDecorator } = this.props.form
     return (
       <>
-        <div style={{ display: this.showImage ? 'block' : 'none' }}>
+        <div style={{ display: this.showImageCaptcha ? 'block' : 'none' }}>
           <ImageCaptcha
             form={this.props.form}
             ref={inst => (this.imageCaptcha = inst)}

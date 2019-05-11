@@ -4,14 +4,12 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
-import { observer } from 'mobx-react'
 import RouterUtil from '../Util/RouterUtil'
 
 interface ILoginFormProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
 }
 
-@observer
 class NormalLoginForm extends React.Component<ILoginFormProps, any> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

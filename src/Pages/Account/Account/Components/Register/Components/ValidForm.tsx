@@ -44,7 +44,6 @@ class ValidForm extends Component<IValidFormProps> {
               }
             })
           })
-        console.log('Received values of form: ', values)
       }
     })
   }

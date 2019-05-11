@@ -8,20 +8,20 @@ import UserService from 'src/Services/UserService'
 interface ILoginProps extends RouteComponentProps<any> {}
 
 class Login extends Component<ILoginProps> {
-  componentDidMount() {
+  componentWillMount() {
     document.title = '登陆 | Violet'
-    console.log(this.props.location.state)
     if (
       this.props.location.state &&
       this.props.location.state.isLogin === false
     ) {
+      // 清除状态
       const state = { ...this.props.history.location.state }
       delete state.isLogin
       this.props.history.replace({ ...this.props.history.location, state })
-      // this.props.history.
     } else {
       const params = RouterUtil.getParams(this.props.location.search)
       UserService.GetInfo(info => {
+        // 当前已登陆，直接跳转
         if (!params.valid) {
           window.location.href = '/user/info'
         } else {
@@ -30,7 +30,8 @@ class Login extends Component<ILoginProps> {
       })
     }
   }
-  public render() {
+
+  render() {
     return (
       <div className='comp-login'>
         <div className='card-title'>

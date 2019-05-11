@@ -5,9 +5,9 @@ import { Icon, Button } from 'antd'
 import ValidForm from './Components/ValidForm'
 import InfoForm from './Components/InfoForm'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
-import Title from './Components/Title'
+import { observable, action } from 'mobx'
 import RouterUtil from '../Util/RouterUtil'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 interface IRouterProps extends RouteComponentProps<any> {}
 
@@ -15,14 +15,13 @@ interface IRouterProps extends RouteComponentProps<any> {}
 class Register extends Component<IRouterProps> {
   @observable currentStep = 0
   @observable id = 'Null'
-  @observable showAnim = false
 
+  @action
   nextStep = (id?: string) => {
     if (id !== undefined) {
       this.id = id
     }
     this.currentStep++
-    this.showAnim = true
     if (this.currentStep > 3) {
       this.currentStep = 0
     }
@@ -31,6 +30,7 @@ class Register extends Component<IRouterProps> {
   componentDidMount() {
     document.title = '注册 | Violet'
   }
+
   UserForm = () => {
     switch (this.currentStep) {
       case 1:
@@ -48,10 +48,7 @@ class Register extends Component<IRouterProps> {
               type='primary'
               className='register-btn'
               onClick={() => {
-                RouterUtil.GoBackAccount(
-                  this.props.history,
-                  this.props.location
-                )
+                this.props.history.push('/account')
               }}
             >
               立即登陆
@@ -72,7 +69,6 @@ class Register extends Component<IRouterProps> {
           onClick={() => {
             if (this.currentStep === 1) {
               this.currentStep--
-              this.showAnim = true
             } else if (this.currentStep === 0) {
               RouterUtil.GoBackAccount(this.props.history, this.props.location)
             }
@@ -84,15 +80,42 @@ class Register extends Component<IRouterProps> {
     }
   }
 
+  RegisterTitle = (step: number) => {
+    switch (step) {
+      case 1:
+        return <p className='title-to'>完善信息</p>
+      case 2:
+        return <p className='title-to'>准备就绪</p>
+      default:
+        return <p className='title-to'>注 册</p>
+    }
+  }
+
   public render() {
-    const currentStep = this.currentStep
+    console.log('render register')
     return (
       <div className='comp-register'>
         <this.BackIcon />
         <div className='card-title'>
-          <Title currentStep={currentStep} />
+          {this.RegisterTitle(this.currentStep)}
           <div className='line' />
-          <this.UserForm />
+          <TransitionGroup>
+            <CSSTransition
+              key={this.currentStep}
+              classNames={{
+                appear: 'animated fadeIn',
+                appearActive: 'animated fadeIn',
+                appearDone: 'animated fadeIn',
+                enter: 'animated fadeIn',
+                enterActive: 'animated fadeIn',
+                enterDone: 'animated fadeIn'
+              }}
+              exit={false}
+              timeout={100}
+            >
+              <this.UserForm />
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     )
