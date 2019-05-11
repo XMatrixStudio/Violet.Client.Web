@@ -7,14 +7,17 @@ import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
+import UserStore from 'src/Store/UserStore'
+import moment from 'moment'
 
 interface IEditPasswordProps extends RouteComponentProps<any> {
   form: WrappedFormUtils
   finish: (isEdit: boolean) => void
   UIStore?: UIStore
+  UserStore?: UserStore
 }
 
-@inject('UIStore')
+@inject('UIStore', 'UserStore')
 @observer
 class EditPassword extends Component<IEditPasswordProps, any> {
   constructor(props: IEditPasswordProps) {
@@ -73,11 +76,17 @@ class EditPassword extends Component<IEditPasswordProps, any> {
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const info = this.props.UserStore!.data
     return (
       <div className='form-layout'>
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item className='hits-text'>
-            上次修改密码： <strong>无数据</strong>
+            上次修改密码：{' '}
+            <strong>
+              {this.props.UserStore!.init && info.log && info.log.password
+                ? moment(info.log.password).format('YYYY/M/DD HH:mm:ss')
+                : '无数据'}
+            </strong>
           </Form.Item>
           <Form.Item label='旧密码'>
             {getFieldDecorator('oldPassword', {

@@ -151,11 +151,11 @@ class Home extends React.Component<IHomeProps, any> {
           </div>
           <div className={sideMenu ? 'user-info-small' : 'user-info'}>
             <img
-              src={this.props.UserStore!.state.info.info.avatar}
+              src={this.props.UserStore!.data.info.avatar}
               className='user-avatar'
             />
             <p className='user-name'>
-              {this.props.UserStore!.state.info.info.nickname}
+              {this.props.UserStore!.data.info.nickname}
               <Tooltip placement='right' title='退出登陆'>
                 <Icon
                   className='logout-btn'
@@ -183,16 +183,16 @@ class Home extends React.Component<IHomeProps, any> {
               <Icon type='link' />
               <span>授权管理</span>
             </Menu.Item>
-            <Menu.Item key='message'>
+            {/* <Menu.Item key='message'>
               <Icon type='message' />
               <span>通知信息</span>
               <Badge dot={false} />
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key='apps'>
               <Icon type='code' />
               <span>应用管理</span>
             </Menu.Item>
-            {this.props.UserStore!.state.info.level >= 50 && (
+            {this.props.UserStore!.data.level >= 50 && (
               <Menu.Item key='setting'>
                 <Icon type='setting' />
                 <span>系统设置</span>

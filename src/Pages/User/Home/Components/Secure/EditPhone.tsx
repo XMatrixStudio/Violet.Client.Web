@@ -80,9 +80,7 @@ class EditPhone extends Component<IEditPhoneProps, any> {
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item className='hits-text'>
             当前手机号:{' '}
-            <strong>
-              {this.props.UserStore!.state.info.phone || '未绑定'}
-            </strong>
+            <strong>{this.props.UserStore!.data.phone || '未绑定'}</strong>
           </Form.Item>
           <Form.Item label='绑定手机号'>
             {getFieldDecorator('account', {

@@ -26,7 +26,7 @@ export default {
     ) {
       valid = false
     }
-    const res: Type.IAuthParams = {
+    const res: Type.AuthParams = {
       response_type: obj.response_type,
       client_id: obj.client_id,
       quick_mode: obj.quick_mode === 'true',

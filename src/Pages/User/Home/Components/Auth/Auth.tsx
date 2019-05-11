@@ -132,7 +132,6 @@ class Auth extends Component<IAuthProps> {
 
   @action
   getAuthList = (params: PaginationConfig = {}) => {
-    console.log(params)
     const currentPage = params.current || 1
     const pageSize = params.pageSize || 6
     this.loading = true

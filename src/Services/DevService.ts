@@ -11,12 +11,14 @@ export default {
     const res = await Axios.post(BASE_ORG, data)
     return res
   },
+  // 通过ID获取组织信息
   getOrgInfoByID: async (id: string, all = false) => {
     const res = await Axios.get<GetOrgsByExtId.ResBody>(BASE_ORG + '/+' + id, {
       params: { all: all }
     })
     return res
   },
+  // 通过名字获取组织信息
   getOrgInfoByName: async (name: string, all = false) => {
     const res = await Axios.get<GetOrgsByExtId.ResBody>(BASE_ORG + '/' + name, {
       params: { all: all }

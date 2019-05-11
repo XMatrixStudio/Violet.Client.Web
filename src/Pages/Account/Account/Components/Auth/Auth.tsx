@@ -21,7 +21,7 @@ class Auth extends Component<IAuth> {
   @observable errorText?: string
   @observable userInfo?: Type.UserInfoData
   @observable showInfoModal = false
-  params: Type.IAuthParams
+  params: Type.AuthParams
 
   @action
   componentWillMount() {

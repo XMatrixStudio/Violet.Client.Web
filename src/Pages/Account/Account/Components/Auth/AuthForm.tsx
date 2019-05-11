@@ -10,7 +10,7 @@ import ServiceTool from 'src/Services/ServiceTool'
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
   next: (ok: boolean, msg?: string) => void
-  params: Type.IAuthParams
+  params: Type.AuthParams
 }
 
 @observer

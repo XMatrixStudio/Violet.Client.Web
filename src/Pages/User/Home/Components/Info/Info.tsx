@@ -9,7 +9,7 @@ import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
 import { Tooltip, message } from 'antd'
 import UIStore from 'src/Store/UIStore'
-import { observable, autorun } from 'mobx'
+import { observable, observe } from 'mobx'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import UserService from 'src/Services/UserService'
 import UserGender from '../Common/UserGender'
@@ -24,17 +24,27 @@ interface IInfoProps extends RouteComponentProps<any> {
 class Info extends Component<IInfoProps, any> {
   @observable nickname: string
 
-  componentDidMount() {
-    autorun(() => {
-      this.props.UIStore!.setTitle(
-        'Hi, ' + this.props.UserStore!.state.info.info.nickname,
-        this.tip(),
-        '个人信息'
-      )
+  componentWillMount() {
+    if (this.props.UserStore!.init) {
+      this.updateTitle()
+    }
+    observe(this.props.UserStore!.data, () => {
+      if (this.props.location.pathname.includes('/user/info')) {
+        this.updateTitle()
+      }
     })
   }
 
-  updateInfo = () => {
+  updateTitle = () => {
+    this.props.UIStore!.setTitle(
+      'Hi, ' + this.props.UserStore!.data.info.nickname,
+      this.tip(),
+      '个人信息'
+    )
+  }
+
+  /** 刷新用户信息 */
+  refreshInfo = () => {
     this.props.UserStore!.updateInfo(() => {
       window.location.href = '/account'
     })
@@ -74,7 +84,7 @@ class Info extends Component<IInfoProps, any> {
   }
 
   render() {
-    const data = this.props.UserStore!.state.info
+    const data = this.props.UserStore!.data
     return (
       <div className='info-content'>
         <div className='content-box'>
@@ -121,7 +131,7 @@ class Info extends Component<IInfoProps, any> {
                   <EditInfo
                     next={isEdit => {
                       if (isEdit) {
-                        this.updateInfo()
+                        this.refreshInfo()
                       }
                       this.props.history.replace('/user/info')
                     }}

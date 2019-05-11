@@ -18,10 +18,10 @@ interface ISettingProps extends RouteComponentProps<any> {
 @observer
 class Setting extends Component<ISettingProps> {
   render() {
-    if (!this.props.UserStore!.state.init) {
+    if (!this.props.UserStore!.init) {
       return <Skeleton active={true} />
     }
-    if (this.props.UserStore!.state.info.level < 50) {
+    if (this.props.UserStore!.data.level < 50) {
       return <div>暂无权限</div>
     }
     return (

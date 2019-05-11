@@ -69,7 +69,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
   }
   render() {
     const { getFieldDecorator } = this.props.form
-    const devInfo = this.props.UserStore!.state.info.dev
+    const devInfo = this.props.UserStore!.data.dev
     if (!devInfo) {
       return null
     }

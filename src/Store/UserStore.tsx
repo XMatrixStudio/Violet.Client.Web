@@ -2,13 +2,8 @@ import { observable, action, runInAction } from 'mobx'
 import UserService from 'src/Services/UserService'
 import UtilService from 'src/Services/UtilService'
 
-export interface IUser {
-  init: boolean
-  info: Type.UserInfoData
-}
-
 class UserStore {
-  @observable state: IUser
+  @observable data: Type.UserInfoData
   @observable orgs: Type.UserOrgInfoData[]
   @observable loginLog: Array<{
     time: Date
@@ -16,20 +11,9 @@ class UserStore {
     location?: string
   }>
   @observable requests: GetUsersRequests.IRequest[]
+  @observable init: boolean
   constructor() {
-    this.state = {
-      init: false,
-      info: {
-        id: '',
-        name: '',
-        level: 0,
-        createTime: new Date(0),
-        info: {
-          avatar: '',
-          nickname: ''
-        }
-      }
-    }
+    this.logout()
     this.loginLog = []
     this.orgs = []
     this.requests = []
@@ -44,6 +28,7 @@ class UserStore {
     })
   }
 
+  @action
   updateInfo(failed?: () => void, newAvatar?: boolean) {
     UserService.GetInfo(data => {
       if (newAvatar === true) {
@@ -53,10 +38,11 @@ class UserStore {
     }, failed)
   }
 
-  @action setInfo(info: Type.UserInfoData) {
-    this.state.info = info
-    this.state.init = true
-    const log = info.log
+  @action
+  setInfo(data: Type.UserInfoData) {
+    this.data = data
+    this.init = true
+    const log = data.log
     // 按需解析 IP 地址
     if (log) {
       if (this.loginLog.length !== log.login.length) {
@@ -76,11 +62,23 @@ class UserStore {
     }
   }
 
-  @action logout() {
-    this.state.init = false
+  @action
+  logout() {
+    this.init = false
+    this.data = {
+      id: '',
+      name: '',
+      level: 0,
+      createTime: new Date(0),
+      info: {
+        avatar: '',
+        nickname: ''
+      }
+    }
   }
 
-  @action addOrgs(orgs: Type.UserOrgInfoData[], first: boolean) {
+  @action
+  addOrgs(orgs: Type.UserOrgInfoData[], first: boolean) {
     if (first) {
       this.orgs = orgs
     } else {

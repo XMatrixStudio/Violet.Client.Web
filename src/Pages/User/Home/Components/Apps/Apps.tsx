@@ -12,6 +12,7 @@ import UIStore from 'src/Store/UIStore'
 import AppInit from './AppInit'
 import UserStore from 'src/Store/UserStore'
 import { observe } from 'mobx'
+import { Skeleton } from 'antd'
 
 interface IAppsProps extends RouteComponentProps<any> {
   UIStore?: UIStore
@@ -26,12 +27,12 @@ class Apps extends Component<IAppsProps> {
 
   checkLevel = (pathname: string) => {
     if (
-      this.props.UserStore!.state.init === false ||
+      this.props.UserStore!.init === false ||
       !pathname.includes('/user/apps')
     ) {
       return
     }
-    const level = this.props.UserStore!.state.info.level
+    const level = this.props.UserStore!.data.level
     if (
       level < 1 &&
       (pathname !== '/user/apps/not' && pathname !== '/user/apps/up/developer')
@@ -49,13 +50,17 @@ class Apps extends Component<IAppsProps> {
     this.props.history.listen((location, action) => {
       this.checkLevel(location.pathname)
     })
-    observe(this.props.UserStore!.state, () => {
+    observe(this.props.UserStore!.data, () => {
       this.checkLevel(this.props.history.location.pathname)
     })
+    this.checkLevel(location.pathname)
     this.props.UserStore!.updateRequests()
   }
 
   render() {
+    if (!this.props.UserStore!.init) {
+      return <Skeleton active={true} />
+    }
     return (
       <div className='apps-layout'>
         <div className='apps-manger'>

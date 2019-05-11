@@ -84,7 +84,7 @@ class NewAppForm extends Component<INewAppFormProps> {
           type: parseInt(values.appClass, 10),
           url: values.appHome,
           owner:
-            ByName === 'me' ? this.props.UserStore!.state.info.name : ByName
+            ByName === 'me' ? this.props.UserStore!.data.name : ByName
         })
           .then(_ => {
             finish()
@@ -148,7 +148,7 @@ class NewAppForm extends Component<INewAppFormProps> {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form
 
-    const UserInfo = this.props.UserStore!.state.info
+    const UserInfo = this.props.UserStore!.data
 
     if (!UserInfo.dev) {
       return null

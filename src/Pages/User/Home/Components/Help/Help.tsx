@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './Help.less'
 import { observer, inject } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
-import { Collapse, Input, Button } from 'antd'
+import { Collapse, Input, Button, message } from 'antd'
 
 interface IUIStoreProps {
   UIStore?: UIStore
@@ -37,7 +37,14 @@ class Help extends Component<IUIStoreProps> {
         <div className='base-card-box'>
           <p className='help-title'>我还有问题</p>
           <Input.TextArea rows={5} />
-          <Button className='submit-btn'>提交</Button>
+          <Button
+            className='submit-btn'
+            onClick={() => {
+              message.success('你的反馈已提交')
+            }}
+          >
+            提交
+          </Button>
         </div>
       </div>
     )

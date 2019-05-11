@@ -80,9 +80,7 @@ class EditEmail extends Component<IEditEmailProps, any> {
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item className='hits-text'>
             当前邮箱:{' '}
-            <strong>
-              {this.props.UserStore!.state.info.email || '未绑定'}
-            </strong>
+            <strong>{this.props.UserStore!.data.email || '未绑定'}</strong>
           </Form.Item>
           <Form.Item label='绑定邮箱'>
             {getFieldDecorator('account', {

@@ -55,6 +55,8 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
     }
     if (formType === 'developer') {
       this.props.UIStore!.setBack('/user/apps/not')
+    } else if (formType === 'moreOrg') {
+      this.props.UIStore!.setBack('/user/apps?t=new')
     } else {
       this.props.UIStore!.setBack('/user/apps')
     }
@@ -79,6 +81,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           .then(_ => {
             message.success('开发者信息已提交')
             this.props.UserStore!.updateInfo()
+            this.props.UserStore!.updateRequests()
             this.props.history.replace('/user/apps/not')
           })
           .catch(error => {
@@ -96,6 +99,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
         UserService.UpdateLevel({ level: 50, remark: values.developerRemark })
           .then(_ => {
             message.success('申请已提交')
+            this.props.UserStore!.updateRequests()
             this.props.history.push('/user/apps')
           })
           .catch(error => {
@@ -117,12 +121,14 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           console.log(formType)
           if (formType === 'more') {
             await DevService.improveAppCount(req)
+            this.props.UserStore!.updateRequests()
+            this.props.history.push('/user/apps')
           } else if (formType === 'moreOrg') {
             await DevService.improveOrgCount(req)
             this.props.UserStore!.updateRequests()
+            this.props.history.push('/user/apps?t=new')
           }
           message.success('申请已提交')
-          this.props.history.push('/user/apps')
         } catch (error) {
           ServiceTool.errorHandler(error, msg => {
             switch (msg) {
@@ -204,21 +210,23 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
 
     return (
       <div className='developer-form'>
-        <Form className='my-form' onSubmit={this.handleSubmit}>
-          {showInfo && FormItemsInfo}
-          {showRemark && FromItemRemark}
-          <Button type='primary' htmlType='submit'>
-            提交信息
-          </Button>
-          <Button
-            className='back-btn'
-            onClick={() => {
-              this.props.history.push('/user/apps')
-            }}
-          >
-            取消
-          </Button>
-        </Form>
+        <div className='base-card-box'>
+          <Form className='my-form' onSubmit={this.handleSubmit}>
+            {showInfo && FormItemsInfo}
+            {showRemark && FromItemRemark}
+            <Button type='primary' htmlType='submit'>
+              提交信息
+            </Button>
+            <Button
+              className='back-btn'
+              onClick={() => {
+                this.props.history.push('/user/apps')
+              }}
+            >
+              取消
+            </Button>
+          </Form>
+        </div>
       </div>
     )
   }

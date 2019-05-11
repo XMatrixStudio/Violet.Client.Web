@@ -52,8 +52,8 @@ class AppPersonal extends Component<IAppPersonalProps> {
     if (this.loading) {
       return <Skeleton active={true} />
     }
-    const { level } = this.props.UserStore!.state.info
-    const devInfo = this.props.UserStore!.state.info.dev
+    const { level } = this.props.UserStore!.data
+    const devInfo = this.props.UserStore!.data.dev
     if (!devInfo) {
       return null
     }

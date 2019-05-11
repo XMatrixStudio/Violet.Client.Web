@@ -1,37 +1,56 @@
 import React, { Component } from 'react'
-import { Button } from 'antd'
-import { withRouter } from 'react-router-dom'
+import { Button, Tooltip } from 'antd'
 
 import './NavBar.less'
 
 import logo from '@/Assets/logo.svg'
-import { observable, action } from 'mobx'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
+import UserService from 'src/Services/UserService'
 
 @observer
-class NavBar extends Component<any, any> {
-  @observable public scrollValue = 0
+class NavBar extends Component {
+  @observable isTop = false
+  @observable userData?: Type.UserInfoData
 
-  public componentDidMount() {
-    window.addEventListener(
-      'scroll',
-      action(() => {
-        this.scrollValue = window.scrollY
-      })
-    )
+  componentWillMount() {
+    // 绑定滚动事件
+    window.addEventListener('scroll', () => {
+      this.isTop = window.scrollY > 20
+    })
+    // 获取用户信息
+    UserService.GetInfo(info => {
+      this.userData = info
+    })
   }
 
-  public render() {
+  render() {
     return (
       <div className='comp-nav'>
-        <div className={this.scrollValue > 30 ? 'nav' : 'nav-top'}>
+        <div className={this.isTop ? 'nav' : 'nav-top'}>
           <div className='title'>
             <img src={logo} className='logo-img' /> Violet
           </div>
           <div className='right-box'>
-            <Button className='login-btn' type='primary'>
-              <a href='/account'>Login</a>
-            </Button>
+            {this.userData ? (
+              <div className='user-info'>
+                <img className='user-avatar' src={this.userData.info.avatar} />
+                <Tooltip title='进入用户中心'>
+                  <div
+                    onClick={() => {
+                      window.location.href = '/user/info'
+                    }}
+                    className='user-name'
+                  >
+                    {this.userData.info.nickname}
+                  </div>
+                </Tooltip>
+              </div>
+            ) : (
+              <Button className='login-btn' type='primary'>
+                <a href='/account'>Login</a>
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -39,4 +58,4 @@ class NavBar extends Component<any, any> {
   }
 }
 
-export default withRouter(NavBar)
+export default NavBar

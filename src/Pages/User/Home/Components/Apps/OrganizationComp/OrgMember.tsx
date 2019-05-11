@@ -19,7 +19,7 @@ interface IOrgMemberProps {
 class OrgMember extends Component<IOrgMemberProps> {
   @observable showInvite: boolean
   @observable listStatus: ListStatus
-  @observable searchResult: Type.SearchUserInfoData[]
+  @observable searchResult: Type.UserBaseData[]
   searchTimer: NodeJS.Timeout | null
 
   @action
@@ -125,7 +125,7 @@ class OrgMember extends Component<IOrgMemberProps> {
 
   render() {
     if (
-      this.props.UserStore!.state.init !== true ||
+      this.props.UserStore!.init !== true ||
       this.props.members === undefined
     ) {
       return <Skeleton active={true} />
@@ -150,7 +150,7 @@ class OrgMember extends Component<IOrgMemberProps> {
             nickname: v.nickname + (v.role === 2 ? '（创建者）' : ''),
             avatar: v.avatar,
             type: v.role === 2 ? 'own' : 'admin',
-            isMe: v.id === this.props.UserStore!.state.info.id,
+            isMe: v.id === this.props.UserStore!.data.id,
             email: '空',
             phone: '空'
           }}
@@ -166,7 +166,7 @@ class OrgMember extends Component<IOrgMemberProps> {
             name: v.name,
             avatar: v.avatar,
             type: 'dev',
-            isMe: v.id === this.props.UserStore!.state.info.id,
+            isMe: v.id === this.props.UserStore!.data.id,
             email: '空',
             phone: '空'
           }}

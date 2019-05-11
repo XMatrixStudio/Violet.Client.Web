@@ -8,7 +8,8 @@ import {
   Modal,
   Input,
   message,
-  Timeline
+  Timeline,
+  Skeleton
 } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
@@ -117,7 +118,11 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
   }
 
   render() {
-    const userInfo = this.props.UserStore!.state.info
+    if (!this.props.UserStore!.init) {
+      return <Skeleton active={true} />
+    }
+
+    const userInfo = this.props.UserStore!.data
     const logLogin = this.props.UserStore!.loginLog
     const loginLog = (
       <Timeline>
@@ -163,20 +168,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           />
           <div className='text-box'>
             <p className='title-text'>最近登陆</p>
-            <div className='content-text'>
-              {loginLog}
-              {/* <Timeline>
-                <Timeline.Item>
-                  2019/2/25 14:32 广东 广州 (125.23.42.1)
-                </Timeline.Item>
-                <Timeline.Item>
-                  2019/2/22 12:53 广东 广州 (125.23.42.1)
-                </Timeline.Item>
-                <Timeline.Item>
-                  2019/1/12 9:32 广东 湛江 (145.64.142.12)
-                </Timeline.Item>
-              </Timeline> */}
-            </div>
+            <div className='content-text'>{loginLog}</div>
           </div>
           <Divider />
         </div>
@@ -184,7 +176,12 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
           {this.statusIcon(true)}
           <div className='text-box'>
             <p className='title-text'>密码:</p>
-            <p className='content-text'>上次修改时间：无数据</p>
+            <p className='content-text'>
+              上次修改时间：
+              {userInfo.log!.password
+                ? moment(userInfo.log!.password).format('YYYY/M/DD HH:mm:ss')
+                : '无数据'}
+            </p>
           </div>
           <Button
             type='default'
