@@ -9,7 +9,7 @@ import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
-  next: (ok: boolean) => void
+  next: (ok: boolean, msg?: string) => void
   params: Type.IAuthParams
 }
 
@@ -20,7 +20,7 @@ class AuthForm extends Component<IAuthFormProps> {
   @action
   componentWillMount() {
     this.props.params.scope.forEach(v => {
-      if (['info', 'message'].includes(v) && !this.authScopes.includes(v)) {
+      if (['info', 'email'].includes(v) && !this.authScopes.includes(v)) {
         this.authScopes.push(v)
       }
     })
@@ -75,8 +75,8 @@ class AuthForm extends Component<IAuthFormProps> {
                   获取您的公开个人信息
                 </Checkbox>
               )}
-              {this.authScopes.includes('message') && (
-                <Checkbox style={{ width: '100%' }} value='message'>
+              {this.authScopes.includes('email') && (
+                <Checkbox style={{ width: '100%' }} value='email'>
                   向您发送通知
                 </Checkbox>
               )}
@@ -109,8 +109,9 @@ class AuthForm extends Component<IAuthFormProps> {
           type='dashed'
           block={true}
           onClick={() => {
-            UserService.Logout()
-            this.props.history.push('/account' + this.props.location.search)
+            this.props.history.push('/account' + this.props.location.search, {
+              isLogin: false
+            })
           }}
         >
           切换账号

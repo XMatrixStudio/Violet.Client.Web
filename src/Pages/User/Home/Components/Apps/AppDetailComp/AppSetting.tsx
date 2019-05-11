@@ -4,13 +4,21 @@ import '../../Common/Setting.less'
 import { Switch, Button, Select, Modal, Input, message } from 'antd'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
+import DevService from 'src/Services/DevService'
+import ServiceTool from 'src/Services/ServiceTool'
+
+interface IAppSettingProps {
+  appInfo: Type.AppInfoData
+  refreshAppInfo: (newAvatar: boolean) => void
+}
 
 @observer
-class AppSetting extends Component {
+class AppSetting extends Component<IAppSettingProps> {
   @observable setting: {
     run: boolean
     notice: boolean
   }
+  @observable changingKey = false
 
   constructor(props: any) {
     super(props)
@@ -62,7 +70,19 @@ class AppSetting extends Component {
 
   changeKey = () => {
     message.destroy()
-    message.success('更改Key成功，请重新部署服务')
+    this.changingKey = true
+    DevService.updateApp({ keyUpdate: true }, this.props.appInfo.id)
+      .then(res => {
+        message.success('更改Key成功，请重新部署服务')
+        this.props.refreshAppInfo(false)
+        this.changingKey = false
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('更改Key失败，' + msg)
+        })
+        this.changingKey = false
+      })
   }
 
   transferApp = () => {
@@ -134,7 +154,11 @@ class AppSetting extends Component {
               </div>
             </div>
             <div className='item-control'>
-              <Button type='danger' onClick={this.changeKey}>
+              <Button
+                disabled={this.changingKey}
+                type='danger'
+                onClick={this.changeKey}
+              >
                 更改
               </Button>
             </div>

@@ -186,7 +186,7 @@ class Home extends React.Component<IHomeProps, any> {
             <Menu.Item key='message'>
               <Icon type='message' />
               <span>通知信息</span>
-              <Badge dot={true} />
+              <Badge dot={false} />
             </Menu.Item>
             <Menu.Item key='apps'>
               <Icon type='code' />

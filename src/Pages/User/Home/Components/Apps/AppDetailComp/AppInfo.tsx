@@ -13,6 +13,8 @@ import ServiceTool from 'src/Services/ServiceTool'
 
 interface IAppInfo extends RouteComponentProps<any> {
   UIStore?: UIStore
+  appInfo?: Type.AppInfoData
+  refreshAppInfo: (newAvatar: boolean) => void
 }
 
 @inject('UIStore')
@@ -20,14 +22,12 @@ interface IAppInfo extends RouteComponentProps<any> {
 class AppInfo extends Component<IAppInfo> {
   appIcon?: string
   appName: string
-  @observable appInfo?: Type.AppInfoData
   @observable isEdit: boolean
 
   @action
   componentWillMount() {
     this.appName = this.props.match.params.id
     this.isEdit = false
-    this.appInfo = undefined
     this.props.UIStore!.setTitle(
       <>
         <a key='link' onClick={this.goBack}>
@@ -38,26 +38,14 @@ class AppInfo extends Component<IAppInfo> {
       '在这里管理你的应用'
     )
     this.props.UIStore!.setBack(this.goBack)
-    this.refreshAppData()
   }
 
   goBack = () => {
-    if (this.appInfo && this.appInfo.owner.type === 'org') {
-      this.props.history.push('/user/apps?t=' + this.appInfo.owner.name)
+    if (this.props.appInfo && this.props.appInfo.owner.type === 'org') {
+      this.props.history.push('/user/apps?t=' + this.props.appInfo.owner.name)
     } else {
       this.props.history.push('/user/apps')
     }
-  }
-
-  refreshAppData = (newAvatar?: boolean) => {
-    DevService.getAppInfoByName(this.appName, true).then(res => {
-      runInAction(() => {
-        this.appInfo = res.data
-        if (newAvatar === true) {
-          this.appInfo.info.avatar += '?t=' + new Date().getTime()
-        }
-      })
-    })
   }
 
   componentDidMount() {
@@ -71,13 +59,13 @@ class AppInfo extends Component<IAppInfo> {
       {
         avatar: base64
       },
-      this.appInfo!.id
+      this.props.appInfo!.id
     )
       .then(_ => {
         hide()
         message.success('上传成功!')
         // 刷新数据
-        this.refreshAppData(true)
+        this.props.refreshAppInfo(true)
       })
       .catch(error => {
         ServiceTool.errorHandler(error, msg => {
@@ -87,7 +75,7 @@ class AppInfo extends Component<IAppInfo> {
   }
 
   render() {
-    if (this.appInfo === undefined) {
+    if (this.props.appInfo === undefined) {
       return (
         <div className='app-info'>
           <div
@@ -105,7 +93,7 @@ class AppInfo extends Component<IAppInfo> {
         <div className='avatar-item'>
           <AvatarSelect
             title='点击或拖动选择应用图标'
-            imageURL={this.appInfo.info.avatar}
+            imageURL={this.props.appInfo.info.avatar}
             setImage={this.uploadAvatar}
           />
         </div>
@@ -120,7 +108,7 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#87d068'
             >
-              {this.appInfo.id}
+              {this.props.appInfo.id}
             </Tag>
           </Tooltip>
         </div>
@@ -135,29 +123,29 @@ class AppInfo extends Component<IAppInfo> {
               }}
               color='#fcc85d'
             >
-              {this.appInfo.key}
+              {this.props.appInfo.key}
             </Tag>
           </Tooltip>
         </div>
         <div className='info-item'>
           <div className='info-label'>显示名：</div>
-          <div className='info-box'>{this.appInfo.info.displayName}</div>
+          <div className='info-box'>{this.props.appInfo.info.displayName}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>分类：</div>
           <div className='info-box'>
-            {StaticValues.AppTypes[this.appInfo.type]}
+            {StaticValues.AppTypes[this.props.appInfo.type]}
           </div>
         </div>
         <div className='info-item'>
           <div className='info-label'>描述：</div>
-          <div className='info-box'>{this.appInfo.info.description}</div>
+          <div className='info-box'>{this.props.appInfo.info.description}</div>
         </div>
         <div className='info-item'>
           <div className='info-label'>主页：</div>
-          <div className='info-box'>{this.appInfo.info.url}</div>
+          <div className='info-box'>{this.props.appInfo.info.url}</div>
         </div>
-        {this.appInfo.callbackHosts!.map((v, i) => {
+        {this.props.appInfo.callbackHosts!.map((v, i) => {
           return (
             <div key={v} className='info-item'>
               <div className='info-label'> {i === 0 ? '回调域: ' : ''}</div>
@@ -185,10 +173,10 @@ class AppInfo extends Component<IAppInfo> {
         >
           {this.isEdit ? (
             <AppInfoForm
-              initData={this.appInfo}
+              initData={this.props.appInfo}
               next={isEdit => {
                 if (isEdit) {
-                  this.refreshAppData()
+                  this.props.refreshAppInfo(false)
                 }
                 this.isEdit = false
               }}

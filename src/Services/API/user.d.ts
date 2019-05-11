@@ -94,6 +94,9 @@ declare namespace PostUsersAuths {
  * @resource `/i/users/auths/:appId`
  */
 declare namespace GetUsersAuthsByAppId {
+  interface Query {
+    redirectUrl: string
+  }
   interface ResBody {
     code: string
     duration: number

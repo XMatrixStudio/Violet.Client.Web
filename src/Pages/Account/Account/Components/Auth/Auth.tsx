@@ -3,8 +3,6 @@ import './Auth.less'
 import { Icon, Skeleton, Button, message } from 'antd'
 import AuthForm from './AuthForm'
 
-import ImgIcytown from '@/Assets/icytown.png'
-import ImgLogo from '@/Assets/logo.svg'
 import { observer } from 'mobx-react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { observable, action } from 'mobx'
@@ -36,11 +34,15 @@ class Auth extends Component<IAuth> {
         info => {
           // 已登录
           this.userInfo = info
-          this.getAuthInfo(this.params.client_id!)
+          if (this.params.quick_mode) {
+            this.getAuthInfo()
+          }
         },
         () => {
           // 未登录
-          this.props.history.push('/account' + this.props.location.search)
+          this.props.history.push('/account' + this.props.location.search, {
+            isLogin: false
+          })
         }
       )
     }
@@ -50,40 +52,39 @@ class Auth extends Component<IAuth> {
     if (!id) {
       id = this.params.client_id
     }
-    UserService.GetAuthByID(id)
+    UserService.GetAuthByID(id, this.params.redirect_url)
       .then(res => {
         // 已授权，直接跳转
-        if (this.params.quick_mode) {
-          // window.location
-          if (this.params.response_type === 'code') {
-            window.location.href =
-              this.params.redirect_url +
-              '?code=' +
-              res.data.code +
-              '&state=' +
-              this.params.state
-          } else {
-            Axios.post(this.params.redirect_url, {
-              code: res.data.code,
-              state: this.params.state
+        // window.location
+        if (this.params.response_type === 'code') {
+          window.location.href =
+            this.params.redirect_url +
+            '?code=' +
+            res.data.code +
+            '&state=' +
+            this.params.state
+        } else {
+          Axios.post(this.params.redirect_url, {
+            code: res.data.code,
+            state: this.params.state
+          })
+            .then(_ => {
+              window.close()
+              // 关闭当前窗口
             })
-              .then(_ => {
-                window.close()
-                // 关闭当前窗口
+            .catch(error => {
+              ServiceTool.errorHandler(error, msg => {
+                this.errorText = '无效回调地址'
+                message.error('无效回调地址 ' + msg)
               })
-              .catch(error => {
-                ServiceTool.errorHandler(error, msg => {
-                  this.errorText = '无效回调地址'
-                  message.error('无效回调地址 ' + msg)
-                })
-              })
-          }
+            })
         }
-        console.log(res)
       })
       .catch(error => {
         ServiceTool.errorHandler(error, msg => {
-          if (msg !== 'not_exist_auth') {
+          if (msg === 'error_redirect_url') {
+            this.errorText = '非法回调地址'
+          } else if (msg !== 'not_exist_auth') {
             message.error('获取授权信息失败, ' + msg)
           }
         })
@@ -119,14 +120,17 @@ class Auth extends Component<IAuth> {
     return (
       <div className='comp-auth'>
         <div className='info'>
-          <img className='avatar' src={this.userInfo.info.avatar} />
-          <p>{this.userInfo.info.nickname}</p>
-        </div>
-        <div className='banner'>
-          <img src={ImgIcytown} />
-          <Icon className='icon-check' type='check-circle' theme='filled' />
-          <img src={ImgLogo} />
-          <div className='my-line' />
+          <div className='banner'>
+            <img className='avatar' src={this.userInfo.info.avatar} />
+            <Icon
+              className='icon-check'
+              type='safety-certificate'
+              twoToneColor='#33a849'
+              theme='twoTone'
+            />
+            <img src={this.props.appInfo.info.avatar} />
+            <p>{this.userInfo.info.nickname}</p>
+          </div>
         </div>
         <div className='client'>
           <AppInfoModal
@@ -149,9 +153,11 @@ class Auth extends Component<IAuth> {
           </p>
         </div>
         <AuthForm
-          next={ok => {
+          next={(ok, msg) => {
             if (ok) {
               this.getAuthInfo()
+            } else {
+              this.errorText = msg
             }
           }}
           params={this.params}

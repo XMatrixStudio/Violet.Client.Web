@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Auth.less'
 import { observer, inject } from 'mobx-react'
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import {
   Table,
   Button,
@@ -14,13 +14,13 @@ import {
   message
 } from 'antd'
 
-import IcytownIcon from '@/Assets/icytown.png'
 import dateFormat from 'dateformat'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import TextArea from 'antd/lib/input/TextArea'
 import UIStore from 'src/Store/UIStore'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
+import { PaginationConfig } from 'antd/lib/table'
 
 interface IAuthProps {
   form: WrappedFormUtils
@@ -32,7 +32,9 @@ interface IAuthProps {
 class Auth extends Component<IAuthProps> {
   @observable selectedRowKeys: number[]
   @observable visibleReport: boolean
-  @observable data: Type.UserAuthData[] = []
+  @observable data?: Type.UserAuthData[]
+  @observable loading = true
+  @observable pagination: PaginationConfig = {}
 
   columns = [
     {
@@ -40,7 +42,7 @@ class Auth extends Component<IAuthProps> {
       dataIndex: 'appDisplayName',
       render: (text: string, record: Type.UserAuthData) => (
         <>
-          <img className='app-icon' src={IcytownIcon} />
+          <img className='app-icon' src={record.appAvatar} />
           <strong className='app-name'>{text}</strong>
           {/* <Popover
             placement='top'
@@ -105,6 +107,9 @@ class Auth extends Component<IAuthProps> {
               type='notification'
               theme='twoTone'
               className='control-icon'
+              onClick={() => {
+                message.info('暂未开放')
+              }}
             />
           </Tooltip>
         </>
@@ -117,17 +122,28 @@ class Auth extends Component<IAuthProps> {
     this.selectedRowKeys = []
   }
 
+  @action
   componentWillMount() {
     document.title = '授权管理 | Violet'
     this.props.UIStore!.setTitle('授权管理', '当前2个应用可以访问你的信息')
     this.getAuthList()
+    this.pagination.pageSize = 10
   }
 
   @action
-  getAuthList = () => {
+  getAuthList = (params = {}) => {
+    console.log(params)
     UserService.GetAuths(1, 10).then(res => {
-      this.data = res.data.data
-      console.log(this.data)
+      runInAction(() => {
+        this.data = res.data.data
+        for (let i = 0; i < 20; i++) {
+          const fakeData = res.data.data[0]
+          fakeData.appId = fakeData.appId + i
+          this.data.push(fakeData)
+        }
+        this.loading = false
+        this.pagination.total = 200
+      })
     })
   }
 
@@ -179,7 +195,7 @@ class Auth extends Component<IAuthProps> {
         this.selectedRowKeys = []
         let successCount = 0
         selected.forEach(async v => {
-          if (await this.removeAuth(this.data[v].appId, false)) {
+          if (await this.removeAuth(this.data![v].appId, false)) {
             successCount++
             if (successCount === selected.length) {
               this.getAuthList()
@@ -214,6 +230,7 @@ class Auth extends Component<IAuthProps> {
               if (!err) {
                 this.visibleReport = false
                 console.log('Received values of form: ', values)
+                message.info('举报成功')
               }
             })
           }}
@@ -250,12 +267,31 @@ class Auth extends Component<IAuthProps> {
             className='auth-table'
             rowSelection={rowSelection}
             columns={this.columns}
+            loading={this.loading}
+            onChange={(pagination, filters, sorter) => {
+              const pager = { ...this.pagination }
+              pager.current = pagination.current
+              this.setState({
+                pagination: pager
+              })
+              this.getAuthList({
+                results: pagination.pageSize,
+                page: pagination.current,
+                sortField: sorter.field,
+                sortOrder: sorter.order,
+                ...filters
+              })
+            }}
+            rowKey={record => record.appId}
             expandedRowRender={(record: Type.UserAuthData) => (
               <div>
                 {/* <p>
                   <strong>开发方: </strong>
                   <UserCard name={record.own} />
                 </p> */}
+                <p>
+                  <strong>应用标识:</strong> {record.appName}
+                </p>
                 <p>
                   <strong>授权时间:</strong>{' '}
                   {dateFormat(record.time, 'yyyy/mm/dd hh:MM:ss')}

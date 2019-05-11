@@ -1,13 +1,48 @@
 import React, { Component } from 'react'
 import './AppDetail.less'
-import { Tabs, Icon } from 'antd'
+import { Tabs, Icon, Skeleton } from 'antd'
 import AppInfo from './AppDetailComp/AppInfo'
 import AppChart from './AppDetailComp/AppChart'
 import AppSetting from './AppDetailComp/AppSetting'
 import AppMessage from './AppDetailComp/AppMessage'
+import DevService from 'src/Services/DevService'
+import { runInAction, observable, action } from 'mobx'
+import { observer } from 'mobx-react'
+import { RouteComponentProps, withRouter } from 'react-router'
 
-class AppDetail extends Component {
+interface IAppDetailProps extends RouteComponentProps<any> {}
+
+@observer
+class AppDetail extends Component<IAppDetailProps> {
+  @observable appInfo?: Type.AppInfoData
+  appName: string
+
+  componentWillMount() {
+    this.appName = this.props.match.params.id
+    this.refreshAppInfo(false)
+  }
+
+  @action
+  refreshAppInfo = (newAvatar?: boolean) => {
+    DevService.getAppInfoByName(this.appName, true).then(res => {
+      runInAction(() => {
+        this.appInfo = res.data
+        if (newAvatar === true) {
+          this.appInfo.info.avatar += '?t=' + new Date().getTime()
+        }
+      })
+    })
+  }
+
   render() {
+    if (this.appInfo === undefined) {
+      return (
+        <div className='app-detail'>
+          <Skeleton active={true} />
+        </div>
+      )
+    }
+
     return (
       <div className='app-detail'>
         <Tabs>
@@ -20,7 +55,10 @@ class AppDetail extends Component {
             }
             key='info'
           >
-            <AppInfo />
+            <AppInfo
+              appInfo={this.appInfo}
+              refreshAppInfo={this.refreshAppInfo}
+            />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
@@ -53,7 +91,10 @@ class AppDetail extends Component {
             }
             key='setting'
           >
-            <AppSetting />
+            <AppSetting
+              appInfo={this.appInfo}
+              refreshAppInfo={this.refreshAppInfo}
+            />
           </Tabs.TabPane>
         </Tabs>
       </div>
@@ -61,4 +102,4 @@ class AppDetail extends Component {
   }
 }
 
-export default AppDetail
+export default withRouter(AppDetail)

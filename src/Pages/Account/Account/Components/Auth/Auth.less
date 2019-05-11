@@ -10,23 +10,13 @@
     font-size: 18px;
     margin: 60px auto;
   }
-
-  .my-line {
-    position: relative;
-    top: -32px;
-    width: 100px;
-    margin: auto;
-    z-index: 10;
-    border-bottom: 2px dashed rgba(101, 107, 109, 0.1);
-  }
-
   .help-text {
     margin-top: 20px;
     font-size: 18px;
   }
 
   .info {
-    top: -40px;
+    top: -34px;
     left: 0;
     right: 0;
     position: absolute;
@@ -43,7 +33,22 @@
         transform: translateY(0);
       }
     }
-    .avatar {
+  }
+
+  .banner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    // img {
+    //   margin: 10px;
+    //   width: 40px;
+    //   height: 40px;
+    //   transition: all 0.3s;
+    //   &:hover {
+    //     transform: scale(1.1);
+    //   }
+    // }
+    img {
       height: 70px;
       width: 70px;
       border-radius: 50%;
@@ -51,29 +56,21 @@
       transition: all 0.3s;
       animation: rainbow 1s infinite;
     }
-  }
-
-  .banner {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -110px;
-    img {
-      margin: 10px;
-      width: 40px;
-      height: 40px;
-      transition: all 0.3s;
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
 
     .icon-check {
       z-index: 20;
       font-size: 22px;
-      color: rgb(51, 168, 73);
       vertical-align: top;
-      margin: 20px 40px;
+      margin: 20px 20px;
+    }
+
+    .my-line {
+      position: relative;
+      top: -32px;
+      width: 40px;
+      margin: auto;
+      z-index: 10;
+      border-bottom: 2px dashed rgba(101, 107, 109, 0);
     }
   }
 

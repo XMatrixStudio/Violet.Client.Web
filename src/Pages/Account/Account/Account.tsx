@@ -18,7 +18,7 @@ interface IAccountProps extends RouteComponentProps<any> {}
 
 @observer
 class Account extends Component<IAccountProps> {
-  @observable title: string = 'Violet'
+  @observable title: React.ReactNode = 'Violet'
   @observable appInfo?: Type.AppInfoData
   @observable showInfoModal = false
 
@@ -30,7 +30,12 @@ class Account extends Component<IAccountProps> {
         .then(res => {
           runInAction(() => {
             this.appInfo = res.data
-            this.title = '授权登陆到 ' + res.data.info.displayName
+            this.title = (
+              <span key='title'>
+                使用 Violet 登陆{' '}
+                <strong key='app-name'>{res.data.info.displayName}</strong>
+              </span>
+            )
           })
         })
         .catch(error => {
@@ -98,7 +103,7 @@ class Account extends Component<IAccountProps> {
               exit={false}
               timeout={300}
             >
-              <Switch>
+              <Switch location={this.props.location}>
                 <Route exact={true} path='/account' component={Login} />
                 <Route path='/account/register' component={Register} />
                 <Route path='/account/auth'>

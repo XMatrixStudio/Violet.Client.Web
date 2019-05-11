@@ -8,9 +8,13 @@ export default {
     return res
   },
   // 获取授权信息
-  GetAuthByID: async (id: string) => {
+  GetAuthByID: async (id: string, url: string) => {
+    const req: GetUsersAuthsByAppId.Query = {
+      redirectUrl: url
+    }
     const res = await axios.get<GetUsersAuthsByAppId.ResBody>(
-      '/api/i/users/auths/' + id
+      '/api/i/users/auths/' + id,
+      { params: req }
     )
     return res
   },

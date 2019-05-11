@@ -10,14 +10,25 @@ interface ILoginProps extends RouteComponentProps<any> {}
 class Login extends Component<ILoginProps> {
   componentDidMount() {
     document.title = '登陆 | Violet'
-    const params = RouterUtil.getParams(this.props.location.search)
-    UserService.GetInfo(info => {
-      if (!params.valid) {
-        window.location.href = '/user/info'
-      } else {
-        this.props.history.push('/account/auth' + this.props.location.search)
-      }
-    })
+    console.log(this.props.location.state)
+    if (
+      this.props.location.state &&
+      this.props.location.state.isLogin === false
+    ) {
+      const state = { ...this.props.history.location.state }
+      delete state.isLogin
+      this.props.history.replace({ ...this.props.history.location, state })
+      // this.props.history.
+    } else {
+      const params = RouterUtil.getParams(this.props.location.search)
+      UserService.GetInfo(info => {
+        if (!params.valid) {
+          window.location.href = '/user/info'
+        } else {
+          this.props.history.push('/account/auth' + this.props.location.search)
+        }
+      })
+    }
   }
   public render() {
     return (
