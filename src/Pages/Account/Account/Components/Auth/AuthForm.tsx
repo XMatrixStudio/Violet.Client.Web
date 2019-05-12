@@ -31,7 +31,7 @@ class AuthForm extends Component<IAuthFormProps> {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         UserService.Auth({
-          appId: this.props.params.client_id,
+          appId: this.props.params.clientId,
           duration: parseInt(values.authTime, 10),
           scope: values.authList
         })

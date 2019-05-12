@@ -34,7 +34,7 @@ class Auth extends Component<IAuth> {
         info => {
           // 已登录
           this.userInfo = info
-          if (this.params.quick_mode) {
+          if (this.params.quickMode) {
             this.getAuthInfo()
           }
         },
@@ -50,21 +50,21 @@ class Auth extends Component<IAuth> {
 
   getAuthInfo = (id?: string) => {
     if (!id) {
-      id = this.params.client_id
+      id = this.params.clientId
     }
-    UserService.GetAuthByID(id, this.params.redirect_url)
+    UserService.GetAuthByID(id, this.params.redirectUrl)
       .then(res => {
         // 已授权，直接跳转
         // window.location
-        if (this.params.response_type === 'code') {
+        if (this.params.responseType === 'code') {
           window.location.href =
-            this.params.redirect_url +
+            this.params.redirectUrl +
             '?code=' +
             res.data.code +
             '&state=' +
             this.params.state
-        } else {
-          Axios.post(this.params.redirect_url, {
+        } else if (this.params.responseType === 'codePost') {
+          Axios.post(this.params.redirectUrl, {
             code: res.data.code,
             state: this.params.state
           })

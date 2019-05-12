@@ -20,10 +20,10 @@ declare namespace Type {
 
   /** 授权参数 */
   interface AuthParams {
-    response_type: string
-    client_id: string
-    quick_mode: boolean
-    redirect_url: string
+    responseType: string
+    clientId: string
+    quickMode: boolean
+    redirectUrl: string
     state: string
     scope: string[]
     valid: boolean

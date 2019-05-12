@@ -17,20 +17,20 @@ export default {
       return rs
     })
     let valid = true
-    if (!['code', 'code_post'].includes(obj.response_type)) {
+    if (!['code', 'codePost'].includes(obj.responseType)) {
       valid = false
     } else if (
-      obj.client_id === undefined ||
-      obj.redirect_url === undefined ||
+      obj.clientId === undefined ||
+      obj.redirectUrl === undefined ||
       obj.state === undefined
     ) {
       valid = false
     }
     const res: Type.AuthParams = {
-      response_type: obj.response_type,
-      client_id: obj.client_id,
-      quick_mode: obj.quick_mode === 'true',
-      redirect_url: obj.redirect_url,
+      responseType: obj.responseType,
+      clientId: obj.clientId,
+      quickMode: obj.quickMode === 'true',
+      redirectUrl: obj.redirectUrl,
       state: obj.state,
       scope: obj.scope ? obj.scope.split(',') : ['base'],
       valid: valid
