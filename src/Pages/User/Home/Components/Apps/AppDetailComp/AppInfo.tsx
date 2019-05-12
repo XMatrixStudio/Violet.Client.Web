@@ -28,15 +28,7 @@ class AppInfo extends Component<IAppInfo> {
   @action
   componentWillMount() {
     this.appName = this.props.match.params.id
-    this.props.UIStore!.setTitle(
-      <>
-        <a key='link' onClick={this.goBack}>
-          应用管理
-        </a>
-        <span key='name'> - {this.appName}</span>
-      </>,
-      '在这里管理你的应用'
-    )
+    this.props.UIStore!.setTitle('应用: ' + this.appName, '在这里管理你的应用')
     this.props.UIStore!.setBack(this.goBack)
   }
 

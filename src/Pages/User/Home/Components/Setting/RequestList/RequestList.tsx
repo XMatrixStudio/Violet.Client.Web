@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import UIStore from 'src/Store/UIStore'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router-dom'
 import { observable, action } from 'mobx'
 import { Tabs, Icon } from 'antd'
 import './RequestList.less'
@@ -20,7 +19,7 @@ class RequestList extends Component<IRequestListProps> {
   @action
   componentDidMount() {
     document.title = '申请列表 | Violet'
-    this.props.UIStore!.setTitle(<span>申请列表</span>, '所有需要审核的申请')
+    this.props.UIStore!.setTitle('申请列表', '所有需要审核的申请')
     this.props.UIStore!.setBack('/user/setting')
   }
 

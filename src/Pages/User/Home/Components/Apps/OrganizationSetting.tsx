@@ -31,7 +31,7 @@ class OrganizationSetting extends Component<IOrganizationSettingProps> {
         runInAction(() => {
           this.orgInfo = res.data
           this.props.UIStore!.setTitle(
-            '组织管理 : ' + this.orgInfo.info.displayName,
+            '组织: ' + this.orgInfo.info.displayName,
             '在这里管理你的组织'
           )
           this.props.UIStore!.setBack('/user/apps?t=' + this.orgName)

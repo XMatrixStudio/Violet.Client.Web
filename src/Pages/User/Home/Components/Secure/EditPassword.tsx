@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RouteComponentProps, withRouter, Link } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Form, Input, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import NewPassword from 'src/Components/NewPassword'
@@ -26,15 +26,7 @@ class EditPassword extends Component<IEditPasswordProps, any> {
 
   componentWillMount() {
     document.title = '修改密码 | Violet'
-    this.props.UIStore!.setTitle(
-      <>
-        <Link key='link' to='/user/secure'>
-          账户安全
-        </Link>
-        <span key='more'> - 修改密码</span>
-      </>,
-      '定期修改密码使得你的账号更安全'
-    )
+    this.props.UIStore!.setTitle('修改密码', '定期修改密码使得你的账号更安全')
     this.props.UIStore!.setBack('/user/secure')
   }
 
@@ -79,38 +71,40 @@ class EditPassword extends Component<IEditPasswordProps, any> {
     const info = this.props.UserStore!.data
     return (
       <div className='form-layout'>
-        <Form className='my-form' onSubmit={this.handleSubmit}>
-          <Form.Item className='hits-text'>
-            上次修改密码：{' '}
-            <strong>
-              {this.props.UserStore!.init && info.log && info.log.password
-                ? moment(info.log.password).format('YYYY/M/DD HH:mm:ss')
-                : '无数据'}
-            </strong>
-          </Form.Item>
-          <Form.Item label='旧密码'>
-            {getFieldDecorator('oldPassword', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入旧密码'
-                }
-              ]
-            })(<Input.Password />)}
-          </Form.Item>
-          <NewPassword form={this.props.form} label={true} />
-          <Button type='primary' htmlType='submit'>
-            修改密码
-          </Button>
-          <Button
-            className='back-btn'
-            onClick={() => {
-              this.props.history.goBack()
-            }}
-          >
-            取消
-          </Button>
-        </Form>
+        <div className='base-card-box'>
+          <Form className='my-form' onSubmit={this.handleSubmit}>
+            <Form.Item className='hits-text'>
+              上次修改密码：{' '}
+              <strong>
+                {this.props.UserStore!.init && info.log && info.log.password
+                  ? moment(info.log.password).format('YYYY/M/DD HH:mm:ss')
+                  : '无数据'}
+              </strong>
+            </Form.Item>
+            <Form.Item label='旧密码'>
+              {getFieldDecorator('oldPassword', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入旧密码'
+                  }
+                ]
+              })(<Input.Password />)}
+            </Form.Item>
+            <NewPassword form={this.props.form} label={true} />
+            <Button type='primary' htmlType='submit'>
+              修改密码
+            </Button>
+            <Button
+              className='back-btn'
+              onClick={() => {
+                this.props.history.goBack()
+              }}
+            >
+              取消
+            </Button>
+          </Form>
+        </div>
       </div>
     )
   }

@@ -18,7 +18,7 @@ class RequestWaitList extends Component<IRequestWaitListProps> {
   @observable hasMore = false
   @observable loading = true
   currentPage = 0
-  batchSize = 10
+  batchSize = 6
 
   stateText = {
     0: '开发者申请',
@@ -81,7 +81,19 @@ class RequestWaitList extends Component<IRequestWaitListProps> {
         </div>
       )
     })
-    return <div>{waitList}</div>
+    return (
+      <div>
+        {waitList}{' '}
+        {this.hasMore && (
+          <div
+            className='base-card-box request-card load-more'
+            onClick={this.loadList}
+          >
+            加载更多
+          </div>
+        )}
+      </div>
+    )
   }
 }
 

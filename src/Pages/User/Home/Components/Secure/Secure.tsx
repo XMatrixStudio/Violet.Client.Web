@@ -6,6 +6,7 @@ import EditEmail from './EditEmail'
 import EditPhone from './EditPhone'
 import UserStore from 'src/Store/UserStore'
 import { inject, observer } from 'mobx-react'
+import './Secure.less'
 
 @inject('UserStore')
 @observer
@@ -18,7 +19,7 @@ class Secure extends Component<{ UserStore?: UserStore }> {
 
   render() {
     return (
-      <div>
+      <div className='secure-layout'>
         <Switch>
           <Route path='/user/secure/phone'>
             <EditPhone finish={this.updateInfo} />

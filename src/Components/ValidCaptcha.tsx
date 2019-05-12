@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon, message } from 'antd'
+import { Form, Input, Icon, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import UserService from 'src/Services/UserService'
-import ImageCaptcha from '../Pages/Account/Account/Components/Util/ImageCaptcha'
+import ImageCaptcha from './ImageCaptcha'
 import ServiceTool from 'src/Services/ServiceTool'
 import { inject, observer } from 'mobx-react'
 import AuthStore from 'src/Store/AuthStore'
 import CountDownButton from './CountDownButton'
 import { observable } from 'mobx'
+import './InputWithBtn.less'
 
 interface IValidCaptchaProps {
   form: WrappedFormUtils
@@ -115,8 +116,8 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
           />
         </div>
         <Form.Item label={this.props.label === true ? '验证码' : null}>
-          <Row gutter={8}>
-            <Col span={16}>
+          <div className='input-with-btn'>
+            <div className='input-left'>
               {getFieldDecorator('captcha', {
                 rules: [
                   { required: true, message: '请输入你收到的验证码' },
@@ -132,14 +133,14 @@ class ValidCaptcha extends Component<IValidCaptchaProps> {
                   placeholder={this.props.label === true ? '' : '收到的验证码'}
                 />
               )}
-            </Col>
-            <Col span={8}>
+            </div>
+            <div className='btn-right'>
               <CountDownButton
                 lastTime={this.props.AuthStore!.state.registerValidTime}
                 sendCaptcha={this.sendCaptcha}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
         </Form.Item>
       </>
     )

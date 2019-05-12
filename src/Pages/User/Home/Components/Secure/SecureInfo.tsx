@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './SecureInfo.less'
 import {
   Icon,
   Button,
@@ -140,7 +139,7 @@ class SecureInfo extends Component<ISecureInfoProps, any> {
     )
 
     return (
-      <div className='secure-layout base-card-box'>
+      <div className='base-card-box'>
         <div className='secure-content'>
           <Icon
             className='status-icon'

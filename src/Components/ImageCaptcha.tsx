@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Icon, message } from 'antd'
+import { Form, Input, Icon, message, Tooltip } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import UtilService from 'src/Services/UtilService'
+import './InputWithBtn.less'
 
 interface IImageCaptchaProps {
   form: WrappedFormUtils
@@ -34,8 +35,8 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
     const { getFieldDecorator } = this.props.form
     return (
       <Form.Item label={this.props.label === true ? '图形验证码' : null}>
-        <Row gutter={8}>
-          <Col span={16}>
+        <div className='input-with-btn'>
+          <div className='input-left'>
             {getFieldDecorator('imageCaptcha', {
               rules: [
                 { required: true, message: '请输入右边的验证码' },
@@ -51,16 +52,17 @@ class ImageCaptcha extends Component<IImageCaptchaProps> {
                 placeholder={this.props.label === true ? '' : '图形验证码'}
               />
             )}
-          </Col>
-          <Col span={8}>
-            <img
-              title='换一张'
-              style={{ cursor: 'pointer' }}
-              src={this.imageCaptchaBase64}
-              onClick={this.updateImage}
-            />
-          </Col>
-        </Row>
+          </div>
+          <div className='btn-right'>
+            <Tooltip title='换一张'>
+              <img
+                style={{ cursor: 'pointer' }}
+                src={this.imageCaptchaBase64}
+                onClick={this.updateImage}
+              />
+            </Tooltip>
+          </div>
+        </div>
       </Form.Item>
     )
   }

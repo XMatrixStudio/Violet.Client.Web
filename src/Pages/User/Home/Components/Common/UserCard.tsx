@@ -74,15 +74,17 @@ class UserCard extends Component<IUserCard> {
             <Icon type='man' className='gender-man gender-icon' />
           </p>
           <UserLevel level={this.userInfo.level} />
-          {this.userInfo.info.location && (
-            <p>地区: {this.userInfo.info.location}</p>
-          )}
-          {this.userInfo.info.email && (
-            <p>联系邮箱: {this.userInfo.info.email}</p>
-          )}
-          {this.userInfo.info.phone && (
-            <p>联系电话: {this.userInfo.info.phone}</p>
-          )}
+          <div>
+            {this.userInfo.info.location && (
+              <p>地区: {this.userInfo.info.location}</p>
+            )}
+            {this.userInfo.info.email && (
+              <p>联系邮箱: {this.userInfo.info.email}</p>
+            )}
+            {this.userInfo.info.phone && (
+              <p>联系电话: {this.userInfo.info.phone}</p>
+            )}
+          </div>
           <Button
             icon='message'
             onClick={() => {

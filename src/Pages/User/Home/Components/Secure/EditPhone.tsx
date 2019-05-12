@@ -5,7 +5,6 @@ import ValidCaptcha from 'src/Components/ValidCaptcha'
 import { Button, message, Input } from 'antd'
 import UserService from 'src/Services/UserService'
 import ServiceTool from 'src/Services/ServiceTool'
-import { Link } from 'react-router-dom'
 import UserStore from 'src/Store/UserStore'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
@@ -23,12 +22,7 @@ class EditPhone extends Component<IEditPhoneProps, any> {
   componentWillMount() {
     document.title = '绑定手机号 | Violet'
     this.props.UIStore!.setTitle(
-      <>
-        <Link key='link' to='/user/secure'>
-          账户安全
-        </Link>
-        <span key='more'> - 绑定手机号</span>
-      </>,
+      '绑定手机号',
       '绑定手机号可以帮助你通过短信找回密码'
     )
     this.props.UIStore!.setBack('/user/secure')
@@ -77,44 +71,46 @@ class EditPhone extends Component<IEditPhoneProps, any> {
     const { getFieldDecorator } = this.props.form
     return (
       <div className='form-layout'>
-        <Form className='my-form' onSubmit={this.handleSubmit}>
-          <Form.Item className='hits-text'>
-            当前手机号:{' '}
-            <strong>{this.props.UserStore!.data.phone || '未绑定'}</strong>
-          </Form.Item>
-          <Form.Item label='绑定手机号'>
-            {getFieldDecorator('account', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入要绑定的手机号'
-                }
-              ]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label='密码'>
-            {getFieldDecorator('password', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入密码验证你的身份'
-                }
-              ]
-            })(<Input.Password />)}
-          </Form.Item>
-          <ValidCaptcha form={this.props.form} type='update' label={true} />
-          <Button type='primary' htmlType='submit'>
-            绑定手机号
-          </Button>
-          <Button
-            className='back-btn'
-            onClick={() => {
-              this.props.history.goBack()
-            }}
-          >
-            取消
-          </Button>
-        </Form>
+        <div className='base-card-box'>
+          <Form className='my-form' onSubmit={this.handleSubmit}>
+            <Form.Item className='hits-text'>
+              当前手机号:{' '}
+              <strong>{this.props.UserStore!.data.phone || '未绑定'}</strong>
+            </Form.Item>
+            <Form.Item label='绑定手机号'>
+              {getFieldDecorator('account', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入要绑定的手机号'
+                  }
+                ]
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label='密码'>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入密码验证你的身份'
+                  }
+                ]
+              })(<Input.Password />)}
+            </Form.Item>
+            <ValidCaptcha form={this.props.form} type='update' label={true} />
+            <Button type='primary' htmlType='submit'>
+              绑定手机号
+            </Button>
+            <Button
+              className='back-btn'
+              onClick={() => {
+                this.props.history.goBack()
+              }}
+            >
+              取消
+            </Button>
+          </Form>
+        </div>
       </div>
     )
   }
