@@ -1,9 +1,10 @@
+@transition-value: all 0.3s ease-in-out;
+
 .extend-banner {
   height: 200px;
   .top-title {
     top: 70px;
-    left: 40px;
-    font-size: 26px;
+    font-size: 24px;
   }
   .icon-extend {
     top: 160px;
@@ -15,7 +16,6 @@
   height: 60px;
   .top-title {
     top: 16px;
-    left: 20px;
     font-size: 20px;
     .sub-title {
       opacity: 0;
@@ -42,7 +42,7 @@
   background: #055b83;
   box-shadow: 0 4px 6px 0 hsla(207, 93%, 34%, 0.349);
   overflow: hidden;
-  transition: all 0.3s;
+  transition: @transition-value;
   .box-1 {
     position: absolute;
     left: -240px;
@@ -54,7 +54,7 @@
     border-radius: 30px;
     transform: scale(1.8) rotate(45deg);
     z-index: 30;
-    transition: all 0.5s;
+    transition: @transition-value;
   }
   @media (max-width: 840px) {
     .box-2 {
@@ -71,7 +71,7 @@
     transform: rotate(45deg);
     border-radius: 20px;
     z-index: 20;
-    transition: all 0.5s;
+    transition: @transition-value;
   }
   @media (max-width: 1000px) {
     .box-3 {
@@ -88,14 +88,14 @@
     background: linear-gradient(to bottom right, #0585a5, #07a9d100);
     transform: rotate(45deg);
     z-index: 10;
-    transition: all 0.5s;
+    transition: @transition-value;
   }
 
   .top-title {
     position: absolute;
     left: 10px;
     user-select: none;
-    transition: all 0.3s;
+    transition: @transition-value;
     color: rgba(255, 255, 255, 0.9);
     z-index: 60;
     .back-icon {
@@ -103,7 +103,6 @@
       display: inline-block;
       margin: 0 10px;
       cursor: pointer;
-      transition: all 0.3s;
       &:hover {
         transform: translateX(-2px);
       }
@@ -114,12 +113,12 @@
     .big-title {
       margin-left: 20px;
       display: inline-block;
-      transition: all 0.3s;
       margin-bottom: 2px;
+      transition: margin 0.3s;
     }
     .sub-title {
       margin-left: 20px;
-      font-size: 18px;
+      font-size: 16px;
       color: rgba(255, 255, 255, 0.7);
     }
     a {
@@ -137,8 +136,8 @@
     z-index: 40;
     padding: 10px;
     font-size: 18px;
-    color: rgba(255, 255, 255, 0.575);
-    transition: all 0.3s;
+    color: rgba(255, 255, 255, 0.5);
+    transition: @transition-value;
     cursor: pointer;
     right: 10px;
     &:hover {

@@ -28,10 +28,6 @@ class AuthStore {
     })
   }
 
-  // @action setInfo(info: IUserInfo) {
-  //   this.state.info = info
-  // }
-
   @action setRegisterValidTime() {
     this.state.registerValidTime = new Date()
   }

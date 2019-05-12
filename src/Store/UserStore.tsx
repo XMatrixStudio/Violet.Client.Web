@@ -3,45 +3,66 @@ import UserService from 'src/Services/UserService'
 import UtilService from 'src/Services/UtilService'
 
 class UserStore {
+  /** 是否初始化 */
+  @observable init: boolean
+  /** 用户信息 */
   @observable data: Type.UserInfoData
-  @observable orgs: Type.UserOrgInfoData[]
+  /** 用户组织列表 */
+  @observable orgs?: Type.UserOrgInfoData[]
+  /** 用户登陆日志信息 */
   @observable loginLog: Array<{
     time: Date
     ip: string
     location?: string
   }>
+  /** 用户请求信息 */
   @observable requests: GetUsersRequests.IRequest[]
-  @observable init: boolean
   constructor() {
-    this.logout()
+    this.ClearUserInfo()
     this.loginLog = []
-    this.orgs = []
     this.requests = []
   }
 
-  @action
-  updateRequests() {
+  /**
+   * 更新申请信息
+   */
+  UpdateRequests() {
     UserService.GetRequests().then(res => {
-      runInAction(() => {
-        this.requests = res.data
-      })
+      this.setRequests(res.data)
     })
   }
 
-  @action
-  updateInfo(failed?: () => void, newAvatar?: boolean) {
-    UserService.GetInfo(data => {
-      if (newAvatar === true) {
-        data.info.avatar = data.info.avatar + '?t=' + new Date().getTime()
+  /**
+   * 更新用户信息
+   * @param failed 失败回调
+   * @param newAvatar 是否为新头像，新头像强制刷新
+   */
+  UpdateInfo(failed?: () => void, newAvatar?: boolean) {
+    UserService.GetInfo(
+      data => {
+        if (newAvatar === true) {
+          data.info.avatar = data.info.avatar + '?t=' + new Date().getTime()
+        }
+        this.setInfo(data)
+      },
+      () => {
+        this.ClearUserInfo()
+        if (failed) {
+          failed()
+        }
       }
-      this.setInfo(data)
-    }, failed)
+    )
+  }
+
+  @action
+  setRequests(data: GetUsersRequests.IRequest[]) {
+    this.requests = data
   }
 
   @action
   setInfo(data: Type.UserInfoData) {
-    this.data = data
     this.init = true
+    this.data = data
     const log = data.log
     // 按需解析 IP 地址
     if (log) {
@@ -62,8 +83,11 @@ class UserStore {
     }
   }
 
+  /**
+   * 清空用户信息
+   */
   @action
-  logout() {
+  ClearUserInfo() {
     this.init = false
     this.data = {
       id: '',
@@ -78,12 +102,8 @@ class UserStore {
   }
 
   @action
-  addOrgs(orgs: Type.UserOrgInfoData[], first: boolean) {
-    if (first) {
-      this.orgs = orgs
-    } else {
-      this.orgs.concat(orgs)
-    }
+  SetOrgs(orgs: Type.UserOrgInfoData[]) {
+    this.orgs = orgs
   }
 }
 

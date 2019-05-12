@@ -69,20 +69,30 @@ class AppSetting extends Component<IAppSettingProps> {
   }
 
   changeKey = () => {
-    message.destroy()
-    this.changingKey = true
-    DevService.updateApp({ keyUpdate: true }, this.props.appInfo.id)
-      .then(res => {
-        message.success('更改Key成功，请重新部署服务')
-        this.props.refreshAppInfo(false)
-        this.changingKey = false
-      })
-      .catch(error => {
-        ServiceTool.errorHandler(error, msg => {
-          message.error('更改Key失败，' + msg)
-        })
-        this.changingKey = false
-      })
+    Modal.confirm({
+      title: '是否更改应用Key',
+      content: '当前应用服务会立即失效',
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '放弃',
+      centered: true,
+      onOk: () => {
+        message.destroy()
+        this.changingKey = true
+        DevService.updateApp({ keyUpdate: true }, this.props.appInfo.id)
+          .then(res => {
+            message.success('更改Key成功，请重新部署服务')
+            this.props.refreshAppInfo(false)
+            this.changingKey = false
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('更改Key失败，' + msg)
+            })
+            this.changingKey = false
+          })
+      }
+    })
   }
 
   transferApp = () => {

@@ -11,7 +11,7 @@ import AppDetail from './AppDetail'
 import UIStore from 'src/Store/UIStore'
 import AppInit from './AppInit'
 import UserStore from 'src/Store/UserStore'
-import { observe } from 'mobx'
+import { reaction } from 'mobx'
 import { Skeleton } from 'antd'
 
 interface IAppsProps extends RouteComponentProps<any> {
@@ -50,11 +50,14 @@ class Apps extends Component<IAppsProps> {
     this.props.history.listen((location, action) => {
       this.checkLevel(location.pathname)
     })
-    observe(this.props.UserStore!.data, () => {
-      this.checkLevel(this.props.history.location.pathname)
-    })
+    reaction(
+      () => this.props.UserStore!.data,
+      () => {
+        this.checkLevel(this.props.history.location.pathname)
+      }
+    )
     this.checkLevel(location.pathname)
-    this.props.UserStore!.updateRequests()
+    this.props.UserStore!.UpdateRequests()
   }
 
   render() {

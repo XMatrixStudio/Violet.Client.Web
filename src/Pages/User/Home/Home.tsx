@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import './Home.less'
-import { Layout, Menu, Icon, Tooltip, Modal, Badge } from 'antd'
+import { Layout, Menu, Icon, Tooltip, Modal } from 'antd'
 const { Sider, Content } = Layout
 import { observable } from 'mobx'
 const confirm = Modal.confirm
@@ -97,8 +97,9 @@ class Home extends React.Component<IHomeProps, any> {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk() {
+      onOk: () => {
         UserService.Logout()
+        this.props.UserStore!.ClearUserInfo()
         window.location.href = '/account'
       }
     })
@@ -114,7 +115,7 @@ class Home extends React.Component<IHomeProps, any> {
   }
 
   updateInfo = () => {
-    this.props.UserStore!.updateInfo(() => {
+    this.props.UserStore!.UpdateInfo(() => {
       window.location.href = '/account'
     })
   }
@@ -205,9 +206,8 @@ class Home extends React.Component<IHomeProps, any> {
           </Menu>
         </Sider>
         <Layout
-          id='content-layout-box'
           style={{
-            transition: 'all 0.2s',
+            transition: 'all 0.3s',
             marginTop: this.props.UIStore!.ui.topBanner ? '200px' : '60px'
           }}
         >

@@ -31,8 +31,8 @@ class Register extends Component<IRouterProps> {
     document.title = '注册 | Violet'
   }
 
-  UserForm = () => {
-    switch (this.currentStep) {
+  UserForm = (step: number) => {
+    switch (step) {
       case 1:
         return <InfoForm next={this.nextStep} id={this.id} />
       case 2:
@@ -92,7 +92,6 @@ class Register extends Component<IRouterProps> {
   }
 
   public render() {
-    console.log('render register')
     return (
       <div className='comp-register'>
         <this.BackIcon />
@@ -103,17 +102,12 @@ class Register extends Component<IRouterProps> {
             <CSSTransition
               key={this.currentStep}
               classNames={{
-                appear: 'animated fadeIn',
-                appearActive: 'animated fadeIn',
-                appearDone: 'animated fadeIn',
-                enter: 'animated fadeIn',
-                enterActive: 'animated fadeIn',
-                enterDone: 'animated fadeIn'
+                enter: 'animated fadeIn faster'
               }}
               exit={false}
-              timeout={100}
+              timeout={1000}
             >
-              <this.UserForm />
+              {this.UserForm(this.currentStep)}
             </CSSTransition>
           </TransitionGroup>
         </div>

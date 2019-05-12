@@ -24,32 +24,38 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
     switch (formType) {
       case 'edit':
         this.props.UIStore!.setTitle(
-          <span key='more'>修改开发者信息</span>,
+          '修改开发者信息',
           '请填写新的联系方式(内部使用), 方便我们与您进行联系'
         )
         break
       case 'developer':
         this.props.UIStore!.setTitle(
-          <span>申请成为开发者</span>,
+          '申请成为开发者',
           '请填写您的联系方式(内部使用), 成为一名开发者'
         )
         break
       case 'admin':
         this.props.UIStore!.setTitle(
-          <span>申请成为管理员</span>,
+          '申请成为管理员',
           '系统管理员仅允许内部人员申请'
         )
         break
       case 'more':
         this.props.UIStore!.setTitle(
-          <span>申请提高应用上限</span>,
+          '申请提高应用上限',
           '请填写您的应用需求，便于我们进行审核'
         )
         break
       case 'moreOrg':
         this.props.UIStore!.setTitle(
-          <span>申请提高组织上限</span>,
+          '申请提高组织上限',
           '请填写您的组织需求，便于我们进行审核'
+        )
+        break
+      case 'moreOrgApp':
+        this.props.UIStore!.setTitle(
+          '申请提高组织应用上限',
+          '请填写您的组织应用需求，便于我们进行审核'
         )
         break
     }
@@ -80,8 +86,8 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
         })
           .then(_ => {
             message.success('开发者信息已提交')
-            this.props.UserStore!.updateInfo()
-            this.props.UserStore!.updateRequests()
+            this.props.UserStore!.UpdateInfo()
+            this.props.UserStore!.UpdateRequests()
             this.props.history.replace('/user/apps/not')
           })
           .catch(error => {
@@ -99,7 +105,7 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
         UserService.UpdateLevel({ level: 50, remark: values.developerRemark })
           .then(_ => {
             message.success('申请已提交')
-            this.props.UserStore!.updateRequests()
+            this.props.UserStore!.UpdateRequests()
             this.props.history.push('/user/apps')
           })
           .catch(error => {
@@ -113,7 +119,23 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
               }
             })
           })
-      } else {
+      } else if (formType === 'edit') {
+        UserService.UpdateDevInfo({
+          name: values.developerName,
+          email: values.developerEmail,
+          phone: values.developerPhone
+        })
+          .then(msg => {
+            message.success('修改开发者信息成功')
+            this.props.UserStore!.UpdateInfo()
+            this.props.history.replace('/user/apps')
+          })
+          .catch(error => {
+            ServiceTool.errorHandler(error, msg => {
+              message.error('发生错误: ' + msg)
+            })
+          })
+      } else if (formType === 'more' || formType === 'moreOrg') {
         try {
           const req = {
             remark: values.developerRemark
@@ -121,11 +143,11 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
           console.log(formType)
           if (formType === 'more') {
             await DevService.improveAppCount(req)
-            this.props.UserStore!.updateRequests()
+            this.props.UserStore!.UpdateRequests()
             this.props.history.push('/user/apps')
           } else if (formType === 'moreOrg') {
             await DevService.improveOrgCount(req)
-            this.props.UserStore!.updateRequests()
+            this.props.UserStore!.UpdateRequests()
             this.props.history.push('/user/apps?t=new')
           }
           message.success('申请已提交')
@@ -140,6 +162,8 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
             }
           })
         }
+      } else {
+        message.error('暂未开放')
       }
     })
   }
@@ -161,7 +185,11 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                 required: showInfo,
                 message: '请输入联系名称'
               }
-            ]
+            ],
+            initialValue:
+              formType === 'edit' && this.props.UserStore!.data.dev
+                ? this.props.UserStore!.data.dev.name
+                : ''
           })(<Input />)}
         </Form.Item>
         <Form.Item label='联系邮箱'>
@@ -175,7 +203,11 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                 type: 'email',
                 message: '邮箱格式不正确'
               }
-            ]
+            ],
+            initialValue:
+              formType === 'edit' && this.props.UserStore!.data.dev
+                ? this.props.UserStore!.data.dev.email
+                : ''
           })(<Input />)}
         </Form.Item>
         <Form.Item label='联系手机'>
@@ -185,7 +217,11 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
                 required: showInfo,
                 message: '请输入联系手机'
               }
-            ]
+            ],
+            initialValue:
+              formType === 'edit' && this.props.UserStore!.data.dev
+                ? this.props.UserStore!.data.dev.phone
+                : ''
           })(<Input />)}
         </Form.Item>
       </>

@@ -69,7 +69,14 @@ class EditInfo extends Component<IEditInfo, any> {
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
-              message.error('发生错误' + msg)
+              if (msg === 'invalid_nickname') {
+                message.error('昵称过长')
+                this.props.form.setFieldsValue({
+                  nickName: this.props.userInfo.info.nickname
+                })
+              } else {
+                message.error('发生错误: ' + msg)
+              }
             })
           })
       }
@@ -101,6 +108,10 @@ class EditInfo extends Component<IEditInfo, any> {
                 {
                   required: true,
                   message: '请输入昵称'
+                },
+                {
+                  max: 32,
+                  message: '昵称不能超过32个字符'
                 }
               ],
               initialValue: userInfo.info.nickname

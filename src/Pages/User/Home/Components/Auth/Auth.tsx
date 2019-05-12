@@ -179,7 +179,7 @@ class Auth extends Component<IAuthProps> {
     }
   }
 
-  start = () => {
+  cancelAuth = () => {
     Modal.confirm({
       title: '操作确认',
       content: '是否取消选中应用的授权',
@@ -255,7 +255,7 @@ class Auth extends Component<IAuthProps> {
           <div>
             <span className='auth-title'>已授权应用</span>
             {hasSelected ? `已选择 ${this.selectedRowKeys.length} 个应用` : ''}
-            <Button type='danger' onClick={this.start} disabled={!hasSelected}>
+            <Button type='danger' onClick={this.cancelAuth} disabled={!hasSelected}>
               取消授权
             </Button>
           </div>

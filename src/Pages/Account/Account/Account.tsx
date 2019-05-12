@@ -93,15 +93,10 @@ class Account extends Component<IAccountProps> {
             <CSSTransition
               key={this.props.location.pathname}
               classNames={{
-                appear: 'animated fadeIn',
-                appearActive: 'animated fadeIn',
-                appearDone: 'animated fadeIn',
-                enter: 'animated fadeIn',
-                enterActive: 'animated fadeIn',
-                enterDone: 'animated fadeIn'
+                enter: 'animated fadeIn'
               }}
               exit={false}
-              timeout={300}
+              timeout={1000}
             >
               <Switch location={this.props.location}>
                 <Route exact={true} path='/account' component={Login} />

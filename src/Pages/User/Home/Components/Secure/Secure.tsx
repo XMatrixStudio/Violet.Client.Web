@@ -12,9 +12,7 @@ import { inject, observer } from 'mobx-react'
 class Secure extends Component<{ UserStore?: UserStore }> {
   updateInfo = (isEdit: boolean) => {
     if (isEdit) {
-      this.props.UserStore!.updateInfo(() => {
-        window.location.href = '/account'
-      })
+      this.props.UserStore!.UpdateInfo()
     }
   }
 

@@ -4,6 +4,13 @@ import { createHash } from 'crypto'
 const axios = Axios.create()
 
 export default {
+  /**
+   * 修改开发者个人信息
+   */
+  UpdateDevInfo: async (req: PutUsersDev.ReqBody) => {
+    const res = await axios.put('/api/i/users/dev', req)
+    return res
+  },
   // 授权
   Auth: async (req: PostUsersAuths.ReqBody) => {
     const res = await axios.post('/api/i/users/auths', req)

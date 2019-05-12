@@ -42,7 +42,7 @@ class NewOrganization extends Component<INewOrganizationProps> {
           .then(_ => {
             finish()
             message.success('创建组织成功')
-            this.props.UserStore!.updateInfo()
+            this.props.UserStore!.UpdateInfo()
             this.props.next(true)
           })
           .catch(error => {

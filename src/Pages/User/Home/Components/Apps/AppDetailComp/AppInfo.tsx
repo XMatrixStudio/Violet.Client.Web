@@ -22,12 +22,12 @@ interface IAppInfo extends RouteComponentProps<any> {
 class AppInfo extends Component<IAppInfo> {
   appIcon?: string
   appName: string
-  @observable isEdit: boolean
+  @observable isEdit = false
+  @observable showKey = false
 
   @action
   componentWillMount() {
     this.appName = this.props.match.params.id
-    this.isEdit = false
     this.props.UIStore!.setTitle(
       <>
         <a key='link' onClick={this.goBack}>
@@ -74,6 +74,23 @@ class AppInfo extends Component<IAppInfo> {
       })
   }
 
+  copyText = (text: string, msg: string) => {
+    message.destroy()
+    const input = document.createElement('input')
+    input.setAttribute('readonly', 'readonly')
+    input.setAttribute('value', text)
+    document.body.appendChild(input)
+    input.setSelectionRange(0, 9999)
+    input.select()
+    if (document.execCommand('copy')) {
+      document.execCommand('copy')
+      message.success(msg)
+    } else {
+      message.error('复制失败，请手动复制')
+    }
+    document.body.removeChild(input)
+  }
+
   render() {
     if (this.props.appInfo === undefined) {
       return (
@@ -90,23 +107,24 @@ class AppInfo extends Component<IAppInfo> {
 
     const InfoShow = (
       <>
-        <div className='avatar-item'>
-          <AvatarSelect
-            title='点击或拖动选择应用图标'
-            imageURL={this.props.appInfo.info.avatar}
-            setImage={this.uploadAvatar}
-          />
-        </div>
+        <Tooltip title='修改应用图标'>
+          <div className='avatar-item'>
+            <AvatarSelect
+              title='点击或拖动选择应用图标'
+              imageURL={this.props.appInfo.info.avatar}
+              setImage={this.uploadAvatar}
+            />
+          </div>
+        </Tooltip>
         <div className='info-item'>
           <span className='info-label'>ID：</span>
-          <Tooltip title='点击复制'>
+          <Tooltip title='点击复制' placement='right'>
             <Tag
               className='tag-label'
               onClick={() => {
-                message.destroy()
-                message.success('应用ID已复制到剪贴板')
+                this.copyText(this.props.appInfo!.id, '应用ID已复制到剪贴板')
               }}
-              color='#87d068'
+              color='#fcc85d'
             >
               {this.props.appInfo.id}
             </Tag>
@@ -114,16 +132,27 @@ class AppInfo extends Component<IAppInfo> {
         </div>
         <div className='info-item'>
           <span className='info-label'>Key：</span>
-          <Tooltip title='点击复制'>
+          <Tooltip
+            title={!this.showKey ? '点击显示' : '点击复制'}
+            placement='right'
+          >
             <Tag
               className='tag-label'
               onClick={() => {
-                message.destroy()
-                message.success('应用Key已复制到剪贴板')
+                if (this.showKey === false) {
+                  this.showKey = true
+                } else {
+                  this.copyText(
+                    this.props.appInfo!.key!,
+                    '应用Key已复制到剪贴板，请妥善保管防止外泄'
+                  )
+                }
               }}
-              color='#fcc85d'
+              color='#87d068'
             >
-              {this.props.appInfo.key}
+              {this.showKey
+                ? this.props.appInfo.key
+                : '************************'}
             </Tag>
           </Tooltip>
         </div>

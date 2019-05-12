@@ -7,12 +7,13 @@ import EditInfo from './EditInfo'
 import { observer, inject } from 'mobx-react'
 import UserStore from 'src/Store/UserStore'
 import AvatarSelect from '../Common/AvatarSelect'
-import { Tooltip, message } from 'antd'
+import { Tooltip, message, Skeleton } from 'antd'
 import UIStore from 'src/Store/UIStore'
-import { observable, observe } from 'mobx'
+import { observable, reaction } from 'mobx'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import UserService from 'src/Services/UserService'
 import UserGender from '../Common/UserGender'
+import UserLevel from '../Common/UserLevel'
 
 interface IInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -26,26 +27,25 @@ class Info extends Component<IInfoProps, any> {
 
   componentWillMount() {
     if (this.props.UserStore!.init) {
-      this.updateTitle()
+      this.updateTitle(this.props.UserStore!.data.info.nickname)
     }
-    observe(this.props.UserStore!.data, () => {
-      if (this.props.location.pathname.includes('/user/info')) {
-        this.updateTitle()
+    reaction(
+      () => this.props.UserStore!.data,
+      () => {
+        if (this.props.location.pathname.includes('/user/info')) {
+          this.updateTitle(this.props.UserStore!.data.info.nickname)
+        }
       }
-    })
+    )
   }
 
-  updateTitle = () => {
-    this.props.UIStore!.setTitle(
-      'Hi, ' + this.props.UserStore!.data.info.nickname,
-      this.tip(),
-      '个人信息'
-    )
+  updateTitle = (nickname: string) => {
+    this.props.UIStore!.setTitle('Hi, ' + nickname, this.tip(), '个人信息')
   }
 
   /** 刷新用户信息 */
   refreshInfo = () => {
-    this.props.UserStore!.updateInfo(() => {
+    this.props.UserStore!.UpdateInfo(() => {
       window.location.href = '/account'
     })
   }
@@ -71,6 +71,10 @@ class Info extends Component<IInfoProps, any> {
     }
   }
 
+  /**
+   * 上传头像并刷新用户信息
+   * @param base64 头像Base64字符串
+   */
   uploadAvatar = async (base64: string) => {
     const hide = message.loading('头像上传中....', 0)
     await UserService.UpdateInfo({
@@ -79,11 +83,22 @@ class Info extends Component<IInfoProps, any> {
       }
     })
     hide()
-    message.success('上传成功!')
-    this.props.UserStore!.updateInfo(undefined, true)
+    setTimeout(() => {
+      message.success('上传成功!')
+    }, 500)
+    this.props.UserStore!.UpdateInfo(undefined, true)
   }
 
   render() {
+    if (!this.props.UserStore!.init) {
+      return (
+        <div className='info-content'>
+          <div className='content-box'>
+            <Skeleton active={true} />
+          </div>
+        </div>
+      )
+    }
     const data = this.props.UserStore!.data
     return (
       <div className='info-content'>
@@ -102,20 +117,16 @@ class Info extends Component<IInfoProps, any> {
               <div>
                 <span className='user-name'>{data.info.nickname}</span>
                 <UserGender gender={data.info.gender} />
-                {/* <UserLevel level={data.level} />
-                <Tooltip title='这是什么？'>
-                  <Icon
-                    style={{ fontSize: '18px', cursor: 'pointer' }}
-                    type='question-circle'
-                    theme='twoTone'
-                    twoToneColor='#06afda'
-                    onClick={() => {
-                      this.props.history.push('/user/help')
-                    }}
-                  />
-                </Tooltip> */}
               </div>
               <p className='user-bio'>{data.info.bio || '这里是个人简介'}</p>
+            </div>
+            <div
+              className='user-level-info'
+              onClick={() => {
+                this.props.history.push('/user/help')
+              }}
+            >
+              <UserLevel level={data.level} />
             </div>
           </div>
 

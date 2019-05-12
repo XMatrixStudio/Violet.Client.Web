@@ -20,15 +20,7 @@ class RequestList extends Component<IRequestListProps> {
   @action
   componentDidMount() {
     document.title = '申请列表 | Violet'
-    this.props.UIStore!.setTitle(
-      <>
-        <Link key='link' to='/user/setting'>
-          系统设置
-        </Link>
-        <span key='more'> / 申请列表</span>
-      </>,
-      '所有需要审核的申请'
-    )
+    this.props.UIStore!.setTitle(<span>申请列表</span>, '所有需要审核的申请')
     this.props.UIStore!.setBack('/user/setting')
   }
 

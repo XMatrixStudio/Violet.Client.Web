@@ -132,7 +132,18 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
 
     return (
       <div className='app-info-form'>
-        <div className='form-title'>修改应用信息</div>
+        <div className='form-title'>
+          修改应用信息
+          <Tooltip title='返回'>
+            <Icon
+              type='rollback'
+              className='btn-back'
+              onClick={() => {
+                this.props.next(false)
+              }}
+            />
+          </Tooltip>
+        </div>
         <Form className='my-form' onSubmit={this.handleSubmit}>
           <Form.Item
             label={
@@ -161,7 +172,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
               <Select style={{ maxWidth: '300px' }}>
                 {StaticValues.AppTypes.map((v, i) => {
                   return (
-                    <Select.Option key={v} value={i + 1}>
+                    <Select.Option key={v} value={i}>
                       {v}
                     </Select.Option>
                   )

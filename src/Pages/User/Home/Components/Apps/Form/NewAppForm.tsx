@@ -28,20 +28,7 @@ class NewAppForm extends Component<INewAppFormProps> {
 
   componentWillMount() {
     this.ByName = this.props.match.params.by
-    this.props.UIStore!.setTitle(
-      <>
-        <a
-          key='link'
-          onClick={() => {
-            this.goBack(this.ByName, false)
-          }}
-        >
-          应用管理
-        </a>
-        <span key='more'> - 新建应用</span>
-      </>,
-      '创建新的应用'
-    )
+    this.props.UIStore!.setTitle('新建应用', '创建新的应用')
     this.props.UIStore!.setBack(() => {
       this.goBack(this.ByName, false)
     })
@@ -83,13 +70,12 @@ class NewAppForm extends Component<INewAppFormProps> {
           name: values.appName,
           type: parseInt(values.appClass, 10),
           url: values.appHome,
-          owner:
-            ByName === 'me' ? this.props.UserStore!.data.name : ByName
+          owner: ByName === 'me' ? this.props.UserStore!.data.name : ByName
         })
           .then(_ => {
             finish()
             message.success('创建应用成功')
-            this.props.UserStore!.updateInfo()
+            this.props.UserStore!.UpdateInfo()
             this.goBack(ByName, true)
           })
           .catch(error => {

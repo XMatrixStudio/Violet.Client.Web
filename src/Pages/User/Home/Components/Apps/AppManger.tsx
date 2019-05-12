@@ -24,6 +24,7 @@ class AppManger extends Component<IAppMangerProps> {
   @observable loading: boolean
   currentOrgsPage: number
   batchSize: number
+  orgs: Type.UserOrgInfoData[] = []
 
   @action
   componentWillMount() {
@@ -31,7 +32,7 @@ class AppManger extends Component<IAppMangerProps> {
     this.props.UIStore!.setTitle('应用管理', '在这里创建并管理你的应用')
     this.currentOrgsPage = 1
     this.batchSize = 100
-    if (this.props.UserStore!.orgs.length === 0) {
+    if (!this.props.UserStore!.orgs) {
       this.refreshOrgs()
     } else {
       this.updateTabView()
@@ -50,13 +51,14 @@ class AppManger extends Component<IAppMangerProps> {
   @action
   refreshOrgs = () => {
     this.loading = true
+    // 初次加载
+    if (this.currentOrgsPage === 1) {
+      this.orgs = []
+    }
     DevService.getDevOrgs(this.currentOrgsPage, this.batchSize)
       .then(res =>
         runInAction('updateOrgs', () => {
-          this.props.UserStore!.addOrgs(
-            res.data.data,
-            this.currentOrgsPage === 1
-          )
+          this.orgs = this.orgs.concat(res.data.data)
           if (
             res.data.pagination.total >
             this.currentOrgsPage * this.batchSize
@@ -64,6 +66,7 @@ class AppManger extends Component<IAppMangerProps> {
             this.currentOrgsPage++
             this.refreshOrgs()
           } else {
+            this.props.UserStore!.SetOrgs(this.orgs)
             this.updateTabView()
             this.loading = false
           }
@@ -82,7 +85,7 @@ class AppManger extends Component<IAppMangerProps> {
   }
 
   render() {
-    if (this.loading) {
+    if (this.loading || !this.props.UserStore!.orgs) {
       return <Skeleton active={true} />
     }
 
