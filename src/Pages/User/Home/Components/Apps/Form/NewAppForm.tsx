@@ -269,7 +269,7 @@ class NewAppForm extends Component<INewAppFormProps> {
                   {StaticValues.AppTypes.map((v, i) => {
                     return (
                       <Select.Option key={v} value={i + 1}>
-                        v
+                        {v}
                       </Select.Option>
                     )
                   })}

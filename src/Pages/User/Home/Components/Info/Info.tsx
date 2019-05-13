@@ -14,6 +14,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import UserService from 'src/Services/UserService'
 import UserGender from '../Common/UserGender'
 import UserLevel from '../Common/UserLevel'
+import ServiceTool from 'src/Services/ServiceTool'
 
 interface IInfoProps extends RouteComponentProps<any> {
   UserStore?: UserStore
@@ -77,16 +78,23 @@ class Info extends Component<IInfoProps, any> {
    */
   uploadAvatar = async (base64: string) => {
     const hide = message.loading('头像上传中....', 0)
-    await UserService.UpdateInfo({
+    UserService.UpdateInfo({
       info: {
         avatar: base64
       }
     })
-    hide()
-    setTimeout(() => {
-      message.success('上传成功!')
-    }, 500)
-    this.props.UserStore!.UpdateInfo(undefined, true)
+      .then(res => {
+        hide()
+        setTimeout(() => {
+          message.success('上传成功!')
+        }, 500)
+        this.props.UserStore!.UpdateInfo(undefined, true)
+      })
+      .catch(error => {
+        ServiceTool.errorHandler(error, msg => {
+          message.error('上传失败,' + msg)
+        })
+      })
   }
 
   render() {
