@@ -2,17 +2,20 @@ import React, { Component } from 'react'
 import { Form, Checkbox, Button, Select, message } from 'antd'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import UserService from 'src/Services/UserService'
 import { observable, action } from 'mobx'
 import ServiceTool from 'src/Services/ServiceTool'
+import UserStore from 'src/Store/UserStore'
 
 interface IAuthFormProps extends RouteComponentProps {
   form: WrappedFormUtils
   next: (ok: boolean, msg?: string) => void
   params: Type.AuthParams
+  UserStore?: UserStore
 }
 
+@inject('UserStore')
 @observer
 class AuthForm extends Component<IAuthFormProps> {
   @observable authScopes: string[] = ['base']
@@ -109,6 +112,8 @@ class AuthForm extends Component<IAuthFormProps> {
           type='dashed'
           block={true}
           onClick={() => {
+            UserService.Logout()
+            this.props.UserStore!.ClearUserInfo()
             this.props.history.push('/account' + this.props.location.search, {
               isLogin: false
             })
