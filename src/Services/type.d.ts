@@ -21,7 +21,7 @@ declare namespace Type {
   /** 授权参数 */
   interface AuthParams {
     responseType: string
-    clientId: string
+    appId: string
     quickMode: boolean
     redirectUrl: string
     state: string

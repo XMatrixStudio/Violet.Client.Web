@@ -10,7 +10,6 @@ import UserService from 'src/Services/UserService'
 import RouterUtil from '../Util/RouterUtil'
 import AppInfoModal from './AppInfoModal'
 import ServiceTool from 'src/Services/ServiceTool'
-import Axios from 'axios'
 
 interface IAuth extends RouteComponentProps<any> {
   appInfo?: Type.AppInfoData
@@ -50,35 +49,17 @@ class Auth extends Component<IAuth> {
 
   getAuthInfo = (id?: string) => {
     if (!id) {
-      id = this.params.clientId
+      id = this.params.appId
     }
     UserService.GetAuthByID(id, this.params.redirectUrl)
       .then(res => {
         // 已授权，直接跳转
-        // window.location
-        if (this.params.responseType === 'code') {
-          window.location.href =
-            this.params.redirectUrl +
-            '?code=' +
-            res.data.code +
-            '&state=' +
-            this.params.state
-        } else if (this.params.responseType === 'codePost') {
-          Axios.post(this.params.redirectUrl, {
-            code: res.data.code,
-            state: this.params.state
-          })
-            .then(_ => {
-              window.close()
-              // 关闭当前窗口
-            })
-            .catch(error => {
-              ServiceTool.errorHandler(error, msg => {
-                this.errorText = '无效回调地址'
-                message.error('无效回调地址 ' + msg)
-              })
-            })
-        }
+        window.location.href =
+          this.params.redirectUrl +
+          '?code=' +
+          res.data.code +
+          '&state=' +
+          this.params.state
       })
       .catch(error => {
         ServiceTool.errorHandler(error, msg => {

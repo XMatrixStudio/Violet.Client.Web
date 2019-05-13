@@ -59,6 +59,7 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
+  appUserHtml: resolveApp('public/user.html'),
   appIndexJs: resolveApp('src/Pages/Index/index.tsx'),
   appAccountJs: resolveApp('src/Pages/Account/index.tsx'),
   appUserJs: resolveApp('src/Pages/User/index.tsx'),

@@ -136,7 +136,9 @@ module.exports = function(webpackEnv) {
       'react-dom': 'ReactDOM',
       antd: 'antd',
       mobx: 'mobx',
-      '@ant-design/icons': 'AntDesignIcons'
+      bizcharts: 'BizCharts',
+      moment: 'moment',
+      '@antv/data-set': 'DataSet'
     },
     optimization: {
       minimize: isEnvProduction,
@@ -208,8 +210,7 @@ module.exports = function(webpackEnv) {
           commons: {
             chunks: 'initial',
             minChunks: 1,
-            priority: 10,
-            enforce: true
+            priority: 10
           },
           antIcon: {
             test: /[\\/]@ant-design[\\/]icons[\\/]lib/,
@@ -352,7 +353,7 @@ module.exports = function(webpackEnv) {
           {
             inject: true,
             chunks: ['user'],
-            template: paths.appHtml,
+            template: paths.appUserHtml,
             filename: 'user.html'
           },
           isEnvProduction

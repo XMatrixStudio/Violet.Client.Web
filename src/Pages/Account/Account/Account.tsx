@@ -26,7 +26,7 @@ class Account extends Component<IAccountProps> {
   componentWillMount() {
     const params = RouterUtil.getParams(this.props.location.search)
     if (params.valid) {
-      DevService.getAppInfoById(params.clientId)
+      DevService.getAppInfoById(params.appId)
         .then(res => {
           runInAction(() => {
             this.appInfo = res.data
