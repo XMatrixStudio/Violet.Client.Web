@@ -268,7 +268,7 @@ class NewAppForm extends Component<INewAppFormProps> {
                 <Select style={{ maxWidth: '300px' }}>
                   {StaticValues.AppTypes.map((v, i) => {
                     return (
-                      <Select.Option key={v} value={i + 1}>
+                      <Select.Option key={v} value={i}>
                         {v}
                       </Select.Option>
                     )
