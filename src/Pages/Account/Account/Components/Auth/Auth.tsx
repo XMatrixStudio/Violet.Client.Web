@@ -81,7 +81,7 @@ class Auth extends Component<IAuth> {
           <Button
             type='primary'
             onClick={() => {
-              this.props.history.goBack()
+              window.close()
             }}
           >
             关闭
