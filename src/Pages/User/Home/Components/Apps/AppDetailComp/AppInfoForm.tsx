@@ -167,7 +167,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
                   message: '请选择应用分类'
                 }
               ],
-              initialValue: StaticValues.AppTypes[initData.type]
+              initialValue: initData.type
             })(
               <Select style={{ maxWidth: '300px' }}>
                 {StaticValues.AppTypes.map((v, i) => {
