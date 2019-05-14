@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Auth.less'
-import { Icon, Skeleton, Button, message } from 'antd'
+import { Icon, Skeleton, Button } from 'antd'
 import AuthForm from './AuthForm'
 
 import { observer } from 'mobx-react'
@@ -65,8 +65,10 @@ class Auth extends Component<IAuth> {
         ServiceTool.errorHandler(error, msg => {
           if (msg === 'error_redirect_url') {
             this.errorText = '非法回调地址'
+          } else if (msg === 'not_exist_app') {
+            this.errorText = '非法应用信息'
           } else if (msg !== 'not_exist_auth') {
-            message.error('获取授权信息失败, ' + msg)
+            this.errorText = '获取授权信息失败, ' + msg
           }
         })
         // 未授权
