@@ -116,4 +116,4 @@ class EditPhone extends Component<IEditPhoneProps, any> {
   }
 }
 
-export default withRouter(Form.create()(EditPhone))
+export default Form.create()(withRouter(EditPhone))

@@ -316,4 +316,4 @@ class NewOrganization extends Component<INewOrganizationProps> {
   }
 }
 
-export default withRouter(Form.create()(NewOrganization))
+export default Form.create()(withRouter(NewOrganization))

@@ -110,4 +110,4 @@ class EditPassword extends Component<IEditPasswordProps, any> {
   }
 }
 
-export default withRouter(Form.create()(EditPassword))
+export default Form.create()(withRouter(EditPassword))

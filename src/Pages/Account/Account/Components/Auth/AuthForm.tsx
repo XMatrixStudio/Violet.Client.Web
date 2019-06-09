@@ -126,4 +126,4 @@ class AuthForm extends Component<IAuthFormProps> {
   }
 }
 
-export default withRouter(Form.create()(AuthForm))
+export default Form.create()(withRouter(AuthForm))

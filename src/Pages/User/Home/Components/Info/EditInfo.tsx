@@ -185,4 +185,4 @@ class EditInfo extends Component<IEditInfo, any> {
   }
 }
 
-export default withRouter(Form.create()(EditInfo))
+export default Form.create()(withRouter(EditInfo))

@@ -95,4 +95,4 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
   }
 }
 
-export default withRouter(Form.create()(NormalLoginForm))
+export default Form.create()(withRouter(NormalLoginForm))

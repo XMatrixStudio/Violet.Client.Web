@@ -268,4 +268,4 @@ class DeveloperForm extends Component<IDeveloperFormProps> {
   }
 }
 
-export default withRouter(Form.create()(DeveloperForm))
+export default Form.create()(withRouter(DeveloperForm))

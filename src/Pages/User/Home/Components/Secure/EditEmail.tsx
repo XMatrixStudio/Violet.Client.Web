@@ -116,4 +116,4 @@ class EditEmail extends Component<IEditEmailProps, any> {
   }
 }
 
-export default withRouter(Form.create()(EditEmail))
+export default Form.create()(withRouter(EditEmail))

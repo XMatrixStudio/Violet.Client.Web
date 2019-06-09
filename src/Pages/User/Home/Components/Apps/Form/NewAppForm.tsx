@@ -397,4 +397,4 @@ class NewAppForm extends Component<INewAppFormProps> {
   }
 }
 
-export default withRouter(Form.create()(NewAppForm))
+export default Form.create()(withRouter(NewAppForm))
