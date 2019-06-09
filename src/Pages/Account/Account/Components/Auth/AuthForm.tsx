@@ -38,7 +38,7 @@ class AuthForm extends Component<IAuthFormProps> {
           duration: parseInt(values.authTime, 10),
           scope: values.authList
         })
-          .then(res => {
+          .then(_ => {
             this.props.next(true)
           })
           .catch(error => {

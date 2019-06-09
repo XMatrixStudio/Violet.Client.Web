@@ -17,14 +17,8 @@ class Register extends Component<IRouterProps> {
   @observable id = 'Null'
 
   @action
-  nextStep = (id?: string) => {
-    if (id !== undefined) {
-      this.id = id
-    }
+  nextStep = () => {
     this.currentStep++
-    if (this.currentStep > 3) {
-      this.currentStep = 0
-    }
   }
 
   componentDidMount() {

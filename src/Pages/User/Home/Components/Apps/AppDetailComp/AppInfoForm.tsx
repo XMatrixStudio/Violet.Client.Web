@@ -23,7 +23,7 @@ class AppInfoForm extends Component<IAppInfoFormProps> {
   componentWillMount() {
     const initData = this.props.initData
     if (initData && initData.callbackHosts!.length !== 0) {
-      initData.callbackHosts!.forEach((v, i) => {
+      initData.callbackHosts!.forEach((_, i) => {
         if (i > 0) {
           this.callbackKeys = this.callbackKeys.concat((this.id++).toString())
         }
