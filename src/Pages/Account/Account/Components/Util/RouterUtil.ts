@@ -5,7 +5,7 @@ export default {
     if (history.length > 2 && location.key !== undefined) {
       history.goBack()
     } else {
-      history.replace('/account')
+      history.replace('/account' + history.location.search)
     }
   },
   getParams(url: string) {

@@ -73,12 +73,6 @@ class Reset extends Component<IResetProps, any> {
           className='icon-back'
           onClick={() => {
             RouterUtil.GoBackAccount(this.props.history, this.props.location)
-            // if (this.currentStep === 1) {
-            //   this.currentStep--
-            //   this.showAnim = true
-            // } else if (this.currentStep === 0) {
-            //   RouterUtil.GoBackAccount(this.props.history, this.props.location)
-            // }
           }}
         />
       )

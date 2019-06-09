@@ -75,7 +75,7 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
             valuePropName: 'checked',
             initialValue: true
           })(<Checkbox style={{ float: 'left' }}>记住我</Checkbox>)}
-          <Link style={{ float: 'right' }} to='/account/reset'>
+          <Link style={{ float: 'right' }} to={'/account/reset' + this.props.location.search}>
             忘记密码
           </Link>
           <Button
@@ -86,7 +86,7 @@ class NormalLoginForm extends React.Component<ILoginFormProps, any> {
           >
             登陆
           </Button>
-          <Link style={{ display: 'block' }} to='/account/register'>
+          <Link style={{ display: 'block' }} to={'/account/register' + this.props.location.search}>
             现在注册
           </Link>
         </Form.Item>

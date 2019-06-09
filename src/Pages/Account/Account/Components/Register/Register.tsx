@@ -48,7 +48,7 @@ class Register extends Component<IRouterProps> {
               type='primary'
               className='register-btn'
               onClick={() => {
-                this.props.history.push('/account')
+                this.props.history.push('/account' + this.props.location.search)
               }}
             >
               立即登陆

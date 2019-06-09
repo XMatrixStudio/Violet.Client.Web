@@ -40,7 +40,7 @@ class Account extends Component<IAccountProps> {
         })
         .catch(error => {
           ServiceTool.errorHandler(error, msg => {
-            message.error('无效的应用, ' + msg)
+            message.error('无效的应用')
             this.props.history.push('/account/auth')
           })
         })
