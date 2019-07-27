@@ -3,7 +3,6 @@ import Message from './Message'
 import './Index.less'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
-import Nothing from '../Nothing/Nothing'
 
 interface IMessageIndex {
   UIStore?: UIStore
@@ -18,7 +17,6 @@ class MessageIndex extends Component<IMessageIndex> {
   }
 
   render() {
-    return <Nothing />
     return (
       <div className='message-layout'>
         <Message />

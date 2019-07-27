@@ -8,7 +8,7 @@ import AddImage from '@/Assets/add.png'
 import { inject, observer } from 'mobx-react'
 import UIStore from 'src/Store/UIStore'
 import UserStore from 'src/Store/UserStore'
-import { observable } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import ServiceTool from 'src/Services/ServiceTool'
 import DevService from 'src/Services/DevService'
 import StaticValues from 'src/Assets/StaticValues'
@@ -23,6 +23,7 @@ interface INewAppFormProps extends RouteComponentProps<any> {
 @observer
 class NewAppForm extends Component<INewAppFormProps> {
   @observable appIcon?: string
+  @observable orgInfo?: GetOrgsByExtId.ResBody
   id = 1
   ByName: string
 
@@ -32,12 +33,24 @@ class NewAppForm extends Component<INewAppFormProps> {
     this.props.UIStore!.setBack(() => {
       this.goBack(this.ByName, false)
     })
+    if (this.ByName !== 'me') {
+      this.loadOrgInfo(this.ByName)
+    }
   }
 
   goBack = (byName: string, finished: boolean) => {
     this.props.history.push(
       '/user/apps' + (byName === 'me' ? '' : '?t=' + byName)
     )
+  }
+
+  @action
+  loadOrgInfo = async (orgName: string) => {
+    DevService.getOrgInfoByName(orgName, true).then(res => {
+      runInAction(() => {
+        this.orgInfo = res.data
+      })
+    })
   }
 
   handleSubmit = (e: React.FormEvent) => {
@@ -107,13 +120,10 @@ class NewAppForm extends Component<INewAppFormProps> {
 
   remove = (k: string) => {
     const { form } = this.props
-    // can use data-binding to get
     const keys = form.getFieldValue('keys')
-    // We need at least one passenger
     if (keys.length === 1) {
       return
     }
-    // can use data-binding to set
     form.setFieldsValue({
       keys: keys.filter((key: string) => key !== k)
     })
@@ -121,11 +131,8 @@ class NewAppForm extends Component<INewAppFormProps> {
 
   add = () => {
     const { form } = this.props
-    // can use data-binding to get
     const keys = form.getFieldValue('keys')
     const nextKeys = keys.concat((this.id++).toString())
-    // can use data-binding to set
-    // important! notify form to detect changes
     form.setFieldsValue({
       keys: nextKeys
     })
@@ -160,8 +167,8 @@ class NewAppForm extends Component<INewAppFormProps> {
               </Tooltip>
             </span>
           ) : (
-            ''
-          )
+              ''
+            )
         }
         required={true}
         key={k}
@@ -185,8 +192,8 @@ class NewAppForm extends Component<INewAppFormProps> {
             onClick={() => this.remove(k)}
           />
         ) : (
-          <Icon className='dy-icons' type='plus' onClick={() => this.add()} />
-        )}
+            <Icon className='dy-icons' type='plus' onClick={() => this.add()} />
+          )}
       </Form.Item>
     ))
 
@@ -212,11 +219,16 @@ class NewAppForm extends Component<INewAppFormProps> {
                   <strong style={{ marginRight: '6px' }}>
                     {UserInfo.info.nickname}
                   </strong>
-                  (自己 - {UserInfo.dev.appOwn}/{UserInfo.dev.appLimit})
+                  (个人 - {UserInfo.dev.appOwn}/{UserInfo.dev.appLimit})
                 </span>
               ) : (
-                <span>{ByName}(组织)</span>
-              )}
+                  <span>
+                    <strong style={{ marginRight: '6px' }}>
+                      {ByName}
+                    </strong>
+                    (组织{this.orgInfo ? (' - ' + this.orgInfo.dev.appOwn + '/' + this.orgInfo.dev.appLimit) : ''})
+                  </span>
+                )}
             </div>
             <Form.Item
               className='item-app-icon'

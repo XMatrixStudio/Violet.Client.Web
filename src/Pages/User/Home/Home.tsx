@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import './Home.less'
-import { Layout, Menu, Icon, Tooltip, Modal } from 'antd'
+import { Layout, Menu, Icon, Tooltip, Modal, Badge } from 'antd'
 const { Sider, Content } = Layout
 import { observable } from 'mobx'
 const confirm = Modal.confirm
@@ -127,9 +127,9 @@ class Home extends React.Component<IHomeProps, any> {
       this.props.location.pathname.indexOf('/', 7) === -1
         ? this.props.location.pathname
         : this.props.location.pathname.substr(
-            0,
-            this.props.location.pathname.indexOf('/', 7)
-          )
+          0,
+          this.props.location.pathname.indexOf('/', 7)
+        )
 
     return (
       <Layout className='home'>
@@ -184,11 +184,11 @@ class Home extends React.Component<IHomeProps, any> {
               <Icon type='link' />
               <span>授权管理</span>
             </Menu.Item>
-            {/* <Menu.Item key='message'>
+            <Menu.Item key='message'>
               <Icon type='message' />
               <span>通知信息</span>
               <Badge dot={false} />
-            </Menu.Item> */}
+            </Menu.Item>
             <Menu.Item key='apps'>
               <Icon type='code' />
               <span>应用管理</span>

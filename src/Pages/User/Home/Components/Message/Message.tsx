@@ -79,7 +79,47 @@ class Message extends Component {
             time: new Date(new Date().getTime() - 9432145),
             type: 'message',
             content: '我好奇'
-          }
+          },
+          {
+            time: new Date(new Date().getTime() - 9432145),
+            type: 'message',
+            content: '我好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 9432145),
+            type: 'message',
+            content: '我好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 9432145),
+            type: 'message',
+            content: '我好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 9432145),
+            type: 'message',
+            content: '我好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 12249432145),
+            type: 'message-me',
+            content: '你好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 12249432145),
+            type: 'message-me',
+            content: '你好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 12249432145),
+            type: 'message-me',
+            content: '你好奇'
+          },
+          {
+            time: new Date(new Date().getTime() - 12249432145),
+            type: 'message-me',
+            content: '你好奇'
+          },
         ]
       }
     ]
@@ -136,13 +176,12 @@ class Message extends Component {
     let messageContent = null
 
     if (this.selectIndex !== -1) {
-      const contentData = this.messageData[this.selectIndex]
-      messageContent = contentData.data.map(
+      messageContent = this.messageData[this.selectIndex].data.map(
         (value: IMessageContent, index: number) => {
           switch (value.type) {
             case 'notice':
               return (
-                <div key={value.time.getTime()}>
+                <div key={index}>
                   <p className='notice-time'>{this.formatTime(value.time)}</p>
                   <div className='chat-notice'>
                     <p className='notice-title'>{value.title}</p>
@@ -152,7 +191,7 @@ class Message extends Component {
               )
             case 'message':
               return (
-                <div key={value.time.getTime()} className='chat-item'>
+                <div key={index} className='chat-item'>
                   <img src={AppAvatar} className='avatar' />
                   <div className='chat-content'>
                     <p className='item-time'>{this.formatTime(value.time)}</p>
@@ -163,7 +202,7 @@ class Message extends Component {
             case 'message-me':
               return (
                 <div
-                  key={value.time.getTime()}
+                  key={index}
                   className='chat-item chat-item-me'
                 >
                   <div className='chat-content'>

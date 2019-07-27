@@ -99,6 +99,11 @@ module.exports = function(webpackEnv) {
         isEnvDevelopment &&
           require.resolve('react-dev-utils/webpackHotDevClient'),
         paths.appUserJs
+      ].filter(Boolean),
+      accountMobile: [
+        isEnvDevelopment &&
+          require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appAccountMobileJs
       ].filter(Boolean)
     },
     output: {
@@ -329,6 +334,32 @@ module.exports = function(webpackEnv) {
             chunks: ['account'],
             template: paths.appHtml,
             filename: 'account.html'
+          },
+          isEnvProduction
+            ? {
+                minify: {
+                  removeComments: true,
+                  collapseWhitespace: true,
+                  removeRedundantAttributes: true,
+                  useShortDoctype: true,
+                  removeEmptyAttributes: true,
+                  removeStyleLinkTypeAttributes: true,
+                  keepClosingSlash: true,
+                  minifyJS: true,
+                  minifyCSS: true,
+                  minifyURLs: true
+                }
+              }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['accountMobile'],
+            template: paths.appMobileHtml,
+            filename: 'account-m.html'
           },
           isEnvProduction
             ? {

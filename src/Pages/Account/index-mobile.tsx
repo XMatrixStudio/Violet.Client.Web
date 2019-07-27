@@ -1,7 +1,7 @@
-// PC 端入口
+// 移动端入口
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import './index.less'
+import './index-mobile.less'
 import * as serviceWorker from '../../serviceWorker'
 
 // router
