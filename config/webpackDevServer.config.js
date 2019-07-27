@@ -81,6 +81,7 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
       // 多入口重定向
       rewrites: [
+        { from: /^\/account-m/, to: '/account-m.html' },
         { from: /^\/account/, to: '/account.html' },
         { from: /^\/user/, to: '/user.html' }
       ]
