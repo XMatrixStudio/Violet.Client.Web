@@ -9,7 +9,7 @@ export type TUser = {
 
 export function createStore() {
     return {
-        user: {} as TUser
+        user: null as Type.UserInfoData | null,
     }
 }
 

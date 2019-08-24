@@ -1,48 +1,54 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './index.less'
-import { Button } from 'antd'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
-import useReactRouter from 'use-react-router'
-import { useStore } from '../../../Store'
-import axios from 'axios'
+import { Icon } from 'antd'
+import ScrollAnimation from 'react-animate-on-scroll'
+
+import IconSecurity from '@/assets/home/security.png'
+import IconNew from '@/assets/home/new.png'
+import IconThunder from '@/assets/home/thunder.png'
 
 const Main: React.FC = () => {
-  const { history } = useReactRouter()
 
-  const store = useStore()
+  return (
+    <div className='comp-index'>
+      <div className='comp-index-top'>
+        <ScrollAnimation animateIn='fadeIn' className='big-text'>
+          <p>Violet 中央授权系统</p>
+          <p>第三代</p>
+          <p>全新形象</p>
+          <a href='//github.com/XMatrixStudio/Violet' target='_blank' rel='noopener noreferrer'>
+            <Icon type='github' /> Github
+          </a>
+        </ScrollAnimation>
+      </div>
 
-  const localState = useLocalStore(() => ({
-    count: 0,
-    info: 'hell0,w0rld'
-  }))
-
-  const onClickAdd = () => {
-    localState.count++
-    store.user.name = '123'
-  }
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await axios.get('https://api.github.com/')
-        localState.info = res.data.authorizations_url
-      } catch (error) {
-        localState.info = error.response.data.message
-      }
-    }
-
-    getData()
-  }, [])
-
-  return useObserver(() =>
-    <div className="App">
-      <p>{store.user.name}</p>
-      <p>{localState.info}</p>
-      <p>{localState.count}</p>
-      <Button onClick={onClickAdd}>Add</Button>
-      <Button onClick={()=>{
-        history.push('/about')
-      }}>Go</Button>
+      <div className='comp-index-detail'>
+        <ScrollAnimation className='detail-box' animateIn='bounceInLeft'>
+          <p className='icon'>
+            <img src={IconSecurity} alt='security' />
+          </p>
+          <p className='title'>安全</p>
+          <p className='detail'>
+            基于OAuth2.0，多重防御措施，全程加密通讯，保护你的账号安全
+          </p>
+        </ScrollAnimation>
+        <ScrollAnimation className='detail-box' animateIn='bounceInUp'>
+          <p className='icon'>
+            <img src={IconThunder} alt='thunder'/>
+          </p>
+          <p className='title'>极速</p>
+          <p className='detail'>极速授权，一键访问你的所有应用</p>
+        </ScrollAnimation>
+        <ScrollAnimation className='detail-box' animateIn='bounceInRight'>
+          <p className='icon'>
+            <img src={IconNew} alt='new' />
+          </p>
+          <p className='title'>先进</p>
+          <p className='detail'>
+            采用最强的秀秀作为程序员，写出来的BUG绝无代码
+          </p>
+        </ScrollAnimation>
+      </div>
     </div>
   )
 }
