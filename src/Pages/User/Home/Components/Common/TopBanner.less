@@ -1,0 +1,149 @@
+@transition-value: all 0.3s ease-in-out;
+
+.extend-banner {
+  height: 200px;
+  .top-title {
+    top: 70px;
+    font-size: 24px;
+  }
+  .icon-extend {
+    top: 160px;
+  }
+}
+
+.small-banner {
+  top: 0;
+  height: 60px;
+  .top-title {
+    top: 16px;
+    font-size: 20px;
+    .sub-title {
+      opacity: 0;
+    }
+  }
+  .icon-extend {
+    top: 14px;
+    right: 0;
+  }
+  .box-2 {
+    opacity: 0;
+  }
+  .box-3 {
+    opacity: 0;
+  }
+}
+
+.top-banner {
+  position: fixed;
+  top: 0;
+  z-index: 950;
+  min-width: 600px;
+  width: 100%;
+  background: #055b83;
+  box-shadow: 0 4px 6px 0 hsla(207, 93%, 34%, 0.349);
+  overflow: hidden;
+  transition: @transition-value;
+  .box-1 {
+    position: absolute;
+    left: -240px;
+    top: -40px;
+    background: linear-gradient(to bottom, #06afda, #07a9d19d);
+    width: 50%;
+    height: 500px;
+    box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.219);
+    border-radius: 30px;
+    transform: scale(1.8) rotate(45deg);
+    z-index: 30;
+    transition: @transition-value;
+  }
+  @media (max-width: 840px) {
+    .box-2 {
+      opacity: 0;
+    }
+  }
+  .box-2 {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(to bottom right, #08bdeb, #07a9d100);
+    transform: rotate(45deg);
+    border-radius: 20px;
+    z-index: 20;
+    transition: @transition-value;
+  }
+  @media (max-width: 1000px) {
+    .box-3 {
+      opacity: 0;
+    }
+  }
+  .box-3 {
+    position: absolute;
+    top: 70%;
+    right: 200px;
+    width: 100px;
+    border-radius: 20px;
+    height: 100px;
+    background: linear-gradient(to bottom right, #0585a5, #07a9d100);
+    transform: rotate(45deg);
+    z-index: 10;
+    transition: @transition-value;
+  }
+
+  .top-title {
+    position: absolute;
+    left: 10px;
+    user-select: none;
+    transition: @transition-value;
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 60;
+    .back-icon {
+      position: absolute;
+      display: inline-block;
+      margin: 0 10px;
+      cursor: pointer;
+      transition: transform 0.3s;
+      &:hover {
+        transform: translateX(-2px);
+      }
+    }
+    .with-back {
+      margin-left: 48px !important;
+    }
+    .big-title {
+      margin-left: 20px;
+      display: inline-block;
+      margin-bottom: 2px;
+      transition: margin 0.3s;
+    }
+    .sub-title {
+      margin-left: 20px;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      &:hover,
+      &:focus {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+
+  .icon-extend {
+    position: fixed;
+    z-index: 40;
+    padding: 10px;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: @transition-value;
+    cursor: pointer;
+    right: 10px;
+    &:hover {
+      color: rgba(255, 255, 255, 0.774);
+      transform: scale(1.2);
+    }
+  }
+}

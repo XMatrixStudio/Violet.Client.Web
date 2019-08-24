@@ -1,21 +1,35 @@
-# violet
+# Violet.Web
 
-> Violet User System
+The front end for **Violet**
 
-## Build Setup
+## Update log
 
-``` bash
-# install dependencies
-npm install
+### 3.0
 
-# serve with hot reload at localhost:8080
-npm run dev
+Status: `Developing`
 
-# build for production with minification
-npm run build
+Framework: `React 16`
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+UI: `Ant Design 3`
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+Time: 2019/1/11 - Now
+
+### 2.0
+
+Status: `Working`
+
+Framework: `Vue 2`
+
+UI: `iview 2`
+
+Time: 2017/10/31 - 2019/1/10
+
+### 1.0
+
+Status: `Expired`
+
+Framework:`JQuery`
+
+UI: `Bootstrap 3`
+
+Time: 2017/1/18-2017/10/30

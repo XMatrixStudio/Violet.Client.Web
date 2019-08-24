@@ -1,0 +1,35 @@
+.comp-login {
+  @card-color: rgba(10, 172, 212, 0.774);
+  @card-color-hover: rgb(10, 172, 212);
+  padding: 30px;
+
+  .login-btn {
+    margin-top: 25px;
+    width: 80%;
+    margin-bottom: 10px;
+    background: @card-color;
+    border-color: @card-color;
+    &:hover,
+    &:focus {
+      width: 82%;
+      background: @card-color-hover;
+      border-color: @card-color-hover;
+    }
+  }
+
+  .icon-color {
+    color: @card-color;
+  }
+
+  .card-title {
+    .line {
+      border-bottom: 3px solid @card-color;
+    }
+  }
+
+  .login-form {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 48px;
+  }
+}
