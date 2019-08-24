@@ -1,29 +1,29 @@
-'use strict'
+'use strict';
 
-const path = require('path')
-const fs = require('fs')
-const url = require('url')
+const path = require('path');
+const fs = require('fs');
+const url = require('url');
 
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebook/create-react-app/issues/637
-const appDirectory = fs.realpathSync(process.cwd())
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
-const envPublicUrl = process.env.PUBLIC_URL
+const envPublicUrl = process.env.PUBLIC_URL;
 
 function ensureSlash(inputPath, needsSlash) {
-  const hasSlash = inputPath.endsWith('/')
+  const hasSlash = inputPath.endsWith('/');
   if (hasSlash && !needsSlash) {
-    return inputPath.substr(0, inputPath.length - 1)
+    return inputPath.substr(0, inputPath.length - 1);
   } else if (!hasSlash && needsSlash) {
-    return `${inputPath}/`
+    return `${inputPath}/`;
   } else {
-    return inputPath
+    return inputPath;
   }
 }
 
 const getPublicUrl = appPackageJson =>
-  envPublicUrl || require(appPackageJson).homepage
+  envPublicUrl || require(appPackageJson).homepage;
 
 // We use `PUBLIC_URL` environment variable or "homepage" field to infer
 // "public path" at which the app is served.
@@ -32,10 +32,10 @@ const getPublicUrl = appPackageJson =>
 // We can't use a relative path in HTML because we don't want to load something
 // like /todos/42/static/js/bundle.7289d.js. We have to know the root.
 function getServedPath(appPackageJson) {
-  const publicUrl = getPublicUrl(appPackageJson)
+  const publicUrl = getPublicUrl(appPackageJson);
   const servedUrl =
-    envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : '/')
-  return ensureSlash(servedUrl, true)
+    envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : '/');
+  return ensureSlash(servedUrl, true);
 }
 
 const moduleFileExtensions = [
@@ -49,8 +49,21 @@ const moduleFileExtensions = [
   'tsx',
   'json',
   'web.jsx',
-  'jsx'
-]
+  'jsx',
+];
+
+// Resolve file paths in the same order as webpack
+const resolveModule = (resolveFn, filePath) => {
+  const extension = moduleFileExtensions.find(extension =>
+    fs.existsSync(resolveFn(`${filePath}.${extension}`))
+  );
+
+  if (extension) {
+    return resolveFn(`${filePath}.${extension}`);
+  }
+
+  return resolveFn(`${filePath}.js`);
+};
 
 // config after eject: we're in ./config/
 module.exports = {
@@ -59,22 +72,20 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
-  appMobileHtml: resolveApp('public/mobile.html'),
-  appUserHtml: resolveApp('public/user.html'),
-  appIndexJs: resolveApp('src/Pages/Index/index.tsx'),
-  appAccountJs: resolveApp('src/Pages/Account/index.tsx'),
-  appAccountMobileJs: resolveApp('src/Pages/AccountMobile/index.tsx'),
-  appUserJs: resolveApp('src/Pages/User/index.tsx'),
+  appIndexJs: resolveModule(resolveApp, 'src/pages/home/index'),
+  appAccountJs: resolveModule(resolveApp, 'src/pages/account/index'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
+  appTsConfig: resolveApp('tsconfig.json'),
+  appJsConfig: resolveApp('jsconfig.json'),
   yarnLockFile: resolveApp('yarn.lock'),
-  testsSetup: resolveApp('src/setupTests.ts'),
+  testsSetup: resolveModule(resolveApp, 'src/setupTests'),
   proxySetup: resolveApp('src/setupProxy.js'),
   appNodeModules: resolveApp('node_modules'),
-  appTsConfig: resolveApp('tsconfig.json'),
-  appTsLint: resolveApp('tslint.json'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
-  servedPath: getServedPath(resolveApp('package.json'))
-}
+  servedPath: getServedPath(resolveApp('package.json')),
+};
 
-module.exports.moduleFileExtensions = moduleFileExtensions
+
+
+module.exports.moduleFileExtensions = moduleFileExtensions;

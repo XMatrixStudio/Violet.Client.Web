@@ -1,5 +1,3 @@
-// import console = require('console')
-
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -10,7 +8,7 @@
 // resources are updated in the background.
 
 // To learn more about the benefits of this model and instructions on how to
-// opt-in, read http://bit.ly/CRA-PWA
+// opt-in, read https://bit.ly/CRA-PWA
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -22,12 +20,12 @@ const isLocalhost = Boolean(
     )
 )
 
-interface IConfig {
+type Config = {
   onSuccess?: (registration: ServiceWorkerRegistration) => void
   onUpdate?: (registration: ServiceWorkerRegistration) => void
 }
 
-export function register(config?: IConfig) {
+export function register(config?: Config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
@@ -37,7 +35,7 @@ export function register(config?: IConfig) {
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
-      // serve assets; see https://github.com/facebook/create-react-app/issues/2374
+      // serve assets see https://github.com/facebook/create-react-app/issues/2374
       return
     }
 
@@ -53,7 +51,7 @@ export function register(config?: IConfig) {
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit http://bit.ly/CRA-PWA'
+              'worker. To learn more, visit https://bit.ly/CRA-PWA'
           )
         })
       } else {
@@ -64,7 +62,7 @@ export function register(config?: IConfig) {
   }
 }
 
-function registerValidSW(swUrl: string, config?: IConfig) {
+function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -81,7 +79,7 @@ function registerValidSW(swUrl: string, config?: IConfig) {
               // content until all client tabs are closed.
               console.log(
                 'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See http://bit.ly/CRA-PWA.'
+                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
               )
 
               // Execute callback
@@ -108,7 +106,7 @@ function registerValidSW(swUrl: string, config?: IConfig) {
     })
 }
 
-function checkValidServiceWorker(swUrl: string, config?: IConfig) {
+function checkValidServiceWorker(swUrl: string, config?: Config) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -119,20 +117,11 @@ function checkValidServiceWorker(swUrl: string, config?: IConfig) {
         (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
         // No service worker found. Probably a different app. Reload the page.
-        navigator.serviceWorker.ready
-          .then(registration => {
-            registration
-              .unregister()
-              .then(() => {
-                window.location.reload()
-              })
-              .catch(() => {
-                console.log('catch error')
-              })
+        navigator.serviceWorker.ready.then(registration => {
+          registration.unregister().then(() => {
+            window.location.reload()
           })
-          .catch(() => {
-            console.log('catch error')
-          })
+        })
       } else {
         // Service worker found. Proceed as normal.
         registerValidSW(swUrl, config)
@@ -147,12 +136,8 @@ function checkValidServiceWorker(swUrl: string, config?: IConfig) {
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready
-      .then(registration => {
-        registration.unregister()
-      })
-      .catch(() => {
-        console.log('catch error')
-      })
+    navigator.serviceWorker.ready.then(registration => {
+      registration.unregister()
+    })
   }
 }

@@ -4,19 +4,29 @@ The front end for **Violet**
 
 ## Update log
 
-### 3.0
+### 3.1
 
 Status: `Developing`
+
+Framework: `React 16 with Hook`
+
+UI: `Ant Design 3`
+
+Time: 2019/8/24 - Now
+
+### 3.0
+
+Status: `Working`
 
 Framework: `React 16`
 
 UI: `Ant Design 3`
 
-Time: 2019/1/11 - Now
+Time: 2019/1/11 - 2019/8/23
 
 ### 2.0
 
-Status: `Working`
+Status: `Expired`
 
 Framework: `Vue 2`
 
