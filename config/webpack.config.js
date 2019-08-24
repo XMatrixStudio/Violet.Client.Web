@@ -150,10 +150,30 @@ module.exports = function (webpackEnv) {
         // initialization, it doesn't blow up the WebpackDevServer client, and
         // changing JS code would still trigger a refresh.
       ].filter(Boolean),
+      indexMobile: [
+        isEnvDevelopment &&
+        require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appIndexMobileJs
+      ].filter(Boolean),
       account: [
         isEnvDevelopment &&
         require.resolve('react-dev-utils/webpackHotDevClient'),
         paths.appAccountJs
+      ].filter(Boolean),
+      accountMobile: [
+        isEnvDevelopment &&
+        require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appAccountMobileJs
+      ].filter(Boolean),
+      user: [
+        isEnvDevelopment &&
+        require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appUserJs
+      ].filter(Boolean),
+      userMobile: [
+        isEnvDevelopment &&
+        require.resolve('react-dev-utils/webpackHotDevClient'),
+        paths.appUserMobileJs
       ].filter(Boolean)
     },
     output: {
@@ -516,7 +536,34 @@ module.exports = function (webpackEnv) {
           {
             inject: true,
             chunks: ['index'],
-            template: paths.appHtml
+            template: paths.appHtml,
+            filename: 'index.html'
+          },
+          isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined
+        )
+      ),,
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['indexMobile'],
+            template: paths.appHtml,
+            filename: 'index-m.html'
           },
           isEnvProduction
             ? {
@@ -543,6 +590,84 @@ module.exports = function (webpackEnv) {
             chunks: ['account'],
             template: paths.appHtml,
             filename: 'account.html'
+          },
+          isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['accountMobile'],
+            template: paths.appHtml,
+            filename: 'account-m.html'
+          },
+          isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['user'],
+            template: paths.appHtml,
+            filename: 'user.html'
+          },
+          isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {
+            inject: true,
+            chunks: ['userMobile'],
+            template: paths.appHtml,
+            filename: 'user-m.html'
           },
           isEnvProduction
             ? {
