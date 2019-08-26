@@ -2,11 +2,6 @@ import React from 'react'
 
 export const storeContext = React.createContext<TStore | null>(null)
 
-export type TUser = {
-    name: string
-    phone: string
-}
-
 export function createStore() {
     return {
         user: null as Type.UserInfoData | null,

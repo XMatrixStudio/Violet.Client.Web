@@ -15,11 +15,7 @@ const App: React.FC = () => {
 
   // 获取用户信息
   useEffect(() => {
-    UserService.GetInfo(info => {
-      store.user = info
-    }, () => {
-      store.user = null
-    })
+    UserService.fetchUserInfo(store)
   })
 
   return (

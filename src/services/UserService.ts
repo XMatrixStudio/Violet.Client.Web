@@ -1,9 +1,25 @@
 import Axios from 'axios'
 import { createHash } from 'crypto'
+import { TStore } from '../Store';
 
 const axios = Axios.create()
 
+
 export default {
+  
+  /***
+   * 获取当前用户信息
+   */
+  fetchUserInfo: async (store: TStore) => {
+    try {
+      const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/me')
+      store.user = res.data
+    } catch (_) {
+      store.user = null
+    }
+  },
+
+
   /**
    * 修改开发者个人信息
    */
@@ -78,26 +94,6 @@ export default {
   GetUserInfoByID: async (id: string) => {
     const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/+' + id)
     return res
-  },
-  // 获取信息
-  GetInfo: async (
-    success: (info: GetUsersByExtUid.ResBody) => void,
-    failed?: () => void
-  ) => {
-    try {
-      const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/me')
-      if (res && res.data) {
-        success(res.data)
-      } else {
-        if (failed) {
-          failed()
-        }
-      }
-    } catch (_) {
-      if (failed) {
-        failed()
-      }
-    }
   },
   // 修改信息
   UpdateInfo: async (req: PatchUsers.ReqBody) => {
