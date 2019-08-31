@@ -1,0 +1,57 @@
+.layout-login-main {
+    height     : 100%;
+    display    : flex;
+    align-items: center;
+    padding    : 48px;
+
+    .login-form {
+        width: 100%;
+
+        .login-btn {
+            margin-top: 48px;
+            width     : 240px;
+        }
+    }
+
+    .input-title {
+        text-align   : left;
+        color        : #bfbfc8;
+        margin-bottom: 0;
+        transition   : all .2s;
+    }
+
+    .ant-form-item {
+        &:hover {
+
+            .input-title {
+                color    : #84848a;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .ant-form-explain {
+        margin-top   : 3px;
+        margin-bottom: -3px;
+    }
+
+    .ant-input-affix-wrapper .ant-input:not(:first-child) {
+        padding-left: 42px;
+    }
+
+    .ant-input {
+        height          : 48px;
+        background-color: #fefdff;
+        border-color    : #e8e7ec;
+        border-width    : 2px;
+
+        &:hover {
+            border-color: #a5a4a8;
+        }
+
+        &:focus {
+            border-color: #a5a4a8;
+            box-shadow  : none;
+        }
+    }
+}
