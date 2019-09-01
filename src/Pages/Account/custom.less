@@ -1,0 +1,81 @@
+.app {
+
+    // 覆盖样式
+
+    // 输入框
+    
+    .input-title {
+        text-align   : left;
+        color        : #bfbfc8;
+        margin-bottom: 0;
+        transition   : all .2s;
+    }
+
+    .ant-form-item {
+        &:hover {
+
+            .input-title {
+                color    : #84848a;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .ant-form-explain {
+        // margin-top   : 3px;
+        // margin-bottom: -3px;
+    }
+
+    .ant-input-affix-wrapper .ant-input:not(:first-child) {
+        padding-left: 42px;
+    }
+
+    .ant-input {
+        height          : 48px;
+        background-color: #fefdff;
+        border-color    : #e8e7ec;
+        border-width    : 2px;
+
+        &:hover {
+            border-color: #a5a4a8;
+        }
+
+        &:focus {
+            border-color: #a5a4a8;
+            box-shadow  : none;
+        }
+    }
+
+    // 步骤条
+    .ant-steps-item-process .ant-steps-item-icon {
+        background  : #ffffff;
+        border-color: #fff;
+        box-shadow  : 0 0 20px rgba(43, 45, 56, .08);
+
+        .ant-steps-icon {
+            color: #545665;
+        }
+    }
+
+    .ant-steps-item-wait .ant-steps-item-icon {
+        background-color: #eeeffa;
+        border-color    : #eeeffa;
+    }
+
+    .ant-steps-item-finish .ant-steps-item-icon {
+        background-color: #fff;
+        border-color    : #fff;
+
+        .ant-steps-icon {
+            color: #3bcb81;
+        }
+    }
+
+    .ant-steps-item-finish>.ant-steps-item-tail::after {
+        background-color: #3bcb81;
+    }
+
+    .ant-steps-item {
+        padding-bottom: 12px;
+    }
+}

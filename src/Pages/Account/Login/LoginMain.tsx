@@ -1,3 +1,6 @@
+/***
+ * 登陆主界面
+ */
 import * as React from 'react'
 import './LoginMain.less'
 import { Form, Input, Icon, Checkbox, Button, message } from 'antd'

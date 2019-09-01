@@ -1,21 +1,100 @@
 .app {
   min-height: 100vh;
-  height: 1px; // a browser bug
-  display: flex;
-  .app-side {
-    min-width: 300px;
+  height    : 1px; // a browser bug
+  display   : flex;
+
+  .layout-transition {
     height: 100%;
-    display: inline-block;
-    width: 40%;
-    background: #f8f7fc;
-    vertical-align: top;
   }
-  .app-main {
-    min-width: 400px;
-    flex-grow: 1;
+
+  .app-side {
+    min-width     : 300px;
+    height        : 100%;
+    display       : inline-block;
+    width         : 32%;
+    background    : #f8f7fc;
     vertical-align: top;
-    height: 100%;
-    display: inline-block;
-    background: #ffffff;
+
+
+    .layout-side {
+      text-align    : left;
+      padding       : 30px;
+      height        : 100%;
+      display       : flex;
+      flex-direction: column;
+    }
+
+    a {
+      color      : #26119f;
+      font-weight: bold;
+      cursor     : pointer;
+      transition : all .3s;
+
+      &:hover {
+        font-size: 20px;
+      }
+    }
+
+    .top-layout {
+      text-align : center;
+      margin     : 16px auto;
+      user-select: none;
+
+      .logo {
+        margin        : 12px;
+        height        : 28px;
+        width         : 28px;
+        vertical-align: middle;
+      }
+
+      .violet {
+        font-size     : 24px;
+        color         : #25109d;
+        vertical-align: middle;
+        user-select   : none;
+      }
+    }
+
+    .title {
+      margin     : 0 30px 120px 30px;
+      font-size  : 28px;
+      font-weight: bold;
+      color      : #161e3e;
+      flex-grow  : 1;
+      // 垂直居中
+      display        : flex;
+      justify-content: center;
+      flex-direction : column;
+    }
+
+    .bottom-layout {
+      .help-text {
+        line-height: 32px;
+      }
+
+      .help-layout {
+        padding    : 30px;
+        color      : rgba(0, 0, 0, 0.5);
+        font-weight: bold;
+
+
+        .info-icon {
+          margin   : 0 10px;
+          font-size: 22px;
+          color    : rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      text-align: center;
+    }
+  }
+
+  .app-main {
+    min-width     : 400px;
+    flex-grow     : 1;
+    vertical-align: top;
+    height        : 100%;
+    display       : inline-block;
+    background    : #ffffff;
   }
 }
