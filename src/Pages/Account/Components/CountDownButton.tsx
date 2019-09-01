@@ -52,6 +52,7 @@ export default function CountDownButton(props: ICountDownButtonProps) {
       disabled={getRemainTime() < data.waitTime && getRemainTime() > 0}
       type='primary'
       onClick={props.sendCaptcha}
+      ghost
     >
       {data.buttonTitle}
     </Button>

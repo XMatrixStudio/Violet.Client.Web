@@ -68,14 +68,14 @@ function ValidForm(props: IValidFormProps) {
           data.defaultAccount = account
         }}
       />
-      <Form.Item className='last-item'>
+      <Form.Item className='next-item'>
         <Button
           type='primary'
           htmlType='submit'
-          className='register-btn'
+          className='next-btn'
           size='large'
         >
-          确定
+          下一步
         </Button>
       </Form.Item>
     </Form>
