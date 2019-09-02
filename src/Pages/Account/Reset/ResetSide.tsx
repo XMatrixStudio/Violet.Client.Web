@@ -1,22 +1,22 @@
 import * as React from 'react'
-import './RegisterSide.less'
+import './ResetSide.less'
 import logo from '@/assets/logo.svg'
 import { Icon, Steps } from 'antd'
 import { Link } from 'react-router-dom'
 import useReactRouter from 'use-react-router';
 import { useObserver } from 'mobx-react-lite';
 
-export interface IRegisterSideProps {}
+export interface IResetSideProps {}
 
-export default function RegisterSide(props: IRegisterSideProps) {
+export default function ResetSide(props: IResetSideProps) {
 
   const {location} = useReactRouter()
 
   const currentStep = (path: string) => {
     switch(path) {
-      case '/account/register/info':
+      case '/account/reset/info':
         return 1
-      case '/account/register/finish':
+      case '/account/reset/finish':
         return 2
       default:
         return 0
@@ -24,13 +24,13 @@ export default function RegisterSide(props: IRegisterSideProps) {
   }
 
   return useObserver(() => (
-    <div className='layout-side layout-register-side'>
+    <div className='layout-side layout-reset-side'>
       <div className='top-layout'>
         <img src={logo} className='logo' />
         <span className='violet'>Violet</span>
       </div>
       <div className='title'>
-        <p>注册账号</p>
+        <p>找回密码</p>
         <Steps direction='vertical' current={currentStep(location.pathname)}>
           <Steps.Step title='验证手机/邮箱' />
           <Steps.Step title='完善信息' />

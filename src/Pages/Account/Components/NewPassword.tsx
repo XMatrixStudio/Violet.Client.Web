@@ -39,8 +39,8 @@ export default function NewPassword(props: INewPasswordProps) {
   const { getFieldDecorator } = props.form
   return useObserver(() => (
     <div>
-      <p className='input-title'>密码</p>
       <Form.Item>
+      <p className='input-title'>密码</p>
         {getFieldDecorator('password', {
           rules: [
             { required: true, message: '请输入你的密码' },
@@ -54,8 +54,8 @@ export default function NewPassword(props: INewPasswordProps) {
           <Input.Password prefix={<Icon type='key' className='icon-color' />} />
         )}
       </Form.Item>
-      <p className='input-title'>再次输入密码</p>
       <Form.Item>
+      <p className='input-title'>再次输入密码</p>
         {getFieldDecorator('confirm', {
           rules: [
             { required: true, message: '请再次输入你的密码' },

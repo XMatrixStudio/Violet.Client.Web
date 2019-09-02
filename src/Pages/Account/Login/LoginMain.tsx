@@ -20,9 +20,14 @@ function LoginMain(props: ILoginMainProps) {
   const { location } = useReactRouter()
   const inputPassword = React.useRef<Input>(null)
 
-  const localStore = useLocalStore(() => ({
-    passwordError: false
+  const data = useLocalStore(() => ({
+    passwordError: false,
+    id: ''
   }))
+
+  React.useEffect(() => {
+    data.id = new URLSearchParams(location.search).get('id') || data.id
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,9 +53,9 @@ function LoginMain(props: ILoginMainProps) {
                 case 'invalid_phone':
                 case 'invalid_name':
                 case 'error_user_or_password':
-                  localStore.passwordError = true
+                  data.passwordError = true
                   props.form.resetFields(['password'])
-                  inputPassword.current!.focus();
+                  inputPassword.current!.focus()
                   break
                 default:
                   message.error('发生错误:' + msg)
@@ -67,12 +72,13 @@ function LoginMain(props: ILoginMainProps) {
         <Form.Item>
           <p className='input-title'>用户名 / 手机 / 邮箱</p>
           {getFieldDecorator('account', {
+            initialValue: data.id,
             rules: [{ required: true, message: '请输入用户名 / 手机 / 邮箱' }]
-          })(<Input prefix={<Icon type='user' className='icon-color' />} />)}
+          })(<Input prefix={<Icon type='user' />} />)}
         </Form.Item>
         <Form.Item
-          validateStatus={localStore.passwordError ? 'error' : 'success'}
-          help={localStore.passwordError ? '用户名或密码错误，请重新输入' : ''}
+          validateStatus={data.passwordError ? 'error' : 'success'}
+          help={data.passwordError ? '用户名或密码错误，请重新输入' : ''}
         >
           <p className='input-title'>密码</p>
           {getFieldDecorator('password', {
@@ -81,9 +87,9 @@ function LoginMain(props: ILoginMainProps) {
             <Input
               ref={inputPassword}
               onChange={() => {
-                localStore.passwordError = false
+                data.passwordError = false
               }}
-              prefix={<Icon type='key' className='icon-color' />}
+              prefix={<Icon type='key' />}
               type='password'
             />
           )}

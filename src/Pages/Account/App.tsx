@@ -14,6 +14,8 @@ import LoginSide from './Login/LoginSide'
 import LoginMain from './Login/LoginMain'
 import RegisterSide from './Register/RegisterSide'
 import RegisterMain from './Register/RegisterMain'
+import ResetSide from './Reset/ResetSide'
+import ResetMain from './Reset/ResetMain'
 
 const App: React.FC = () => {
   // 创建全局 Store
@@ -41,6 +43,7 @@ const App: React.FC = () => {
       <div className='app'>
         <div className='app-side'>
           <Switch>
+            <Route path='/account/reset' component={ResetSide} />
             <Route path='/account/register' component={RegisterSide} />
             <Route exact path='/account' component={LoginSide} />
           </Switch>
@@ -56,6 +59,7 @@ const App: React.FC = () => {
               timeout={300}
             >
               <Switch location={location}>
+                <Route path='/account/reset' component={ResetMain} />
                 <Route path='/account/register' component={RegisterMain} />
                 <Route exact path='/account' component={LoginMain} />
               </Switch>

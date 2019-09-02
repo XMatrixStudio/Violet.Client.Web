@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './RegisterMain.less'
+import './ResetMain.less'
 import { Switch, Route } from 'react-router'
 import { useObserver } from 'mobx-react-lite'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -7,15 +7,15 @@ import useReactRouter from 'use-react-router'
 import ValidForm from './Form/ValidForm'
 import InfoForm from './Form/InfoForm'
 import FinishForm from './Form/FinishForm'
+import ChooseForm from './Form/ChooseForm'
 
-export interface IRegisterMainProps {}
+export interface IResetMainProps {}
 
-export default function RegisterMain(props: IRegisterMainProps) {
-
+export default function ResetMain(props: IResetMainProps) {
   const { location, history } = useReactRouter()
 
   return useObserver(() => (
-    <div className='layout-register-main'>
+    <div className='layout-reset-main'>
       <TransitionGroup style={{ width: '100%' }}>
         <CSSTransition
           key={location.pathname}
@@ -26,18 +26,19 @@ export default function RegisterMain(props: IRegisterMainProps) {
           timeout={1000}
         >
           <Switch>
-            <Route path='/account/register/finish' component={FinishForm} />
-            <Route path='/account/register/info'>
+            <Route path='/account/reset' component={ChooseForm} />
+            <Route path='/account/reset/finish' component={FinishForm} />
+            <Route path='/account/reset/info'>
               <InfoForm
                 next={() => {
-                  history.push('/account/register/finish')
+                  history.push('/account/reset/finish')
                 }}
               />
             </Route>
-            <Route path='/account/register'>
+            <Route path='/account/reset/valid'>
               <ValidForm
                 next={id => {
-                  history.push('/account/register/info?id=' + id)
+                  history.push('/account/reset/info?id=' + id)
                 }}
               />
             </Route>

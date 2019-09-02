@@ -5,21 +5,26 @@ import ServiceTool from '../../../../services/ServiceTool'
 import { message, Icon, Input, Button } from 'antd'
 import NewPassword from '../../Components/NewPassword'
 import useReactRouter from 'use-react-router'
+import { useObserver, useLocalStore } from 'mobx-react-lite'
 
 export interface IInfoFormProps {
   form: WrappedFormUtils
   next: () => void
-  id: string | null
 }
 
 function InfoForm(props: IInfoFormProps) {
   const { history, location } = useReactRouter()
+  const data = useLocalStore(() => ({
+    id: '',
+    accountError: ''
+  }))
 
-  if (props.id === null) {
-    console.log('null', location.pathname)
-    history.replace('/account/register')
-    return null
-  }
+  React.useEffect(() => {
+    data.id = new URLSearchParams(location.search).get('id') || data.id
+    if (data.id === '') {
+      history.replace('/account/register')
+    }
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,41 +33,54 @@ function InfoForm(props: IInfoFormProps) {
         // {userName: "zhenly", nickName: "ZhenlyChen", password: "123456", passwordAgain: "123456"}
         UserService.Register(values.userName, values.nickName, values.password)
           .then(_ => {
-            props.next()
+            history.push('/account/register/finish' + location.search)
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
               switch (msg) {
                 case 'not_exist_email':
-                  message.error('用户邮箱未验证，无法完成注册')
-                  break
                 case 'reserved_name':
                 case 'exist_name':
-                  message.error('用户名已存在')
-                  props.form.resetFields(['userName'])
+                  data.accountError = msg
                   break
                 default:
                   message.error('发生错误：' + msg)
               }
             })
           })
+      } else {
+        if (err.userName) {
+          data.accountError = '请输入用户名'
+        }
       }
     })
   }
+
+  const accountError = (error: string) => {
+    switch (error) {
+      case 'not_exist_email':
+        return '用户邮箱未验证，无法完成注册'
+      case 'reserved_name':
+      case 'exist_name':
+        return '用户名已存在'
+      default:
+        return error
+    }
+  }
+
   const { getFieldDecorator } = props.form
-  return (
-    <Form onSubmit={handleSubmit} className='info-form'>
-      <Form.Item>
-        <Icon
-          type='check'
-          className='icon-color'
-          style={{ fontSize: '18px' }}
-        />
-        <span className='ant-form-text' style={{ marginLeft: '10px' }}>
-          {props.id}
-        </span>
+  return useObserver(() => (
+    <Form onSubmit={handleSubmit} className='register-form'>
+      <Form.Item className='account-item'>
+        <Icon className='account-icon' type='check' />
+        <span>{data.id.includes('@') ? '你的邮箱：' : '你的手机：'}</span>
+        <strong>{data.id}</strong>
       </Form.Item>
-      <Form.Item>
+      <Form.Item
+        validateStatus={data.accountError === '' ? 'success' : 'error'}
+        help={accountError(data.accountError)}
+      >
+        <p className='input-title'>唯一用户名</p>
         {getFieldDecorator('userName', {
           rules: [
             { required: true, message: '请输入用户名' },
@@ -76,37 +94,46 @@ function InfoForm(props: IInfoFormProps) {
           ]
         })(
           <Input
-            prefix={<Icon type='user' className='icon-color' />}
-            placeholder='唯一用户名'
+            prefix={<Icon type='user' />}
+            onChange={() => {
+              data.accountError = ''
+            }}
           />
         )}
       </Form.Item>
       <Form.Item>
+        <p className='input-title'>昵称</p>
         {getFieldDecorator('nickName', {
           rules: [
             { required: true, message: '请输入昵称' },
             { max: 24, message: '昵称不能大于24个字符' }
           ]
-        })(
-          <Input
-            prefix={<Icon type='robot' className='icon-color' />}
-            placeholder='昵称'
-          />
-        )}
+        })(<Input prefix={<Icon type='robot' />} />)}
       </Form.Item>
       <NewPassword form={props.form} />
-      <Form.Item className='last-item'>
+      <Form.Item className='next-item'>
+        <Button
+          type='primary'
+          onClick={() => {
+            history.replace('/account/register')
+          }}
+          className='last-btn'
+          size='large'
+          ghost
+        >
+          上一步
+        </Button>
         <Button
           type='primary'
           htmlType='submit'
-          className='register-btn'
-          block={true}
+          className='next-btn'
+          size='large'
         >
-          确定
+          下一步
         </Button>
       </Form.Item>
     </Form>
-  )
+  ))
 }
 
 export default Form.create<IInfoFormProps>()(InfoForm)

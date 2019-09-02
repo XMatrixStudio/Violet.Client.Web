@@ -17,6 +17,8 @@ export interface IValidCaptchaProps {
   form: WrappedFormUtils
   type: 'register' | 'reset' | 'update'
   defaultAccount?: (account: string) => void
+  error: string
+  accountError: (error: string) => void
 }
 
 function ValidCaptcha(props: IValidCaptchaProps) {
@@ -26,7 +28,9 @@ function ValidCaptcha(props: IValidCaptchaProps) {
 
   const data = useLocalStore(() => ({
     imageBase64: '',
-    showImageCaptcha: true
+    showImageCaptcha: true,
+    imageError: '',
+    codeError: ''
   }))
 
   const updateImage = () => {
@@ -39,6 +43,10 @@ function ValidCaptcha(props: IValidCaptchaProps) {
         message.error('无法获取验证码')
       })
   }
+
+  React.useEffect(() => {
+    data.codeError = props.error
+  }, [props.error])
 
   React.useEffect(() => {
     hideImageCaptcha()
@@ -71,13 +79,13 @@ function ValidCaptcha(props: IValidCaptchaProps) {
     props.form.validateFields(['account', 'imageCaptcha'], (err, val) => {
       if (!err) {
         store.auth.captchaTime = new Date().getTime()
-        hideImageCaptcha()
         message.success('验证码发送中...')
         UserService.GetValid(val.account, val.imageCaptcha, props.type)
           .then(_ => {
             store.auth.account = val.account
             message.destroy()
             message.success('验证码已发送到' + val.account)
+            hideImageCaptcha()
             updateImage()
           })
           .catch(resError => {
@@ -87,49 +95,72 @@ function ValidCaptcha(props: IValidCaptchaProps) {
               switch (msg) {
                 case 'error_captcha':
                 case 'not_exist_captcha':
-                  message.error('图形验证码错误')
-                  break
                 case 'timeout_captcha':
-                  message.error('验证码已超时')
+                  data.imageError = msg
                   break
                 case 'exist_user':
-                  message.error('该账户已存在')
-                  break
                 case 'invalid_email':
-                  message.error('无效的邮箱地址')
-                  break
                 case 'exist_email':
-                  message.error('该邮箱已被注册')
-                  break
                 case 'invalid_phone':
-                  message.error('无效的手机号码')
-                  break
                 case 'exist_phone':
-                  message.error('该手机已被注册')
-                  break
                 case 'same_email':
-                  message.error('当前邮箱已绑定')
-                  break
                 case 'same_phone':
-                  message.error('当前手机已绑定')
+                  props.accountError(msg)
                   break
                 case 'limit_time':
-                  message.error('发送太频繁了，请稍后重试')
+                  data.codeError = msg
                   break
-
                 default:
                   message.error('发生错误:' + msg)
               }
               updateImage()
             })
           })
+      } else {
+        if (err.account) {
+          props.accountError('请输入电子邮箱/手机号码')
+        }
+        if (err.imageCaptcha) {
+          data.imageError = '请输入右侧图形验证码'
+        }
       }
     })
   }
 
+  const codeError = (error: string) => {
+    switch (error) {
+      case 'invalid_code':
+      case 'not_exist_code':
+      case 'error_code':
+        return '验证码错误'
+      case 'timeout_code':
+        return '验证码已过期，请重新获取'
+      case 'limit_time':
+        return '发送太频繁了，请稍后重试'
+      default:
+        return error
+    }
+  }
+
+  const imageError = (error: string) => {
+    switch (error) {
+      case 'error_captcha':
+      case 'not_exist_captcha':
+        return '图形验证码错误'
+      case 'timeout_captcha':
+        return '验证码已超时'
+      default:
+        return error
+    }
+  }
+
   return useObserver(() => (
     <div className='image-captcha-form'>
-      <Form.Item style={{ display: data.showImageCaptcha ? 'block' : 'none' }}>
+      <Form.Item
+        validateStatus={data.imageError === '' ? 'success' : 'error'}
+        help={imageError(data.imageError)}
+        style={{ display: data.showImageCaptcha ? 'block' : 'none' }}
+      >
         <p className='input-title'>图形验证码</p>
         <div className='two-layout-input'>
           <div className='input-left'>
@@ -138,7 +169,14 @@ function ValidCaptcha(props: IValidCaptchaProps) {
                 { required: true, message: '请输入右边的验证码' },
                 { pattern: /^[0-9]{4}$/, message: '请输入4位数字验证码' }
               ]
-            })(<Input prefix={<Icon type='check' />} />)}
+            })(
+              <Input
+                prefix={<Icon type='check' />}
+                onChange={() => {
+                  data.imageError = ''
+                }}
+              />
+            )}
           </div>
           <div className='input-right'>
             <Tooltip title='换一张'>
@@ -151,7 +189,10 @@ function ValidCaptcha(props: IValidCaptchaProps) {
           </div>
         </div>
       </Form.Item>
-      <Form.Item>
+      <Form.Item
+        validateStatus={data.codeError === '' ? 'success' : 'error'}
+        help={codeError(data.codeError)}
+      >
         <p className='input-title'>收到的验证码</p>
         <div className='two-layout-input'>
           <div className='input-left'>
@@ -160,7 +201,14 @@ function ValidCaptcha(props: IValidCaptchaProps) {
                 { required: true, message: '请输入你收到的验证码' },
                 { len: 6, message: '请输入六位验证码' }
               ]
-            })(<Input prefix={<Icon type='mail' className='icon-color' />} />)}
+            })(
+              <Input
+                onChange={() => {
+                  data.codeError = ''
+                }}
+                prefix={<Icon type='mail' />}
+              />
+            )}
           </div>
           <div className='input-right'>
             <CountDownButton
