@@ -24,7 +24,7 @@ function InfoForm(props: IInfoFormProps) {
     if (data.id === '') {
       history.replace('/account/register')
     }
-  }, [])
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

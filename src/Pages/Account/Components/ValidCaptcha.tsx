@@ -33,6 +33,18 @@ function ValidCaptcha(props: IValidCaptchaProps) {
     codeError: ''
   }))
 
+  React.useEffect(() => {
+    hideImageCaptcha()
+    updateImage()
+    setDefaultAccount()
+    // eslint-disable-next-line
+  }, [])
+
+  React.useEffect(() => {
+    data.codeError = props.error
+    // eslint-disable-next-line
+  }, [props.error])
+
   const updateImage = () => {
     props.form.resetFields(['imageCaptcha'])
     UtilService.getImageCaptcha()
@@ -44,13 +56,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
       })
   }
 
-  React.useEffect(() => {
-    data.codeError = props.error
-  }, [props.error])
-
-  React.useEffect(() => {
-    hideImageCaptcha()
-    updateImage()
+  const setDefaultAccount = () => {
     if (
       remainTime() > 0 &&
       store.auth.account !== '' &&
@@ -58,7 +64,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
     ) {
       props.defaultAccount!(store.auth.account)
     }
-  }, [])
+  }
 
   const remainTime = () => {
     const time =
@@ -181,6 +187,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
           <div className='input-right'>
             <Tooltip title='换一张'>
               <img
+                alt='验证码'
                 style={{ cursor: 'pointer' }}
                 src={data.imageBase64}
                 onClick={updateImage}

@@ -26,7 +26,7 @@ export default function ResetSide(props: IResetSideProps) {
   return useObserver(() => (
     <div className='layout-side layout-reset-side'>
       <div className='top-layout'>
-        <img src={logo} className='logo' />
+        <img src={logo} className='logo' alt='logo' />
         <span className='violet'>Violet</span>
       </div>
       <div className='title'>

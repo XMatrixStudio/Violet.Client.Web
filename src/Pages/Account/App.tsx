@@ -29,13 +29,13 @@ const App: React.FC = () => {
   }, [])
 
   //  保存全局状态
-  React.useEffect(
+  useEffect(
     () =>
       autorun(() => {
         console.log('save')
         localStorage.setItem('violet_store', JSON.stringify(store))
       }),
-    []
+      [store]
   )
 
   return useObserver(() => (

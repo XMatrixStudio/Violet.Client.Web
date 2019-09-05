@@ -10,7 +10,7 @@ export default function LoginSide(props: ILoginSideProps) {
   return (
     <div className='layout-side layout-login-side'>
       <div className='top-layout'>
-        <img src={logo} className='logo' />
+        <img src={logo} className='logo' alt='logo'/>
         <span className='violet'>Violet</span>
       </div>
       <div className='title'>登陆账号</div>
