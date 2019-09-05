@@ -119,7 +119,7 @@ function InfoForm(props: IInfoFormProps) {
           }}
           className='last-btn'
           size='large'
-          ghost
+          ghost={true}
         >
           上一步
         </Button>

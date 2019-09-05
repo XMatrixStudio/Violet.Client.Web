@@ -45,7 +45,7 @@ const App: React.FC = () => {
           <Switch>
             <Route path='/account/reset' component={ResetSide} />
             <Route path='/account/register' component={RegisterSide} />
-            <Route exact path='/account' component={LoginSide} />
+            <Route exact={true} path='/account' component={LoginSide} />
           </Switch>
         </div>
         <div className='app-main'>
@@ -61,7 +61,7 @@ const App: React.FC = () => {
               <Switch location={location}>
                 <Route path='/account/reset' component={ResetMain} />
                 <Route path='/account/register' component={RegisterMain} />
-                <Route exact path='/account' component={LoginMain} />
+                <Route exact={true} path='/account' component={LoginMain} />
               </Switch>
             </CSSTransition>
           </TransitionGroup>
