@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { Form, Input, Icon, Button, message } from 'antd'
+import { Form, Input, Icon, Button } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import UserService from '@/services/UserService'
-import ServiceTool from '@/services/ServiceTool'
 import ValidCaptcha from '../../Components/ValidCaptcha'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
+import { useObserver } from 'mobx-react-lite'
+import useValidForm from './../../Components/useValidForm'
 import useRouter from 'use-react-router'
 
 export interface IValidFormProps {
@@ -13,48 +12,9 @@ export interface IValidFormProps {
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form
+  const { history } = useRouter()
 
-  const {history} = useRouter()
-
-  const data = useLocalStore(() => ({
-    defaultAccount: '',
-    codeError: '',
-    accountError: ''
-  }))
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    props.form.validateFields(['account', 'captcha'], (err, values) => {
-      if (!err) {
-        // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
-        UserService.Valid(values.account, values.captcha)
-          .then(_ => {
-            history.push('/account/reset/info?id=' + values.account)
-          })
-          .catch(error => {
-            ServiceTool.errorHandler(error, msg => {
-              switch (msg) {
-                case 'invalid_code':
-                case 'not_exist_code':
-                case 'error_code':
-                case 'timeout_code':
-                  data.codeError = msg
-                  break
-                default:
-                  message.error('发生错误：' + msg)
-              }
-            })
-          })
-      } else {
-        if (err.account) {
-          data.accountError = '请输入邮箱/手机号'
-        }
-        if (err.captcha) {
-          data.codeError = '请输入正确的验证码'
-        }
-      }
-    })
-  }
+  const { data, handleSubmit } = useValidForm(props.form)
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
@@ -89,7 +49,7 @@ function ValidForm(props: IValidFormProps) {
       <Form.Item className='next-item'>
         <Button
           type='primary'
-          onClick={()=>{
+          onClick={() => {
             history.replace('/account/reset')
           }}
           size='large'

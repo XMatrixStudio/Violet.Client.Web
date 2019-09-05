@@ -1,14 +1,9 @@
-/***
- * 验证码模块
- */
 import * as React from 'react'
-import { Form, Input, Icon, Button, message } from 'antd'
+import { Form, Input, Icon, Button } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import UserService from '../../../../services/UserService'
-import ServiceTool from '../../../../services/ServiceTool'
+import { useObserver } from 'mobx-react-lite'
 import ValidCaptcha from '../../Components/ValidCaptcha'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
-import useRouter from 'use-react-router'
+import useValidForm from '../../Components/useValidForm'
 
 export interface IValidFormProps {
   form: WrappedFormUtils
@@ -16,49 +11,8 @@ export interface IValidFormProps {
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form
-  const { history, location } = useRouter()
 
-  const data = useLocalStore(() => ({
-    defaultAccount: '',
-    codeError: '',
-    accountError: ''
-  }))
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    props.form.validateFields(['account', 'captcha'], (err, values) => {
-      if (!err) {
-        // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
-        UserService.Valid(values.account, values.captcha)
-          .then(_ => {
-            history.push('/account/register/finish' + location.search)
-          })
-          .catch(error => {
-            ServiceTool.errorHandler(error, msg => {
-              switch (msg) {
-                case 'invalid_code':
-                case 'not_exist_code':
-                case 'error_code':
-                  data.codeError = '验证码错误'
-                  break
-                case 'timeout_code':
-                  data.codeError = '验证码已过期，请重新获取'
-                  break
-                default:
-                  message.error('发生错误：' + msg)
-              }
-            })
-          })
-      } else {
-        if (err.account) {
-          data.accountError = err.account.errors[0].message
-        }
-        if (err.captcha) {
-          data.codeError = err.captcha.errors[0].message
-        }
-      }
-    })
-  }
+  const { data, handleSubmit } = useValidForm(props.form)
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
