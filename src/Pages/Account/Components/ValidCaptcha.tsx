@@ -23,7 +23,7 @@ export interface IValidCaptchaProps {
 
 function ValidCaptcha(props: IValidCaptchaProps) {
   const { getFieldDecorator } = props.form
-
+  
   const store = useStore()
 
   const data = useLocalStore(() => ({

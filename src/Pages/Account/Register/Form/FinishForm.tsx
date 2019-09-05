@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Button } from 'antd'
-import useReactRouter from 'use-react-router'
+import useRouter from 'use-react-router'
 
 export interface IFinishFormProps {}
 
 export default function FinishForm(props: IFinishFormProps) {
-  const { history, location } = useReactRouter()
+  const { history, location } = useRouter()
 
   return (
     <div className='register-form'>

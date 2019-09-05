@@ -3,14 +3,14 @@ import './RegisterSide.less'
 import logo from '@/assets/logo.svg'
 import { Icon, Steps } from 'antd'
 import { Link } from 'react-router-dom'
-import useReactRouter from 'use-react-router';
-import { useObserver } from 'mobx-react-lite';
+import { useObserver } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface IRegisterSideProps {}
 
 export default function RegisterSide(props: IRegisterSideProps) {
 
-  const {location} = useReactRouter()
+  const {location} = useRouter()
 
   const currentStep = (path: string) => {
     switch(path) {

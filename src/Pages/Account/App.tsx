@@ -8,7 +8,6 @@ import UserService from '../../services/UserService'
 import { autorun } from 'mobx'
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import useReactRouter from 'use-react-router'
 
 import LoginSide from './Login/LoginSide'
 import LoginMain from './Login/LoginMain'
@@ -16,12 +15,13 @@ import RegisterSide from './Register/RegisterSide'
 import RegisterMain from './Register/RegisterMain'
 import ResetSide from './Reset/ResetSide'
 import ResetMain from './Reset/ResetMain'
+import useRouter from 'use-react-router'
 
 const App: React.FC = () => {
   // 创建全局 Store
   const store = useLocalStore(createStore)
 
-  const { location } = useReactRouter()
+  const { location } = useRouter()
 
   useEffect(() => {
     // 获取用户信息

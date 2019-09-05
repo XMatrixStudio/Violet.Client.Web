@@ -3,16 +3,16 @@ import './RegisterMain.less'
 import { Switch, Route } from 'react-router'
 import { useObserver } from 'mobx-react-lite'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import useReactRouter from 'use-react-router'
 import ValidForm from './Form/ValidForm'
 import InfoForm from './Form/InfoForm'
 import FinishForm from './Form/FinishForm'
+import useRouter from 'use-react-router'
 
 export interface IRegisterMainProps {}
 
 export default function RegisterMain(props: IRegisterMainProps) {
 
-  const { location, history } = useReactRouter()
+  const { location, history } = useRouter()
 
   return useObserver(() => (
     <div className='layout-register-main'>

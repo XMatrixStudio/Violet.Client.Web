@@ -4,8 +4,8 @@ import UserService from '../../../../services/UserService'
 import ServiceTool from '../../../../services/ServiceTool'
 import { message, Icon, Input, Button } from 'antd'
 import NewPassword from '../../Components/NewPassword'
-import useReactRouter from 'use-react-router'
 import { useObserver, useLocalStore } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface IInfoFormProps {
   form: WrappedFormUtils
@@ -13,7 +13,7 @@ export interface IInfoFormProps {
 }
 
 function InfoForm(props: IInfoFormProps) {
-  const { history, location } = useReactRouter()
+  const { history, location } = useRouter()
   const data = useLocalStore(() => ({
     id: '',
     accountError: ''

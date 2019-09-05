@@ -3,16 +3,16 @@ import './ResetMain.less'
 import { Switch, Route } from 'react-router'
 import { useObserver } from 'mobx-react-lite'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import useReactRouter from 'use-react-router'
 import ValidForm from './Form/ValidForm'
 import InfoForm from './Form/InfoForm'
 import FinishForm from './Form/FinishForm'
 import ChooseForm from './Form/ChooseForm'
+import useRouter from 'use-react-router'
 
 export interface IResetMainProps {}
 
 export default function ResetMain(props: IResetMainProps) {
-  const { location, history } = useReactRouter()
+  const { location, history } = useRouter()
 
   return useObserver(() => (
     <div className='layout-reset-main'>

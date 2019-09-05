@@ -3,14 +3,14 @@ import './ResetSide.less'
 import logo from '@/assets/logo.svg'
 import { Icon, Steps } from 'antd'
 import { Link } from 'react-router-dom'
-import useReactRouter from 'use-react-router';
-import { useObserver } from 'mobx-react-lite';
+import { useObserver } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface IResetSideProps {}
 
 export default function ResetSide(props: IResetSideProps) {
 
-  const {location} = useReactRouter()
+  const {location} = useRouter()
 
   const currentStep = (path: string) => {
     switch(path) {

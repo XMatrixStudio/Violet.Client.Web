@@ -6,10 +6,10 @@ import './LoginMain.less'
 import { Form, Input, Icon, Checkbox, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Link } from 'react-router-dom'
-import useReactRouter from 'use-react-router'
 import UserService from '../../../services/UserService'
 import ServiceTool from '../../../services/ServiceTool'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface ILoginMainProps {
   form: WrappedFormUtils
@@ -17,7 +17,7 @@ export interface ILoginMainProps {
 
 function LoginMain(props: ILoginMainProps) {
   const { getFieldDecorator } = props.form
-  const { location } = useReactRouter()
+  const { location } = useRouter()
   const inputPassword = React.useRef<Input>(null)
 
   const data = useLocalStore(() => ({
