@@ -6,8 +6,8 @@ import './LoginMain.less'
 import { Form, Input, Icon, Checkbox, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Link } from 'react-router-dom'
-import UserService from '../../../services/UserService'
-import ServiceTool from '../../../services/ServiceTool'
+import UserService from '@/services/UserService'
+import ServiceTool from '@/services/ServiceTool'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
 
@@ -21,7 +21,7 @@ function LoginMain(props: ILoginMainProps) {
   const inputPassword = React.useRef<Input>(null)
 
   const data = useLocalStore(() => ({
-    passwordError: false,
+    passwordError: '',
     id: ''
   }))
 
@@ -53,7 +53,7 @@ function LoginMain(props: ILoginMainProps) {
                 case 'invalid_phone':
                 case 'invalid_name':
                 case 'error_user_or_password':
-                  data.passwordError = true
+                  data.passwordError = '用户名或密码错误，请重新输入'
                   props.form.resetFields(['password'])
                   inputPassword.current!.focus()
                   break
@@ -77,8 +77,8 @@ function LoginMain(props: ILoginMainProps) {
           })(<Input prefix={<Icon type='user' />} />)}
         </Form.Item>
         <Form.Item
-          validateStatus={data.passwordError ? 'error' : 'success'}
-          help={data.passwordError ? '用户名或密码错误，请重新输入' : ''}
+          validateStatus={data.passwordError === '' ? 'success' : 'error'}
+          help={data.passwordError}
         >
           <p className='input-title'>密码</p>
           {getFieldDecorator('password', {
@@ -87,14 +87,14 @@ function LoginMain(props: ILoginMainProps) {
             <Input
               ref={inputPassword}
               onChange={() => {
-                data.passwordError = false
+                data.passwordError = ''
               }}
               prefix={<Icon type='key' />}
               type='password'
             />
           )}
         </Form.Item>
-        <Form.Item className='last-item'>
+        <Form.Item>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true

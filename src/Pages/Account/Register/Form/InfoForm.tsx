@@ -39,9 +39,11 @@ function InfoForm(props: IInfoFormProps) {
             ServiceTool.errorHandler(error, msg => {
               switch (msg) {
                 case 'not_exist_email':
+                  data.accountError = '用户邮箱未验证，无法完成注册'
+                  break
                 case 'reserved_name':
                 case 'exist_name':
-                  data.accountError = msg
+                  data.accountError = '用户名已存在'
                   break
                 default:
                   message.error('发生错误：' + msg)
@@ -56,18 +58,6 @@ function InfoForm(props: IInfoFormProps) {
     })
   }
 
-  const accountError = (error: string) => {
-    switch (error) {
-      case 'not_exist_email':
-        return '用户邮箱未验证，无法完成注册'
-      case 'reserved_name':
-      case 'exist_name':
-        return '用户名已存在'
-      default:
-        return error
-    }
-  }
-
   const { getFieldDecorator } = props.form
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
@@ -78,7 +68,7 @@ function InfoForm(props: IInfoFormProps) {
       </Form.Item>
       <Form.Item
         validateStatus={data.accountError === '' ? 'success' : 'error'}
-        help={accountError(data.accountError)}
+        help={data.accountError}
       >
         <p className='input-title'>唯一用户名</p>
         {getFieldDecorator('userName', {

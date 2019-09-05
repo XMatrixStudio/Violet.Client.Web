@@ -99,20 +99,34 @@ function ValidCaptcha(props: IValidCaptchaProps) {
               switch (msg) {
                 case 'error_captcha':
                 case 'not_exist_captcha':
-                case 'timeout_captcha':
-                  data.imageError = msg
+                  data.imageError = '图形验证码错误'
                   break
-                case 'exist_user':
-                case 'invalid_email':
-                case 'exist_email':
-                case 'invalid_phone':
-                case 'exist_phone':
-                case 'same_email':
-                case 'same_phone':
-                  props.accountError(msg)
+                case 'timeout_captcha':
+                  data.imageError = '验证码已超时'
                   break
                 case 'limit_time':
-                  data.codeError = msg
+                  data.codeError = '发送太频繁了，请稍后重试'
+                  break
+                case 'exist_user':
+                  props.accountError('该账户已存在')
+                  break
+                case 'invalid_email':
+                  props.accountError('无效的邮箱地址')
+                  break
+                case 'exist_email':
+                  props.accountError('该邮箱已被注册')
+                  break
+                case 'invalid_phone':
+                  props.accountError('无效的手机号码')
+                  break
+                case 'exist_phone':
+                  props.accountError('该手机已被注册')
+                  break
+                case 'same_email':
+                  props.accountError('当前邮箱已绑定')
+                  break
+                case 'same_phone':
+                  props.accountError('当前手机已绑定')
                   break
                 default:
                   message.error('发生错误:' + msg)
@@ -131,38 +145,11 @@ function ValidCaptcha(props: IValidCaptchaProps) {
     })
   }
 
-  const codeError = (error: string) => {
-    switch (error) {
-      case 'invalid_code':
-      case 'not_exist_code':
-      case 'error_code':
-        return '验证码错误'
-      case 'timeout_code':
-        return '验证码已过期，请重新获取'
-      case 'limit_time':
-        return '发送太频繁了，请稍后重试'
-      default:
-        return error
-    }
-  }
-
-  const imageError = (error: string) => {
-    switch (error) {
-      case 'error_captcha':
-      case 'not_exist_captcha':
-        return '图形验证码错误'
-      case 'timeout_captcha':
-        return '验证码已超时'
-      default:
-        return error
-    }
-  }
-
   return useObserver(() => (
     <div className='image-captcha-form'>
       <Form.Item
         validateStatus={data.imageError === '' ? 'success' : 'error'}
-        help={imageError(data.imageError)}
+        help={data.imageError}
         style={{ display: data.showImageCaptcha ? 'block' : 'none' }}
       >
         <p className='input-title'>图形验证码</p>
@@ -196,7 +183,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
       </Form.Item>
       <Form.Item
         validateStatus={data.codeError === '' ? 'success' : 'error'}
-        help={codeError(data.codeError)}
+        help={data.codeError}
       >
         <p className='input-title'>收到的验证码</p>
         <div className='two-layout-input'>

@@ -57,32 +57,11 @@ function ValidForm(props: IValidFormProps) {
     })
   }
 
-  const accountError = (error: string) => {
-    switch (error) {
-      case 'exist_user':
-        return '该账户已存在'
-      case 'invalid_email':
-        return '无效的邮箱地址'
-      case 'exist_email':
-        return '该邮箱已被注册'
-      case 'invalid_phone':
-        return '无效的手机号码'
-      case 'exist_phone':
-        return '该手机已被注册'
-      case 'same_email':
-        return '当前邮箱已绑定'
-      case 'same_phone':
-        return '当前手机已绑定'
-      default:
-        return error
-    }
-  }
-
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
       <Form.Item
         validateStatus={data.accountError === '' ? 'success' : 'error'}
-        help={accountError(data.accountError)}
+        help={data.accountError}
       >
         <p className='input-title'>电子邮箱 / 手机号码</p>
         {getFieldDecorator('account', {

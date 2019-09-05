@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
-import './App.less'
 import { Route, Switch } from 'react-router-dom'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
-import { createStore, storeContext } from '../../Store'
-import UserService from '../../services/UserService'
+import { createStore, storeContext } from '@/Store'
 import { autorun } from 'mobx'
-
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import useRouter from 'use-react-router'
+
+import './App.less'
+
+import UserService from '@/services/UserService'
 
 import LoginSide from './Login/LoginSide'
 import LoginMain from './Login/LoginMain'
@@ -14,7 +16,6 @@ import RegisterSide from './Register/RegisterSide'
 import RegisterMain from './Register/RegisterMain'
 import ResetSide from './Reset/ResetSide'
 import ResetMain from './Reset/ResetMain'
-import useRouter from 'use-react-router'
 
 const App: React.FC = () => {
   // 创建全局 Store
@@ -35,7 +36,7 @@ const App: React.FC = () => {
         console.log('save')
         localStorage.setItem('violet_store', JSON.stringify(store))
       }),
-      [store]
+    [store]
   )
 
   return useObserver(() => (
