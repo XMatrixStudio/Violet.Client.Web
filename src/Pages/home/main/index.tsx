@@ -3,9 +3,9 @@ import './index.less'
 import { Icon } from 'antd'
 import ScrollAnimation from 'react-animate-on-scroll'
 
-import IconSecurity from '@/assets/home/security.png'
-import IconNew from '@/assets/home/new.png'
-import IconThunder from '@/assets/home/thunder.png'
+import IconSecurity from '@/assets/images/home/security.png'
+import IconNew from '@/assets/images/home/new.png'
+import IconThunder from '@/assets/images/home/thunder.png'
 
 const Main: React.FC = () => {
 

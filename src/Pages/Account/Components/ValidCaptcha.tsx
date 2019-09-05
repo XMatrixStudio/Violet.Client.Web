@@ -10,20 +10,21 @@ import UserService from '../../../services/UserService'
 import ServiceTool from '../../../services/ServiceTool'
 import { useLocalStore } from 'mobx-react-lite'
 import UtilService from '../../../services/UtilService'
+import { useStore } from '@/Store'
+
 import './ValidCaptcha.less'
-import { useStore } from '../../../Store'
 
 export interface IValidCaptchaProps {
   form: WrappedFormUtils
   type: 'register' | 'reset' | 'update'
-  defaultAccount?: (account: string) => void
   error: string
+  defaultAccount?: (account: string) => void
   accountError: (error: string) => void
 }
 
 function ValidCaptcha(props: IValidCaptchaProps) {
   const { getFieldDecorator } = props.form
-  
+
   const store = useStore()
 
   const data = useLocalStore(() => ({
@@ -36,7 +37,14 @@ function ValidCaptcha(props: IValidCaptchaProps) {
   React.useEffect(() => {
     hideImageCaptcha()
     updateImage()
-    setDefaultAccount()
+    // 设置默认账号名
+    if (
+      remainTime() > 0 &&
+      store.auth.account !== '' &&
+      props.defaultAccount !== null
+    ) {
+      props.defaultAccount!(store.auth.account)
+    }
     // eslint-disable-next-line
   }, [])
 
@@ -54,16 +62,6 @@ function ValidCaptcha(props: IValidCaptchaProps) {
       .catch(_ => {
         message.error('无法获取验证码')
       })
-  }
-
-  const setDefaultAccount = () => {
-    if (
-      remainTime() > 0 &&
-      store.auth.account !== '' &&
-      props.defaultAccount !== null
-    ) {
-      props.defaultAccount!(store.auth.account)
-    }
   }
 
   const remainTime = () => {

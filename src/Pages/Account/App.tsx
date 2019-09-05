@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import './App.less'
-import './custom.less'
 import { Route, Switch } from 'react-router-dom'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
 import { createStore, storeContext } from '../../Store'
@@ -26,6 +25,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // 获取用户信息
     UserService.fetchUserInfo(store)
+    // eslint-disable-next-line
   }, [])
 
   //  保存全局状态

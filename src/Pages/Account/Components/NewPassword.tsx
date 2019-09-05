@@ -1,3 +1,6 @@
+/***
+ * 密码填充表单
+ */
 import * as React from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
 import { Input, Icon } from 'antd'
@@ -40,7 +43,7 @@ export default function NewPassword(props: INewPasswordProps) {
   return useObserver(() => (
     <div>
       <Form.Item>
-      <p className='input-title'>密码</p>
+        <p className='input-title'>密码</p>
         {getFieldDecorator('password', {
           rules: [
             { required: true, message: '请输入你的密码' },
@@ -55,7 +58,7 @@ export default function NewPassword(props: INewPasswordProps) {
         )}
       </Form.Item>
       <Form.Item>
-      <p className='input-title'>再次输入密码</p>
+        <p className='input-title'>再次输入密码</p>
         {getFieldDecorator('confirm', {
           rules: [
             { required: true, message: '请再次输入你的密码' },

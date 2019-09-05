@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './LoginSide.less'
-import logo from '@/assets/logo.svg'
+import logo from '@/assets/images/logo.svg'
 import { Icon } from 'antd'
 import { Link } from 'react-router-dom'
 

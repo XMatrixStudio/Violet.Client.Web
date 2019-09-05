@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.less'
+import '@/assets/style/custom.less'
 import App from './App'
 import * as serviceWorker from '../../serviceWorker'
 import { Router } from 'react-router'

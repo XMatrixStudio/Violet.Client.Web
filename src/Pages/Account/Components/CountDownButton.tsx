@@ -45,14 +45,15 @@ export default function CountDownButton(props: ICountDownButtonProps) {
         clearTimeout(data.timer)
       }
     }
-  })
+    // eslint-disable-next-line
+  }, [])
 
   return useObserver(() => (
     <Button
       disabled={getRemainTime() < data.waitTime && getRemainTime() > 0}
       type='primary'
       onClick={props.sendCaptcha}
-      ghost
+      ghost={true}
     >
       {data.buttonTitle}
     </Button>

@@ -1,34 +1,36 @@
+@import '../../assets/style/variable.less';
+
 .app {
   min-height: 100vh;
-  height    : 1px; // a browser bug
-  display   : flex;
+  height: 1px; // a browser bug
+  display: flex;
 
   .layout-transition {
     height: 100%;
   }
 
   .app-side {
-    min-width     : 300px;
-    height        : 100%;
-    display       : inline-block;
-    width         : 32%;
-    background    : #f8f7fc;
+    min-width: 300px;
+    height: 100%;
+    display: inline-block;
+    width: 32%;
+    background: @sideBackground;
     vertical-align: top;
 
 
     .layout-side {
-      text-align    : left;
-      padding       : 30px;
-      height        : 100%;
-      display       : flex;
+      text-align: left;
+      padding: 30px;
+      height: 100%;
+      display: flex;
       flex-direction: column;
     }
 
     a {
-      color      : #8a6bbe;
+      color: @mainColor;
       font-weight: bold;
-      cursor     : pointer;
-      transition : all .3s;
+      cursor: pointer;
+      transition: all .3s;
 
       &:hover {
         font-size: 20px;
@@ -36,36 +38,36 @@
     }
 
     .top-layout {
-      text-align : center;
-      margin     : 16px auto;
+      text-align: center;
+      margin: 16px auto;
       user-select: none;
 
       .logo {
-        margin        : 12px;
-        height        : 28px;
-        width         : 28px;
+        margin: 12px;
+        height: 28px;
+        width: 28px;
         vertical-align: middle;
       }
 
       .violet {
-        font-size     : 24px;
-        color         : #8a6bbe;
+        font-size: 24px;
+        color: @mainColor;
         vertical-align: middle;
-        user-select   : none;
+        user-select: none;
       }
     }
 
     .title {
-      text-align : center;
-      margin     : 0 auto 120px auto;
-      font-size  : 28px;
+      text-align: center;
+      margin: 0 auto 120px auto;
+      font-size: 28px;
       font-weight: bold;
-      color      : #161e3e;
-      flex-grow  : 1;
+      color: @fontColor;
+      flex-grow: 1;
       // 垂直居中
-      display        : flex;
+      display: flex;
       justify-content: center;
-      flex-direction : column;
+      flex-direction: column;
     }
 
     .bottom-layout {
@@ -74,15 +76,15 @@
       }
 
       .help-layout {
-        padding    : 30px;
-        color      : rgba(0, 0, 0, 0.5);
+        padding: 30px;
+        color: rgba(0, 0, 0, 0.5);
         font-weight: bold;
 
 
         .info-icon {
-          margin   : 0 10px;
+          margin: 0 10px;
           font-size: 22px;
-          color    : rgba(0, 0, 0, 0.3);
+          color: rgba(0, 0, 0, 0.3);
         }
       }
 
@@ -91,26 +93,23 @@
   }
 
   .app-main {
-    min-width     : 400px;
-    flex-grow     : 1;
+    min-width: 400px;
+    flex-grow: 1;
     vertical-align: top;
-    height        : 100%;
-    display       : inline-block;
-    background    : #ffffff;
+    height: 100%;
+    display: inline-block;
+    background: @mainBackground;
 
     .next-item {
       text-align: left;
 
       button {
         margin-top: 36px;
-
       }
 
       .next-btn {
         float: right;
       }
-
-      .last-btn {}
     }
   }
 }
