@@ -36,7 +36,8 @@ const App: React.FC = () => {
         console.log('save')
         localStorage.setItem('violet_store', JSON.stringify(store))
       }),
-    [store]
+    // eslint-disable-next-line
+    []
   )
 
   return useObserver(() => (

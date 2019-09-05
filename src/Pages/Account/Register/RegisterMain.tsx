@@ -11,8 +11,7 @@ import useRouter from 'use-react-router'
 export interface IRegisterMainProps {}
 
 export default function RegisterMain(props: IRegisterMainProps) {
-
-  const { location, history } = useRouter()
+  const { location } = useRouter()
 
   return useObserver(() => (
     <div className='layout-register-main'>
@@ -27,20 +26,8 @@ export default function RegisterMain(props: IRegisterMainProps) {
         >
           <Switch>
             <Route path='/account/register/finish' component={FinishForm} />
-            <Route path='/account/register/info'>
-              <InfoForm
-                next={() => {
-                  history.push('/account/register/finish')
-                }}
-              />
-            </Route>
-            <Route path='/account/register'>
-              <ValidForm
-                next={id => {
-                  history.push('/account/register/info?id=' + id)
-                }}
-              />
-            </Route>
+            <Route path='/account/register/info' component={InfoForm} />
+            <Route path='/account/register' component={ValidForm} />
           </Switch>
         </CSSTransition>
       </TransitionGroup>

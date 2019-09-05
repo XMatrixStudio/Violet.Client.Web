@@ -1,21 +1,20 @@
-/***
- * 验证码模块
- */
 import * as React from 'react'
 import { Form, Input, Icon, Button, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
-import UserService from '../../../../services/UserService'
-import ServiceTool from '../../../../services/ServiceTool'
+import UserService from '@/services/UserService'
+import ServiceTool from '@/services/ServiceTool'
 import ValidCaptcha from '../../Components/ValidCaptcha'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface IValidFormProps {
   form: WrappedFormUtils
-  next: (id: string) => void
 }
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form
+
+  const {history} = useRouter()
 
   const data = useLocalStore(() => ({
     defaultAccount: '',
@@ -30,7 +29,7 @@ function ValidForm(props: IValidFormProps) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
         UserService.Valid(values.account, values.captcha)
           .then(_ => {
-            props.next(values.account)
+            history.push('/account/reset/info?id=' + values.account)
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
@@ -81,13 +80,23 @@ function ValidForm(props: IValidFormProps) {
           data.accountError = error
         }}
         form={props.form}
-        type='register'
+        type='reset'
         error={data.codeError}
         defaultAccount={account => {
           data.defaultAccount = account
         }}
       />
       <Form.Item className='next-item'>
+        <Button
+          type='primary'
+          onClick={()=>{
+            history.replace('/account/reset')
+          }}
+          size='large'
+          ghost={true}
+        >
+          上一步
+        </Button>
         <Button
           type='primary'
           htmlType='submit'

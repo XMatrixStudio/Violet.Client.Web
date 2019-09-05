@@ -8,14 +8,15 @@ import UserService from '../../../../services/UserService'
 import ServiceTool from '../../../../services/ServiceTool'
 import ValidCaptcha from '../../Components/ValidCaptcha'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
+import useRouter from 'use-react-router'
 
 export interface IValidFormProps {
   form: WrappedFormUtils
-  next: (id: string) => void
 }
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form
+  const { history, location } = useRouter()
 
   const data = useLocalStore(() => ({
     defaultAccount: '',
@@ -30,7 +31,7 @@ function ValidForm(props: IValidFormProps) {
         // {account: "zhenlychen@foxmail.com", imageCaptcha: "1234", captcha: "11111"}
         UserService.Valid(values.account, values.captcha)
           .then(_ => {
-            props.next(values.account)
+            history.push('/account/register/finish' + location.search)
           })
           .catch(error => {
             ServiceTool.errorHandler(error, msg => {
@@ -50,10 +51,10 @@ function ValidForm(props: IValidFormProps) {
           })
       } else {
         if (err.account) {
-          data.accountError = '请输入邮箱/手机号'
+          data.accountError = err.account.errors[0].message
         }
         if (err.captcha) {
-          data.codeError = '请输入正确的验证码'
+          data.codeError = err.captcha.errors[0].message
         }
       }
     })

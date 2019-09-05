@@ -8,8 +8,8 @@ export default function FinishForm(props: IFinishFormProps) {
   const { history, location } = useRouter()
 
   return (
-    <div className='register-form'>
-      <p className='finish-text'>注册成功!</p>
+    <div className='reset-form'>
+      <p className='finish-text'>重置密码成功!</p>
       <Button
         type='primary'
         htmlType='submit'

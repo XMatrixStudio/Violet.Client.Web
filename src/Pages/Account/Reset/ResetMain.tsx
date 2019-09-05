@@ -4,15 +4,16 @@ import { Switch, Route } from 'react-router'
 import { useObserver } from 'mobx-react-lite'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import ValidForm from './Form/ValidForm'
-import InfoForm from './Form/InfoForm'
+import PasswordForm from './Form/PasswordForm'
 import FinishForm from './Form/FinishForm'
 import ChooseForm from './Form/ChooseForm'
+import FeedbackForm from './Form/FeedbackForm'
 import useRouter from 'use-react-router'
 
 export interface IResetMainProps {}
 
 export default function ResetMain(props: IResetMainProps) {
-  const { location, history } = useRouter()
+  const { location } = useRouter()
 
   return useObserver(() => (
     <div className='layout-reset-main'>
@@ -26,22 +27,11 @@ export default function ResetMain(props: IResetMainProps) {
           timeout={1000}
         >
           <Switch>
-            <Route path='/account/reset' component={ChooseForm} />
             <Route path='/account/reset/finish' component={FinishForm} />
-            <Route path='/account/reset/info'>
-              <InfoForm
-                next={() => {
-                  history.push('/account/reset/finish')
-                }}
-              />
-            </Route>
-            <Route path='/account/reset/valid'>
-              <ValidForm
-                next={id => {
-                  history.push('/account/reset/info?id=' + id)
-                }}
-              />
-            </Route>
+            <Route path='/account/reset/password' component={PasswordForm} />
+            <Route path='/account/reset/valid' component={ValidForm} />
+            <Route path='/account/reset/feedback' component={FeedbackForm} />
+            <Route path='/account/reset' component={ChooseForm} />
           </Switch>
         </CSSTransition>
       </TransitionGroup>

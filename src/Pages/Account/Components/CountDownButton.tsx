@@ -46,7 +46,7 @@ export default function CountDownButton(props: ICountDownButtonProps) {
       }
     }
     // eslint-disable-next-line
-  }, [])
+  })
 
   return useObserver(() => (
     <Button

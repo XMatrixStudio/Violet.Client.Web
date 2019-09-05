@@ -9,17 +9,37 @@ import useRouter from 'use-react-router'
 export interface IResetSideProps {}
 
 export default function ResetSide(props: IResetSideProps) {
-
-  const {location} = useRouter()
+  const { location } = useRouter()
 
   const currentStep = (path: string) => {
-    switch(path) {
-      case '/account/reset/info':
+    switch (path) {
+      case '/account/reset/valid':
+        return 0
+      case '/account/reset/password':
         return 1
       case '/account/reset/finish':
         return 2
+      case '/account/reset/feedback':
+        return -2
       default:
-        return 0
+        return -1
+    }
+  }
+
+  const CurrentSide = (path: string) => {
+    const step = currentStep(path)
+    if (step >= 0) {
+      return (
+        <Steps direction='vertical' current={currentStep(location.pathname)}>
+          <Steps.Step title='验证手机/邮箱' />
+          <Steps.Step title='输入新密码' />
+          <Steps.Step title='设置成功' />
+        </Steps>
+      )
+    } else if (step === -2) {
+      return <p className='sub-title'>通过人工申诉找回密码</p>
+    } else {
+      return <p className='sub-title'>请选择找回密码的方式</p>
     }
   }
 
@@ -31,19 +51,15 @@ export default function ResetSide(props: IResetSideProps) {
       </div>
       <div className='title'>
         <p>找回密码</p>
-        <Steps direction='vertical' current={currentStep(location.pathname)}>
-          <Steps.Step title='验证手机/邮箱' />
-          <Steps.Step title='完善信息' />
-          <Steps.Step title='注册成功' />
-        </Steps>
+        {CurrentSide(location.pathname)}
       </div>
       <div className='bottom-layout'>
         <p className='help-text'>
-          已有账号？ <Link to='/account'>登陆</Link>
+          想起来了？ <Link to='/account'>登陆</Link>
         </p>
         <p className='help-layout'>
           <Icon className='info-icon' type='info-circle' theme='filled' />
-          你可以使用邮箱或者手机来注册一个 Violet 账号
+          你可以使用多种方式来找回你的密码
         </p>
       </div>
     </div>

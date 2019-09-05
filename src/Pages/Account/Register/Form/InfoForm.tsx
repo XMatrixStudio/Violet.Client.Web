@@ -9,7 +9,6 @@ import useRouter from 'use-react-router'
 
 export interface IInfoFormProps {
   form: WrappedFormUtils
-  next: () => void
 }
 
 function InfoForm(props: IInfoFormProps) {
@@ -52,7 +51,7 @@ function InfoForm(props: IInfoFormProps) {
           })
       } else {
         if (err.userName) {
-          data.accountError = '请输入用户名'
+          data.accountError = err.userName.errors[0].message
         }
       }
     })
