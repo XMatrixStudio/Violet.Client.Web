@@ -36,7 +36,10 @@ export default function RegisterSide() {
       </div>
       <div className='bottom-layout'>
         <p className='help-text'>
-          已有账号？ <Link to='/account'>登陆</Link>
+          已有账号？
+          <a className='link' href='/account'>
+            登陆
+          </a>
         </p>
         <p className='help-layout'>
           <Icon className='info-icon' type='info-circle' theme='filled' />

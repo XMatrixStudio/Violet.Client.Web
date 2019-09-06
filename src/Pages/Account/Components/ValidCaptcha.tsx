@@ -191,7 +191,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
             {getFieldDecorator('captcha', {
               rules: [
                 { required: true, message: '请输入你收到的验证码' },
-                { len: 6, message: '请输入六位验证码' }
+                { pattern: /^[0-9]{0,6}$/, message: '请输入六位验证码' }
               ]
             })(<Input ref={codeInput} prefix={<Icon type='mail' />} />)}
           </div>

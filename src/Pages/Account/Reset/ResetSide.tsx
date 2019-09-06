@@ -55,7 +55,10 @@ export default function ResetSide(props: IResetSideProps) {
       </div>
       <div className='bottom-layout'>
         <p className='help-text'>
-          想起来了？ <Link to='/account'>登陆</Link>
+          想起来了？
+          <a className='link' href='/account'>
+            登陆
+          </a>
         </p>
         <p className='help-layout'>
           <Icon className='info-icon' type='info-circle' theme='filled' />
