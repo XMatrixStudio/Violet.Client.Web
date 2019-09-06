@@ -58,4 +58,4 @@ function ValidForm(props: IValidFormProps) {
   ))
 }
 
-export default Form.create<IValidFormProps>()(ValidForm)
+export default Form.create()(ValidForm)

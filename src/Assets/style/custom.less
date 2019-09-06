@@ -30,7 +30,15 @@ code {
 
         &:hover {
             color: @moreColor;
+        }
+    }
 
+    .link {
+        cursor: pointer;
+        color: @mainColor;
+
+        &:hover {
+            color: @moreColor;
         }
     }
 
@@ -63,6 +71,7 @@ code {
 
     .ant-form-item {
         margin-bottom: 28px;
+
         &:hover {
             .input-title {
                 color: #84848a;
@@ -71,8 +80,13 @@ code {
         }
     }
 
+    .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+        border-color: @mainColor;
+        border-right-width: 2px !important;
+    }
+
     .ant-form-item-with-help {
-        margin-bottom: 5px!important;
+        margin-bottom: 5px !important;
     }
 
     .ant-form-explain {

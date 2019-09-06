@@ -1,24 +1,22 @@
 import Axios from 'axios'
 import { createHash } from 'crypto'
-import { TStore } from '../Store';
+import { IStore } from '../Store'
 
 const axios = Axios.create()
 
-
 export default {
-  
   /***
    * 获取当前用户信息
    */
-  fetchUserInfo: async (store: TStore) => {
+  fetchUserInfo: async (store: IStore) => {
     try {
       const res = await axios.get<GetUsersByExtUid.ResBody>('/api/i/users/me')
       store.user = res.data
     } catch (_) {
       store.user = null
     }
+    return store.user
   },
-
 
   /**
    * 修改开发者个人信息
@@ -134,30 +132,28 @@ export default {
     return res
   },
   // 验证邮箱/手机 - 注册
-  Valid: async (account: string, captcha: string) => {
+  Valid: async (
+    account: string,
+    captcha: string,
+    type: 'register' | 'reset'
+  ) => {
     const url = account.includes('@')
       ? '/api/i/users/email'
       : '/api/i/users/phone'
     const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
-      operator: 'register',
+      operator: type,
       code: captcha
     }
     const res = await axios.put(url, req)
     return res
   },
   // 验证手机/邮箱 - 重置密码
-  ResetPassword: async (account: string, captcha: string, password: string) => {
-    const url = account.includes('@')
-      ? '/api/i/users/email'
-      : '/api/i/users/phone'
-    const req: PutUsersEmail.ReqBody | PutUsersPhone.ReqBody = {
-      operator: 'reset',
-      code: captcha,
+  ResetPassword: async (password: string) => {
+    const res = await axios.post('/api/i/users/reset', {
       password: createHash('sha512')
         .update(password)
         .digest('hex')
-    }
-    const res = await axios.put(url, req)
+    })
     return res
   },
   // 验证手机/邮箱 - 更改绑定

@@ -26,7 +26,7 @@ export default function useValidForm(
     e.preventDefault()
     form.validateFields(['account', 'captcha'], (err, values) => {
       if (!err) {
-        UserService.Valid(values.account, values.captcha)
+        UserService.Valid(values.account, values.captcha, type)
           .then(_ => {
             if (type === 'register') {
               history.push('/account/register/info' + location.search, {

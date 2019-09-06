@@ -33,7 +33,7 @@ export function usePasswordForm(form: WrappedFormUtils) {
     // TODO 重新密码请求
     form.validateFields((err, values) => {
       if (!err) {
-        UserService.ResetPassword(data.id, '', values.password)
+        UserService.ResetPassword(values.password)
           .then(_ => {
             history.push('/account/reset/finish' + location.search, {
               account: data.id

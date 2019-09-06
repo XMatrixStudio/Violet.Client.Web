@@ -1,9 +1,10 @@
 import React from 'react'
 
-export const storeContext = React.createContext<TStore | null>(null)
+export const storeContext = React.createContext<IStore | null>(null)
 
-export interface TStore {
+export interface IStore {
   user: Type.UserInfoData | null
+  app: Type.AppInfoData | null
   auth : {
       captchaTime: number,
       account: string,
@@ -11,8 +12,9 @@ export interface TStore {
 }
 
 export function createStore() {
-  let store: TStore = {
+  let store: IStore = {
     user: null,
+    app: null,
     auth: {
         account: '',
         captchaTime: 0
@@ -25,7 +27,7 @@ export function createStore() {
     savedStore !== 'undefined'
   ) {
     try {
-      store = JSON.parse(savedStore) as TStore
+      store = JSON.parse(savedStore) as IStore
     } catch (error) {
       console.log('非法本地存储', error)
     }

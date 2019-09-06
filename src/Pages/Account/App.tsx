@@ -16,29 +16,45 @@ import RegisterSide from './Register/RegisterSide'
 import RegisterMain from './Register/RegisterMain'
 import ResetSide from './Reset/ResetSide'
 import ResetMain from './Reset/ResetMain'
-
+import { getAuthParams, errorHandler } from '@/components/UtilTool'
+import DevService from '@/services/DevService'
 const App: React.FC = () => {
   // 创建全局 Store
   const store = useLocalStore(createStore)
 
-  const { location } = useRouter()
+  const { history, location } = useRouter()
 
   useEffect(() => {
     // 获取用户信息
-    UserService.fetchUserInfo(store)
+    UserService.fetchUserInfo(store).then(res => {
+      // 未登录跳转到登陆界面
+      if (res === null && location.pathname.includes('/account/auth')) {
+        history.push('/account' + location.search)
+      }
+    })
+    // 获取授权应用信息
+    store.app = null
+    const params = getAuthParams(location.search)
+    if (params.valid) {
+      DevService.getAppInfoById(params.appId)
+        .then(res => {
+          store.app = res.data
+        })
+        .catch(error => {
+          errorHandler(error, msg => {
+            history.push('/account/auth')
+          })
+        })
+    }
+    // 自动保存状态
+    autorun(() => {
+      console.log('save')
+      localStorage.setItem('violet_store', JSON.stringify(store))
+    })
+    // 设置标题
+    document.title = 'Violet'
     // eslint-disable-next-line
   }, [])
-
-  //  保存全局状态
-  useEffect(
-    () =>
-      autorun(() => {
-        console.log('save')
-        localStorage.setItem('violet_store', JSON.stringify(store))
-      }),
-    // eslint-disable-next-line
-    []
-  )
 
   return useObserver(() => (
     <storeContext.Provider value={store}>
@@ -47,7 +63,7 @@ const App: React.FC = () => {
           <Switch>
             <Route path='/account/reset' component={ResetSide} />
             <Route path='/account/register' component={RegisterSide} />
-            <Route exact={true} path='/account' component={LoginSide} />
+            <Route path='/account' component={LoginSide} />
           </Switch>
         </div>
         <div className='app-main'>
@@ -63,7 +79,7 @@ const App: React.FC = () => {
               <Switch location={location}>
                 <Route path='/account/reset' component={ResetMain} />
                 <Route path='/account/register' component={RegisterMain} />
-                <Route exact={true} path='/account' component={LoginMain} />
+                <Route path='/account' component={LoginMain} />
               </Switch>
             </CSSTransition>
           </TransitionGroup>

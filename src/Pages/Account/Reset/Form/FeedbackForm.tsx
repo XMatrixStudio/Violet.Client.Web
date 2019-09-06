@@ -58,7 +58,7 @@ function FeedbackForm(props: IFeedbackFormProps) {
             rules: [
               { required: true, message: '请输入联系邮箱，方便我们联系你' }
             ]
-          })(<Input prefix={<Icon type='user' className='icon-color' />} />)}
+          })(<Input prefix={<Icon type='mail' />} />)}
         </Form.Item>
         <Form.Item>
           <p className='input-title'>
