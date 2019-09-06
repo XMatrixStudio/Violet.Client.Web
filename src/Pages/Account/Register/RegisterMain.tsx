@@ -8,9 +8,7 @@ import InfoForm from './Form/InfoForm'
 import FinishForm from './Form/FinishForm'
 import useRouter from 'use-react-router'
 
-export interface IRegisterMainProps {}
-
-export default function RegisterMain(props: IRegisterMainProps) {
+export default function RegisterMain() {
   const { location } = useRouter()
 
   return useObserver(() => (

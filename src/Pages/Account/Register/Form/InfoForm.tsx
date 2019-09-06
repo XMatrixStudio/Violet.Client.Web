@@ -1,63 +1,83 @@
-import * as React from 'react'
+import React, { useRef } from 'react'
 import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import UserService from '../../../../services/UserService'
-import ServiceTool from '../../../../services/ServiceTool'
+import UserService from '@/services/UserService'
 import { message, Icon, Input, Button } from 'antd'
 import NewPassword from '../../Components/NewPassword'
 import { useObserver, useLocalStore } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
+import { errorHandler, setError } from '@/components/UtilTool'
 
 export interface IInfoFormProps {
   form: WrappedFormUtils
 }
 
-function InfoForm(props: IInfoFormProps) {
-  const { history, location } = useRouter()
+export function useInfoForm(form: WrappedFormUtils) {
+  const router = useRouter()
+  const nameInput = useRef<Input>(null)
+
   const data = useLocalStore(() => ({
-    id: '',
-    accountError: ''
+    id: ''
   }))
 
   React.useEffect(() => {
-    data.id = new URLSearchParams(location.search).get('id') || data.id
-    if (data.id === '') {
-      history.replace('/account/register')
+    const state = router.location.state
+    if (state && state.account) {
+      data.id = state.account
+    } else {
+      // 返回上一步
+      router.history.replace('/account/register' + router.location.search)
     }
   })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    props.form.validateFields((err, values) => {
+    form.validateFields((err, values) => {
       if (!err) {
         // {userName: "zhenly", nickName: "ZhenlyChen", password: "123456", passwordAgain: "123456"}
         UserService.Register(values.userName, values.nickName, values.password)
           .then(_ => {
-            history.push('/account/register/finish' + location.search)
+            // 跳转到完成页面
+            router.history.push(
+              '/account/register/finish' + router.location.search,
+              { account: values.userName }
+            )
           })
           .catch(error => {
-            ServiceTool.errorHandler(error, msg => {
+            errorHandler(error, msg => {
               switch (msg) {
                 case 'not_exist_email':
-                  data.accountError = '用户邮箱未验证，无法完成注册'
+                  message.error('页面已过期，请返回上一步重新进行注册')
                   break
                 case 'reserved_name':
                 case 'exist_name':
-                  data.accountError = '用户名已存在'
+                  setError(form, 'userName', '用户名已存在')
+                  nameInput.current!.focus()
                   break
                 default:
                   message.error('发生错误：' + msg)
               }
             })
           })
-      } else {
-        if (err.userName) {
-          data.accountError = err.userName.errors[0].message
-        }
       }
     })
   }
 
+  const handleBack = () => {
+    router.history.replace('/account/register')
+  }
+
+  return {
+    data,
+    nameInput,
+    handleSubmit,
+    handleBack
+  }
+}
+
+function InfoForm(props: IInfoFormProps) {
+  const { data, nameInput, handleSubmit, handleBack } = useInfoForm(props.form)
   const { getFieldDecorator } = props.form
+
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
       <Form.Item className='account-item'>
@@ -65,10 +85,7 @@ function InfoForm(props: IInfoFormProps) {
         <span>{data.id.includes('@') ? '你的邮箱：' : '你的手机：'}</span>
         <strong>{data.id}</strong>
       </Form.Item>
-      <Form.Item
-        validateStatus={data.accountError === '' ? 'success' : 'error'}
-        help={data.accountError}
-      >
+      <Form.Item>
         <p className='input-title'>唯一用户名</p>
         {getFieldDecorator('userName', {
           rules: [
@@ -81,14 +98,7 @@ function InfoForm(props: IInfoFormProps) {
             { min: 3, message: '用户名不能小于3个字符' },
             { max: 24, message: '用户名不能大于24个字符' }
           ]
-        })(
-          <Input
-            prefix={<Icon type='user' />}
-            onChange={() => {
-              data.accountError = ''
-            }}
-          />
-        )}
+        })(<Input ref={nameInput} prefix={<Icon type='user' />} />)}
       </Form.Item>
       <Form.Item>
         <p className='input-title'>昵称</p>
@@ -103,9 +113,7 @@ function InfoForm(props: IInfoFormProps) {
       <Form.Item className='next-item'>
         <Button
           type='primary'
-          onClick={() => {
-            history.replace('/account/register')
-          }}
+          onClick={handleBack}
           className='last-btn'
           size='large'
           ghost={true}
@@ -125,4 +133,4 @@ function InfoForm(props: IInfoFormProps) {
   ))
 }
 
-export default Form.create<IInfoFormProps>()(InfoForm)
+export default Form.create()(InfoForm)

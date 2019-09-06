@@ -4,39 +4,44 @@
 import * as React from 'react'
 import './LoginMain.less'
 import { Form, Input, Icon, Checkbox, Button, message } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Link } from 'react-router-dom'
+import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form'
 import UserService from '@/services/UserService'
-import ServiceTool from '@/services/ServiceTool'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
+import { getQuery, setError, errorHandler } from '@/components/UtilTool'
 
-export interface ILoginMainProps {
-  form: WrappedFormUtils
+export interface ILoginMainProps extends FormComponentProps<ILoginFormValues> {}
+
+interface ILoginFormValues {
+  account: string
+  password: string
+  remember: boolean
 }
 
-function LoginMain(props: ILoginMainProps) {
-  const { getFieldDecorator } = props.form
-  const { location } = useRouter()
+export function useLoginMain(form: WrappedFormUtils<ILoginFormValues>) {
+  const router = useRouter()
   const inputPassword = React.useRef<Input>(null)
-
   const data = useLocalStore(() => ({
-    passwordError: '',
     id: ''
   }))
 
+  // 设置默认用户名
   React.useEffect(() => {
-    data.id = new URLSearchParams(location.search).get('id') || data.id
+    const state = router.location.state
+    if (state && state.account) {
+      data.id = state.account
+    }
   })
 
+  // 提交事件
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    props.form.validateFields((err, values) => {
+    form.validateFields((err, values) => {
       if (!err) {
-        // {account: "zhenly", password: "123456", remember: true}
         UserService.Login(values.account, values.password, values.remember)
           .then(_ => {
             window.location.href = '/user/info'
+            // TODO 授权登陆
             // const params = RouterUtil.getParams(this.props.location.search);
             // if (!params.valid) {
             //   window.location.href = "/user/info"
@@ -47,14 +52,13 @@ function LoginMain(props: ILoginMainProps) {
             // }
           })
           .catch(error => {
-            ServiceTool.errorHandler(error, msg => {
+            errorHandler(error, msg => {
               switch (msg) {
                 case 'invalid_email':
                 case 'invalid_phone':
                 case 'invalid_name':
                 case 'error_user_or_password':
-                  data.passwordError = '用户名或密码错误，请重新输入'
-                  props.form.resetFields(['password'])
+                  setError(form, 'password', '用户名或密码错误，请重新输入', '')
                   inputPassword.current!.focus()
                   break
                 default:
@@ -66,45 +70,53 @@ function LoginMain(props: ILoginMainProps) {
     })
   }
 
+  const handleReset = () => {
+    router.history.push('/account/reset' + router.location.search)
+  }
+
+  return {
+    data,
+    handleSubmit,
+    handleReset,
+    inputPassword
+  }
+}
+
+function LoginMain(props: ILoginMainProps) {
+  const { data, handleSubmit, handleReset, inputPassword } = useLoginMain(
+    props.form
+  )
+
   return useObserver(() => (
     <div className='layout-login-main'>
       <Form onSubmit={handleSubmit} className='login-form'>
         <Form.Item>
           <p className='input-title'>用户名 / 手机 / 邮箱</p>
-          {getFieldDecorator('account', {
+          {props.form.getFieldDecorator('account', {
             initialValue: data.id,
             rules: [{ required: true, message: '请输入用户名 / 手机 / 邮箱' }]
           })(<Input prefix={<Icon type='user' />} />)}
         </Form.Item>
-        <Form.Item
-          validateStatus={data.passwordError === '' ? 'success' : 'error'}
-          help={data.passwordError}
-        >
+        <Form.Item>
           <p className='input-title'>密码</p>
-          {getFieldDecorator('password', {
+          {props.form.getFieldDecorator('password', {
             rules: [{ required: true, message: '请输入你的密码' }]
           })(
             <Input
               ref={inputPassword}
-              onChange={() => {
-                data.passwordError = ''
-              }}
               prefix={<Icon type='key' />}
               type='password'
             />
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('remember', {
+          {props.form.getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true
           })(<Checkbox style={{ float: 'left' }}>记住我</Checkbox>)}
-          <Link
-            style={{ float: 'right' }}
-            to={'/account/reset' + location.search}
-          >
+          <a style={{ float: 'right' }} onClick={handleReset}>
             忘记密码
-          </Link>
+          </a>
         </Form.Item>
         <Form.Item>
           <Button
@@ -121,4 +133,4 @@ function LoginMain(props: ILoginMainProps) {
   ))
 }
 
-export default Form.create()(LoginMain)
+export default Form.create<ILoginMainProps>()(LoginMain)

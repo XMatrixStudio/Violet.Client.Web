@@ -8,10 +8,8 @@ export interface IFeedbackFormProps {
   form: WrappedFormUtils
 }
 
-function FeedbackForm(props: IFeedbackFormProps) {
-  const { getFieldDecorator } = props.form
-
-  const { history } = useRouter()
+export function useFeedbackForm(form: WrappedFormUtils) {
+  const router = useRouter()
 
   const data = useLocalStore(() => ({
     finish: false
@@ -19,13 +17,29 @@ function FeedbackForm(props: IFeedbackFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    props.form.validateFields((err, values) => {
+    form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
+        // TODO 发送反馈
         data.finish = true
       }
     })
   }
+
+  const handleBack = () => {
+    router.history.replace('/account/reset' + router.location.search)
+  }
+
+  return {
+    data,
+    handleSubmit,
+    handleBack
+  }
+}
+
+function FeedbackForm(props: IFeedbackFormProps) {
+  const { getFieldDecorator } = props.form
+
+  const { data, handleSubmit, handleBack } = useFeedbackForm(props.form)
 
   return useObserver(() => {
     if (data.finish) {
@@ -55,14 +69,7 @@ function FeedbackForm(props: IFeedbackFormProps) {
           })(<Input.TextArea className='detail-text-area' rows={10} />)}
         </Form.Item>
         <Form.Item className='next-item'>
-          <Button
-            type='primary'
-            onClick={() => {
-              history.replace('/account/reset')
-            }}
-            size='large'
-            ghost={true}
-          >
+          <Button type='primary' onClick={handleBack} size='large' ghost={true}>
             上一步
           </Button>
           <Button
@@ -79,4 +86,4 @@ function FeedbackForm(props: IFeedbackFormProps) {
   })
 }
 
-export default Form.create<IFeedbackFormProps>()(FeedbackForm)
+export default Form.create()(FeedbackForm)

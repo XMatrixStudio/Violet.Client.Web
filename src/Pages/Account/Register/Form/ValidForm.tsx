@@ -11,38 +11,27 @@ export interface IValidFormProps {
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form
-
-  const { data, handleSubmit } = useValidForm(props.form)
+  const { data, accountInput, setAccountError, handleSubmit } = useValidForm(
+    props.form,
+    'register'
+  )
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='register-form'>
-      <Form.Item
-        validateStatus={data.accountError === '' ? 'success' : 'error'}
-        help={data.accountError}
-      >
+      <Form.Item>
         <p className='input-title'>电子邮箱 / 手机号码</p>
         {getFieldDecorator('account', {
           initialValue: data.defaultAccount,
           rules: [{ required: true, message: '请输入电子邮箱 / 手机号码' }]
-        })(
-          <Input
-            prefix={<Icon type='user' className='icon-color' />}
-            onChange={() => {
-              data.accountError = ''
-            }}
-          />
-        )}
+        })(<Input ref={accountInput} prefix={<Icon type='user' />} />)}
       </Form.Item>
       <ValidCaptcha
-        accountError={error => {
-          data.accountError = error
-        }}
         form={props.form}
         type='register'
-        error={data.codeError}
         defaultAccount={account => {
           data.defaultAccount = account
         }}
+        accountError={setAccountError}
       />
       <Form.Item className='next-item'>
         <Button

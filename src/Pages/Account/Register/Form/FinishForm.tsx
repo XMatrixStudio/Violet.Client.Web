@@ -1,11 +1,31 @@
-import * as React from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import useRouter from 'use-react-router'
 
-export interface IFinishFormProps {}
+export function useFinishForm() {
+  const router = useRouter()
+  React.useEffect(() => {
+    const state = router.location.state
+    if (!state || !state.account) {
+      // 非法请求，返回初始界面
+      router.history.replace('/account/register' + router.location.search)
+    }
+  })
 
-export default function FinishForm(props: IFinishFormProps) {
-  const { history, location } = useRouter()
+  const onClickFinish = () => {
+    router.history.push(
+      '/account' + router.location.search,
+      router.location.state
+    )
+  }
+
+  return {
+    onClickFinish
+  }
+}
+
+export default function FinishForm() {
+  const { onClickFinish } = useFinishForm()
 
   return (
     <div className='register-form'>
@@ -14,9 +34,7 @@ export default function FinishForm(props: IFinishFormProps) {
         type='primary'
         htmlType='submit'
         size='large'
-        onClick={() => {
-          history.push('/account' + location.search)
-        }}
+        onClick={onClickFinish}
       >
         立即登陆
       </Button>
