@@ -2,7 +2,6 @@ import * as React from 'react'
 import './RegisterSide.less'
 import logo from '@/assets/images/logo.svg'
 import { Icon, Steps } from 'antd'
-import { Link } from 'react-router-dom'
 import { useObserver } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
 

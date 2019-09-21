@@ -1,11 +1,12 @@
 import React from 'react'
 import './LoginSide.less'
 import logo from '@/assets/images/logo.svg'
-import { Icon } from 'antd'
+import { Icon, Tooltip } from 'antd'
 import useRouter from 'use-react-router'
 import { useObserver } from 'mobx-react-lite'
 import { useStore } from '@/Store'
 import defaultAvatar from '@/assets/images/user.svg'
+import UserService from '@/services/UserService'
 
 export interface ILoginSideProps {}
 
@@ -17,14 +18,21 @@ export function useLoginSide() {
     router.history.push('/account/register' + router.location.search)
   }
 
+  const handleLogout = () => {
+    UserService.Logout()
+    store.user = null
+    router.history.push('/account' + router.location.search)
+  }
+
   return {
     store,
-    handleRegister
+    handleRegister,
+    handleLogout
   }
 }
 
 export default function LoginSide(props: ILoginSideProps) {
-  const { store, handleRegister } = useLoginSide()
+  const { store, handleRegister, handleLogout } = useLoginSide()
   return useObserver(() => {
     return (
       <div className='layout-side layout-login-side'>
@@ -33,7 +41,7 @@ export default function LoginSide(props: ILoginSideProps) {
           <span className='violet'>Violet</span>
         </div>
         <div className='title'>
-          {store.app === null ? ( 
+          {store.app === null ? (
             <>
               <p>登陆账号</p>
               <p className='sub-title'>Violet 用户中心</p>
@@ -43,9 +51,13 @@ export default function LoginSide(props: ILoginSideProps) {
               <p>授权登陆</p>
               <div className='banner'>
                 {store.user ? (
-                  <img className='avatar' src={store.user!.info.avatar} />
+                  <img
+                    className='avatar'
+                    src={store.user!.info.avatar}
+                    alt='avatar'
+                  />
                 ) : (
-                  <img className='avatar' src={defaultAvatar} />
+                  <img className='avatar' src={defaultAvatar} alt='avatar' />
                 )}
 
                 <Icon
@@ -54,16 +66,32 @@ export default function LoginSide(props: ILoginSideProps) {
                   twoToneColor='#33a849'
                   theme='twoTone'
                 />
-                <img src={store.app!.info.avatar} />
+                <img
+                  className='avatar'
+                  src={store.app!.info.avatar}
+                  alt='avatar'
+                />
               </div>
-              <p className='sub-title'>{store.app!.info.displayName}</p>
+              <p className='sub-title'>
+                <Tooltip title='访问主页' placement='bottom'>
+                  <a
+                    href={store.app!.info.url}
+                    className='link'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {store.app!.info.displayName}
+                  </a>
+                </Tooltip>
+              </p>
+              <p className='des-title'>{store.app!.info.description}</p>
             </>
           )}
         </div>
         <div className='bottom-layout'>
           {store.user ? (
             <p className='help-text'>
-              <span className='link' onClick={handleRegister}>
+              <span className='link' onClick={handleLogout}>
                 切换账号
               </span>
             </p>

@@ -1,6 +1,7 @@
 // 获取 Get 参数
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { message } from 'antd'
+import { Type } from '@/services/type'
 
 export function getQuery(url: string, key: string) {
   return new URLSearchParams(url).get(key) || ''

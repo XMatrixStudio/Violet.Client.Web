@@ -27,9 +27,12 @@ const App: React.FC = () => {
   useEffect(() => {
     // 获取用户信息
     UserService.fetchUserInfo(store).then(res => {
-      // 未登录跳转到登陆界面
       if (res === null && location.pathname.includes('/account/auth')) {
+        // 未登录跳转到登陆界面
         history.push('/account' + location.search)
+      } else if (res !== null && location.pathname === '/account') {
+        // 已登录用户进行自动登陆
+        history.push('/account/auth' + location.search)
       }
     })
     // 获取授权应用信息

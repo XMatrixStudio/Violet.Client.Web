@@ -5,6 +5,20 @@
   height: 1px; // a browser bug
   display: flex;
 
+  @keyframes rainbow {
+    0% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-3px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
   .layout-transition {
     height: 100%;
   }
@@ -28,10 +42,8 @@
     }
 
     .link {
-      color: @mainColor;
       font-weight: bold;
-      cursor: pointer;
-      transition: all .3s;
+      margin: auto 4px;
 
       &:hover {
         font-size: 20px;
@@ -73,6 +85,19 @@
       .sub-title {
         font-size: 22px;
         font-weight: 400;
+        margin-bottom: 4px;
+
+        .link {
+          &:hover {
+            font-size: 22px;
+          }
+        }
+      }
+
+      .des-title {
+        font-size: 16px;
+        color: gray;
+        font-weight: 100;
       }
     }
 
@@ -117,5 +142,24 @@
         float: right;
       }
     }
+  }
+}
+
+body {
+
+  .gender-icon {
+    margin: auto 5px;
+  }
+
+  .gender-man {
+    color: #2547dd;
+  }
+
+  .gender-woman {
+    color: #ca409c;
+  }
+
+  .gender-other {
+    color: #40ca63;
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Type } from '@/services/type'
 
 export const storeContext = React.createContext<IStore | null>(null)
 
