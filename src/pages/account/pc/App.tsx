@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
-import { createStore, storeContext } from '@/Store'
-import { autorun } from 'mobx'
+import { useObserver } from 'mobx-react-lite'
+import { storeContext } from '@/Store'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import useRouter from 'use-react-router'
-
 import './App.less'
 
-import UserService from '@/services/UserService'
+import { useApp } from '../core/App'
 
 import LoginSide from './Login/LoginSide'
 import LoginMain from './Login/LoginMain'
@@ -16,61 +13,6 @@ import RegisterSide from './Register/RegisterSide'
 import RegisterMain from './Register/RegisterMain'
 import ResetSide from './Reset/ResetSide'
 import ResetMain from './Reset/ResetMain'
-import { getAuthParams, errorHandler } from '@/components/UtilTool'
-import DevService from '@/services/DevService'
-
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import 'dayjs/locale/zh-cn'
-dayjs.extend(relativeTime)
-dayjs.locale('zh-cn')
-
-export function useApp() {
-  // 创建全局 Store
-  const store = useLocalStore(createStore)
-
-  const { history, location } = useRouter()
-
-  useEffect(() => {
-    // 获取用户信息
-    UserService.fetchUserInfo(store).then(res => {
-      if (res === null && location.pathname.includes('/account/auth')) {
-        // 未登录跳转到登陆界面
-        history.push('/account' + location.search)
-      } else if (res !== null && location.pathname === '/account') {
-        // 已登录用户进行自动登陆
-        history.push('/account/auth' + location.search)
-      }
-    })
-    // 获取授权应用信息
-    store.app = null
-    const params = getAuthParams(location.search)
-    if (params.valid) {
-      DevService.getAppInfoById(params.appId)
-        .then(res => {
-          store.app = res.data
-        })
-        .catch(error => {
-          errorHandler(error, msg => {
-            history.push('/account/auth')
-          })
-        })
-    }
-    // 自动保存状态
-    autorun(() => {
-      console.log('save')
-      localStorage.setItem('violet_store', JSON.stringify(store))
-    })
-    // 设置标题
-    document.title = 'Violet'
-    // eslint-disable-next-line
-  }, [])
-
-  return {
-    store,
-    location
-  }
-}
 
 const App: React.FC = () => {
   const { store, location } = useApp()

@@ -1,13 +1,8 @@
 import * as React from 'react'
 import { Form, Input, Icon, Button } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { useObserver } from 'mobx-react-lite'
 import ValidCaptcha from '../../Components/ValidCaptcha'
-import useValidForm from './../../Components/useValidForm'
-
-export interface IValidFormProps {
-  form: WrappedFormUtils
-}
+import { IValidFormProps, useValidForm } from '../../../core/Components/ValidForm'
 
 function ValidForm(props: IValidFormProps) {
   const { getFieldDecorator } = props.form

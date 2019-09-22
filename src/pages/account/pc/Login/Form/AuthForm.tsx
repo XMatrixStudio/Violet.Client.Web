@@ -1,114 +1,12 @@
-import React, { useEffect } from 'react'
-import { useStore } from '@/Store'
-import { useObserver, useLocalStore } from 'mobx-react-lite'
-import { Skeleton, Menu, Button, message, Icon, Dropdown } from 'antd'
+import React from 'react'
+import { useObserver } from 'mobx-react-lite'
+import { Skeleton, Menu, Button, Icon, Dropdown } from 'antd'
 import Form from 'antd/lib/form/Form'
-import UserService from '@/services/UserService'
-import { errorHandler, getAuthParams } from '@/components/UtilTool'
-import useRouter from 'use-react-router'
-import { Type } from '@/services/type'
-import { UserCard } from '@/components/UserCard/UserCard'
-
-export interface IAuthFormProps {}
-
-export function useAuthForm() {
-  const store = useStore()
-
-  const { location } = useRouter()
-
-  const data = useLocalStore(() => ({
-    errorText: '',
-    authScopes: ['base'],
-    selected: { base: true } as { [key: string]: boolean },
-    authTime: 15,
-    params: null as Type.AuthParams | null
-  }))
-
-  useEffect(() => {
-    // 获取授权参数
-    data.params = getAuthParams(location.search)
-    if (data.params && data.params.valid) {
-      data.params.scope.forEach(v => {
-        if (['info', 'email'].includes(v) && !data.authScopes.includes(v)) {
-          data.authScopes.push(v)
-          data.selected[v] = true
-        }
-      })
-    } else {
-      data.errorText = '无效参数'
-    }
-    // eslint-disable-next-line
-  }, [])
-
-  const auth = () => {
-    UserService.GetAuthByID(store.app!.id, data.params!.redirectUrl)
-      .then(res => {
-        // 已授权，直接跳转
-        window.location.href =
-          data.params!.redirectUrl +
-          '?code=' +
-          res.data.code +
-          '&state=' +
-          data.params!.state
-      })
-      .catch(error => {
-        errorHandler(error, msg => {
-          if (msg === 'error_redirect_url') {
-            data.errorText = '非法回调地址'
-          } else if (msg === 'not_exist_app') {
-            data.errorText = '非法应用信息'
-          } else if (msg !== 'not_exist_auth') {
-            data.errorText = '获取授权信息失败, ' + msg
-          }
-        })
-        // 未授权
-      })
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const selectScope = []
-    for (const s in data.selected) {
-      if (data.selected[s] === true) {
-        selectScope.push(s)
-      }
-    }
-    UserService.Auth({
-      appId: store.app!.id,
-      duration: data.authTime,
-      scope: selectScope
-    })
-      .then(auth)
-      .catch(error => {
-        errorHandler(error, msg => {
-          message.error('授权失败, ' + msg)
-        })
-      })
-  }
-
-  const handleSelect = (key: string) => {
-    return () => {
-      data.selected[key] = !data.selected[key]
-    }
-  }
-
-  const handleTime = (time: number) => {
-    return () => {
-      data.authTime = time
-    }
-  }
-
-  return {
-    data,
-    store,
-    handleSubmit,
-    handleSelect,
-    handleTime
-  }
-}
+import { UserCard } from '@/components/pc/UserCard'
+import { useAuthForm } from '../../../core/Login/AuthForm'
 
 export default Form.create()(AuthForm)
-function AuthForm(props: IAuthFormProps) {
+function AuthForm() {
   const { data, store, handleSubmit, handleSelect, handleTime } = useAuthForm()
 
   return useObserver(() => {
@@ -160,13 +58,12 @@ function AuthForm(props: IAuthFormProps) {
           </span>
         </p>
         <p className='sub-title'>
-          想要访问你的账户<strong>{store.user ? store.user!.info.nickname: '...'}</strong>
+          想要访问你的账户
+          <strong>{store.user ? store.user!.info.nickname : '...'}</strong>
         </p>
         <Form onSubmit={handleSubmit}>
           <div className='checkbox-group'>
-            <div
-              className='auth-item auth-item-disable'
-            >
+            <div className='auth-item auth-item-disable'>
               <div className='auth-item-icon'>
                 <Icon type='user' />
               </div>

@@ -2,36 +2,11 @@ import React from 'react'
 import './LoginSide.less'
 import logo from '@/assets/images/logo.svg'
 import { Icon, Tooltip } from 'antd'
-import useRouter from 'use-react-router'
 import { useObserver } from 'mobx-react-lite'
-import { useStore } from '@/Store'
 import defaultAvatar from '@/assets/images/user.svg'
-import UserService from '@/services/UserService'
+import { useLoginSide } from '../../core/Login/LoginSide'
 
-export interface ILoginSideProps {}
-
-export function useLoginSide() {
-  const router = useRouter()
-  const store = useStore()
-
-  const handleRegister = () => {
-    router.history.push('/account/register' + router.location.search)
-  }
-
-  const handleLogout = () => {
-    UserService.Logout()
-    store.user = null
-    router.history.push('/account' + router.location.search)
-  }
-
-  return {
-    store,
-    handleRegister,
-    handleLogout
-  }
-}
-
-export default function LoginSide(props: ILoginSideProps) {
+export default function LoginSide() {
   const { store, handleRegister, handleLogout } = useLoginSide()
   return useObserver(() => {
     return (

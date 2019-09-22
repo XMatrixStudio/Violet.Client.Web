@@ -1,45 +1,15 @@
-import * as React from 'react'
+import React from 'react'
 import { Form, Input, Icon, Button } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
-import useRouter from 'use-react-router'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
-
-export interface IFeedbackFormProps {
-  form: WrappedFormUtils
-}
-
-export function useFeedbackForm(form: WrappedFormUtils) {
-  const router = useRouter()
-
-  const data = useLocalStore(() => ({
-    finish: false
-  }))
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    form.validateFields((err, values) => {
-      if (!err) {
-        // TODO 发送反馈
-        data.finish = true
-      }
-    })
-  }
-
-  const handleBack = () => {
-    router.history.replace('/account/reset' + router.location.search)
-  }
-
-  return {
-    data,
-    handleSubmit,
-    handleBack
-  }
-}
+import { useObserver } from 'mobx-react-lite'
+import {
+  IFeedbackFormProps,
+  useFeedbackForm
+} from '../../../core/Reset/FeedbackForm'
 
 function FeedbackForm(props: IFeedbackFormProps) {
   const { getFieldDecorator } = props.form
 
-  const { data, handleSubmit, handleBack } = useFeedbackForm(props.form)
+  const { data, handleSubmit, handleBack } = useFeedbackForm(props)
 
   return useObserver(() => {
     if (data.finish) {

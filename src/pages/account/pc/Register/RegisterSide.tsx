@@ -3,32 +3,7 @@ import './RegisterSide.less'
 import logo from '@/assets/images/logo.svg'
 import { Icon, Steps } from 'antd'
 import { useObserver } from 'mobx-react-lite'
-import useRouter from 'use-react-router'
-
-export function useRegisterSide() {
-  const { location, history } = useRouter()
-
-  const currentStep = (path: string) => {
-    switch (path) {
-      case '/account/register/info':
-        return 1
-      case '/account/register/finish':
-        return 2
-      default:
-        return 0
-    }
-  }
-
-  const handleLogin = () => {
-    history.push('/account' + location.search)
-  }
-
-  return {
-    location,
-    currentStep,
-    handleLogin
-  }
-}
+import { useRegisterSide } from '../../core/Register/RegisterSide'
 
 export default function RegisterSide() {
   const { location, currentStep, handleLogin } = useRegisterSide()

@@ -3,10 +3,14 @@ import useRouter from 'use-react-router'
 import UserService from '@/services/UserService'
 import { useLocalStore } from 'mobx-react-lite'
 import { message, Input } from 'antd'
-import { errorHandler, setError } from '@/components/UtilTool'
+import { errorHandler, setError } from '@/components/core/UtilTool'
 import { useRef } from 'react'
 
-export default function useValidForm(
+export interface IValidFormProps {
+  form: WrappedFormUtils
+}
+
+export function useValidForm(
   form: WrappedFormUtils,
   type: 'register' | 'reset'
 ) {

@@ -1,59 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './UserCard.less'
-import { Type } from '../../services/type'
-import UserService from '@/services/UserService'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
+import { useObserver } from 'mobx-react-lite'
 import { Popover, Skeleton, Button, message } from 'antd'
-import { UserLevel } from '../UserLevel'
-import dayjs from 'dayjs'
-
-export interface IUserCardProps {
-  id: string
-  children?: JSX.Element
-}
-
-export function useUserCard(id: string, fetch: boolean) {
-  const data = useLocalStore(() => ({
-    error: false,
-    user: null as Type.UserInfoData | null
-  }))
-
-  const fetchUserInfo = () => {
-    if (data.user !== null || data.error) {
-      return
-    }
-    UserService.GetUserInfoByID(id)
-      .then(res => {
-        data.user = res.data
-      })
-      .catch(_ => {
-        data.error = true
-      })
-  }
-
-  const getRelativeTime = (time: Date) => {
-    return dayjs(time).fromNow()
-  }
-
-  useEffect(() => {
-    if (fetch) {
-      fetchUserInfo()
-    }
-    // eslint-disable-next-line
-  }, [fetch])
-
-  return {
-    data,
-    fetchUserInfo,
-    getRelativeTime
-  }
-}
+import { UserLevel } from './UserLevel'
+import { IUserCardProps, useUserCard } from '../core/UserCard'
 
 export function UserCard(props: IUserCardProps) {
-  const { data, fetchUserInfo, getRelativeTime } = useUserCard(
-    props.id,
-    props.children === undefined
-  )
+  const { data, fetchUserInfo, getRelativeTime } = useUserCard(props)
 
   return useObserver(() => {
     if (data.error) {
@@ -78,14 +31,12 @@ export function UserCard(props: IUserCardProps) {
                 <span className='user-name'>{data.user!.info.nickname}</span>
                 <UserLevel level={data.user!.level} />
               </p>
-              <p className='user-real-name'>
-                {data.user!.name}
-              </p>
+              <p className='user-real-name'>{data.user!.name}</p>
             </div>
           </div>
-              <p className='user-old'>
-                {getRelativeTime(data.user!.createTime)}来到了Violet
-              </p>
+          <p className='user-old'>
+            {getRelativeTime(data.user!.createTime)}来到了Violet
+          </p>
           <Button
             type='link'
             block={true}

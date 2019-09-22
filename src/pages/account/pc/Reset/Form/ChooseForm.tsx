@@ -1,23 +1,6 @@
-import * as React from 'react'
+import React from 'react'
 import { Icon } from 'antd'
-import useRouter from 'use-react-router'
-
-export function useChooseForm() {
-  const router = useRouter()
-
-  const handleValid = () => {
-    router.history.push('/account/reset/valid' + router.location.search)
-  }
-
-  const handleFeedback = () => {
-    router.history.push('/account/reset/feedback' + router.location.search)
-  }
-
-  return {
-    handleValid,
-    handleFeedback
-  }
-}
+import { useChooseForm } from '../../../core/Reset/ChooseForm'
 
 export default function ChooseForm() {
   const { handleValid, handleFeedback } = useChooseForm()
