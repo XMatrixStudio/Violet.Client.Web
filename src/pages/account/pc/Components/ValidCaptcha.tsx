@@ -198,7 +198,7 @@ function ValidCaptcha(props: IValidCaptchaProps) {
           <div className='input-right'>
             <CountDownButton
               lastTime={store.auth.captchaTime}
-              sendCaptcha={sendCaptcha}
+              handleSend={sendCaptcha}
             />
           </div>
         </div>

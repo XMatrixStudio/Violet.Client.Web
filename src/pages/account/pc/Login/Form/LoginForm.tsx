@@ -12,10 +12,11 @@ export interface ILoginFormProps {
   form: WrappedFormUtils
 }
 
-export function useLoginForm(form: WrappedFormUtils) {
+export function useLoginForm(props: ILoginFormProps) {
   const router = useRouter()
   const inputPassword = React.useRef<Input>(null)
   const store = useStore()
+  const { form } = props
   const data = useLocalStore(() => ({
     id: ''
   }))
@@ -77,9 +78,7 @@ export function useLoginForm(form: WrappedFormUtils) {
 export default Form.create()(LoginForm)
 
 function LoginForm(props: ILoginFormProps) {
-  const { data, handleSubmit, handleReset, inputPassword } = useLoginForm(
-    props.form
-  )
+  const { data, handleSubmit, handleReset, inputPassword } = useLoginForm(props)
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='login-form'>

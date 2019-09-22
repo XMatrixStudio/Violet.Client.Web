@@ -5,8 +5,8 @@ import { Icon, Steps } from 'antd'
 import { useObserver } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
 
-export default function RegisterSide() {
-  const { location } = useRouter()
+export function useRegisterSide() {
+  const { location, history } = useRouter()
 
   const currentStep = (path: string) => {
     switch (path) {
@@ -18,6 +18,20 @@ export default function RegisterSide() {
         return 0
     }
   }
+
+  const handleLogin = () => {
+    history.push('/account' + location.search)
+  }
+
+  return {
+    location,
+    currentStep,
+    handleLogin
+  }
+}
+
+export default function RegisterSide() {
+  const { location, currentStep, handleLogin } = useRegisterSide()
 
   return useObserver(() => (
     <div className='layout-side layout-register-side'>
@@ -36,9 +50,9 @@ export default function RegisterSide() {
       <div className='bottom-layout'>
         <p className='help-text'>
           已有账号？
-          <a className='link' href='/account'>
+          <span className='link' onClick={handleLogin}>
             登陆
-          </a>
+          </span>
         </p>
         <p className='help-layout'>
           <Icon className='info-icon' type='info-circle' theme='filled' />

@@ -25,7 +25,7 @@ import 'dayjs/locale/zh-cn'
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 
-const App: React.FC = () => {
+export function useApp() {
   // 创建全局 Store
   const store = useLocalStore(createStore)
 
@@ -65,6 +65,15 @@ const App: React.FC = () => {
     document.title = 'Violet'
     // eslint-disable-next-line
   }, [])
+
+  return {
+    store,
+    location
+  }
+}
+
+const App: React.FC = () => {
+  const { store, location } = useApp()
 
   return useObserver(() => (
     <storeContext.Provider value={store}>

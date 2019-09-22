@@ -4,7 +4,7 @@ import logo from '@/assets/images/logo.svg'
 import React, { useEffect } from 'react'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
 import { Button, Tooltip } from 'antd'
-import { useStore } from '../../../Store'
+import { useStore } from '@/Store'
 
 export interface INavBarProps {}
 

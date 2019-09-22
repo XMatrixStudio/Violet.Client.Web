@@ -6,11 +6,11 @@ import { Button } from 'antd'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
 
 export interface ICountDownButtonProps {
-  sendCaptcha: () => void
+  handleSend: () => void
   lastTime: number
 }
 
-export default function CountDownButton(props: ICountDownButtonProps) {
+export function useCountDownButton(props: ICountDownButtonProps) {
   const data = useLocalStore(() => ({
     timer: -1,
     waitTime: 90,
@@ -48,11 +48,21 @@ export default function CountDownButton(props: ICountDownButtonProps) {
     // eslint-disable-next-line
   })
 
+  return {
+    data,
+    getRemainTime,
+    handleSend: props.handleSend
+  }
+}
+
+export default function CountDownButton(props: ICountDownButtonProps) {
+  const {data, getRemainTime, handleSend} = useCountDownButton(props)
+
   return useObserver(() => (
     <Button
       disabled={getRemainTime() < data.waitTime && getRemainTime() > 0}
       type='primary'
-      onClick={props.sendCaptcha}
+      onClick={handleSend}
       ghost={true}
     >
       {data.buttonTitle}

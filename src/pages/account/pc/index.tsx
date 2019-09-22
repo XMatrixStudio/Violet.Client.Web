@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import '@/assets/style/custom.less'
 import App from './App'
-import * as serviceWorker from '../../serviceWorker'
+import * as serviceWorker from '@/serviceWorker'
 import { Router } from 'react-router'
 import { createBrowserHistory } from 'history'
 

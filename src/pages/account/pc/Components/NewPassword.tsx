@@ -10,7 +10,7 @@ export interface INewPasswordProps {
   form: WrappedFormUtils
 }
 
-export default function NewPassword(props: INewPasswordProps) {
+export function useNewPassword(props: INewPasswordProps) {
   const data = useLocalStore(() => ({
     confirmDirty: false
   }))
@@ -40,6 +40,23 @@ export default function NewPassword(props: INewPasswordProps) {
   }
 
   const { getFieldDecorator } = props.form
+
+  return {
+    getFieldDecorator,
+    handleConfirmBlur,
+    compareToFirstPassword,
+    validateToNextPassword
+  }
+}
+
+export default function NewPassword(props: INewPasswordProps) {
+  const {
+    getFieldDecorator,
+    handleConfirmBlur,
+    compareToFirstPassword,
+    validateToNextPassword
+  } = useNewPassword(props)
+
   return useObserver(() => (
     <div>
       <Form.Item>

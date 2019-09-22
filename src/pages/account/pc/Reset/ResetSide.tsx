@@ -7,8 +7,8 @@ import useRouter from 'use-react-router'
 
 export interface IResetSideProps {}
 
-export default function ResetSide(props: IResetSideProps) {
-  const { location } = useRouter()
+export function useResetSide() {
+  const { location, history } = useRouter()
 
   const currentStep = (path: string) => {
     switch (path) {
@@ -24,6 +24,20 @@ export default function ResetSide(props: IResetSideProps) {
         return -1
     }
   }
+
+  const handleLogin = () => {
+    history.push('/account' + location.search)
+  }
+
+  return {
+    location,
+    currentStep,
+    handleLogin
+  }
+}
+
+export default function ResetSide(props: IResetSideProps) {
+  const { location, currentStep, handleLogin } = useResetSide()
 
   const CurrentSide = (path: string) => {
     const step = currentStep(path)
@@ -55,9 +69,9 @@ export default function ResetSide(props: IResetSideProps) {
       <div className='bottom-layout'>
         <p className='help-text'>
           想起来了？
-          <a className='link' href='/account'>
+          <span className='link' onClick={handleLogin}>
             登陆
-          </a>
+          </span>
         </p>
         <p className='help-layout'>
           <Icon className='info-icon' type='info-circle' theme='filled' />

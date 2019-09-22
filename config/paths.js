@@ -70,15 +70,15 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
-  appIndexJs: resolveModule(resolveApp, 'src/pages/home/index'),
-  appIndexMobileJs: resolveModule(resolveApp, 'src/pages/homeMobile/index'),
-  appAccountJs: resolveModule(resolveApp, 'src/pages/account/index'),
+  appIndexJs: resolveModule(resolveApp, 'src/pages/home/pc/index'),
+  appIndexMobileJs: resolveModule(resolveApp, 'src/pages/home/mobile/index'),
+  appAccountJs: resolveModule(resolveApp, 'src/pages/account/pc/index'),
   appAccountMobileJs: resolveModule(
     resolveApp,
-    'src/pages/accountMobile/index'
+    'src/pages/account/mobile/index'
   ),
-  appUserJs: resolveModule(resolveApp, 'src/pages/user/index'),
-  appUserMobileJs: resolveModule(resolveApp, 'src/pages/userMobile/index'),
+  appUserJs: resolveModule(resolveApp, 'src/pages/user/pc/index'),
+  appUserMobileJs: resolveModule(resolveApp, 'src/pages/user/mobile/index'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   appTsConfig: resolveApp('tsconfig.json'),
