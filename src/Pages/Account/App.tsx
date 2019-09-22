@@ -18,6 +18,13 @@ import ResetSide from './Reset/ResetSide'
 import ResetMain from './Reset/ResetMain'
 import { getAuthParams, errorHandler } from '@/components/UtilTool'
 import DevService from '@/services/DevService'
+
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+dayjs.extend(relativeTime)
+dayjs.locale('zh-cn')
+
 const App: React.FC = () => {
   // 创建全局 Store
   const store = useLocalStore(createStore)

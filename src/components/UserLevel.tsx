@@ -8,7 +8,7 @@ export interface IUserLevelProps {
 export function UserLevel(props: IUserLevelProps) {
   const userTagStyle = {
     marginLeft: '10px',
-    verticalAlign: 'super'
+    verticalAlign: 'middle'
   }
   //     < 0 - 封禁用户
   // = 0 - 普通用户
