@@ -27,7 +27,7 @@ function LoginMain() {
           timeout={1000}
         >
           <Switch>
-            <Route path='/account/auth' component={AuthForm} />
+            <Route exact={true} path='/account/auth' component={AuthForm} />
             <Route path='/account' component={LoginForm} />
           </Switch>
         </CSSTransition>

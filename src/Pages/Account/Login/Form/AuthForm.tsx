@@ -160,7 +160,7 @@ function AuthForm(props: IAuthFormProps) {
           </span>
         </p>
         <p className='sub-title'>
-          想要访问你的账户<strong>{store.user!.info.nickname}</strong>
+          想要访问你的账户<strong>{store.user ? store.user!.info.nickname: '...'}</strong>
         </p>
         <Form onSubmit={handleSubmit}>
           <div className='checkbox-group'>
