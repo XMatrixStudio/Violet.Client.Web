@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Input,message } from 'antd'
+import {message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { useLocalStore } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
@@ -14,7 +14,6 @@ export interface ILoginFormProps {
 
 export function useLoginForm(props: ILoginFormProps) {
   const router = useRouter()
-  const inputPassword = React.useRef<Input>(null)
   const store = useStore()
   const { form } = props
   const data = useLocalStore(() => ({
@@ -33,6 +32,7 @@ export function useLoginForm(props: ILoginFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     form.validateFields((err, values) => {
+      console.log(values)
       if (!err) {
         UserService.Login(values.account, values.password, values.remember)
           .then(_ => {
@@ -52,7 +52,6 @@ export function useLoginForm(props: ILoginFormProps) {
                 case 'invalid_name':
                 case 'error_user_or_password':
                   setError(form, 'password', '用户名或密码错误，请重新输入', '')
-                  inputPassword.current!.focus()
                   break
                 default:
                   message.error('发生错误:' + msg)
@@ -70,7 +69,6 @@ export function useLoginForm(props: ILoginFormProps) {
   return {
     data,
     handleSubmit,
-    handleReset,
-    inputPassword
+    handleReset
   }
 }

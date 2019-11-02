@@ -7,7 +7,7 @@ import { ILoginFormProps, useLoginForm } from '../../../core/Login/LoginForm'
 export default Form.create()(LoginForm)
 
 function LoginForm(props: ILoginFormProps) {
-  const { data, handleSubmit, handleReset, inputPassword } = useLoginForm(props)
+  const { data, handleSubmit, handleReset } = useLoginForm(props)
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='login-form'>
@@ -24,7 +24,6 @@ function LoginForm(props: ILoginFormProps) {
           rules: [{ required: true, message: '请输入你的密码' }]
         })(
           <Input
-            ref={inputPassword}
             prefix={<Icon type='key' />}
             type='password'
           />

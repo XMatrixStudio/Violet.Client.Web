@@ -81,8 +81,23 @@ code {
         }
     }
 
+    .ant-input:hover {
+        border-color: #f6f1fc !important;
+    }
+
+    .ant-input:focus {
+        background-color: #f6f1fc;
+        border-color: #f6f1fc !important;
+    }
+
+    .has-error .ant-input-affix-wrapper .ant-input {
+        background-color: #f6f1fc;
+    }
+
     .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
-        border-color: @mainColor;
+        // border-color: @mainColor;
+        border-color: #f6f1fc !important;
+        background-color: #f6f1fc;
         border-right-width: 2px !important;
     }
 
@@ -100,8 +115,8 @@ code {
 
     .ant-input {
         height: 48px;
-        background-color: #fefdff;
-        border-color: #e8e7ec;
+        background-color: #f8f7fc;
+        border-color: #f8f7fc;
         border-width: 2px;
 
         &:hover {
