@@ -22,7 +22,8 @@ export function useLoginForm(props: ILoginFormProps) {
     remember: boolean
   }>()
   const data = useLocalStore(() => ({
-    id: ''
+    id: '',
+    checked: false,
   }))
 
   // 设置默认用户名

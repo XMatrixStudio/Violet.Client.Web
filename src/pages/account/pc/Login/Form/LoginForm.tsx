@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Form, Input, Icon, Checkbox, Button } from 'antd'
+import { Form, Input, Icon, Switch, Button } from 'antd'
 import { useObserver } from 'mobx-react-lite'
 import { ILoginFormProps, useLoginForm } from '../../../core/Login/LoginForm'
 
@@ -30,10 +30,13 @@ function LoginForm(props: ILoginFormProps) {
         )}
       </Form.Item>
       <Form.Item>
-        {form.getFieldDecorator('remember', {
-          valuePropName: 'checked',
-          initialValue: true
-        })(<Checkbox style={{ float: 'left' }}>记住我</Checkbox>)}
+        <div style={{ float: 'left' }}>
+          {form.getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true
+          })(<Switch />)}
+          <span style={{marginLeft: '12px'}}>记住我</span>
+        </div>
         <span className='link' style={{ float: 'right' }} onClick={handleReset}>
           忘记密码
         </span>
