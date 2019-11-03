@@ -8,19 +8,23 @@
     <script>
       const checkMobile = function() {
         // 来源判断
-        if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-          if (window.location.href.indexOf('/account-m') === -1) {
-            window.location.href = window.location.href.replace(
-              '/account',
-              '/account-m'
-            )
-          }
-        } else {
-          if (window.location.href.indexOf('/account-m') !== -1) {
-            window.location.href = window.location.href.replace(
-              '/account-m',
-              '/account'
-            )
+        if (window.location.href.indexOf('/account') !== -1) {
+          if (
+            /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
+          ) {
+            if (window.location.href.indexOf('/account-m') === -1) {
+              window.location.href = window.location.href.replace(
+                '/account',
+                '/account-m'
+              )
+            }
+          } else {
+            if (window.location.href.indexOf('/account-m') !== -1) {
+              window.location.href = window.location.href.replace(
+                '/account-m',
+                '/account'
+              )
+            }
           }
         }
       }

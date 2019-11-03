@@ -1,21 +1,26 @@
 import React from 'react'
 
 import {message } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { useLocalStore } from 'mobx-react-lite'
 import useRouter from 'use-react-router'
-import { setError, errorHandler, getAuthParams } from '@/components/core/UtilTool'
+import { errorHandler, getAuthParams, setFieldError } from '@/components/core/UtilTool'
 import UserService from '@/services/UserService'
 import { useStore } from '@/Store'
 
+import useForm from '@/components/core/FormHook'
+
 export interface ILoginFormProps {
-  form: WrappedFormUtils
+
 }
 
 export function useLoginForm(props: ILoginFormProps) {
   const router = useRouter()
   const store = useStore()
-  const { form } = props
+  const form  = useForm<{
+    account: string
+    password: string
+    remember: boolean
+  }>()
   const data = useLocalStore(() => ({
     id: ''
   }))
@@ -31,9 +36,7 @@ export function useLoginForm(props: ILoginFormProps) {
   // 提交事件
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    form.validateFields((err, values) => {
-      console.log(values)
-      if (!err) {
+    form.validateFields().then(values => {
         UserService.Login(values.account, values.password, values.remember)
           .then(_ => {
             const params = getAuthParams(router.location.search)
@@ -51,14 +54,13 @@ export function useLoginForm(props: ILoginFormProps) {
                 case 'invalid_phone':
                 case 'invalid_name':
                 case 'error_user_or_password':
-                  setError(form, 'password', '用户名或密码错误，请重新输入', '')
+                  setFieldError(form, 'password', '用户名或密码错误，请重新输入', '')
                   break
                 default:
                   message.error('发生错误:' + msg)
               }
             })
           })
-      }
     })
   }
 
@@ -69,6 +71,7 @@ export function useLoginForm(props: ILoginFormProps) {
   return {
     data,
     handleSubmit,
-    handleReset
+    handleReset,
+    form
   }
 }

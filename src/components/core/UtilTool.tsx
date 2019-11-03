@@ -2,6 +2,7 @@
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { message } from 'antd'
 import { Type } from '@/services/type'
+import { FormMethods } from '../../components/core/FormHook'
 
 export function getQuery(url: string, key: string) {
   return new URLSearchParams(url).get(key) || ''
@@ -57,6 +58,24 @@ export function setError(
     obj[name].errors.push(new Error(error))
   }
   form.setFields(obj)
+}
+
+// 设置表单
+export function setFieldError(
+  form: FormMethods<any>,
+  name: string,
+  error?: string,
+  value?: string
+) {
+  if (value === undefined) {
+    value = form.getFieldValue(name)
+  }
+  form.setFields({
+    [name]: {
+      value: value,
+      errors: [new Error(error)]
+    }
+  })
 }
 
 export function errorHandler(error: any, handler: (msg: string) => void) {

@@ -7,20 +7,20 @@ import { ILoginFormProps, useLoginForm } from '../../../core/Login/LoginForm'
 export default Form.create()(LoginForm)
 
 function LoginForm(props: ILoginFormProps) {
-  const { data, handleSubmit, handleReset } = useLoginForm(props)
+  const { data, handleSubmit, handleReset, form } = useLoginForm(props)
 
   return useObserver(() => (
     <Form onSubmit={handleSubmit} className='login-form'>
       <Form.Item>
         <p className='input-title'>用户名 / 手机 / 邮箱</p>
-        {props.form.getFieldDecorator('account', {
+        {form.getFieldDecorator('account', {
           initialValue: data.id,
           rules: [{ required: true, message: '请输入用户名 / 手机 / 邮箱' }]
         })(<Input prefix={<Icon type='user' />} />)}
       </Form.Item>
       <Form.Item>
         <p className='input-title'>密码</p>
-        {props.form.getFieldDecorator('password', {
+        {form.getFieldDecorator('password', {
           rules: [{ required: true, message: '请输入你的密码' }]
         })(
           <Input
@@ -30,7 +30,7 @@ function LoginForm(props: ILoginFormProps) {
         )}
       </Form.Item>
       <Form.Item>
-        {props.form.getFieldDecorator('remember', {
+        {form.getFieldDecorator('remember', {
           valuePropName: 'checked',
           initialValue: true
         })(<Checkbox style={{ float: 'left' }}>记住我</Checkbox>)}
