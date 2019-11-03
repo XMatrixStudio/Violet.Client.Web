@@ -16,7 +16,13 @@ import {
 export default Form.create()(LoginForm)
 
 function LoginForm(props: ILoginFormProps) {
-  const { data, handleSubmit, handleReset, form } = useLoginForm(props)
+  const {
+    data,
+    handleSubmit,
+    handleReset,
+    handleRegister,
+    form
+  } = useLoginForm(props)
 
   return useObserver(() => (
     <div className='login-layout'>
@@ -52,22 +58,25 @@ function LoginForm(props: ILoginFormProps) {
           )}
         </FormControl>
 
-          <FormControlLabel
-            control={
-              <Switch
-                color='primary'
-                onChange={e => {
-                  form.setFieldsValue({
-                    remember: e.target.checked
-                  })
-                }}
-                {...form.getFieldDecorator('remember', {
-                  initialValue: false
-                })}
-              />
-            }
-            label='记住我'
-          />
+        <FormControlLabel
+          control={
+            <Switch
+              color='primary'
+              onChange={e => {
+                form.setFieldsValue({
+                  remember: e.target.checked
+                })
+              }}
+              {...form.getFieldDecorator('remember', {
+                initialValue: false
+              })}
+            />
+          }
+          label='记住我'
+        />
+        <Button color='primary' className='reset-btn' onClick={handleReset}>
+          忘记密码
+        </Button>
 
         <Button
           type='submit'
@@ -78,8 +87,8 @@ function LoginForm(props: ILoginFormProps) {
         >
           登陆
         </Button>
-        <Button color='primary' className='login-btn' onClick={handleReset}>
-          忘记密码
+        <Button color='primary' className='login-btn' onClick={handleRegister}>
+          去注册
         </Button>
       </form>
     </div>
