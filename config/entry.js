@@ -5,7 +5,7 @@ const { htmlOverlay } = require('just-scripts');
 // 入口名字
 const entryName = ['admin', 'account', 'index']
 // 入口路径
-const entryPath = './src/index'
+const entryPath = './src/module/$entryName/index'
 
 module.exports = {
     // 页面设置

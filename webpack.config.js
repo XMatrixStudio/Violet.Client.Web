@@ -2,6 +2,7 @@ const { webpackConfig, webpackMerge, htmlOverlay } = require('just-scripts')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const entry = require('./config/entry')
+const path = require('path')
 
 module.exports = webpackMerge(
   webpackConfig,
@@ -24,6 +25,12 @@ module.exports = webpackMerge(
     optimization: {
       splitChunks: {
         chunks: 'all'
+      }
+    },
+    resolve: {
+      extensions: [".tsx", ".ts"],
+      alias: {
+          "@": path.join(__dirname, "./src")
       }
     }
   }

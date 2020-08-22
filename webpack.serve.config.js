@@ -1,5 +1,6 @@
 const { webpackMerge, htmlOverlay, webpackServeConfig } = require('just-scripts')
 const entry = require('./config/entry')
+const path = require('path')
 
 module.exports = webpackMerge(
   webpackServeConfig,
@@ -31,6 +32,12 @@ module.exports = webpackMerge(
             '^/ip': ''
           }
         }
+      }
+    },
+    resolve: {
+      extensions: [".tsx", ".ts"],
+      alias: {
+          "@": path.join(__dirname, "./src")
       }
     }
   }

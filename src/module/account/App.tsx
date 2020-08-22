@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, Text, Link, FontWeights } from '@fluentui/react';
 
-import logo from './fabric.png';
+import logo from '@/assets/fabric.png';
 
 const boldStyle = {
   root: { fontWeight: FontWeights.semibold }
@@ -27,7 +27,7 @@ export const App: React.FunctionComponent = () => {
     >
       <img src={logo} alt="logo" />
       <Text variant="xxLarge" styles={boldStyle}>
-        Welcome to Your UI Fabric Appshgsssss
+        Welcome to Your UI Fabric Account
       </Text>
       <Text variant="large">For a guide on how to customize this project, check out the UI Fabric documentation.</Text>
       <Text variant="large" styles={boldStyle}>
