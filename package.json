@@ -13,9 +13,9 @@
     "gen": "npx plop"
   },
   "dependencies": {
-    "@fluentui/react": "^7.128.0",
-    "axios": "^0.19.2",
-    "mobx-react-lite": "^2.0.7",
+    "@fluentui/react": "^7.141.0",
+    "axios": "^0.20.0",
+    "mobx-react-lite": "^2.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.2.0",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
-    "just-scripts": "^0.44.4",
+    "just-scripts": "^0.44.7",
     "just-stack-react": "^1.0.0",
-    "webpack-bundle-analyzer": "^3.8.0"
+    "webpack-bundle-analyzer": "^3.9.0"
   }
 }
