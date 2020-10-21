@@ -41,20 +41,20 @@ class Account extends Component<IAccountProps> {
         .catch(error => {
           ServiceTool.errorHandler(error, msg => {
             message.error('无效的应用')
-            this.props.history.push('/account-m/auth')
+            this.props.history.push('/account/auth')
           })
         })
     }
   }
 
   colorfulTop = (pathname: string) => {
-    if (pathname === '/account-m') {
+    if (pathname === '/account') {
       return 'login-card'
-    } else if (pathname.includes('/account-m/register')) {
+    } else if (pathname.includes('/account/register')) {
       return 'register-card'
-    } else if (pathname.includes('/account-m/reset')) {
+    } else if (pathname.includes('/account/reset')) {
       return 'reset-card'
-    } else if (pathname.includes('/account-m/auth')) {
+    } else if (pathname.includes('/account/auth')) {
       return 'auth-card'
     }
     return ''
@@ -99,12 +99,12 @@ class Account extends Component<IAccountProps> {
               timeout={1000}
             >
               <Switch location={this.props.location}>
-                <Route exact={true} path='/account-m' component={Login} />
-                <Route path='/account-m/register' component={Register} />
-                <Route path='/account-m/auth'>
+                <Route exact={true} path='/account' component={Login} />
+                <Route path='/account/register' component={Register} />
+                <Route path='/account/auth'>
                   <Auth appInfo={this.appInfo} />
                 </Route>
-                <Route path='/account-m/reset' component={Reset} />
+                <Route path='/account/reset' component={Reset} />
               </Switch>
             </CSSTransition>
           </TransitionGroup>
