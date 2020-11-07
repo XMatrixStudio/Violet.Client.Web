@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { UserAgentProvider } from '@quentin-sommer/react-useragent';
 
 ReactDOM.render(
-  <App />,
+  <UserAgentProvider ua={window.navigator.userAgent}>
+    <App />
+  </UserAgentProvider>,
   document.getElementById('root')
 );
 

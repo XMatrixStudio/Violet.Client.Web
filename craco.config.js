@@ -1,4 +1,4 @@
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const customConfig = {
   // entry: {
@@ -18,10 +18,11 @@ const customConfig = {
 
 module.exports = {
   webpack: {
-    plugins: [
-      // new BundleAnalyzerPlugin()
-    ],
     configure: (webpackConfig, { env, paths }) => {
+      console.log(env)
+      if (env === 'production') {
+        webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+      }
       webpackConfig = Object.assign(webpackConfig, customConfig)
       return webpackConfig
     }
