@@ -1,10 +1,12 @@
 import { IStyle, keyframes, mergeStyleSets } from '@fluentui/react'
 import React from 'react'
-import logo from '../../../../assets/logo.svg'
+import logo from 'assets/logo.svg'
+import { color } from 'style'
+import NavBar from './components/NavBar'
 
 const appLogoSpin = keyframes({
   from: {
-    transform:' rotate(0deg)'
+    transform: ' rotate(0deg)'
   },
   to: {
     transform: 'rotate(360deg)'
@@ -13,8 +15,8 @@ const appLogoSpin = keyframes({
 
 const styles = mergeStyleSets({
   header: {
-    backgroundColor: '#393f4b',
-    minHeight: '100vh',
+    backgroundColor: color.background,
+    minHeight: '200vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -44,6 +46,7 @@ const styles = mergeStyleSets({
 function App() {
   return (
     <div>
+      <NavBar />
       <header className={styles.header}>
         <img src={logo} className={styles.logo} alt="logo" />
         <p>
