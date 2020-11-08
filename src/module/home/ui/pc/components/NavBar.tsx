@@ -2,20 +2,26 @@ import { IStyle, mergeStyleSets, PrimaryButton } from '@fluentui/react'
 import { observer, useLocalObservable } from 'mobx-react'
 import React, { useEffect } from 'react'
 import { useStore } from 'store'
-import logo from 'assets/logo.svg'
 import { color, style } from 'style'
+import logo from  'assets/image/logo.svg'
 
-export default observer(() => {
+// 导航栏
+const NavBar = observer(() => {
 
   const store = useStore()
 
   const localStore = useLocalObservable(() => ({
-    isTop: false
+    isTop: false,
+    toggle() {
+      this.isTop = !this.isTop
+    }
   }))
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      localStore.isTop = window.scrollY > 20
+      if (localStore.isTop !== (window.scrollY > 20)) {
+        localStore.toggle()
+      }
     })
   })
 
@@ -31,7 +37,7 @@ export default observer(() => {
         display: 'flex',
         position: 'absolute',
         width: '100%',
-        minWidth: 460,
+        minWidth: style.minWidth,
         marginTop: 36
       } as IStyle,
       isTop && {
@@ -49,7 +55,7 @@ export default observer(() => {
       {
         userSelect: 'none',
         display: 'inline',
-        fontSize: 24,
+        fontSize: style.fontLarger,
         marginLeft: '6%'
       } as IStyle,
       isTop && {
@@ -75,14 +81,14 @@ export default observer(() => {
     navItem: {
       userSelect: 'none',
       margin: 14,
-      fontSize: 16,
-      color: 'rgba(54, 88, 126, 0.788)',
+      fontSize: style.fontNormal,
+      color: color.textPrimary,
       ':hover': {
-        color: 'rgb(76, 194, 200)'
+        color: color.textPrimaryLight
       }
     } as IStyle,
     navSelected: {
-      color: 'rgba(76, 194, 200, 0.815)'
+      color: color.textPrimaryLighter
     } as IStyle,
     loginBtn: [
       {
@@ -107,11 +113,11 @@ export default observer(() => {
       } as IStyle
     ],
     userName: {
-      fontSize: 16,
+      fontSize: style.fontNormal,
       margin: 'auto 12px',
       verticalAlign: 'middle',
       cursor: 'pointer',
-      transition: 'all .2s',
+      transition: style.transition,
       display: 'inline-block',
       ":hover": {
         transform: 'translateY(-2px)'
@@ -157,3 +163,5 @@ export default observer(() => {
     </div>
   )
 })
+
+export default NavBar

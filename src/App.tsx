@@ -1,10 +1,11 @@
-import React, { lazy, Suspense, useContext } from 'react';
+import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router'
 import { createBrowserHistory } from 'history'
 import { mergeStyles } from '@fluentui/react'
 import { UAContext } from '@quentin-sommer/react-useragent';
 import { useLocalStore } from 'mobx-react';
 import { createStore, storeContext } from 'store'
+import UserService from 'service/UserService';
 
 
 const browserHistory = createBrowserHistory();
@@ -26,6 +27,11 @@ function App() {
 
 
   const store = useLocalStore(createStore)
+
+  // 获取用户信息
+  useEffect(() => {
+    UserService.fetchUserInfo(store)
+  })
 
   return (
     <storeContext.Provider value={store}>

@@ -26,5 +26,15 @@ module.exports = {
       webpackConfig = Object.assign(webpackConfig, customConfig)
       return webpackConfig
     }
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:40002',
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    },
   }
 }
