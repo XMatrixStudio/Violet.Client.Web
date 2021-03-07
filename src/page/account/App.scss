@@ -1,0 +1,24 @@
+.app-layout {
+  background-color: #f3f6fe;
+  text-align: center;
+  min-height: 100vh;
+
+  .top-layout {
+    padding-top: 20%;
+    padding-bottom: 20px;
+    user-select: none;
+
+    .logo {
+      padding: 10px;
+      height: 40px;
+      width: 40px;
+      vertical-align: middle;
+    }
+
+    .logo-title {
+      font-size: 18px;
+      color: #846dba;
+      vertical-align: middle;
+    }
+  }
+}

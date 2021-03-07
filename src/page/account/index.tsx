@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import reportWebVitals from '@/reportWebVitals';
+import { Provider, teamsV2Theme } from '@fluentui/react-northstar'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider theme={teamsV2Theme}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

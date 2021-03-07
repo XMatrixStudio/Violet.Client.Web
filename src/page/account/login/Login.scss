@@ -1,0 +1,22 @@
+.login-layout {
+  background-color: #fff;
+  display: inline-block;
+  padding: 20px 40px;
+  border-radius: 4px;
+  box-shadow: 0px 8px 20px rgb(0 0 0 / 6%);
+  width: 360px;
+
+  .title {
+    color: #3b4f7a;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 4px;
+  }
+
+  .sub-title {
+    color: #bac1d1;
+    font-size: 13px;
+    margin: 4px;
+  }
+
+}
