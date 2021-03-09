@@ -1,5 +1,5 @@
-import { EmailIcon, Form, FormButton, FormCheckbox, FormInput } from '@fluentui/react-northstar';
 import React from 'react';
+import { Form, FormButton, FormCheckbox, FormInput } from '@fluentui/react-northstar';
 import './Login.scss';
 
 function Login() {

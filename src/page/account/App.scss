@@ -1,24 +1,45 @@
+@import "@/assets/style/variable";
+
 .app-layout {
-  background-color: #f3f6fe;
+  background-color: $color-background;
   text-align: center;
   min-height: 100vh;
 
   .top-layout {
-    padding-top: 20%;
-    padding-bottom: 20px;
+    padding-top: 16vh;
+    padding-bottom: 12px;
     user-select: none;
 
     .logo {
       padding: 10px;
-      height: 40px;
-      width: 40px;
+      height: 42px;
+      width: 42px;
       vertical-align: middle;
     }
 
     .logo-title {
-      font-size: 18px;
-      color: #846dba;
+      font-size: 20px;
+      color: $color-primary;
       vertical-align: middle;
+    }
+  }
+
+  .foot-layout {
+    margin-top: 24px;
+
+    .foot-text {
+      color: $color-text-second;
+    }
+
+    .text-btn {
+      transition: all .2s;
+      color: $color-primary;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+      &:hover {
+        transform: translateY(-2px);
+      }
     }
   }
 }

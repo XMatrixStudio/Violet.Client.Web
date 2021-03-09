@@ -1,5 +1,7 @@
+@import "@/assets/style/variable";
+
 .login-layout {
-  background-color: #fff;
+  background-color: $color-card-background;
   display: inline-block;
   padding: 20px 40px;
   border-radius: 4px;
@@ -7,15 +9,15 @@
   width: 360px;
 
   .title {
-    color: #3b4f7a;
+    color: $color-text-primary;
     font-weight: bold;
     font-size: 18px;
     margin: 4px;
   }
 
   .sub-title {
-    color: #bac1d1;
-    font-size: 13px;
+    color: $color-text-second;
+    font-size: 14px;
     margin: 4px;
   }
 

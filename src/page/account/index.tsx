@@ -4,11 +4,14 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from '@/reportWebVitals';
 import { Provider, teamsV2Theme } from '@fluentui/react-northstar'
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider theme={teamsV2Theme}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
