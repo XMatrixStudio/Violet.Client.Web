@@ -5,6 +5,7 @@ import { rootStore, StoreContext } from '@/store/RootStore';
 import { Link, Route, Switch } from 'react-router-dom';
 import { useLocalObservable } from 'mobx-react-lite';
 import Login from './login/Login'
+import Register from './register/Register'
 
 function App() {
   const store = useLocalObservable(() => rootStore)
@@ -18,30 +19,20 @@ function App() {
         </div>
         <Switch>
           <Route path="/account/register">
-            <div className="App">
-              <header className="App-header">
-                <p>
-                  Edit <code>src/App.tsx</code> and save to reload.
-              </p>
-                <a
-                  className="App-link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn React Account y
-              </a>
-              </header>
-            </div>
+            <Register/>
           </Route>
-          <Route path="/">
+          <Route path="/account">
             <Login />
           </Route>
         </Switch>
         <div className="foot-layout">
           <Switch>
-            <Route path="/">
-              <span className="foot-text">还没有账户？</span>
+            <Route path="/account/register">
+              <span className="foot-text">已有账号？</span>
+              <Link to="/account" className="text-btn">立刻登录</Link>
+            </Route>
+            <Route path="/account">
+              <span className="foot-text">还没有账号？</span>
               <Link to="/account/register" className="text-btn">创建一个</Link>
             </Route>
           </Switch>
