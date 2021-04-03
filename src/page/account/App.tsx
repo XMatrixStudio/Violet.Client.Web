@@ -19,7 +19,7 @@ function App() {
         </div>
         <Switch>
           <Route path="/account/register">
-            <Register/>
+            <Register />
           </Route>
           <Route path="/account">
             <Login />

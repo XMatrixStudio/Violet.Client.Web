@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormButton, FormCheckbox, FormInput } from '@fluentui/react-northstar';
+import { Form, FormButton, FormInput } from '@fluentui/react-northstar';
 import './Register.scss';
 
 function Register() {
@@ -10,8 +10,8 @@ function Register() {
       <p className="sub-title">输入你的账号密码</p>
       <Form className="my-form login-form">
         <FormInput
-          label="用户名 / 邮箱"
-          name="id"
+          label="邮箱"
+          name="email"
           required />
         <FormInput
           label="密码"
@@ -19,11 +19,15 @@ function Register() {
           type="password"
           clearable
           required />
-        <FormCheckbox
-          label="记住我" />
+        <FormInput
+          label="再次输入密码"
+          name="password"
+          type="password"
+          clearable
+          required />
         <FormButton
           className="login-btn"
-          content="登录"
+          content="注册"
           primary />
       </Form>
     </div>
